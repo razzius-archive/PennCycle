@@ -1,5 +1,15 @@
 from django.contrib import admin
 from penncycle.app.models import Manufacturer, User, Bike, Ride
+import datetime
+
+def check_in(modeladmin, request, queryset):
+  queryset.update(checkin_time=datetime.datetime.now())
+  for item in queryset:
+    print item
+    item.bike.status='available'
+    item.bike.save()
+
+check_in.short_description = "Check in the selected rides"
 
 class UserAdmin(admin.ModelAdmin):
     list_display = (
@@ -16,18 +26,17 @@ class BikeAdmin(admin.ModelAdmin):
 
 class RidesAdmin(admin.ModelAdmin):
     list_display = (
-        'rider', 'bike', 'checkout_time', 'checkin_time',
-        'ride_duration_days',
-        'rider', 'list_of_bikes', 'checkout_time', 'checkin_time',
-        'ride_duration_days',
+        'rider', 'bike', 'checkout_time', 'checkin_time', 'ride_duration_days',
+        #'rider', 'list_of_bikes', 'checkout_time', 'checkin_time',
+        #'ride_duration_days',
     )
     list_filter = (
-        'rider', 'bike', 'checkout_time', 'checkin_time', 'ride_duration_days',
-        'rider',
+        'rider', 'bike', 'checkout_time', 'checkin_time', 
     ) 
+    readonly_fields = ('ride_duration_days',)
     date_hierarchy = 'checkin_time'
     ordering = ('checkin_time',)
-    raw_id_fields = ('bike',)
+    actions = [check_in]
 
 admin.site.register(Manufacturer)
 admin.site.register(User, UserAdmin)
