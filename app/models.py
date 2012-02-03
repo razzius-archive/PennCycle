@@ -17,7 +17,7 @@ GRAD_YEAR_CHOICES = (
     ('2013', '2013'),
     ('2012', '2012'),
     ('2011', '2011'),
-    ('staff', 'staff'),
+    ('faculty', 'faculty'),
     ('guest', 'guest'),
     ('grad', 'grad student'),
 )
@@ -27,7 +27,9 @@ SCHOOL_CHOICES = (
     ('E', 'SEAS'),
     ('C', 'College'),
     ('N', 'Nursing'),
+    ('D', 'Dual'),
     ('O', 'Other'),
+    #include graduate schools
 )
 
 class Manufacturer(models.Model):
