@@ -42,24 +42,26 @@ class Manufacturer(models.Model):
     def __unicode__(self):
         return self.name
 
-class User(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=40)
+class Student(models.Model):
+    name = models.CharField(max_length=100)
     email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=16)
     penncard_number = models.CharField(max_length=8)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     grad_year = models.CharField(max_length=5, choices=GRAD_YEAR_CHOICES)
-    join_date = models.DateField(null=True, blank=True)
+    join_date = models.DateField(default=datetime.date.today())
     height = models.CharField(max_length=10)
     school = models.CharField(max_length=10, choices=SCHOOL_CHOICES)
+    major = models.CharField(max_length=50, blank=True)
+    status = models.CharField(max_length=100, default='available')
 
     def __unicode__(self):
-        return u'%s %s' % (self.first_name, self.last_name)
+      return u'%s %s' % (self.name, self.penncard_number)
 
 class Bike(models.Model):
     bike_name = models.CharField(max_length=100)
     # bike doens't need to know its riders
-    #riders = models.ManyToManyField(User, blank=True)
+    #riders = models.ManyToManyField(Student, blank=True)
     manufacturer = models.ForeignKey(Manufacturer)
     purchase_date = models.DateField()
     color = models.CharField(max_length=30, blank=True)
@@ -86,7 +88,7 @@ class Bike(models.Model):
         return self.bike_name
 
 class Ride(models.Model):
-    rider = models.ForeignKey(User)
+    rider = models.ForeignKey(Student)
     bike = models.ForeignKey('Bike', limit_choices_to = {'status': 'available'},
       related_name='rides')
     checkout_time = models.DateTimeField(default=datetime.datetime.now())

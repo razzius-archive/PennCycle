@@ -1,5 +1,5 @@
 from django.contrib import admin
-from penncycle.app.models import Manufacturer, User, Bike, Ride
+from penncycle.app.models import Manufacturer, Student, Bike, Ride
 import datetime
 
 def check_in(modeladmin, request, queryset):
@@ -10,11 +10,11 @@ def check_in(modeladmin, request, queryset):
 
 check_in.short_description = "Check in the selected rides"
 
-class UserAdmin(admin.ModelAdmin):
+class StudentAdmin(admin.ModelAdmin):
     list_display = (
-        'first_name', 'last_name', 'grad_year', 'penncard_number',
+        'name', 'grad_year', 'penncard_number',
         'gender', 'school',)
-    search_fields = ('first_name', 'last_name', 'penncard_number',)
+    search_fields = ('name', 'penncard_number',)
     list_filter = ('school', 'gender', 'grad_year')
     date_hierarchy = 'join_date'
     
@@ -38,6 +38,6 @@ class RidesAdmin(admin.ModelAdmin):
     actions = [check_in]
 
 admin.site.register(Manufacturer)
-admin.site.register(User, UserAdmin)
+admin.site.register(Student, StudentAdmin)
 admin.site.register(Bike, BikeAdmin)
 admin.site.register(Ride, RidesAdmin)
