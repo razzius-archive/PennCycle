@@ -19,7 +19,7 @@ class StudentAdmin(admin.ModelAdmin):
     date_hierarchy = 'join_date'
     
 class BikeAdmin(admin.ModelAdmin):
-    list_display = ('bike_name', 'manufacturer', 'purchase_date')
+    list_display = ('bike_name', 'status', 'manufacturer', 'purchase_date')
     list_filter = ('purchase_date','manufacturer',)
     date_hierarchy = 'purchase_date'
 
