@@ -5,20 +5,20 @@ from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect
 from django import forms
-from bootstrap.forms import BootstrapForm, Fieldset
+from bootstrap.forms import BootstrapModelForm, Fieldset
 
 #class SignupForm(forms.ModelForm):
-class SignupForm(BootstrapForm):
+class SignupForm(BootstrapModelForm):
   class Meta:
-    #model = Student
-    layout = (
-      Fieldset("Please Login", "Name", "Email", "Phone", "Penncard", "Gender", "Grad year", "Height", "School", "Major" ),
-    )
+    model = Student
+    #layout = (
+      #Fieldset("Please Login", "Name", "Email", "Phone", "Penncard", "Gender", "Grad year", "Height", "School", "Major" ),
+    #)
 
-    Name = forms.CharField(max_length=100)
-    Email = forms.CharField(max_length=100)
-    Phone = forms.CharField(max_length=100)
-    Penncard = forms.CharField(max_length=100)
+    #Name = forms.CharField(max_length=100)
+    #Email = forms.CharField(max_length=100)
+    #Phone = forms.CharField(max_length=100)
+    #Penncard = forms.CharField(max_length=100)
 
 
 def index(request):

@@ -17,7 +17,7 @@ GRAD_YEAR_CHOICES = (
     ('2013', '2013'),
     ('2012', '2012'),
     ('2011', '2011'),
-    ('faculty', 'faculty'),
+    ('staff', 'staff'),
     ('guest', 'guest'),
     ('grad', 'grad student'),
 )
@@ -27,9 +27,7 @@ SCHOOL_CHOICES = (
     ('E', 'SEAS'),
     ('C', 'College'),
     ('N', 'Nursing'),
-    ('D', 'Dual'),
     ('O', 'Other'),
-    #include graduate schools
 )
 
 class Manufacturer(models.Model):
@@ -46,7 +44,7 @@ class Manufacturer(models.Model):
 
 class Student(models.Model):
     name = models.CharField(max_length=100)
-    email = models.EmailField(blank=True)
+    email = models.EmailField()
     phone = models.CharField(max_length=16)
     penncard_number = models.CharField(max_length=8)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
