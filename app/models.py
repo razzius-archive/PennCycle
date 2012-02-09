@@ -125,7 +125,6 @@ class Quiz(models.Model):
   wrong2 = models.CharField(max_length=200)
   wrong3 = models.CharField(max_length=200)
   wrong4 = models.CharField(max_length=200)
-  
 
   def __unicode__(self):
     return self.question
