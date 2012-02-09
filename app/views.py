@@ -5,11 +5,21 @@ from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect
 from django import forms
+from bootstrap.forms import BootstrapForm, Fieldset
 
-
-class SignupForm(forms.ModelForm):
+#class SignupForm(forms.ModelForm):
+class SignupForm(BootstrapForm):
   class Meta:
-    model = Student
+    #model = Student
+    layout = (
+      Fieldset("Please Login", "Name", "Email", "Phone", "Penncard", "Gender", "Grad year", "Height", "School", "Major" ),
+    )
+
+    Name = forms.CharField(max_length=100)
+    Email = forms.CharField(max_length=100)
+    Phone = forms.CharField(max_length=100)
+    Penncard = forms.CharField(max_length=100)
+
 
 def index(request):
   m = 'Sign up <a href="#">here</a>'
@@ -19,8 +29,19 @@ def index(request):
   }
   return render_to_response('index.html', context)
 
+#class LoginForm(BootstrapForm):
+#    class Meta:
+#        layout = (
+#            Fieldset("Please Login", "username", "password", ),
+#        )
+
+#    username = forms.CharField(max_length=100)
+#    password = forms.CharField(widget=forms.PasswordInput(), max_length=100)
+
+
 def signup(request):
-  video_embed = "<object style="height: 390px; width: 640px"><param name="movie" value="http://www.youtube.com/v/1eFDra1XimA?version=3&feature=player_profilepage"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://www.youtube.com/v/1eFDra1XimA?version=3&feature=player_profilepage" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="640" height="360"></object>"
+  #video_embed = "<object style="height: 390px; width: 640px"><param name="movie" value="http://www.youtube.com/v/1eFDra1XimA?version=3&feature=player_profilepage"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://www.youtube.com/v/1eFDra1XimA?version=3&feature=player_profilepage" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="640" height="360"></object>"
+  video_embed = "asdf"
   waiver_text = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lectus lectus, rutrum eget venenatis non, ornare sit amet elit. Donec sit amet lorem ut felis lacinia bibendum. Nulla auctor, dolor at scelerisque consectetur, magna velit pretium odio, vitae egestas orci eros vitae est. Sed sagittis porttitor dictum. Suspendisse vel lorem ut dolor vestibulum fermentum. Sed vestibulum mauris quis diam pellentesque nec viverra turpis pellentesque. Nam metus est, tempus nec scelerisque nec, scelerisque at erat."""
   scripts = """<script>
     $(function () {
