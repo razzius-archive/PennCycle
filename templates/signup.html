@@ -39,8 +39,11 @@
       {% for q in quiz %}
         <h2>{{q.question}}</h2>
         {% for c in q.choices %}
-        <label class="radio" for='{{forloop.counter}}'>
-          <input type="radio" name='{{forloop.counter}}' id="optionsRadios{{forloop.counter}}" value="option{{forloop.counter}}">
+        <label class="radio" for='{{forloop.parentloop.counter}}-{{forloop.counter}}'>
+          <input type="radio" name='{{forloop.parentloop.counter}}' 
+            id="{{forloop.parentloop.counter}}-{{forloop.counter}}" 
+            value="{{forloop.parentloop.counter}}-{{forloop.counter}}"
+            group="{{forloop.parentloop.counter}}">
           {{c}}
         </label>
         {% endfor %}
