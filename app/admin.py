@@ -1,5 +1,5 @@
 from django.contrib import admin
-from penncycle.app.models import Manufacturer, Student, Bike, Ride
+from penncycle.app.models import Manufacturer, Student, Bike, Ride, Quiz
 import datetime
 
 def check_in(modeladmin, request, queryset):
@@ -37,7 +37,14 @@ class RidesAdmin(admin.ModelAdmin):
     ordering = ('checkin_time',)
     actions = [check_in]
 
+class QuizAdmin(admin.ModelAdmin):
+  list_display = (
+      'question', 'answer', 'wrong1', 'wrong2', 'wrong3', 'wrong4',
+  )
+
+
 admin.site.register(Manufacturer)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Bike, BikeAdmin)
 admin.site.register(Ride, RidesAdmin)
+admin.site.register(Quiz, QuizAdmin)

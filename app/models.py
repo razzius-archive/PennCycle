@@ -118,4 +118,13 @@ class Ride(models.Model):
     def __unicode__(self):
         return u'%s on %s' % (self.rider, self.checkout_time)
 
+class Quiz(models.Model):
+  question = models.CharField(max_length=100)
+  answer = models.CharField(max_length=200)
+  wrong1 = models.CharField(max_length=200)
+  wrong2 = models.CharField(max_length=200)
+  wrong3 = models.CharField(max_length=200)
+  wrong4 = models.CharField(max_length=200)
 
+  def __unicode__(self):
+    return self.question
