@@ -37,23 +37,11 @@
         <h2>{{q.question}}</h2>
         {% for c in q.choices %}
         <label class="radio" for='{{forloop.counter}}'>
-          <input type="radio" name='{{forloop.counter}}' id="optionsRadios{{forloop.counter}}" value="option{{forloop.counter}}">
+          <input type="radio" name='{{forloop.counter}}' id="optionsRadios{{forloop.counter}}" value="option{{forloop.counter}}" group="group{{forloop.counter}}">
           {{c}}
         </label>
         {% endfor %}
       {% endfor %}
-      <!--
-      <h1>Question?</h1>
-      <form name="question1" action="" method="POST" class="form-horizontal">
-        <div class = "question">
-          <input type="radio" name="group1" value="answer">answer
-          <input type="radio" name="group1" value="wrong1">wrong1
-          <input type="radio" name="group1" value="wrong2">wrong2
-          <input type="radio" name="group1" value="wrong3">wrong3
-          <input type="radio" name="group1" value="wrong4">wrong4
-        </div>
-      </form>
-      -->
     </div>
     <div class="tab-pane" id="waiver">
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lectus lectus, rutrum eget venenatis non, ornare sit amet elit. Donec sit amet lorem ut felis lacinia bibendum. Nulla auctor, dolor at scelerisque consectetur, magna velit pretium odio, vitae egestas orci eros vitae est. Sed sagittis porttitor dictum. Suspendisse vel lorem ut dolor vestibulum fermentum. Sed vestibulum mauris quis diam pellentesque nec viverra turpis pellentesque. Nam metus est, tempus nec scelerisque nec, scelerisque at erat.</p>
@@ -71,5 +59,11 @@
     $(function () {
      $('#signup').tab('show');
     })
+
+    var answers = [];
+    {% for q in quiz %}
+      {% for c in q.choices %}
+      {% endfor %}
+    {% endfor %}
   </script>
 {% endblock %}
