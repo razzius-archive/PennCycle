@@ -36,6 +36,9 @@
       <button id="video-form" class="btn btn-primary">Next &#175;</button>
     </div>
     <div class="tab-pane controls" id="quiz">
+      <div id="wrong_alert">
+      </div>
+      
       {% for q in quiz %}
         <h2>{{q.question}}</h2>
         {% for c in q.choices %}
@@ -48,6 +51,7 @@
         </label>
         {% endfor %}
       {% endfor %}
+      <button id="check_button" class="btn btn-primary">Check Answers</button>
     </div>
     <div class="tab-pane" id="waiver">
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lectus lectus, rutrum eget venenatis non, ornare sit amet elit. Donec sit amet lorem ut felis lacinia bibendum. Nulla auctor, dolor at scelerisque consectetur, magna velit pretium odio, vitae egestas orci eros vitae est. Sed sagittis porttitor dictum. Suspendisse vel lorem ut dolor vestibulum fermentum. Sed vestibulum mauris quis diam pellentesque nec viverra turpis pellentesque. Nam metus est, tempus nec scelerisque nec, scelerisque at erat.</p>
@@ -66,11 +70,39 @@
      $('#signup').tab('show');
     })
 
-    var answers = [];
+    var answers = [
     {% for q in quiz %}
       {% for c in q.choices %}
+        {% ifequal c q.answer %}
+          '{{forloop.parentloop.counter}}-{{forloop.counter}}',
+        {% endifequal %}
       {% endfor %}
     {% endfor %}
+    ];  
+
+    var wrong_answers = [];
+    $('button#check_button').click(function(){
+      wrong_answers = [];
+      $('input[type="radio"]:checked').each(function(){
+        if ($.inArray(this.id, answers) == -1) {
+        wrong_answers.push(this.id.split('-')[0]);
+        }
+      }); 
+      if(wrong_answers.length == 0) {
+        // alert success
+      }
+      else {
+        // alert failure
+        if(wrong_answers.length == 1) {
+          var plural = "s";
+        }
+        else {
+          var plural = "";
+        }
+        $("#wrong_alert").html('<div class="alert alert-error"><a class="close">&times;</a><strong>You have incorrect answers for question' + plural + " " + wrong_answers.join(', ') +'</strong></div>');
+        
+      }
+    });
 
     $('button#info-form').click(function(){
       alert('hello');
