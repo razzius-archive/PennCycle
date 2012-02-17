@@ -18,7 +18,7 @@ class pcRidesAdmin(admin.ModelAdmin):
                 }),
     )
   date_hierarchy = 'checkin_time'
-  ordering = ('checkout_time',)
+  ordering = ('-checkout_time',)
   actions = ['check_in']
   search_fields = ['rider__name','rider__penncard_number','bike__bike_name']
   save_on_top = True
@@ -29,6 +29,8 @@ class pcRidesAdmin(admin.ModelAdmin):
     rides_updated = queryset.update(checkin_time=datetime.datetime.now())
     for item in queryset:
       item.bike.status='available'
+      item.rider.status = 'available'
+      item.rider.save()
       item.bike.save()
     if rides_updated == 1:
       message_bit = '1 bike was'

@@ -83,7 +83,7 @@ class Bike(models.Model):
     return self.bike_name
 
 class Ride(models.Model):
-  rider = models.ForeignKey(Student)
+  rider = models.ForeignKey(Student, limit_choices_to = {'status': 'available'})
   bike = models.ForeignKey('Bike', limit_choices_to = {'status': 'available'},
     related_name='rides')
   checkout_time = models.DateTimeField(auto_now_add=True)
@@ -110,9 +110,12 @@ class Ride(models.Model):
     super(Ride, self).save()
     if self.checkin_time == None:
       self.bike.status = 'out'
+      self.rider.status = 'out'
     else:
       self.bike.status = 'available'
-      self.bike.save()
+      self.rider.status = 'available'
+    self.bike.save()
+    self.rider.save()
    
   def __unicode__(self):
     return u'%s on %s' % (self.rider, self.checkout_time)

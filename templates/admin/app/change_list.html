@@ -30,6 +30,55 @@
     });
 })(django.jQuery);
 </script>
+<script 
+    src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" 
+    type="text/javascript"></script>
+<script type="text/javascript">
+function do_action(action) {
+    $('div.actions option[selected]').attr('selected', '');
+    $('div.actions option[value='+action+']').attr('selected', 'selected');
+    //$('div#changelist form').submit();
+    $('button[name="index"]').click();
+}
+$(document).ready(function(){
+  var replacement = '<a class="button" style="cursor:pointer;">Check In</a>'
+  $('td:contains("out")').click(function(){
+    var selectbox = $(this).parent().children('td:first').children('input:first');
+    var id = selectbox.attr('value');
+    selectbox.click();
+    do_action('check_in');
+  });
+  $('td:contains("out")').html(replacement);
+});
+function fix_actions() {
+    //$('th.action-checkbox-column:first').prepend('select<br />all<br />');
+    if ($('div.actions option:gt(0)').length<=8) { // Only do this for short lists.
+        //$('div.actions').css('border-bottom', '0');
+        
+        //$('div.actions label, div.actions button').hide();
+        actions_html='<div id="action_buttons" style="padding: 2px 0 2px 0;">';        
+        $('div.actions option:gt(0)').each(function(i) {
+            actions_html+='<a href="javascript:void(0);" onclick="do_action(\''+this.value+'\');">'+this.text+'</a>';
+        });
+        actions_html+='</div>';        
+        $('div.actions').append(actions_html);
+        $('div.actions').css('font-size', '9px');
+        $('div.actions').css('font-weight', 'bold');
+        $('div.actions a:link').css('background-color', 'white');
+        $('div.actions a:link').css('padding', '2px 3px');
+        $('div.actions a:link').css('margin', '1px 2px 1px 0');
+        $('div.actions a:link').css('border', '1px outset #efefef');
+        $('div.actions a:link').css('text-transform', 'uppercase');
+        $('div.actions a:link').css('display', 'block');
+        $('div.actions a:link').css('float', 'left');
+        $('div.actions a:link').css('white-space', 'nowrap');
+        $('div.actions').after('<div style="clear: both;"></div>');
+    }
+}
+$(document).ready(function(){
+  //fix_actions();
+});
+</script>
 {% endif %}{% endif %}
 {% endblock %}
 
@@ -63,9 +112,16 @@
               <a href="add/{% if is_popup %}?_popup=1{% endif %}" class="addlink">
                 {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
               </a>
+              
             </li>
           {% endblock %}
         </ul>
+        {% if cl.opts.verbose_name = 'ride' %}
+        <a href="add/{% if is_popup %}?_popup=1{% endif %}" style="z-index:-5;">
+          <img src="media/img/PennCycle Logo 3 smallest-03.png"
+            style="position:absolute; top: 85px; right: 20px;">
+        </a>
+        {% endif %}
       {% endif %}
     {% endblock %}
     {% if cl.formset.errors %}
