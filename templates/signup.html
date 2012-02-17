@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  {{block.super}}
+  {{block.super}} Sign Up
 {% endblock %}
 
 {% block content %}
@@ -27,13 +27,13 @@
       <form action="" method="post" class="form-horizontal">{% csrf_token %}
           {{ form }}
           <div class="form-actions">
-              <button type="submit" id="info-form" class="btn btn-primary">Next &#175;</button>
+              <button type="submit" id="info-form" class="btn btn-primary">Next &#187;</button>
           </div>
       </form>
     </div>
     <div class="tab-pane" id="video">
       <object style="height: 390px; width: 640px"><param name="movie" value="http://www.youtube.com/v/cgxK1B-tVS0?version=3&feature=player_detailpage"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://www.youtube.com/v/cgxK1B-tVS0?version=3&feature=player_detailpage" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="640" height="360"></object>
-      <button id="video-form" class="btn btn-primary">Next &#175;</button>
+      <button id="video-form" class="btn btn-primary">Next &#187;</button>
     </div>
     <div class="tab-pane controls" id="quiz">
       <div id="wrong_alert">
@@ -66,9 +66,17 @@
 {% endblock %}
 {% block scripts %}
   <script type="text/javascript">
-    $(function () {
-     $('#signup').tab('show');
-    })
+    function toTab(id) {
+      $('.active').removeClass('active');
+      $('#'+id).addClass('active');
+      $('a[href="#'+id+'"]').parent().addClass('active');
+    };
+    $('button#info-form').click(function(){
+      toTab('video');
+    });
+    $('button#video-form').click(function(){
+      toTab('quiz');
+    });
 
     var answers = [
     {% for q in quiz %}

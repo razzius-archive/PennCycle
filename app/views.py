@@ -8,7 +8,6 @@ from django import forms
 from bootstrap.forms import BootstrapModelForm, Fieldset
 import random
 
-#class SignupForm(forms.ModelForm):
 class SignupForm(BootstrapModelForm):
   class Meta:
     model = Student
@@ -29,7 +28,7 @@ def signup(request):
     if form.is_valid():
       # Process the data in form.cleaned data
       form.save()
-      return HttpResponseRedirect('#video')
+      return HttpResponse('ok')
       #return render_to_response('thanks.html', {})
   else:
     form = SignupForm()
