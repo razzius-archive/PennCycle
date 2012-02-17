@@ -5,8 +5,9 @@
 {% endblock %}
 
 {% block content %}
-<h1>Sign Up & Get Riding!</h1>
-<hr>
+<div class="paddedheader">
+    <h1 class="textCentered">Sign Up & Get Riding!</h1>
+  <!--<hr>-->
   <ul class="nav nav-tabs">
     <li class="active"><a href="#signup" data-toggle="tab">Info</a></li>
     <li><a href="#video" data-toggle="tab">Video</a></li>
@@ -15,15 +16,9 @@
     <li><a href="#pay" data-toggle="tab">Pay</a></li>
     <li><a href="#thanks" data-toggle="tab">Thanks!</a></li>
   </ul>
-  
+</div>
   <div class="tab-content">
     <div class="tab-pane active" id="signup">
-      <!--
-      <form action="" method="post" class="form-horizontal">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit" />
-      </form>
-      -->
       <form action="" method="post" class="form-horizontal">{% csrf_token %}
           {{ form }}
           <div class="form-actions">
@@ -54,7 +49,11 @@
       <button id="check_button" class="btn btn-primary">Check Answers</button>
     </div>
     <div class="tab-pane" id="waiver">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lectus lectus, rutrum eget venenatis non, ornare sit amet elit. Donec sit amet lorem ut felis lacinia bibendum. Nulla auctor, dolor at scelerisque consectetur, magna velit pretium odio, vitae egestas orci eros vitae est. Sed sagittis porttitor dictum. Suspendisse vel lorem ut dolor vestibulum fermentum. Sed vestibulum mauris quis diam pellentesque nec viverra turpis pellentesque. Nam metus est, tempus nec scelerisque nec, scelerisque at erat.</p>
+      <p>Nullam luctus, turpis nec facilisis luctus, ligula libero cursus est, pellentesque hendrerit est velit at leo. Proin ultricies augue et augue feugiat adipiscing a eget erat. Phasellus sit amet massa justo. Donec vestibulum arcu quis libero pellentesque iaculis. Cras et molestie est. Integer sodales rhoncus elementum. Duis dui urna, mollis id adipiscing non, dapibus id tortor. Pellentesque bibendum, lorem eget rhoncus viverra, neque nulla ullamcorper diam, in aliquam quam velit a urna. Nulla faucibus libero at elit fringilla placerat luctus purus semper.
+
+      <p>Donec pellentesque ornare augue, quis tristique augue euismod ut. Phasellus adipiscing rutrum risus, quis interdum velit mattis at. Mauris vitae sem quis augue elementum congue at quis purus. Pellentesque orci tortor, cursus non fringilla ut, dictum id dolor. Morbi lacus magna, convallis ac varius vel, varius sit amet velit. Aenean consectetur commodo hendrerit. Aliquam porttitor aliquet ligula, congue pellentesque tellus consectetur non. In nisi turpis, malesuada ac feugiat non, aliquet ut leo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum scelerisque tincidunt mauris, non hendrerit purus imperdiet in. Maecenas dictum enim quis ligula imperdiet fringilla. In malesuada aliquam bibendum. Sed consequat, erat at auctor aliquam, diam lorem elementum nunc, ut vulputate risus augue at lectus.</p>
+
+      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras dignissim massa eu massa interdum a luctus nulla porttitor. Donec id lorem arcu, quis iaculis lacus. Quisque eget neque purus, in vestibulum ante. Proin rutrum nulla et erat vehicula condimentum. Nam scelerisque pretium lacus a blandit. Donec quis posuere ante. In felis turpis, ultrices id gravida ut, gravida vel sem. Phasellus aliquam fermentum mauris at elementum. Quisque egestas rutrum libero id hendrerit. Nulla orci dolor, sodales dignissim ullamcorper a, aliquet dignissim sapien. Vestibulum tempus tempor nisl et tincidunt. Duis consequat feugiat ipsum, nec consectetur nisi luctus et. Duis suscipit magna eget velit faucibus tempor tristique vel est.</p>
     </div>
     <div class="tab-pane" id="pay">
       <img src="/media/img/paypal.png"/>

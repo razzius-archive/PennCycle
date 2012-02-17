@@ -46,7 +46,7 @@ class Student(models.Model):
   name = models.CharField(max_length=100)
   email = models.EmailField()
   phone = models.CharField(max_length=16)
-  penncard_number = models.CharField(max_length=8)
+  penncard_number = models.CharField(verbose_name="Penncard", max_length=8)
   gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
   grad_year = models.CharField(max_length=5, choices=GRAD_YEAR_CHOICES)
   join_date = models.DateField(default=datetime.date.today())

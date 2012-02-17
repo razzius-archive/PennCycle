@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Bootstrap, from Twitter</title>
+    <title>{% block title %}PennCycle | {% endblock title %}</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -13,13 +13,17 @@
     <![endif]-->
 
     <!-- Le styles -->
-    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/media/css/bootstrap.css" rel="stylesheet">
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
-    <link href="../assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/media/css/responsive.css" rel="stylesheet">
+    <link rel="stylesheet/less" type="text/css" href="styles.less">
+	<!-- more css -->
+	{% block css %}
+	{% endblock css %}
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="images/favicon.ico">
@@ -38,7 +42,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Project name</a>
+          <a class="brand" href="#">PennCycle</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
@@ -52,28 +56,33 @@
 
     <div class="container">
 
-      <h1>Bootstrap starter template</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+    {% block content %}
+	  {% endblock content %}
 
     </div> <!-- /container -->
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap-transition.js"></script>
-    <script src="../assets/js/bootstrap-alert.js"></script>
-    <script src="../assets/js/bootstrap-modal.js"></script>
-    <script src="../assets/js/bootstrap-dropdown.js"></script>
-    <script src="../assets/js/bootstrap-scrollspy.js"></script>
-    <script src="../assets/js/bootstrap-tab.js"></script>
-    <script src="../assets/js/bootstrap-tooltip.js"></script>
-    <script src="../assets/js/bootstrap-popover.js"></script>
-    <script src="../assets/js/bootstrap-button.js"></script>
-    <script src="../assets/js/bootstrap-collapse.js"></script>
-    <script src="../assets/js/bootstrap-carousel.js"></script>
-    <script src="../assets/js/bootstrap-typeahead.js"></script>
+    <script src="/media/js/jquery.js"></script>
+    <script src="/media/js/bootstrap-transition.js"></script>
+    <script src="/media/js/bootstrap-alert.js"></script>
+    <script src="/media/js/bootstrap-modal.js"></script>
+    <script src="/media/js/bootstrap-dropdown.js"></script>
+    <script src="/media/js/bootstrap-scrollspy.js"></script>
+    <script src="/media/js/bootstrap-tab.js"></script>
+    <script src="/media/js/bootstrap-tooltip.js"></script>
+    <script src="/media/js/bootstrap-popover.js"></script>
+    <script src="/media/js/bootstrap-button.js"></script>
+    <script src="/media/js/bootstrap-collapse.js"></script>
+    <script src="/media/js/bootstrap-carousel.js"></script>
+    <script src="/media/js/bootstrap-typeahead.js"></script>
 
+	<!-- more scripts -->
+	{% block scripts %}
+    {{scripts}}
+	{% endblock scripts %}
+	
   </body>
 </html>
 

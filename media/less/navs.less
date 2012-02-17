@@ -8,7 +8,7 @@
 
 .nav {
   margin-left: 0;
-  margin-bottom: @baseLineHeight;
+  // margin-bottom: @baseLineHeight;
   list-style: none;
 }
 
@@ -18,7 +18,7 @@
 }
 .nav > li > a:hover {
   text-decoration: none;
-  background-color: @grayLighter;
+  background-color: fade(@grayLight, 65%);
 }
 
 
@@ -86,12 +86,13 @@
 
 // Give the tabs something to sit on
 .nav-tabs {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 2px solid #ddd;
+ // background-color: @fadedwhite;
 }
 
 // Make the list-items overlay the bottom border
 .nav-tabs > li {
-  margin-bottom: -1px;
+  margin-bottom: -2px;
 }
 
 // Actual tabs (as links)

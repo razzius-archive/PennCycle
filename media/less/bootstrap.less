@@ -25,6 +25,7 @@
 @import "code.less";
 @import "forms.less";
 @import "tables.less";
+@import "responsive.less";
 
 // Components: common
 @import "sprites.less";
@@ -60,3 +61,43 @@
 
 // Utility classes
 @import "utilities.less"; // Has to be last to override when necessary
+
+.bg-image {
+  display:block !important;
+  position:fixed;
+	top:0px;
+	left:0px;
+	min-height:100%;
+	min-width:100%;
+	width:100%;
+	z-index:-1000;
+}
+
+.centered {
+  position: relative;
+  margin: 0 auto 0 auto;
+}
+
+.textCentered {
+  text-align: center;
+}
+
+.border {
+  border: solid 2px;
+}
+
+
+
+
+// PADDEDHEADER
+// ------
+.paddedheader {
+  padding-left: 20px;
+  padding-top: 20px;
+}
+
+// NAVBAR
+// ------
+#navbar {
+  margin-top: -1 * @baseFontSize;
+}

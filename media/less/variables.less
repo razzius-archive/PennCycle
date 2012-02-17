@@ -20,6 +20,10 @@
 @grayLighter:           #eee;
 @white:                 #fff;
 
+// faded
+@fadedwhite:            fade(@grayLighter, 80%);
+@transparent:           fade(@white, 0%);
+
 // Accent colors
 @blue:                  #049cdb;
 @blueDark:              #0064cd;
@@ -31,7 +35,7 @@
 @purple:                #7a43b6;
 
 // Typography
-@baseFontSize:          13px;
+@baseFontSize:          15px;
 @baseFontFamily:        "Helvetica Neue", Helvetica, Arial, sans-serif;
 @baseLineHeight:        18px;
 @textColor:             @grayDark;
@@ -39,7 +43,8 @@
 // Buttons
 @primaryButtonBackground:    @linkColor;
 
-
+// CSS3 ROUNDING ISH
+@borderRadius:          24px;
 
 // COMPONENT VARIABLES
 // --------------------------------------------------
