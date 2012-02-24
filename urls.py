@@ -23,5 +23,6 @@ urlpatterns = patterns('',
     (r'^$', index),
     (r'^signup/', signup),
     (r'^thanks/', thanks),
+    (r'^reserve/', reserve),
     #url(r'^app/', include(app.urls)),
 )

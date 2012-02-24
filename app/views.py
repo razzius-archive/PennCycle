@@ -3,7 +3,7 @@ from app.models import *
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.context_processors import csrf
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django import forms
 from bootstrap.forms import BootstrapModelForm, Fieldset
 import random
@@ -14,10 +14,9 @@ class SignupForm(BootstrapModelForm):
     exclude = ('join_date', 'status',)
 
 def index(request):
-  m = 'Sign up <a href="#">here</a>'
   
   context = {
-      'message': m,
+      #'message': m,
   }
   return render_to_response('index.html', context)
 
@@ -57,6 +56,12 @@ def signup(request):
   }
   context_instance = RequestContext(request, context)
   return render_to_response('signup.html', context_instance)
+
+def reserve(request):
+  context = {
+
+  }
+  return render_to_response('reserve.html', context)
 
 def thanks(request):
   return render_to_response('thanks.html', {})
