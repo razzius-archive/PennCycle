@@ -29,18 +29,21 @@
   </div>
 </div>
 <div class="tab-content">
+  <!------------- info pane ---------------->
   <div class="tab-pane active" id="info">
-    <form action="" method="post" class="form-horizontal">{% csrf_token %}
+    <form id="info-form" action="." method="post" class="form-horizontal">{% csrf_token %}
         {{ form }}
         <div class="form-actions">
-            <button type="submit" id="info-form" class="btn btn-primary">Next &#187;</button>
+            <button id="info-button" class="btn btn-primary">Next &#187;</button>
         </div>
     </form>
   </div>
+  <!------------- safety pane ---------------->
   <div class="tab-pane" id="safety">
     <object style="height: 390px; width: 640px"><param name="movie" value="http://www.youtube.com/v/cgxK1B-tVS0?version=3&feature=player_detailpage"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://www.youtube.com/v/cgxK1B-tVS0?version=3&feature=player_detailpage" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="640" height="360"></object>
     <button id="safety-form" class="btn btn-primary">Next &#187;</button>
   </div>
+  <!------------- quiz pane ---------------->
   <div class="tab-pane controls" id="quiz">
     <div id="wrong_alert">
     </div>
@@ -59,6 +62,7 @@
     {% endfor %}
     <button id="check_button" class="btn btn-primary">Check Answers</button>
   </div>
+  <!------------- waiver pane ---------------->
   <div class="tab-pane" id="waiver">
     <p>Nullam luctus, turpis nec facilisis luctus, ligula libero cursus est, pellentesque hendrerit est velit at leo. Proin ultricies augue et augue feugiat adipiscing a eget erat. Phasellus sit amet massa justo. Donec vestibulum arcu quis libero pellentesque iaculis. Cras et molestie est. Integer sodales rhoncus elementum. Duis dui urna, mollis id adipiscing non, dapibus id tortor. Pellentesque bibendum, lorem eget rhoncus viverra, neque nulla ullamcorper diam, in aliquam quam velit a urna. Nulla faucibus libero at elit fringilla placerat luctus purus semper.
 
@@ -77,6 +81,48 @@
 {% endblock %}
 {% block scripts %}
   <script type="text/javascript">
+  
+  
+    $('#info-button').click(function() {
+      $.ajaxSetup({ 
+        beforeSend: function(xhr, settings) {
+          function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+              var cookies = document.cookie.split(';');
+              for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+                }
+              }
+            }
+            return cookieValue;
+          }
+          if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+            // Only send the token to relative URLs i.e. locally.
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+          }
+        } 
+      });
+    
+      var formData = $('#info-form').serialize();
+      $.ajax ({
+        url: '/', 
+        type: 'POST',
+        dataType: 'json',
+        data: formData,
+        error: function(xhr, status, exception) {
+          alert('error');
+        },
+        success: function(data, status, xhr) {
+          alert('success');
+        },
+      });
+    });
+  
     function toTab(id) {
       $('#secondnav .active').removeClass('active');
       $('.tab-content .active').removeClass('active');
