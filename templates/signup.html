@@ -31,12 +31,12 @@
 <div class="tab-content">
   <!------------- info pane ---------------->
   <div class="tab-pane active" id="info">
-    <form id="info-form" action="." method="post" class="form-horizontal">{% csrf_token %}
+    <form id="info-form" class="form-horizontal">{% csrf_token %}
         {{ form }}
-        <div class="form-actions">
+    </form>
+    <div class="form-actions">
             <button id="info-button" class="btn btn-primary">Next &#187;</button>
         </div>
-    </form>
   </div>
   <!------------- safety pane ---------------->
   <div class="tab-pane" id="safety">
@@ -109,16 +109,24 @@
       });
     
       var formData = $('#info-form').serialize();
+      console.log(formData);
       $.ajax ({
-        url: '/', 
+        url: '../info_submit/', 
         type: 'POST',
-        dataType: 'json',
         data: formData,
+        dataType: 'json',
         error: function(xhr, status, exception) {
-          alert('error');
+          alert('error' + xhr + status + exception);
         },
         success: function(data, status, xhr) {
-          alert('success');
+          if (data['form_valid'] == true) {
+            toTab('safety');
+          } else if (data['form_valid'] == false) {
+            $('#info-form').html(data['new_form']);
+            console.log('replaced shit');
+          } else {
+            alert('alex is dumb');
+          }
         },
       });
     });
