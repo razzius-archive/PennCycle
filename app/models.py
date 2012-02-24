@@ -17,24 +17,45 @@ GRAD_YEAR_CHOICES = (
   ('2013', '2013'),
   ('2012', '2012'),
   ('2011', '2011'),
-  ('staff', 'staff'),
+  ('faculty', 'faculty'),
+  ('staff', 'staff'), 
   ('guest', 'guest'),
   ('grad', 'grad student'),
 )
 
+LIVING_LOCATIONS = (
+  ('Hill', 'Hill'),
+  ('KCECH', 'KCECH'),
+  ('Quad', 'Quad'),
+  ('Harrison', 'Harrison'),
+  ('Harnwell', 'Harnwell'),
+  ('Rodin', 'Rodin'),
+  ('Stouffer', 'Stouffer'), 
+  ('Du Bois', 'Du Bois'),
+  ('Gregory', 'Gregory'),
+  ('Off Campus', 'Off Campus'),
+)
+
 SCHOOL_CHOICES = (
+  ('C', 'College'),
   ('W', 'Wharton'),
   ('E', 'SEAS'),
-  ('C', 'College'),
   ('N', 'Nursing'),
-  ('O', 'Other'),
+  ('ANN','Annenberg'),
+  ('DEN','Dental'),
+  ('DES','Design'),
+  ('GSE','Education'),
+  ('LAW','Law'),
+  ('MED','Medicine'),
+  ('SPP','Social Policy & Practice'),
+  ('VET','Veterinary'),
+  ('O', 'Other or N/A'),
 )
 
 class Manufacturer(models.Model):
   name = models.CharField(max_length=30)
   address = models.CharField(max_length=50, blank=True)
   city = models.CharField(max_length=60, blank=True)
-  state_province = models.CharField(max_length=30, blank=True)
   country = models.CharField(max_length=50, blank=True)
   website = models.URLField(blank=True)
   email = models.EmailField(blank=True)
@@ -53,6 +74,10 @@ class Student(models.Model):
   height = models.CharField(max_length=10)
   school = models.CharField(max_length=10, choices=SCHOOL_CHOICES)
   major = models.CharField(max_length=50, blank=True)
+  living_location = models.CharField(max_length=100, choices=LIVING_LOCATIONS)
+  quiz_completed = models.BooleanField(default=False)
+  waiver_signed = models.BooleanField(default=False)
+  paid = models.BooleanField(default=False)
   status = models.CharField(max_length=100, default='available')
 
   def __unicode__(self):
@@ -65,30 +90,20 @@ class Bike(models.Model):
   color = models.CharField(max_length=30, blank=True)
   status = models.CharField(max_length=100, default='available')
 
-  # added availibility field
-  #available = models.BooleanField()
-  #@property
-  #def status(self):
-  #  ride = self.rides.objects.order_by('checkout_time')[0]
-  #  if ride.checkin_time != None:
-  #  status = 'out'
-  #  elif ride.checkin_time < datetime.datetime.now():
-  #  status = 'available'
-  #  else:
-  #  status = 'error'
-  #  return status
-
-
   def __unicode__(self):
     return self.bike_name
 
 class Ride(models.Model):
-  rider = models.ForeignKey(Student, limit_choices_to = {'status': 'available'})
+  rider = models.ForeignKey(Student, limit_choices_to = {
+    'status': 'available',
+    'waiver_signed':True,
+    'quiz_completed':True,
+    'paid':True})
   bike = models.ForeignKey('Bike', limit_choices_to = {'status': 'available'},
     related_name='rides')
   checkout_time = models.DateTimeField(auto_now_add=True)
   checkin_time = models.DateTimeField(null=True, blank=True)
-  #ride_duration_days = models.IntegerField()
+
   @property
   def ride_duration_days(self):
     if self.checkin_time == None:

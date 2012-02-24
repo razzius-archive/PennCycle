@@ -5,7 +5,7 @@ import datetime
 
 class pcRidesAdmin(admin.ModelAdmin):
   list_display = (
-      'rider', 'status', 'bike', 'checkout_time', 'checkin_time', 'ride_duration_days',
+      'rider', 'status', 
   )
   list_filter = (
       'bike__status', 'bike', 'checkout_time', 'checkin_time', 

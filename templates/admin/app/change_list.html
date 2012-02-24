@@ -17,6 +17,21 @@
       #changelist table thead th:first-child {width: inherit}
     </style>
   {% endif %}
+  <style type="text/css">
+  .ridecycle{
+    position:relative; 
+    float:right;
+    top: -100px; 
+    right: 0px;
+    line-height:0px;
+    text-align:center;
+    overflow:hidden;
+    height:90px; width:300px;
+  }
+  .ridecycle:hover {
+    border-color:blue;
+  }
+  </style>
 {% endblock %}
 
 {% block extrahead %}
@@ -76,7 +91,7 @@ function fix_actions() {
     }
 }
 $(document).ready(function(){
-  //fix_actions();
+  $('br.clear').remove();
 });
 </script>
 {% endif %}{% endif %}
@@ -117,9 +132,9 @@ $(document).ready(function(){
           {% endblock %}
         </ul>
         {% if cl.opts.verbose_name = 'ride' %}
-        <a href="add/{% if is_popup %}?_popup=1{% endif %}" style="z-index:-5;">
-          <img src="media/img/PennCycle Logo 3 smallest-03.png"
-            style="position:absolute; top: 85px; right: 20px;">
+        <a href="add/" class="button ridecycle">
+          <h2>Check out</h2>
+          <img src="media/img/PennCycle Logo 3 smallest-03.png" class="">
         </a>
         {% endif %}
       {% endif %}

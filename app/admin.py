@@ -19,8 +19,6 @@ class BikeAdmin(admin.ModelAdmin):
 class RidesAdmin(admin.ModelAdmin):
   list_display = (
       'rider', 'bike', 'checkout_time', 'checkin_time', 'ride_duration_days',
-      #'rider', 'list_of_bikes', 'checkout_time', 'checkin_time',
-      #'ride_duration_days',
   )
   list_filter = (
       'rider', 'bike', 'checkout_time', 'checkin_time', 
