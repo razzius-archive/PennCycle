@@ -109,14 +109,13 @@
       });
     
       var formData = $('#info-form').serialize();
-      console.log(formData);
       $.ajax ({
         url: '../info_submit/', 
         type: 'POST',
         data: formData,
         dataType: 'json',
         error: function(xhr, status, exception) {
-          alert('error' + xhr + status + exception);
+          alert('whoops! something went wrong');
         },
         success: function(data, status, xhr) {
           if (data['form_valid'] == true) {
