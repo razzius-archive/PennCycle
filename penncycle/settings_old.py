@@ -1,21 +1,17 @@
 import os
-import djcelery
-djcelery.setup_loader()
-BROKER_BACKEND = 'djkombu.transport.DatabaseTransport"
-CELERY_RESULT_DBURI = DATABASES['deault']
-
 # Django settings for penncycle project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+     ('Alex Rattray', 'rattray.alex@gmail.com'),
 )
 
 MANAGERS = ADMINS
 
-DATABASES = {
+DATABASES = {}
+'''{
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': os.path.join(os.path.dirname(__file__), "sqlitedb.db").replace("\\","/"),                      # Or path to database file if using sqlite3.
@@ -24,7 +20,7 @@ DATABASES = {
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
-}
+}'''
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -33,7 +29,7 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Philadelphia'
+TIME_ZONE = 'America/New_York'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -117,6 +113,7 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'app',
     'bootstrap',
+    'gunicorn',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -128,10 +125,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
      'django.contrib.admindocs',
-    # heroku ish
-     'gunicorn',
-     'djcelery',
-     'djkombu',
 )
 
 # A sample logging configuration. The only tangible logging
