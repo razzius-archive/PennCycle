@@ -78,29 +78,6 @@ def signup(request):
   context_instance = RequestContext(request, context)
   return render_to_response('signup.html', context_instance)
 
-def pay_finished(request):
-  if request.method == 'POST':
-    print "received POST from pay server"
-    return render_to_response('thanks.html', {})
-
-'''
-def payment(request):
-   if request.method == 'POST':
-    print "posted form from payment"
-    form = SignupForm(request.POST)
-    print form
-    if form.is_valid():
-      print "this code should be unreachable"
-    else:
-      print "invalid form as expected"
-      penncard = form.cleaned_data['Penncard']
-      print "penncard = " + penncard 
-      reply = {'success': True,
-               'form_valid': False,
-               'penncard': penncard,}
-    return HttpResponse(json.dumps(reply), content_type="application/json")
-'''
-'''
 def reserve(request):
   context = {
 
@@ -109,4 +86,3 @@ def reserve(request):
 
 def thanks(request):
   return render_to_response('thanks.html', {})
- '''

@@ -1,74 +1,174 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  {{block.super}}
+  {{block.super}} Sign Up
 {% endblock %}
 
 {% block content %}
-<h1>Sign Up & Get Riding!</h1>
-<hr>
-  <ul class="nav nav-tabs">
+<div class="paddedheader">
+    <h1 class="textCentered">Sign Up & Get Riding!</h1>
+  <!--<hr>-->
+  <div class="pagination">
+    <ul id="secondnav" class="nav nav-tabs">
+  <!--
     <li class="active"><a href="#signup" data-toggle="tab">Info</a></li>
-    <li><a href="#video" data-toggle="tab">Video</a></li>
+    <li><a href="#video" data-toggle="tab">Safety Info</a></li>
     <li><a href="#quiz" data-toggle="tab">Quiz</a></li>
     <li><a href="#waiver" data-toggle="tab">Waiver</a></li>
     <li><a href="#pay" data-toggle="tab">Pay</a></li>
     <li><a href="#thanks" data-toggle="tab">Thanks!</a></li>
-  </ul>
-  
-  <div class="tab-content">
-    <div class="tab-pane active" id="signup">
-      <!--
-      <form action="" method="post" class="form-horizontal">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit" />
-      </form>
-      -->
-      <form action="" method="post" class="form-horizontal">{% csrf_token %}
-          {{ form }}
-          <div class="form-actions">
-              <button type="submit" id="info-form" class="btn btn-primary">Next &#175;</button>
-          </div>
-      </form>
-    </div>
-    <div class="tab-pane" id="video">
-      <object style="height: 390px; width: 640px"><param name="movie" value="http://www.youtube.com/v/cgxK1B-tVS0?version=3&feature=player_detailpage"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://www.youtube.com/v/cgxK1B-tVS0?version=3&feature=player_detailpage" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="640" height="360"></object>
-      <button id="video-form" class="btn btn-primary">Next &#175;</button>
-    </div>
-    <div class="tab-pane controls" id="quiz">
-      <div id="wrong_alert">
-      </div>
-      
-      {% for q in quiz %}
-        <h2>{{q.question}}</h2>
-        {% for c in q.choices %}
-        <label class="radio" for='{{forloop.parentloop.counter}}-{{forloop.counter}}'>
-          <input type="radio" name='{{forloop.parentloop.counter}}' 
-            id="{{forloop.parentloop.counter}}-{{forloop.counter}}" 
-            value="{{forloop.parentloop.counter}}-{{forloop.counter}}"
-            group="{{forloop.parentloop.counter}}">
-          {{c}}
-        </label>
-        {% endfor %}
-      {% endfor %}
-      <button id="check_button" class="btn btn-primary">Check Answers</button>
-    </div>
-    <div class="tab-pane" id="waiver">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lectus lectus, rutrum eget venenatis non, ornare sit amet elit. Donec sit amet lorem ut felis lacinia bibendum. Nulla auctor, dolor at scelerisque consectetur, magna velit pretium odio, vitae egestas orci eros vitae est. Sed sagittis porttitor dictum. Suspendisse vel lorem ut dolor vestibulum fermentum. Sed vestibulum mauris quis diam pellentesque nec viverra turpis pellentesque. Nam metus est, tempus nec scelerisque nec, scelerisque at erat.</p>
-    </div>
-    <div class="tab-pane" id="pay">
-      <img src="/media/img/paypal.png"/>
-    </div>
-    <div class="tab-pane" id="thanks">
-      <h1>Thanks!</h1>
-    </div>
+    -->
+
+      <li id="tab-info" class="active"><a data-toggle="tab" href="#info">Info</a></li>
+      <li id="tab-safety" class="disabled"><a data-toggle="tab">Safety Info</a></li>
+      <li id="tab-quiz" class="disabled"><a data-toggle="tab">Quiz</a></li>
+      <li id="tab-waiver" class="disabled"><a data-toggle="tab">Waiver</a></li>
+      <li id="tab-pay" class="disabled"><a data-toggle="tab">Pay</a></li>
+      <li id="tab-thanks" class="disabled"><a data-toggle="tab">Thanks!</a></li>
+    </ul>
   </div>
+</div>
+<div class="tab-content">
+  <!------------- info pane ---------------->
+  <div class="tab-pane active" id="info">
+    <form id="info-form" class="form-horizontal">{% csrf_token %}
+        {{ form }}
+    </form>
+    <div class="form-actions">
+            <button id="info-button" class="btn btn-primary">Next &#187;</button>
+        </div>
+  </div>
+  <!------------- safety pane ---------------->
+  <div class="tab-pane" id="safety">
+    <object style="height: 390px; width: 640px"><param name="movie" value="http://www.youtube.com/v/cgxK1B-tVS0?version=3&feature=player_detailpage"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://www.youtube.com/v/cgxK1B-tVS0?version=3&feature=player_detailpage" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="640" height="360"></object>
+    <button id="safety-form" class="btn btn-primary">Next &#187;</button>
+  </div>
+  <!------------- quiz pane ---------------->
+  <div class="tab-pane controls" id="quiz">
+    <div id="wrong_alert">
+    </div>
+    
+    {% for q in quiz %}
+      <h2>{{q.question}}</h2>
+      {% for c in q.choices %}
+      <label class="radio" for='{{forloop.parentloop.counter}}-{{forloop.counter}}'>
+        <input type="radio" name='{{forloop.parentloop.counter}}' 
+          id="{{forloop.parentloop.counter}}-{{forloop.counter}}" 
+          value="{{forloop.parentloop.counter}}-{{forloop.counter}}"
+          group="{{forloop.parentloop.counter}}">
+        {{c}}
+      </label>
+      {% endfor %}
+    {% endfor %}
+    <button id="check_button" class="btn btn-primary">Check Answers</button>
+  </div>
+  <!------------- waiver pane ---------------->
+  <div class="tab-pane" id="waiver">
+    <p>Nullam luctus, turpis nec facilisis luctus, ligula libero cursus est, pellentesque hendrerit est velit at leo. Proin ultricies augue et augue feugiat adipiscing a eget erat. Phasellus sit amet massa justo. Donec vestibulum arcu quis libero pellentesque iaculis. Cras et molestie est. Integer sodales rhoncus elementum. Duis dui urna, mollis id adipiscing non, dapibus id tortor. Pellentesque bibendum, lorem eget rhoncus viverra, neque nulla ullamcorper diam, in aliquam quam velit a urna. Nulla faucibus libero at elit fringilla placerat luctus purus semper.
+
+    <p>Donec pellentesque ornare augue, quis tristique augue euismod ut. Phasellus adipiscing rutrum risus, quis interdum velit mattis at. Mauris vitae sem quis augue elementum congue at quis purus. Pellentesque orci tortor, cursus non fringilla ut, dictum id dolor. Morbi lacus magna, convallis ac varius vel, varius sit amet velit. Aenean consectetur commodo hendrerit. Aliquam porttitor aliquet ligula, congue pellentesque tellus consectetur non. In nisi turpis, malesuada ac feugiat non, aliquet ut leo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum scelerisque tincidunt mauris, non hendrerit purus imperdiet in. Maecenas dictum enim quis ligula imperdiet fringilla. In malesuada aliquam bibendum. Sed consequat, erat at auctor aliquam, diam lorem elementum nunc, ut vulputate risus augue at lectus.</p>
+
+    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras dignissim massa eu massa interdum a luctus nulla porttitor. Donec id lorem arcu, quis iaculis lacus. Quisque eget neque purus, in vestibulum ante. Proin rutrum nulla et erat vehicula condimentum. Nam scelerisque pretium lacus a blandit. Donec quis posuere ante. In felis turpis, ultrices id gravida ut, gravida vel sem. Phasellus aliquam fermentum mauris at elementum. Quisque egestas rutrum libero id hendrerit. Nulla orci dolor, sodales dignissim ullamcorper a, aliquet dignissim sapien. Vestibulum tempus tempor nisl et tincidunt. Duis consequat feugiat ipsum, nec consectetur nisi luctus et. Duis suscipit magna eget velit faucibus tempor tristique vel est.</p>
+    <button id="waiver-form" class="btn btn-primary">Next &#187;</button>
+  </div>
+  <div class="tab-pane" id="pay">
+    <img src="/media/img/paypal.png"/>
+  </div>
+  <div class="tab-pane" id="thanks">
+    <h1>Thanks!</h1>
+  </div>
+</div>
 {% endblock %}
 {% block scripts %}
   <script type="text/javascript">
-    $(function () {
-     $('#signup').tab('show');
-    })
+  
+  
+    $('#info-button').click(function() {
+      $.ajaxSetup({ 
+        beforeSend: function(xhr, settings) {
+          function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+              var cookies = document.cookie.split(';');
+              for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+                }
+              }
+            }
+            return cookieValue;
+          }
+          if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+            // Only send the token to relative URLs i.e. locally.
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+          }
+        } 
+      });
+    
+      var formData = $('#info-form').serialize();
+      $.ajax ({
+        url: '../info_submit/', 
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        error: function(xhr, status, exception) {
+          alert('whoops! something went wrong');
+        },
+        success: function(data, status, xhr) {
+          if (data['form_valid'] == true) {
+            toTab('safety');
+          } else if (data['form_valid'] == false) {
+            $('#info-form').html(data['new_form']);
+            console.log('replaced shit');
+          } else {
+            alert('alex is dumb');
+          }
+        },
+      });
+    });
+  
+    function toTab(id) {
+      $('#secondnav .active').removeClass('active');
+      $('.tab-content .active').removeClass('active');
+      $('#tab-'+id).removeClass('disabled');
+      $('#tab-'+id + ' a').attr("href", "#"+id);
+      $('#'+id).addClass('active');
+      $('a[href="#'+id+'"]').parent().addClass('active');
+    };
+    
+    $('button#info-form').click(function(){
+      toTab('safety');
+    });
+    
+    $('button#safety-form').click(function(){
+      toTab('quiz');
+    });
+    
+    $('button#waiver-form').click$.ajaxSetup({ 
+      $.ajax ({
+        url: 'https://secure.www.upenn.edu/vpul/psa/bike/index.php', 
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        error: function(xhr, status, exception) {
+          alert('whoops! something went wrong');
+        },
+        success: function(data, status, xhr) {
+          if (data['form_valid'] == true) {
+            toTab('safety');
+          } else if (data['form_valid'] == false) {
+            $('#info-form').html(data['new_form']);
+            console.log('replaced shit');
+          } else {
+            alert('alex is dumb');
+          }
+        },
+      });(function(){
+      toTab('pay');
+    });
 
     var answers = [
     {% for q in quiz %}
@@ -90,6 +190,9 @@
       }); 
       if(wrong_answers.length == 0) {
         // alert success
+        $("#wrong_alert").html('');
+        // redirect to next page
+        toTab('waiver');
       }
       else {
         // alert failure
@@ -104,10 +207,15 @@
       }
     });
 
+    // set background for active tab in navbar    
+    $('.nav1 li#signup').addClass('active');
+
+    /*
     $('button#info-form').click(function(){
       alert('hello');
       $('#video').tab('show');
     });
+    */
     $('button#video-form').click(function(){
       $('#quiz').tab('show');
     });

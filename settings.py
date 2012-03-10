@@ -1,8 +1,5 @@
 import os
 import djcelery
-djcelery.setup_loader()
-BROKER_BACKEND = 'djkombu.transport.DatabaseTransport"
-CELERY_RESULT_DBURI = DATABASES['deault']
 
 # Django settings for penncycle project.
 
@@ -156,3 +153,6 @@ LOGGING = {
         },
     }
 }
+djcelery.setup_loader()
+BROKER_BACKEND = 'djkombu.transport.DatabaseTransport'
+CELERY_RESULT_DBURI = DATABASES['default']

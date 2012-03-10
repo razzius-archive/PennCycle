@@ -72,6 +72,10 @@
     <button id="waiver-form" class="btn btn-primary">Next &#187;</button>
   </div>
   <div class="tab-pane" id="pay">
+    <form name="payform" method="post" action="https://secure.www.upenn.edu/vpul/psa/bike/index.php">
+      <input id="penncardnum-id" name="ordernumber" value=12345678 />
+      <input id="amount-id" name="amount" value=10 />
+    </form>
     <img src="/media/img/paypal.png"/>
   </div>
   <div class="tab-pane" id="thanks">
@@ -81,8 +85,6 @@
 {% endblock %}
 {% block scripts %}
   <script type="text/javascript">
-  
-  
     $('#info-button').click(function() {
       $.ajaxSetup({ 
         beforeSend: function(xhr, settings) {
@@ -146,11 +148,35 @@
     $('button#safety-form').click(function(){
       toTab('quiz');
     });
-    
+
+    $('button#waiver-form').click(function(){
+        toTab('pay');
+        var pcnum = $("#id_penncard_number").val();
+        console.log(pcnum);
+        $("#penncardnum-id").val(pcnum);
+        $("#amount-id").val(10);
+        window.document.payform.submit();
+    });
+   /* 
     $('button#waiver-form').click(function(){
       toTab('pay');
+      var formData = $('#info-form').serialize();
+      $.ajax ({
+        url: '../payment/', 
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        error: function(xhr, status, exception) {
+          alert('whoops! something went wrong');
+        },
+        success: function(data, status, xhr) {
+          var pcnum = data['penncard'];
+          $("#penncardnum-id").val(pcnum);
+          console.log(pcnum);
+          } 
+      });
     });
-
+*/
     var answers = [
     {% for q in quiz %}
       {% for c in q.choices %}
