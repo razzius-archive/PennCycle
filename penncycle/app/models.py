@@ -1,3 +1,4 @@
+from django.template.defaultfilters import slugify
 from django.db import models
 from django.db.models import Q
 import datetime
@@ -117,6 +118,7 @@ class Ride(models.Model):
   checkin_time = models.DateTimeField(null=True, blank=True)
   checkout_station = models.ForeignKey(Station, default=1, related_name='checkouts')
   checkin_station = models.ForeignKey(Station, blank=True, null=True, related_name='checkins')
+  num_users = models.IntegerField()
   
   @property
   def ride_duration_days(self):
@@ -136,15 +138,23 @@ class Ride(models.Model):
       return 'in'
 
   def save(self):
+    if not self.num_users:
+      self.num_users = len(Student.objects.all())
+      'set the num users'
+    'should pass to normal save func now'
     super(Ride, self).save()
+    'super saved!'
     if self.checkin_time == None:
-      self.checkout_station = Station.objects.get(name='Hill')
+      'bikes should become out now'
       self.bike.status = 'out'
       self.rider.status = 'out'
     else:
+      print 'in save else'
       self.checkin_station = 1
+      'did checkin station'
       self.bike.status = 'available' #change to be 'at %s' % station
       self.rider.status = 'available'
+      'should have changed to available'
     self.bike.save()
     self.rider.save()
    
@@ -161,3 +171,15 @@ class Quiz(models.Model):
 
   def __unicode__(self):
     return self.question
+
+class Page(models.Model):
+  content = models.TextField()
+  name = models.CharField(max_length=100)
+  slug = models.SlugField()
+
+  def save(self):
+    self.slug = slugify(self.name)
+    super(Page, self).save()
+    
+  def __unicode__(self):
+    return self.name

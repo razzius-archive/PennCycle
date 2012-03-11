@@ -1,6 +1,6 @@
 # Create your views here.
 from app.models import *
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect, HttpResponse
@@ -41,6 +41,9 @@ def info_submit(request):
                'new_form': str(form)}
     return HttpResponse(json.dumps(reply), content_type="application/json")
       
+def page(request, slug):
+  page = get_object_or_404(Page, slug=slug)
+  return render_to_response('page.html', {'page':page})
 
 def signup(request):
   if request.method == 'POST':
