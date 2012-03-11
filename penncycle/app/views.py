@@ -91,11 +91,11 @@ def verify_payment(request):
     token = hmac.new("uPENNBIK3S!", request.POST.get('ordernumber'), hashlib.sha256).hexdigest()
 
     # if token matches with token from CyberPay, payment completed
-    if(token == request.POST.get('token'))
+    if token == request.POST.get('token'):
       stu.paid = True
       stu.save()
       return render_to_response('thanks.html', {})
-    else
+    else:
       return render_to_response('paymentfailed.html', {})
 
 '''
