@@ -78,7 +78,7 @@ def signup(request):
   context_instance = RequestContext(request, context)
   return render_to_response('signup.html', context_instance)
 
-def pay_finished(request):
+def verify_payment(request):
   if request.method == 'POST':
     print "received POST from pay server"
     return render_to_response('thanks.html', {})
