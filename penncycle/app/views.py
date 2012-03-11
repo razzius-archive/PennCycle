@@ -6,7 +6,7 @@ from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect, HttpResponse
 from django import forms
 from bootstrap.forms import BootstrapModelForm, Fieldset
-import random, json
+import random, json, hashlib
 
 class SignupForm(BootstrapModelForm):
   class Meta:
@@ -84,7 +84,19 @@ def signup(request):
 def verify_payment(request):
   if request.method == 'POST':
     print "received POST from pay server"
-    return render_to_response('thanks.html', {})
+    # gets the student with penncard specified in POST data
+    stu = Student.objects.get(Penncard=request.POST.get('ordernumber'))
+
+    # generate token from penncard number and shared password
+    token = hmac.new("uPENNBIK3S!", request.POST.get('ordernumber'), hashlib.sha256).hexdigest()
+
+    # if token matches with token from CyberPay, payment completed
+    if(token == request.POST.get('token'))
+      stu.paid = True
+      stu.save()
+      return render_to_response('thanks.html', {})
+    else
+      return render_to_response('paymentfailed.html', {})
 
 '''
 def payment(request):
