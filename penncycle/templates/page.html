@@ -6,6 +6,9 @@
 
 {% block content %}
   <h1>{{page.name}}</h1>
+  {% for p in pages %}
+    {{p.name}} at {{p.url}}
+  {% endfor %}
   <hr>
   {{page.content|safe}}
 {% endblock %}

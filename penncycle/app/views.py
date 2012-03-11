@@ -18,6 +18,17 @@ class InfoSubmitForm(forms.ModelForm):
     model = Student
     exclude = ('join_date', 'status', 'quiz_completed', 'waiver_signed', 'paid',)
 
+class gv():
+  pages = [
+    {'name':'Home','url':'../../'},
+    {'name':'Sign Up','url':'../../signup/'},
+    ]
+  for page in Page.objects.all():
+    pages.append({
+      'name': page.name,
+      'url': '../../about/%s/' % page.slug
+      })
+
 def index(request):
   
   context = {
@@ -43,7 +54,9 @@ def info_submit(request):
       
 def page(request, slug):
   page = get_object_or_404(Page, slug=slug)
-  return render_to_response('page.html', {'page':page})
+  context = {'page':page}
+  context.update({'pages':gv.pages})
+  return render_to_response('page.html', context)
 
 def signup(request):
   if request.method == 'POST':
