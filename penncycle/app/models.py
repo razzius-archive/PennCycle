@@ -71,7 +71,7 @@ class Student(models.Model):
   gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
   grad_year = models.CharField(max_length=5, choices=GRAD_YEAR_CHOICES)
   join_date = models.DateField(default=datetime.date.today())
-  height = models.CharField(max_length=10)
+  height = models.CharField(max_length=10, blank=True)
   school = models.CharField(max_length=10, choices=SCHOOL_CHOICES)
   major = models.CharField(max_length=50, blank=True)
   living_location = models.CharField(max_length=100, choices=LIVING_LOCATIONS)
@@ -93,6 +93,18 @@ class Bike(models.Model):
   def __unicode__(self):
     return self.bike_name
 
+class Station(models.Model):
+  name = models.CharField(max_length=100)
+  latitude = models.FloatField(default=39.9529399)
+  longitude = models.FloatField(default=-75.1905607)
+  address = models.CharField(max_length=300, blank=True)
+  notes = models.TextField(max_length=100, blank=True)
+  picture = models.ImageField(upload_to='img/stations', blank=True)
+  capacity = models.IntegerField()
+
+  def __unicode__(self):
+    return self.name
+
 class Ride(models.Model):
   rider = models.ForeignKey(Student, limit_choices_to = {
     'status': 'available',
@@ -103,7 +115,9 @@ class Ride(models.Model):
     related_name='rides')
   checkout_time = models.DateTimeField(auto_now_add=True)
   checkin_time = models.DateTimeField(null=True, blank=True)
-
+  checkout_station = models.ForeignKey(Station, default=1, related_name='checkouts')
+  checkin_station = models.ForeignKey(Station, blank=True, null=True, related_name='checkins')
+  
   @property
   def ride_duration_days(self):
     if self.checkin_time == None:
@@ -124,10 +138,12 @@ class Ride(models.Model):
   def save(self):
     super(Ride, self).save()
     if self.checkin_time == None:
+      self.checkout_station = Station.objects.get(name='Hill')
       self.bike.status = 'out'
       self.rider.status = 'out'
     else:
-      self.bike.status = 'available'
+      self.checkin_station = 1
+      self.bike.status = 'available' #change to be 'at %s' % station
       self.rider.status = 'available'
     self.bike.save()
     self.rider.save()

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.sites import AdminSite
-from penncycle.app.models import Manufacturer, Student, Bike, Ride, Quiz
+from penncycle.app.models import Manufacturer, Student, Bike, Ride, Quiz, Station
 import datetime
 
 class StudentAdmin(admin.ModelAdmin):
@@ -46,6 +46,7 @@ class QuizAdmin(admin.ModelAdmin):
       'question', 'answer', 'wrong1', 'wrong2', 'wrong3', 'wrong4',
   )
 
+admin.site.register(Station)
 admin.site.register(Manufacturer)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Bike, BikeAdmin)
