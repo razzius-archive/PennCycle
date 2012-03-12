@@ -96,26 +96,28 @@ def signup(request):
   return render_to_response('signup.html', context_instance)
 
 def verify_payment(request):
-  if request.method == 'GET':
-    print "received GET from pay server"
-    # gets the student with penncard specified in POST data
-    stu = Student.objects.get(penncard_number=request.GET.get('ordernumber'))
-    print stu
+  print "in verify_payment"
+  # gets the student with penncard specified in POST data
+  student = Student.objects.get(penncard_number=request.GET.get('merchantDefinedData1'))
+  print student
 
-    # generate token from penncard number and shared password
-    token = hmac.new("uPENNBIK3S!", request.GET.get('ordernumber'), hashlib.sha256).hexdigest()
-    print token
-
-    # if token matches with token from CyberPay, payment completed
-    if token == request.GET.get('token') and int(request.GET.get('approval')) == 1:
-      stu.paid = True
-      stu.save()
-      print "paid"
-      return render_to_response('thanks.html', {})
-    else:
-      return render_to_response('paymentfailed.html', {})
+  source = request.META.get('HTTP_REFERER')
+  print 'referrer is %s ' % source
+  source_needed = 'https://orderpage.ic3.com/hop/orderform.jsp'
+  
+  amount = int(request.GET.get('amount', 0))
+  print amount
+  
+  # add in test that amount is $10
+  
+  # if source matches CyberSource, payment completed
+  if source = source_needed and (int(request.GET.get('reasonCode')) == (100 or 200)):
+    student.paid = True
+    student.save()
+    print "paid"
+    return render_to_response('thanks.html', {})
   else:
-    return HttpResponse("This was not a GET") 
+    return render_to_response('paymentfailed.html', {})
 
 '''
 def payment(request):
