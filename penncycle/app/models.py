@@ -76,7 +76,7 @@ class Student(models.Model):
   school = models.CharField(max_length=10, choices=SCHOOL_CHOICES)
   major = models.CharField(max_length=50, blank=True)
   living_location = models.CharField(max_length=100, choices=LIVING_LOCATIONS)
-  quiz_completed = models.BooleanField(default=False)
+  quiz_completed = models.BooleanField(default=True)
   waiver_signed = models.BooleanField(default=False)
   paid = models.BooleanField(default=False)
   status = models.CharField(max_length=100, default='available')
