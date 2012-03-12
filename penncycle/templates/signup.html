@@ -147,18 +147,8 @@
       toTab('quiz');
     });
     
-    $('button#waiver-form').click$.ajaxSetup({ 
-      $.ajax ({
-        url: 'https://secure.www.upenn.edu/vpul/psa/bike/index.php', 
-        type: 'POST',
-        data: formData,
-        dataType: 'json',
-        error: function(xhr, status, exception) {
-          alert('error returned from paysite');
-        },
-        success: function(data, status, xhr) {
-          toTab('thanks');
-        },
+    $('button#waiver-form').click(function(){ 
+      toTab('thanks');
     });
 
     var answers = [

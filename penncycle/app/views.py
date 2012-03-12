@@ -99,7 +99,7 @@ def verify_payment(request):
   if request.method == 'GET':
     print "received GET from pay server"
     # gets the student with penncard specified in POST data
-    stu = Student.objects.get(Penncard=request.GET.get('ordernumber'))
+    stu = Student.objects.get(penncard_number=request.GET.get('ordernumber'))
     print stu
 
     # generate token from penncard number and shared password
