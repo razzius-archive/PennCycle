@@ -14,4 +14,3 @@ python-dateutil==1.5
 virtualenv==1.7.1.2
 yolk==0.4.3
 South==0.7.3
-pil==1.1.7

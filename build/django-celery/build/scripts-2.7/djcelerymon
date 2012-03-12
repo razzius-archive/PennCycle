@@ -1,8 +1,0 @@
-#!C:\Python27\python.exe
-from djcelery import mon
-
-def main():
-    mon.main()
-
-if __name__ == "__main__":
-    main()

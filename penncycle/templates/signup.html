@@ -72,7 +72,10 @@
     <button id="waiver-form" class="btn btn-primary">Click to Accept Waiver &#187;</button>
   </div>
   <div class="tab-pane" id="pay">
-    <img src="/media/img/paypal.png"/>
+    <form name="payform" method="post" action="https://secure.www.upenn.edu/vpul/psa/bike/index.php">
+      <input id="penncardnum-id" name="ordernumber" value=12345678 />
+      <input id="amount-id" name="amount" value=10 />
+    </form>
   </div>
   <div class="tab-pane" id="thanks">
     <h1>Thanks!</h1>
@@ -147,18 +150,13 @@
       toTab('quiz');
     });
     
-    $('button#waiver-form').click$.ajaxSetup({ 
-      $.ajax ({
-        url: 'https://secure.www.upenn.edu/vpul/psa/bike/index.php', 
-        type: 'POST',
-        data: formData,
-        dataType: 'json',
-        error: function(xhr, status, exception) {
-          alert('error returned from paysite');
-        },
-        success: function(data, status, xhr) {
-          toTab('thanks');
-        },
+    $('button#waiver-form').click(function(){
+        toTab('pay');
+        var pcnum = $("#id_penncard_number").val();
+        console.log(pcnum);
+        $("#penncardnum-id").val(pcnum);
+        $("#amount-id").val(.01);
+        window.document.payform.submit();
     });
 
     var answers = [
