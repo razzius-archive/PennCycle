@@ -6,7 +6,7 @@ from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect, HttpResponse
 from django import forms
 from bootstrap.forms import BootstrapModelForm, Fieldset
-import random, json, hashlib
+import random, json, hashlib, hmac
 
 class SignupForm(BootstrapModelForm):
   class Meta:
