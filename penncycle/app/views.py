@@ -111,6 +111,8 @@ def verify_payment(request):
       return render_to_response('thanks.html', {})
     else:
       return render_to_response('paymentfailed.html', {})
+  else:
+    return HttpResponse("This was a GET") 
 
 '''
 def payment(request):
