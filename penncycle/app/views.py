@@ -32,7 +32,7 @@ class gv():
 def index(request):
   
   context = {
-      #'message': m,
+      'pages':gv.pages
   }
   return render_to_response('index.html', context)
 
@@ -91,6 +91,7 @@ def signup(request):
       'form': form,
       'quiz':quiz,
   }
+  context.update({'pages':gv.pages})
   context_instance = RequestContext(request, context)
   return render_to_response('signup.html', context_instance)
 

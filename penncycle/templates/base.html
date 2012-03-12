@@ -35,20 +35,36 @@
   </head>
 
   <body>
-    <img class="bg-image" src="media/img/philly.jpg" alt="" />
+    <img class="bg-image" src="media/img/collegehall.jpg" alt="" />
     <div class="container opaque">
       <div class="row">
         <div class="span3 flat">&nbsp;</div>
         <div class="span6 border">
           <img class="centered" src="media/img/PennCycle-Logo-3.png"/>
+          <!--
            <div class="navbar">
             <div class="navbar-inner">
               <div class="container" style="width: auto;">
                 <ul class="nav1 nav">
-                  <li id="home"><a href="../">Home</a></li>
-                  <li id="signup"><a href="../signup">Sign Up</a></li>
-                  <li id="reserve"><a href="../reserve">Reserve a Bike</a></li>
-                  <li id="admin"><a href="../pc-admin/app/ride">Admin</a></li>
+                  <li><a href="../">Home</a></li>
+                  <li><a href="../signup">Sign Up</a></li>
+                  <li><a href="../reserve">Reserve a Bike</a></li>
+                  <li><a href="../pc-admin/app/ride">Admin</a></li>
+                </ul>
+              </div>
+            </div> /navbar-inner 
+          </div>/navbar -->
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="container" style="width: auto;">
+                <ul class="nav1 nav">
+                  {% block navbar %}
+                    {% for p in pages %}
+                      {% autoescape on %}
+                        <li><a href="{{p.url}}">{{p.name}}</a></li>
+                      {% endautoescape %}
+                    {% endfor %}
+                  {% endblock navbar %}
                 </ul>
               </div>
             </div><!-- /navbar-inner -->

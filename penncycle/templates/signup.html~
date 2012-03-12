@@ -154,20 +154,11 @@
         data: formData,
         dataType: 'json',
         error: function(xhr, status, exception) {
-          alert('whoops! something went wrong');
+          alert('error returned from paysite');
         },
         success: function(data, status, xhr) {
-          if (data['form_valid'] == true) {
-            toTab('safety');
-          } else if (data['form_valid'] == false) {
-            $('#info-form').html(data['new_form']);
-            console.log('replaced shit');
-          } else {
-            alert('alex is dumb');
-          }
+          toTab('thanks');
         },
-      });(function(){
-      toTab('pay');
     });
 
     var answers = [

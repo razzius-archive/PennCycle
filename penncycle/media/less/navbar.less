@@ -20,6 +20,10 @@
   .box-shadow(@shadow);
 }
 
+.navbar-inner .container {
+  background-color: @transparent;
+}
+
 // Navbar button for toggling navbar items in responsive layouts
 .btn-navbar {
   display: none;
@@ -194,7 +198,7 @@
 }
 // Hover
 .navbar .nav > li > a:hover {
-  background-color: transparent;
+  background-color: @white;
   color: @navbarLinkColorHover;
   text-decoration: none;
 }
@@ -202,7 +206,7 @@
 // Active nav items
 .navbar .nav .active > a,
 .navbar .nav .active > a:hover {
-  color: @navbarLinkColorHover;
+  color: @red;
   text-decoration: none;
   // background-color: @navbarBackground;
   background-color: @navbarActiveBackground;
