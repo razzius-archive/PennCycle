@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.sites import AdminSite
-from penncycle.app.models import Manufacturer, Student, Bike, Ride, Quiz, Station, Page
+from penncycle.app.models import Manufacturer, Student, Bike, Ride, Station, Page
 import datetime
 
 class StudentAdmin(admin.ModelAdmin):
@@ -46,15 +46,10 @@ class RidesAdmin(admin.ModelAdmin):
     self.message_user(request, '%s successfully checked in' % message_bit)
   check_in.short_description = "Check in the selected rides"
 
-class QuizAdmin(admin.ModelAdmin):
-  list_display = (
-      'question', 'answer', 'wrong1', 'wrong2', 'wrong3', 'wrong4',
-  )
 
 admin.site.register(Station)
 admin.site.register(Manufacturer)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Bike, BikeAdmin)
 admin.site.register(Ride, RidesAdmin)
-admin.site.register(Quiz, QuizAdmin)
 admin.site.register(Page, PageAdmin)

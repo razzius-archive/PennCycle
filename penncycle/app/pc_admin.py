@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.sites import AdminSite
-from penncycle.app.models import Manufacturer, Student, Bike, Ride, Quiz
+from penncycle.app.models import Manufacturer, Student, Bike, Ride
 import datetime
 
 class pcRidesAdmin(admin.ModelAdmin):

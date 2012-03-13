@@ -11,14 +11,14 @@ import random, json, hashlib, hmac
 class SignupForm(BootstrapModelForm):
   class Meta:
     model = Student
-    exclude = ('join_date', 'status', 'quiz_completed', 'waiver_signed', 'paid',)
+    exclude = ('join_date', 'status', 'waiver_signed', 'paid',)
 
 class InfoSubmitForm(forms.ModelForm):
   class Meta:
     model = Student
-    exclude = ('join_date', 'status', 'quiz_completed', 'waiver_signed', 'paid',)
+    exclude = ('join_date', 'status', 'waiver_signed', 'paid',)
 
-class gv():
+def pages():
   pages = [
     {'name':'Home','url':'../../'},
     {'name':'Sign Up','url':'../../signup/'},
@@ -28,11 +28,12 @@ class gv():
       'name': page.name,
       'url': '../../about/%s/' % page.slug
       })
+  return pages
 
 def index(request):
   
   context = {
-      'pages':gv.pages
+      'pages':pages()
   }
   return render_to_response('index.html', context)
 
@@ -55,7 +56,7 @@ def info_submit(request):
 def page(request, slug):
   page = get_object_or_404(Page, slug=slug)
   context = {'page':page}
-  context.update({'pages':gv.pages})
+  context.update({'pages':pages()})
   return render_to_response('page.html', context)
 
 def signup(request):
@@ -69,29 +70,13 @@ def signup(request):
   else:
     form = SignupForm()
   
-  quiz = []
-  for q in Quiz.objects.all():
-    print q
-    choices = [
-          q.answer, 
-          q.wrong1,
-          q.wrong2,
-          q.wrong3,
-          q.wrong4]
-    random.shuffle(choices)
-    question = {'question': q.question, 
-        'choices': choices,
-        'answer':q.answer
-        }
-    print question
-    quiz.append(question)
-    print quiz
-
+  safety_info = Page.objects.get(slug='safety')
+  
   context = {
+      'safety_info': safety_info,
       'form': form,
-      'quiz':quiz,
   }
-  context.update({'pages':gv.pages})
+  context.update({'pages':pages()})
   context_instance = RequestContext(request, context)
   return render_to_response('signup.html', context_instance)
 
@@ -111,7 +96,7 @@ def verify_payment(request):
   # add in test that amount is $10
   
   # if source matches CyberSource, payment completed
-  if source = source_needed and (int(request.GET.get('reasonCode')) == (100 or 200)):
+  if source == source_needed and (int(request.GET.get('reasonCode')) == (100 or 200)):
     student.paid = True
     student.save()
     print "paid"

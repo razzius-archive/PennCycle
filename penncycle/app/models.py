@@ -18,10 +18,10 @@ GRAD_YEAR_CHOICES = (
   ('2013', '2013'),
   ('2012', '2012'),
   ('2011', '2011'),
+  ('grad', 'grad student'),
   ('faculty', 'faculty'),
   ('staff', 'staff'), 
   ('guest', 'guest'),
-  ('grad', 'grad student'),
 )
 
 LIVING_LOCATIONS = (
@@ -34,6 +34,7 @@ LIVING_LOCATIONS = (
   ('Stouffer', 'Stouffer'), 
   ('Du Bois', 'Du Bois'),
   ('Gregory', 'Gregory'),
+  ('Sansom', 'Sansom'),
   ('Off Campus', 'Off Campus'),
 )
 
@@ -72,11 +73,9 @@ class Student(models.Model):
   gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
   grad_year = models.CharField(max_length=5, choices=GRAD_YEAR_CHOICES)
   join_date = models.DateField(default=datetime.date.today())
-  height = models.CharField(max_length=10, blank=True)
   school = models.CharField(max_length=10, choices=SCHOOL_CHOICES)
   major = models.CharField(max_length=50, blank=True)
   living_location = models.CharField(max_length=100, choices=LIVING_LOCATIONS)
-  quiz_completed = models.BooleanField(default=True)
   waiver_signed = models.BooleanField(default=False)
   paid = models.BooleanField(default=False)
   status = models.CharField(max_length=100, default='available')
@@ -110,7 +109,6 @@ class Ride(models.Model):
   rider = models.ForeignKey(Student, limit_choices_to = {
     'status': 'available',
     'waiver_signed':True,
-    'quiz_completed':True,
     'paid':True})
   bike = models.ForeignKey('Bike', limit_choices_to = {'status': 'available'},
     related_name='rides')
@@ -160,17 +158,6 @@ class Ride(models.Model):
    
   def __unicode__(self):
     return u'%s on %s' % (self.rider, self.checkout_time)
-
-class Quiz(models.Model):
-  question = models.CharField(max_length=100)
-  answer = models.CharField(max_length=200)
-  wrong1 = models.CharField(max_length=200)
-  wrong2 = models.CharField(max_length=200)
-  wrong3 = models.CharField(max_length=200)
-  wrong4 = models.CharField(max_length=200)
-
-  def __unicode__(self):
-    return self.question
 
 class Page(models.Model):
   content = models.TextField()
