@@ -116,7 +116,7 @@ def verify_payment(request):
 @csrf_exempt
 def thanks(request):
   print "in thanks view"
-  student = Student.objects.get(penncard_number=request.GET.get('ordernumber'))
+  student = Student.objects.get(penncard_number=request.GET.get('merchantDefinedData1')
   print student
 
   if student.paid == true:
