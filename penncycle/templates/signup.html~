@@ -118,6 +118,9 @@
         data: formData,
         dataType: 'json',
         error: function(xhr, status, exception) {
+          console.log(xhr);
+          console.log(status);
+          console.log(exception);
           alert('whoops! something went wrong');
         },
         success: function(data, status, xhr) {
@@ -155,7 +158,7 @@
         var pcnum = $("#id_penncard_number").val();
         console.log(pcnum);
         $("#penncardnum-id").val(pcnum);
-        $("#amount-id").val(.01);
+        $("#amount-id").val(10);
         $('#paybycredit').click(function(){
           window.document.payform.submit();
         });
