@@ -102,7 +102,11 @@ def verify_payment(request):
     
     # if source matches CyberSource, payment completed
     #if source == source_needed and (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == .01:
-    if (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == '.01':
+    reasonCode = request.POST.get('reasonCode')
+    good_reasons = [100,200]
+    print reasonCode
+    if (int(reasonCode) in good_reasons) and amount == '0.01':
+      print 'passed the check!'
       student.paid = True
       student.save()
       print "paid"
@@ -116,7 +120,7 @@ def verify_payment(request):
 @csrf_exempt
 def thanks(request):
   print "in thanks view"
-  student = Student.objects.get(penncard_number=request.GET.get('merchantDefinedData1'))
+  student = Student.objects.get(penncard_number=request.POST.get('merchantDefinedData1'))
   print student
 
   if student.paid == true:
