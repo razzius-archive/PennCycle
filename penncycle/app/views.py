@@ -95,7 +95,7 @@ def verify_payment(request):
     print 'referrer is %s ' % source
     source_needed = 'https://orderpage.ic3.com/hop/orderform.jsp'
     
-    amount = str(request.POST.get('amount', 0))
+    amount = str(request.POST.get('orderAmount', 0))
     print amount
     
     # add in test that amount is $10
@@ -116,7 +116,7 @@ def verify_payment(request):
 @csrf_exempt
 def thanks(request):
   print "in thanks view"
-  student = Student.objects.get(penncard_number=request.GET.get('merchantDefinedData1')
+  student = Student.objects.get(penncard_number=request.GET.get('merchantDefinedData1'))
   print student
 
   if student.paid == true:
