@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect, HttpResponse
 from django import forms
+from django.views.decorators.csrf import csrf_response_exempt
 from bootstrap.forms import BootstrapModelForm, Fieldset
 import random, json, hashlib, hmac
 
@@ -82,6 +83,7 @@ def signup(request):
   context_instance = RequestContext(request, context)
   return render_to_response('signup.html', context_instance)
 
+@csrf_response_exempt
 def verify_payment(request):
   print "in verify_payment"
   # gets the student with penncard specified in POST data
