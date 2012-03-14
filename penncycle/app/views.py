@@ -69,7 +69,7 @@ def signup(request):
       #return render_to_response('thanks.html', {})
   else:
     form = SignupForm()
-  
+
   safety_info = Page.objects.get(slug='safety')
   
   context = {
@@ -112,7 +112,7 @@ def thanks(request):
 
   if student.paid == true:
     return render_to_respone('thanks.html', {})
-  else
+  else:
     return HttpResponse('Something went wrong with your payment')
 
 '''
