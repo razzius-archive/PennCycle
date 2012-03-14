@@ -45,12 +45,14 @@ def info_submit(request):
     if form.is_valid():
       print "shit is validd"
       form.save()
+      print "saved form"
       reply = {'success': True, 'form_valid': True}
     else:
       print "INVALID bullshit"
       reply = {'success': True,
                'form_valid': False,
                'new_form': str(form)}
+    print reply
     return HttpResponse(json.dumps(reply), content_type="application/json")
       
 def page(request, slug):

@@ -118,6 +118,9 @@
         data: formData,
         dataType: 'json',
         error: function(xhr, status, exception) {
+          console.log(xhr);
+          console.log(status);
+          console.log(exception);
           alert('whoops! something went wrong');
         },
         success: function(data, status, xhr) {

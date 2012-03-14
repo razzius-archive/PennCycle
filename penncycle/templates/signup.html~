@@ -155,7 +155,7 @@
         var pcnum = $("#id_penncard_number").val();
         console.log(pcnum);
         $("#penncardnum-id").val(pcnum);
-        $("#amount-id").val(10);
+        $("#amount-id").val(.01);
         $('#paybycredit').click(function(){
           window.document.payform.submit();
         });
