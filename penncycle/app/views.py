@@ -95,7 +95,7 @@ def verify_payment(request):
     print 'referrer is %s ' % source
     source_needed = 'https://orderpage.ic3.com/hop/orderform.jsp'
     
-    amount = int(request.POST.get('orderAmount', 0))
+    amount = str(request.POST.get('orderAmount', 0))
     print amount
     
     # add in test that amount is $10
@@ -105,8 +105,8 @@ def verify_payment(request):
     reasonCode = request.POST.get('reasonCode')
     good_reasons = [100,200]
     print reasonCode
-    if (int(reasonCode) in good_reasons) and amount == 0.01:
-      print 'passed the check!'
+    if (int(reasonCode) in good_reasons) and (amount == '10.00' or amount == '10'):
+      print "check passed"
       student.paid = True
       student.save()
       print "paid"
@@ -124,7 +124,7 @@ def thanks(request):
   print student
 
   if student.paid == True:
-    return render_to_response('thanks.html', {})
+    return render_to_respone('thanks.html', {})
   else:
     return HttpResponse('Something went wrong with your payment')
 
