@@ -96,13 +96,24 @@ def verify_payment(request):
   # add in test that amount is $10
   
   # if source matches CyberSource, payment completed
-  if source == source_needed and (int(request.GET.get('reasonCode')) == (100 or 200)):
+  if source == source_needed and (int(request.GET.get('reasonCode')) == (100 or 200)) and amount == .01:
     student.paid = True
     student.save()
     print "paid"
-    return render_to_response('thanks.html', {})
-  else:
-    return render_to_response('paymentfailed.html', {})
+    # return render_to_response('thanks.html', {})
+  # else:
+    # return render_to_response('paymentfailed.html', {})
+  return HttpResponse('Verifying...')
+
+def thanks(request):
+  print "in thanks view"
+  student = Student.objects.get(penncard_number=request.GET.get('ordernumber'))
+  print student
+
+  if student.paid == true:
+    return render_to_respone('thanks.html', {})
+  else
+    return HttpResponse('Something went wrong with your payment')
 
 '''
 def payment(request):

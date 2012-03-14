@@ -21,10 +21,8 @@
 
       <li id="tab-info" class="active"><a data-toggle="tab" href="#info">Info</a></li>
       <li id="tab-safety" class="disabled"><a data-toggle="tab">Safety Info</a></li>
-      <li id="tab-quiz" class="disabled"><a data-toggle="tab">Quiz</a></li>
       <li id="tab-waiver" class="disabled"><a data-toggle="tab">Waiver</a></li>
       <li id="tab-pay" class="disabled"><a data-toggle="tab">Pay</a></li>
-      <li id="tab-thanks" class="disabled"><a data-toggle="tab">Thanks!</a></li>
     </ul>
   </div>
 </div>
@@ -40,39 +38,44 @@
   </div>
   <!------------- safety pane ---------------->
   <div class="tab-pane" id="safety">
-    <object style="height: 390px; width: 640px"><param name="movie" value="http://www.youtube.com/v/cgxK1B-tVS0?version=3&feature=player_detailpage"><param name="allowFullScreen" value="true"><param name="allowScriptAccess" value="always"><embed src="http://www.youtube.com/v/cgxK1B-tVS0?version=3&feature=player_detailpage" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="640" height="360"></object>
-    <button id="safety-form" class="btn btn-primary">Next &#187;</button>
-  </div>
-  <!------------- quiz pane ---------------->
-  <div class="tab-pane controls" id="quiz">
-    <div id="wrong_alert">
-    </div>
-    
-    {% for q in quiz %}
-      <h2>{{q.question}}</h2>
-      {% for c in q.choices %}
-      <label class="radio" for='{{forloop.parentloop.counter}}-{{forloop.counter}}'>
-        <input type="radio" name='{{forloop.parentloop.counter}}' 
-          id="{{forloop.parentloop.counter}}-{{forloop.counter}}" 
-          value="{{forloop.parentloop.counter}}-{{forloop.counter}}"
-          group="{{forloop.parentloop.counter}}">
-        {{c}}
-      </label>
-      {% endfor %}
-    {% endfor %}
-    <button id="check_button" class="btn btn-primary">Check Answers</button>
+    {{ safety_info.content|safe }}
+    <button id="safety-form" class="btn btn-primary">I have read and understand the safety information &#187;</button>
   </div>
   <!------------- waiver pane ---------------->
   <div class="tab-pane" id="waiver">
-    <p>Nullam luctus, turpis nec facilisis luctus, ligula libero cursus est, pellentesque hendrerit est velit at leo. Proin ultricies augue et augue feugiat adipiscing a eget erat. Phasellus sit amet massa justo. Donec vestibulum arcu quis libero pellentesque iaculis. Cras et molestie est. Integer sodales rhoncus elementum. Duis dui urna, mollis id adipiscing non, dapibus id tortor. Pellentesque bibendum, lorem eget rhoncus viverra, neque nulla ullamcorper diam, in aliquam quam velit a urna. Nulla faucibus libero at elit fringilla placerat luctus purus semper.
-
-    <p>Donec pellentesque ornare augue, quis tristique augue euismod ut. Phasellus adipiscing rutrum risus, quis interdum velit mattis at. Mauris vitae sem quis augue elementum congue at quis purus. Pellentesque orci tortor, cursus non fringilla ut, dictum id dolor. Morbi lacus magna, convallis ac varius vel, varius sit amet velit. Aenean consectetur commodo hendrerit. Aliquam porttitor aliquet ligula, congue pellentesque tellus consectetur non. In nisi turpis, malesuada ac feugiat non, aliquet ut leo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum scelerisque tincidunt mauris, non hendrerit purus imperdiet in. Maecenas dictum enim quis ligula imperdiet fringilla. In malesuada aliquam bibendum. Sed consequat, erat at auctor aliquam, diam lorem elementum nunc, ut vulputate risus augue at lectus.</p>
-
-    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras dignissim massa eu massa interdum a luctus nulla porttitor. Donec id lorem arcu, quis iaculis lacus. Quisque eget neque purus, in vestibulum ante. Proin rutrum nulla et erat vehicula condimentum. Nam scelerisque pretium lacus a blandit. Donec quis posuere ante. In felis turpis, ultrices id gravida ut, gravida vel sem. Phasellus aliquam fermentum mauris at elementum. Quisque egestas rutrum libero id hendrerit. Nulla orci dolor, sodales dignissim ullamcorper a, aliquet dignissim sapien. Vestibulum tempus tempor nisl et tincidunt. Duis consequat feugiat ipsum, nec consectetur nisi luctus et. Duis suscipit magna eget velit faucibus tempor tristique vel est.</p>
-    <button id="waiver-form" class="btn btn-primary">Next &#187;</button>
+    <div id='waiver-wrapper'>
+      {% include "waiver2.htm" %}
+    </div>
+    <div class='clearfix'>
+      <button id="waiver-form" class="btn btn-primary">I Accept this Waiver &#187;</button>
+      <label>Clicking this button counts as your digital signature and is legally binding</label>
+    </div>
   </div>
   <div class="tab-pane" id="pay">
-    <img src="/media/img/paypal.png"/>
+    <h2>A PennCard Membership for the rest of this Academic Year is $10</h2>
+    <hr>
+    <h3>You can pay by Cash, Credit Card, Bursar, or PennCash.</h3> 
+    <p>To pay by <strong>Cash</strong>, pay at the PSA Store or the PennCycle table at Hill</p>
+    <p>To pay by <strong>Bursar</strong> or <strong>PennCash</strong>, just hit the button below and wait. 
+      It will take up to 48 hours to process your request; 
+      you will not be able to check out a bike until you have been successfully billed. 
+    </p>
+    <p>
+      <strong>Credit Card</strong> is immediate; 
+      you will be redirected to a VPUL website where your request will be processed. 
+      Please <a href='mailto:messenger@penncycle.org'>email us</a> if anything goes awry. 
+    </p>
+    <hr>
+    <span>
+      <button class='btn btn-primary' name='paybycash' value='paybycash' id='paybycash' href='/paybycash/'>Cash &#187;</button>
+      <button class='btn btn-primary' name='paybybursar' value='paybybursar' id='paybybursar' href='/paybybursar/'>Bursar &#187;</button>
+      <button class='btn btn-primary' name='paybypenncash' value='paybypenncash' id='paybypenncash' href='/paybypenncash/'>PennCash &#187;</button>
+      <button class='btn btn-primary' name='paybycredit' value='paybycredit' id='paybycredit' href='/paybycredit/'>Credit Card &#187;</button>
+    </span>
+    <form name="payform" method="post" action="https://secure.www.upenn.edu/vpul/psa/bike/index.php" style="display:none;">
+      <input id="penncardnum-id" type="hidden" name="ordernumber" value='12345678' />
+      <input id="amount-id" type="hidden" name="amount" value=.01 />
+    </form>
   </div>
   <div class="tab-pane" id="thanks">
     <h1>Thanks!</h1>
@@ -144,69 +147,23 @@
     });
     
     $('button#safety-form').click(function(){
-      toTab('quiz');
+      toTab('waiver');
     });
     
-    $('button#waiver-form').click$.ajaxSetup({ 
-      $.ajax ({
-        url: 'https://secure.www.upenn.edu/vpul/psa/bike/index.php', 
-        type: 'POST',
-        data: formData,
-        dataType: 'json',
-        error: function(xhr, status, exception) {
-          alert('error returned from paysite');
-        },
-        success: function(data, status, xhr) {
-          toTab('thanks');
-        },
-    });
-
-    var answers = [
-    {% for q in quiz %}
-      {% for c in q.choices %}
-        {% ifequal c q.answer %}
-          '{{forloop.parentloop.counter}}-{{forloop.counter}}',
-        {% endifequal %}
-      {% endfor %}
-    {% endfor %}
-    ];  
-
-    var wrong_answers = [];
-    $('button#check_button').click(function(){
-      wrong_answers = [];
-      $('input[type="radio"]:checked').each(function(){
-        if ($.inArray(this.id, answers) == -1) {
-        wrong_answers.push(this.id.split('-')[0]);
-        }
-      }); 
-      if(wrong_answers.length == 0) {
-        // alert success
-        $("#wrong_alert").html('');
-        // redirect to next page
-        toTab('waiver');
-      }
-      else {
-        // alert failure
-        if(wrong_answers.length == 1) {
-          var plural = "s";
-        }
-        else {
-          var plural = "";
-        }
-        $("#wrong_alert").html('<div class="alert alert-error"><a class="close">&times;</a><strong>You have incorrect answers for question' + plural + " " + wrong_answers.join(', ') +'</strong></div>');
-        
-      }
-    });
+    $('button#waiver-form').click(function(){
+        toTab('pay');
+        var pcnum = $("#id_penncard_number").val();
+        console.log(pcnum);
+        $("#penncardnum-id").val(pcnum);
+        $("#amount-id").val(10);
+        $('#paybycredit').click(function(){
+          window.document.payform.submit();
+        });
+    }); 
 
     // set background for active tab in navbar    
     $('.nav1 li#signup').addClass('active');
 
-    /*
-    $('button#info-form').click(function(){
-      alert('hello');
-      $('#video').tab('show');
-    });
-    */
     $('button#video-form').click(function(){
       $('#quiz').tab('show');
     });

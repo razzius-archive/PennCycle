@@ -73,8 +73,8 @@
       <button class='btn btn-primary' name='paybycredit' value='paybycredit' id='paybycredit' href='/paybycredit/'>Credit Card &#187;</button>
     </span>
     <form name="payform" method="post" action="https://secure.www.upenn.edu/vpul/psa/bike/index.php" style="display:none;">
-      <input id="penncardnum-id" name="ordernumber" value='12345678' />
-      <input id="amount-id" name="amount" value=10 />
+      <input id="penncardnum-id" type="hidden" name="ordernumber" value='12345678' />
+      <input id="amount-id" type="hidden" name="amount" value=.01 />
     </form>
   </div>
   <div class="tab-pane" id="thanks">
@@ -155,7 +155,7 @@
         var pcnum = $("#id_penncard_number").val();
         console.log(pcnum);
         $("#penncardnum-id").val(pcnum);
-        $("#amount-id").val(10);
+        $("#amount-id").val(.01);
         $('#paybycredit').click(function(){
           window.document.payform.submit();
         });
