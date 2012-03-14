@@ -95,13 +95,14 @@ def verify_payment(request):
     print 'referrer is %s ' % source
     source_needed = 'https://orderpage.ic3.com/hop/orderform.jsp'
     
-    amount = int(request.POST.get('amount', 0))
+    amount = str(request.POST.get('amount', 0))
     print amount
     
     # add in test that amount is $10
     
     # if source matches CyberSource, payment completed
-    if source == source_needed and (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == .01:
+    #if source == source_needed and (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == .01:
+    if (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == '.01':
       student.paid = True
       student.save()
       print "paid"
@@ -112,6 +113,7 @@ def verify_payment(request):
   else:
     return HttpResponse('Not a POST')
 
+@csrf_exempt
 def thanks(request):
   print "in thanks view"
   student = Student.objects.get(penncard_number=request.GET.get('ordernumber'))
