@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect, HttpResponse
 from django import forms
-from django.views.decorators.csrf import csrf_response_exempt
+from django.views.decorators.csrf import csrf_exempt
 from bootstrap.forms import BootstrapModelForm, Fieldset
 import random, json, hashlib, hmac
 
@@ -83,31 +83,34 @@ def signup(request):
   context_instance = RequestContext(request, context)
   return render_to_response('signup.html', context_instance)
 
-@csrf_response_exempt
+@csrf_exempt
 def verify_payment(request):
-  print "in verify_payment"
-  # gets the student with penncard specified in POST data
-  student = Student.objects.get(penncard_number=request.GET.get('merchantDefinedData1'))
-  print student
+  if request.method=='POST':
+    print "in verify_payment"
+    # gets the student with penncard specified in POST data
+    student = Student.objects.get(penncard_number=request.POST.get('merchantDefinedData1'))
+    print student
 
-  source = request.META.get('HTTP_REFERER')
-  print 'referrer is %s ' % source
-  source_needed = 'https://orderpage.ic3.com/hop/orderform.jsp'
-  
-  amount = int(request.GET.get('amount', 0))
-  print amount
-  
-  # add in test that amount is $10
-  
-  # if source matches CyberSource, payment completed
-  if source == source_needed and (int(request.GET.get('reasonCode')) == (100 or 200)) and amount == .01:
-    student.paid = True
-    student.save()
-    print "paid"
-    # return render_to_response('thanks.html', {})
-  # else:
-    # return render_to_response('paymentfailed.html', {})
-  return HttpResponse('Verifying...')
+    source = request.META.get('HTTP_REFERER')
+    print 'referrer is %s ' % source
+    source_needed = 'https://orderpage.ic3.com/hop/orderform.jsp'
+    
+    amount = int(request.POST.get('amount', 0))
+    print amount
+    
+    # add in test that amount is $10
+    
+    # if source matches CyberSource, payment completed
+    if source == source_needed and (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == .01:
+      student.paid = True
+      student.save()
+      print "paid"
+      # return render_to_response('thanks.html', {})
+    # else:
+      # return render_to_response('paymentfailed.html', {})
+    return HttpResponse('Verifying...')
+  else:
+    return HttpResponse('Not a POST')
 
 def thanks(request):
   print "in thanks view"
