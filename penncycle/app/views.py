@@ -123,8 +123,8 @@ def thanks(request):
   student = Student.objects.get(penncard_number=request.POST.get('merchantDefinedData1'))
   print student
 
-  if student.paid == true:
-    return render_to_respone('thanks.html', {})
+  if student.paid == True:
+    return render_to_response('thanks.html', {})
   else:
     return HttpResponse('Something went wrong with your payment')
 
