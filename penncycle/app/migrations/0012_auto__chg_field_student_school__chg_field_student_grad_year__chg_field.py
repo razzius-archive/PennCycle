@@ -15,7 +15,7 @@ class Migration(SchemaMigration):
         db.alter_column('app_student', 'grad_year', self.gf('django.db.models.fields.CharField')(max_length=50))
 
         # Changing field 'Student.phone'
-        db.alter_column('app_student', 'phone', self.gf('phonenumber_field.modelfields.PhoneNumberField')(max_length=128))
+        db.alter_column('app_student', 'phone', self.gf('django.contrib.localflavor.us.models.PhoneNumberField')(max_length=128))
 
 
     def backwards(self, orm):
@@ -93,7 +93,7 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'paid': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'penncard_number': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '8'}),
-            'phone': ('phonenumber_field.modelfields.PhoneNumberField', [], {'max_length': '128'}),
+            'phone': ('django.contrib.localflavor.us.models.PhoneNumberField', [], {'max_length': '128'}),
             'school': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'status': ('django.db.models.fields.CharField', [], {'default': "'available'", 'max_length': '100'}),
             'waiver_signed': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
