@@ -136,6 +136,7 @@ def pay(request, method, penncard):
     penncard = requet.GET.get('penncard')
     student = get_object_or_404(Student, penncard=penncard)
     context = {
-      'penncard':p
+      'penncard':penncard,
+      'method': method,
     }
     return render_to_response('pay.html', RequestContext(request))
