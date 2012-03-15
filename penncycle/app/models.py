@@ -1,3 +1,4 @@
+from django.contrib.localflavor.us.models import PhoneNumberField
 from django.template.defaultfilters import slugify
 from django.db import models
 from django.db.models import Q
@@ -31,7 +32,8 @@ LIVING_LOCATIONS = (
   ('Harrison', 'Harrison'),
   ('Harnwell', 'Harnwell'),
   ('Rodin', 'Rodin'),
-  ('Stouffer', 'Stouffer'), 
+  ('Stouffer', 'Stouffer'),
+  ('Mayer', 'Mayer'),
   ('Du Bois', 'Du Bois'),
   ('Gregory', 'Gregory'),
   ('Sansom', 'Sansom'),
@@ -68,12 +70,12 @@ class Manufacturer(models.Model):
 class Student(models.Model):
   name = models.CharField(max_length=100)
   email = models.EmailField()
-  phone = models.CharField(max_length=16)
+  phone = PhoneNumberField()
   penncard_number = models.CharField(verbose_name="Penncard", max_length=8, unique=True)
   gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-  grad_year = models.CharField(max_length=5, choices=GRAD_YEAR_CHOICES)
+  grad_year = models.CharField(max_length=50, choices=GRAD_YEAR_CHOICES)
   join_date = models.DateField(default=datetime.date.today())
-  school = models.CharField(max_length=10, choices=SCHOOL_CHOICES)
+  school = models.CharField(max_length=100, choices=SCHOOL_CHOICES)
   major = models.CharField(max_length=50, blank=True)
   living_location = models.CharField(max_length=100, choices=LIVING_LOCATIONS)
   waiver_signed = models.BooleanField(default=False)
