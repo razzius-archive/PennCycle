@@ -124,9 +124,9 @@ def thanks(request):
   print student
 
   if student.paid == True:
-    return render_to_respone('thanks.html', {})
+    return render_to_response('thanks.html', {})
   else:
-    return HttpResponse('Something went wrong with your payment')
+    return HttpResponse('Something went wrong with your payment. Please email us at messenger@penncycle.org.')
 
 '''
 def payment(request):

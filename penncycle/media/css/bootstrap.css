@@ -592,7 +592,7 @@ button.btn.small,input[type="submit"].btn.small{*padding-top:3px;*padding-bottom
 .navbar .nav.pull-right{float:right;}
 .navbar .nav>li{display:block;float:left;}
 .navbar .nav>li>a{float:none;padding:10px 10px 11px;line-height:19px;color:#9d261d;text-decoration:none;font-weight:bold;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);}
-.navbar .nav>li>a:hover{background-color:#ffffff;color:#0064cd;text-decoration:none;font-weight:bold;}
+.navbar .nav>li>a:hover{background-color:#ffffff;color:#212e65;text-decoration:none;font-weight:bold;}
 .navbar .nav .active>a,.navbar .nav .active>a:hover{color:#9d261d;text-decoration:none;background-color:rgba(216, 58, 46, 0.3);background-color:rgba(0, 0, 0, 0.5);}
 .navbar .divider-vertical{height:40px;width:1px;margin:0 9px;overflow:hidden;background-color:rgba(89, 89, 89, 0.3);border-right:1px solid rgba(191, 191, 191, 0.3);}
 .navbar .nav.pull-right{margin-left:10px;margin-right:0;}
