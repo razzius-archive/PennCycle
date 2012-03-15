@@ -15,7 +15,7 @@ class Migration(SchemaMigration):
     def backwards(self, orm):
         
         # Changing field 'Student.phone'
-        db.alter_column('app_student', 'phone', self.gf('phonenumber_field.modelfields.PhoneNumberField')(max_length=128))
+        db.alter_column('app_student', 'phone', self.gf('django.contrib.localflavor.us.models.PhoneNumberField')(max_length=128))
 
 
     models = {
