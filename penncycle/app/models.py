@@ -84,14 +84,16 @@ class Student(models.Model):
     return u'%s %s' % (self.name, self.penncard_number)
 
 class Bike(models.Model):
-  bike_name = models.CharField(max_length=100)
+  bike_name = models.CharField(max_length=100, unique=True)
   manufacturer = models.ForeignKey(Manufacturer)
   purchase_date = models.DateField()
   color = models.CharField(max_length=30, blank=True)
   status = models.CharField(max_length=100, default='available')
+  serial_number = models.CharField(max_length=100, blank=True)
+  tag_id = models.CharField(max_length=100, blank=True)
 
   def __unicode__(self):
-    return self.bike_name
+    return '%s (%s)' % (self.bike_name, self.manufacturer)
 
 class Station(models.Model):
   name = models.CharField(max_length=100)

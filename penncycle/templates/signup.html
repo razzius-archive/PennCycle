@@ -39,6 +39,7 @@
   <!------------- safety pane ---------------->
   <div class="tab-pane" id="safety">
     {{ safety_info.content|safe }}
+    <hr>
     <button id="safety-form" class="btn btn-primary">I have read and understand the safety information &#187;</button>
   </div>
   <!------------- waiver pane ---------------->
@@ -46,6 +47,7 @@
     <div id='waiver-wrapper'>
       {% include "waiver2.htm" %}
     </div>
+    <hr>
     <div class='clearfix'>
       <button id="waiver-form" class="btn btn-primary">I Accept this Waiver &#187;</button>
       <label>Clicking this button counts as your digital signature and is legally binding</label>
