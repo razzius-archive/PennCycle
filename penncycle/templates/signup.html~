@@ -10,15 +10,6 @@
   <!--<hr>-->
   <div class="pagination">
     <ul id="secondnav" class="nav nav-tabs">
-  <!--
-    <li class="active"><a href="#signup" data-toggle="tab">Info</a></li>
-    <li><a href="#video" data-toggle="tab">Safety Info</a></li>
-    <li><a href="#quiz" data-toggle="tab">Quiz</a></li>
-    <li><a href="#waiver" data-toggle="tab">Waiver</a></li>
-    <li><a href="#pay" data-toggle="tab">Pay</a></li>
-    <li><a href="#thanks" data-toggle="tab">Thanks!</a></li>
-    -->
-
       <li id="tab-info" class="active"><a data-toggle="tab" href="#info">Info</a></li>
       <li id="tab-safety" class="disabled"><a data-toggle="tab">Safety Info</a></li>
       <li id="tab-waiver" class="disabled"><a data-toggle="tab">Waiver</a></li>
@@ -184,11 +175,14 @@
         } 
       });
 
-      var pennidData = $.param({'pennid': pcnum});
+      var pennidDict = {'pennid': pcnum};
+      var pennidData = $.param(pennidDict);
+      console.log(pennidDict);
+      console.log(pennidData);
       $.ajax ({
         url: '../verify_waiver/', 
         type: 'POST',
-        data: pennidData,
+        data: pennidDict,
         dataType: 'json',
         error: function(xhr, status, exception) {
           console.log(xhr);
