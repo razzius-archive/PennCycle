@@ -2,6 +2,8 @@ from django.contrib.localflavor.us.models import PhoneNumberField
 from django.template.defaultfilters import slugify
 from django.db import models
 from django.db.models import Q
+from django.core.validators import RegexValidator
+import re
 import datetime
 
 # Create your models here.
@@ -71,7 +73,7 @@ class Student(models.Model):
   name = models.CharField(max_length=100)
   email = models.EmailField()
   phone = PhoneNumberField()
-  penncard_number = models.CharField(verbose_name="Penncard", max_length=8, unique=True)
+  penncard = models.CharField(max_length=8, validators=[RegexValidator('\d{8}')], unique=True)
   gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
   grad_year = models.CharField(max_length=50, choices=GRAD_YEAR_CHOICES)
   join_date = models.DateField(default=datetime.date.today())
@@ -83,7 +85,7 @@ class Student(models.Model):
   status = models.CharField(max_length=100, default='available')
 
   def __unicode__(self):
-    return u'%s %s' % (self.name, self.penncard_number)
+    return u'%s %s' % (self.name, self.penncard)
 
 class Bike(models.Model):
   bike_name = models.CharField(max_length=100, unique=True)

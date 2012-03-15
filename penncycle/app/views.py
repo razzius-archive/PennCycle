@@ -88,7 +88,7 @@ def verify_payment(request):
   if request.method=='POST':
     print "in verify_payment"
     # gets the student with penncard specified in POST data
-    student = Student.objects.get(penncard_number=request.POST.get('merchantDefinedData1'))
+    student = Student.objects.get(penncard=request.POST.get('merchantDefinedData1'))
     print student
 
     source = request.META.get('HTTP_REFERER')
@@ -117,7 +117,7 @@ def verify_payment(request):
 @csrf_exempt
 def thanks(request):
   print "in thanks view"
-  student = Student.objects.get(penncard_number=request.POST.get('merchantDefinedData1'))
+  student = Student.objects.get(penncard=request.POST.get('merchantDefinedData1'))
   print student
 
   if student.paid == True:
@@ -133,3 +133,15 @@ def verify_waiver(request):
     student.save()
     return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")
   return HttpResponse('failure')
+
+def pay(request, method, penncard):
+  if request.method == 'POST':
+    penncard = request.POST.get('penncard')
+    return HttpRedirect('../../thankyou/%s' % penncard)
+  else: 
+    penncard = requet.GET.get('penncard')
+    student = get_object_or_404(Student, penncard=penncard)
+    context = {
+      'penncard':p
+    }
+    return render_to_response('pay.html', RequestContext(request))

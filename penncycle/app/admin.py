@@ -5,9 +5,9 @@ import datetime
 
 class StudentAdmin(admin.ModelAdmin):
   list_display = (
-      'name', 'grad_year', 'penncard_number',
-      'gender', 'school',)
-  search_fields = ('name', 'penncard_number',)
+      'name', 'grad_year', 'penncard',
+      'gender', 'school', 'waiver_signed', 'paid',)
+  search_fields = ('name', 'penncard',)
   list_filter = ('school', 'gender', 'grad_year')
   date_hierarchy = 'join_date'
     
