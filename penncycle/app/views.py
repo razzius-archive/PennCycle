@@ -110,9 +110,6 @@ def verify_payment(request):
       student.paid = True
       student.save()
       print "paid"
-      # return render_to_response('thanks.html', {})
-    # else:
-      # return render_to_response('paymentfailed.html', {})
     return HttpResponse('Verifying...')
   else:
     return HttpResponse('Not a POST')
@@ -128,30 +125,11 @@ def thanks(request):
   else:
     return HttpResponse('Something went wrong with your payment. Please email us at messenger@penncycle.org.')
 
-'''
-def payment(request):
-   if request.method == 'POST':
-    print "posted form from payment"
-    form = SignupForm(request.POST)
-    print form
-    if form.is_valid():
-      print "this code should be unreachable"
-    else:
-      print "invalid form as expected"
-      penncard = form.cleaned_data['Penncard']
-      print "penncard = " + penncard 
-      reply = {'success': True,
-               'form_valid': False,
-               'penncard': penncard,}
-    return HttpResponse(json.dumps(reply), content_type="application/json")
-'''
-'''
-def reserve(request):
-  context = {
-
-  }
-  return render_to_response('reserve.html', context)
-
-def thanks(request):
-  return render_to_response('thanks.html', {})
- '''
+def verify_waiver(request):
+  if request.method=='POST':
+    pennid = request.POST.get('pennid')
+    student = Student.objects.get(penncard_number=pennid)
+    student.waiver_signed = True
+    student.save()
+    return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")
+  return HttpResponse('failure')
