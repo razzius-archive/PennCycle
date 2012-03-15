@@ -39,6 +39,7 @@
   <!------------- safety pane ---------------->
   <div class="tab-pane" id="safety">
     {{ safety_info.content|safe }}
+    <hr>
     <button id="safety-form" class="btn btn-primary">I have read and understand the safety information &#187;</button>
   </div>
   <!------------- waiver pane ---------------->
@@ -46,6 +47,7 @@
     <div id='waiver-wrapper'>
       {% include "waiver2.htm" %}
     </div>
+    <hr>
     <div class='clearfix'>
       <button id="waiver-form" class="btn btn-primary">I Accept this Waiver &#187;</button>
       <label>Clicking this button counts as your digital signature and is legally binding</label>
@@ -154,14 +156,56 @@
     });
     
     $('button#waiver-form').click(function(){
-        toTab('pay');
-        var pcnum = $("#id_penncard_number").val();
-        console.log(pcnum);
-        $("#penncardnum-id").val(pcnum);
-        $("#amount-id").val(10);
-        $('#paybycredit').click(function(){
-          window.document.payform.submit();
-        });
+      toTab('pay');
+      var pcnum = $("#id_penncard_number").val();
+      console.log(pcnum);
+
+      $.ajaxSetup({ 
+        beforeSend: function(xhr, settings) {
+          function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+              var cookies = document.cookie.split(';');
+              for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+                }
+              }
+            }
+            return cookieValue;
+          }
+          if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+            // Only send the token to relative URLs i.e. locally.
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+          }
+        } 
+      });
+
+      var pennidData = $.param({'pennid': pcnum});
+      $.ajax ({
+        url: '../verify_waiver/', 
+        type: 'POST',
+        data: pennidData,
+        dataType: 'json',
+        error: function(xhr, status, exception) {
+          console.log(xhr);
+          console.log(status);
+          console.log(exception);
+          alert('waiver failed');
+        },
+        success: function(data, status, xhr) {
+          console.log('waiver success');
+        },
+      });
+
+      $("#penncardnum-id").val(pcnum);
+      $("#amount-id").val(10);
+      $('#paybycredit').click(function(){
+        window.document.payform.submit();
+      });
     }); 
 
     // set background for active tab in navbar    
