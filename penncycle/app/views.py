@@ -88,7 +88,7 @@ def verify_payment(request):
   if request.method=='POST':
     print "in verify_payment"
     # gets the student with penncard specified in POST data
-    student = Student.objects.get(penncard_number=request.POST.get('merchantDefinedData1'))
+    student = Student.objects.get(penncard=request.POST.get('merchantDefinedData1'))
     print student
 
     source = request.META.get('HTTP_REFERER')
@@ -120,7 +120,7 @@ def verify_payment(request):
 @csrf_exempt
 def thanks(request):
   print "in thanks view"
-  student = Student.objects.get(penncard_number=request.POST.get('merchantDefinedData1'))
+  student = Student.objects.get(penncard=request.POST.get('merchantDefinedData1'))
   print student
 
   if student.paid == True:
@@ -128,30 +128,14 @@ def thanks(request):
   else:
     return HttpResponse('Something went wrong with your payment')
 
-'''
-def payment(request):
-   if request.method == 'POST':
-    print "posted form from payment"
-    form = SignupForm(request.POST)
-    print form
-    if form.is_valid():
-      print "this code should be unreachable"
-    else:
-      print "invalid form as expected"
-      penncard = form.cleaned_data['Penncard']
-      print "penncard = " + penncard 
-      reply = {'success': True,
-               'form_valid': False,
-               'penncard': penncard,}
-    return HttpResponse(json.dumps(reply), content_type="application/json")
-'''
-'''
-def reserve(request):
-  context = {
-
-  }
-  return render_to_response('reserve.html', context)
-
-def thanks(request):
-  return render_to_response('thanks.html', {})
- '''
+def pay(request, method, penncard):
+  if request.method == 'POST':
+    penncard = request.POST.get('penncard')
+    return HttpRedirect('../../thankyou/%s' % penncard)
+  else: 
+    penncard = requet.GET.get('penncard')
+    student = get_object_or_404(Student, penncard=penncard)
+    context = {
+      'penncard':p
+    }
+    return render_to_response('pay.html', RequestContext(request))

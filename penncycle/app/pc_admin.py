@@ -20,7 +20,7 @@ class pcRidesAdmin(admin.ModelAdmin):
   date_hierarchy = 'checkin_time'
   ordering = ('-checkout_time',)
   actions = ['check_in']
-  search_fields = ['rider__name','rider__penncard_number','bike__bike_name']
+  search_fields = ['rider__name','rider__penncard','bike__bike_name']
   save_on_top = True
 ##  change_form_template = 'c:/djcode/penncycle/templates/admin/app/change_form.html'
 
