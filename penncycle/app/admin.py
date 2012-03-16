@@ -21,15 +21,17 @@ class PageAdmin(admin.ModelAdmin):
 
 class RidesAdmin(admin.ModelAdmin):
   list_display = (
-      'rider', 'bike', 'checkout_time', 'checkin_time', 'ride_duration_days',
+      'rider', 'bike', 'checkout_time', 'checkin_time', 'ride_duration_days', 'status',
   )
   list_filter = (
       'rider', 'bike', 'checkout_time', 'checkin_time', 
   ) 
   readonly_fields = ('ride_duration_days', 'num_users')
   date_hierarchy = 'checkin_time'
-  ordering = ('checkin_time',)
+  ordering = ('-checkout_time',)
   actions = ['check_in']
+  search_fields = ['rider__name','rider__penncard','bike__bike_name']
+  save_on_top = True
 
   # make this only work for bikes not already checked in
   def check_in(self, request, queryset):
