@@ -5,19 +5,27 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Pay with {{method}}</h1>
+  <h1>Pay with {{ type }}</h1>
   <hr>
-  {% ifequal method 'bursar' 'penncash' %}
+  {% if type == 'bursar' or type == 'penncash' %}
     <h2> 
-      We need your PennCard including the last two digits of your PennCard
+      We need the last two digits of your PennCard
     </h2>
-    <form action='.' method='POST' class='form-inline'>
-      <input type='text' class='input=small' placeholder='PennCard (normal 8)' name='penncard' id='penncard'>
-      <input type='text' class='input=small' placeholder='PennCard (last 2)' name='last_two' id='last_two'>
+    <form action='.' method='POST' class='form-inline'>{% csrf_token %}
+      <input type='text' class='input=small' 
+        placeholder='PennCard (normal 8)'
+        maxlength='8'
+        name='penncard' id='penncard'>
+      <input type='text' class='input=small'
+        placeholder='last 2 digits' maxlength='2'
+        name='last_two' id='last_two' style='width:40px;'>
+      <input type='text' style='display:none;'
+        value='{{type}}' name='type' id='type'>
+      <input type='submit' value='Pay' class='btn btn-primary'>
     </form>
-  {% endifequal %}
+  {% endif %}
   
-  {% ifequal method 'cash' %}
+  {% ifequal type 'cash' %}
     
   {% endifequal %}
 {% endblock %}
