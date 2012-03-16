@@ -2,7 +2,12 @@
 // Variables to customize the look and feel of Bootstrap
 // -----------------------------------------------------
 
-
+// font shit alex is doing. 
+@font-face { font-family: Gotham; font-style: normal; font-weight:normal; src: url('../Gotham/GothamHTF-Medium.otf'); }
+@font-face { font-family: Gotham; font-style: normal; font-weight:200; src: url('../Gotham/GothamHTF-Book.otf'); }
+@font-face { font-family: Gotham; font-style: italic; font-weight:normal; src: url('../Gotham/GothamHTF-BookItalic.otf');  }
+@font-face { font-family: Gotham; font-style: normal; font-weight:bolder; src: url('../Gotham/GothamHTF-Black.otf');  }
+@font-face { font-family: Gotham; font-style: normal; font-weight:bold; src: url('../Gotham/GothamHTF-Bold.otf');  }
 
 // GLOBAL VALUES
 // --------------------------------------------------
@@ -37,7 +42,7 @@
 
 // Typography
 @baseFontSize:          15px;
-@baseFontFamily:        "Helvetica Neue", Helvetica, Arial, sans-serif;
+@baseFontFamily:        Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
 @baseLineHeight:        18px;
 @textColor:             @grayDark;
 
@@ -74,8 +79,8 @@
 // @navbarText:                      @grayLight;
 // @navbarLinkColor:                 @grayLight;
 @navbarText:                      @black;
-@navbarLinkColor:                 @red;
-@navbarLinkColorHover:            @blueDarkest;
+@navbarLinkColor:                 @blueDarkest;
+@navbarLinkColorHover:            @red;
 
 // Form states and alerts
 @warningText:             #c09853;

@@ -1,9 +1,0 @@
-MANIFEST.in
-README.md
-setup.cfg
-jwt/__init__.py
-pip-egg-info/PyJWT.egg-info/PKG-INFO
-pip-egg-info/PyJWT.egg-info/SOURCES.txt
-pip-egg-info/PyJWT.egg-info/dependency_links.txt
-pip-egg-info/PyJWT.egg-info/top_level.txt
-tests/test_jwt.py
