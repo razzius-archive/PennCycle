@@ -148,7 +148,7 @@
     
     $('button#waiver-form').click(function(){
       toTab('pay');
-      var pcnum = $("#id_penncard_number").val();
+      var pcnum = $("#id_penncard").val();
       console.log(pcnum);
 
       $.ajaxSetup({ 
@@ -175,11 +175,14 @@
         } 
       });
 
-      var pennidData = $.param({'pennid': pcnum});
+      var pennidDict = {'pennid': pcnum};
+      var pennidData = $.param(pennidDict);
+      console.log(pennidDict);
+      console.log(pennidData);
       $.ajax ({
         url: '../verify_waiver/', 
         type: 'POST',
-        data: pennidData,
+        data: pennidDict,
         dataType: 'json',
         error: function(xhr, status, exception) {
           console.log(xhr);

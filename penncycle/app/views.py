@@ -126,11 +126,16 @@ def thanks(request):
     return HttpResponse('Something went wrong with your payment. Please email us at messenger@penncycle.org.')
 
 def verify_waiver(request):
+  print 'in verify_waiver'
   if request.method=='POST':
+    print 'its a post'
     pennid = request.POST.get('pennid')
-    student = Student.objects.get(penncard_number=pennid)
+    print pennid
+    student = Student.objects.get(penncard=pennid)
+    print student
     student.waiver_signed = True
     student.save()
+    print 'waiver signed'
     return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")
   return HttpResponse('failure')
 
