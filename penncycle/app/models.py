@@ -74,6 +74,7 @@ class Student(models.Model):
   email = models.EmailField()
   phone = PhoneNumberField()
   penncard = models.CharField(max_length=8, validators=[RegexValidator('\d{8}')], unique=True)
+  last_two = models.CharField(max_length=2, validators=[RegexValidator('\d{2}')], blank=True, null=True)
   gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
   grad_year = models.CharField(max_length=50, choices=GRAD_YEAR_CHOICES)
   join_date = models.DateField(default=datetime.date.today())

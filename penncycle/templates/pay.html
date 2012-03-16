@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{block.super}} | Thanks
+{% endblock %}
+
+{% block content %}
+  <h1>Pay with {{method}}</h1>
+  <hr>
+  {% ifequal method 'bursar' 'penncash' %}
+    <h2> 
+      We need your PennCard including the last two digits of your PennCard
+    </h2>
+    <form action='.' method='POST' class='form-inline'>
+      <input type='text' class='input=small' placeholder='PennCard (normal 8)' name='penncard' id='penncard'>
+      <input type='text' class='input=small' placeholder='PennCard (last 2)' name='last_two' id='last_two'>
+    </form>
+  {% endifequal %}
+  
+  {% ifequal method 'cash' %}
+    
+  {% endifequal %}
+{% endblock %}

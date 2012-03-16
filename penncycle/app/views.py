@@ -12,7 +12,7 @@ import random, json, hashlib, hmac
 class SignupForm(BootstrapModelForm):
   class Meta:
     model = Student
-    exclude = ('join_date', 'status', 'waiver_signed', 'paid',)
+    exclude = ('join_date', 'status', 'waiver_signed', 'paid', 'last_two',)
 
 class InfoSubmitForm(forms.ModelForm):
   class Meta:
@@ -134,15 +134,14 @@ def verify_waiver(request):
     return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")
   return HttpResponse('failure')
 
-def pay(request, method, penncard):
+def pay(request, method):
   if request.method == 'POST':
     penncard = request.POST.get('penncard')
+    student = get_object_or_404(Student, penncard=penncard)
     return HttpRedirect('../../thankyou/%s' % penncard)
   else: 
     penncard = requet.GET.get('penncard')
-    student = get_object_or_404(Student, penncard=penncard)
     context = {
-      'penncard':penncard,
       'method': method,
     }
     return render_to_response('pay.html', RequestContext(request))
