@@ -16,4 +16,3 @@ yolk==0.4.3
 South==0.7.3
 pil==1.1.7
 django-phonenumber-field==0.2.0
-twilio==3.3.3
