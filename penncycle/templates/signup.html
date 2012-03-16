@@ -63,9 +63,9 @@
       <a class='btn btn-primary' name='paybycash' value='paybycash' id='paybycash' href='/pay/cash/'>Cash &#187;</a>
       <a class='btn btn-primary' name='paybybursar' value='paybybursar' id='paybybursar' href='/pay/bursar/'>Bursar &#187;</a>
       <a class='btn btn-primary' name='paybypenncash' value='paybypenncash' id='paybypenncash' href='/pay/penncash/'>PennCash &#187;</a>
-      <a class='btn btn-primary' name='paybycredit' value='paybycredit' id='paybycredit' href='/pay/credit/'>Credit Card &#187;</a>
+      <a class='btn btn-primary' name='paybycredit' value='paybycredit' id='paybycredit' href='#'>Credit Card &#187;</a>
     </span>
-    <form name="payform" method="post" action="https://secure.www.upenn.edu/vpul/psa/bike/index.php" style="display:none;">
+    <form name="payform" id="payform" method="post" action="https://secure.www.upenn.edu/vpul/psa/bike/index.php" style="display:none;">
       <input id="penncardnum-id" type="hidden" name="ordernumber" value='12345678' />
       <input id="amount-id" type="hidden" name="amount" value=10 />
     </form>
@@ -198,7 +198,7 @@
       $("#penncardnum-id").val(pcnum);
       $("#amount-id").val(10);
       $('#paybycredit').click(function(){
-        window.document.payform.submit();
+        $('#payform').submit();
       });
     }); 
 
