@@ -15,5 +15,5 @@ virtualenv==1.7.1.2
 yolk==0.4.3
 South==0.7.3
 pil==1.1.7
-django_twilio
-django-phonenumber-field
+django_twilio==0.1
+django-phonenumber-field==0.2a1
