@@ -1,4 +1,5 @@
 # Create your views here.
+from django.core.mail import send_mail
 from app.models import *
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -115,15 +116,23 @@ def verify_payment(request):
     return HttpResponse('Not a POST')
 
 @csrf_exempt
-def thanks(request):
+def thankyou(request, penncard):
   print "in thanks view"
-  student = Student.objects.get(penncard=request.POST.get('merchantDefinedData1'))
+  student = get_object_or_404(Student, penncard=penncard)
+  #student = Student.objects.get(penncard=request.POST.get('merchantDefinedData1'))
   print student
-
-  if student.paid == True:
-    return render_to_response('thanks.html', {})
+  type = request.GET.get('type', 'credit')
+  if type == 'penncash' or type == 'bursar':
+    message = '''Please allow up to 48 hours for your payment to be registered
+      (but we'll try hard to be as fast as possible!). 
+      </p><p> You will not be able to check out a bike until the payment has registered successfully.'''
+  elif type == 'cash':
+    message = "Once you've paid and your payment has been registered, you'll be good to go!"
+  elif student.paid == True:
+    message = 'You\'re ready to ride!'
   else:
-    return HttpResponse('Something went wrong with your payment. Please email us at messenger@penncycle.org.')
+    message = 'Something went wrong with your payment. Please email us at messenger@penncycle.org.'
+  return render_to_response('thanks.html', {'message':message})
 
 def verify_waiver(request):
   print 'in verify_waiver'
@@ -139,14 +148,33 @@ def verify_waiver(request):
     return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")
   return HttpResponse('failure')
 
-def pay(request, method):
+def pay(request, type):
   if request.method == 'POST':
+    type = request.POST.get('type')
     penncard = request.POST.get('penncard')
-    student = get_object_or_404(Student, penncard=penncard)
-    return HttpRedirect('../../thankyou/%s' % penncard)
+    print penncard
+    student = get_object_or_404(Student, penncard=penncard) # verify form is filled out well!
+    print student
+    last_two = request.POST.get('last_two')
+    print last_two
+    student.last_two = last_two
+    student.save()
+    print 'saved'
+    message = '''
+      Name: %s \n
+      PennCard: %s \n
+      Last Two Digits: %s \n
+      Type: %s \n
+      
+      bill them and remember to check 'paid'! 
+      Thanks d00d >.<
+    ''' % (student.name, student.penncard, student.last_two, type)
+    send_mail('Student Registered w/ %s' % (type), message, 
+      'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=False)
+    return HttpResponseRedirect('../../thankyou/%s/?type=%s' % (penncard, type))
   else: 
-    penncard = requet.GET.get('penncard')
+    print type
     context = {
-      'method': method,
+      'type': type,
     }
-    return render_to_response('pay.html', RequestContext(request))
+    return render_to_response('pay.html', RequestContext(request, context))
