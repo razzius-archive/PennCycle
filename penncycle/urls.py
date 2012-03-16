@@ -31,6 +31,10 @@ urlpatterns = patterns('',
     (r'^pay/(penncash)/$', pay),
     (r'^pay/(cash)/$', pay),
 
+    # django_twilio stuff
+    url(r'^dial/(?P<number>\w+)/$', 'django_twilio.views.dial'),
+    #url(r'^dial/?(P<number>\w+)/$', 'django_twilio.views.dial'),
+
     # url(r'^payment/', payment, name="payment"),
     #(r'^payment/', payment),
     #url(r'^app/', include(app.urls)),
