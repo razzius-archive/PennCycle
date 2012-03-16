@@ -1,5 +1,0 @@
-include *.txt *.py
-include docs/*.rst
-exclude *.pyc
-recursive-include testtinymce *
-recursive-include tinymce *
