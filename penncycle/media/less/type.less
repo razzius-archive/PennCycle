@@ -28,7 +28,7 @@ p {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
-  font-weight: bold;
+  font-weight: 200; // this was alex
   color: @grayDark;
   text-rendering: optimizelegibility; // Fix the character spacing for headings
   small {
@@ -38,16 +38,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 h1 {
   font-size: 30px;
-  line-height: @baseLineHeight * 2;
+  line-height: @baseLineHeight * 2; // this was alex. was 2
   small {
     font-size: 18px;
   }
 }
 h2 {
   font-size: 24px;
-  line-height: @baseLineHeight * 2;
+  line-height: @baseLineHeight * 2;  // this was alex. was 2
   small {
     font-size: 18px;
+  }
+  li {
+	line-height: @baseLineHeight * 2; // alex added this
   }
 }
 h3 {
