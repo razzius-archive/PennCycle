@@ -12,20 +12,33 @@
       We need the last two digits of your PennCard
     </h2>
     <form action='.' method='POST' class='form-inline'>{% csrf_token %}
-      <input type='text' class='input=small' 
-        placeholder='PennCard (normal 8)'
-        maxlength='8'
-        name='penncard' id='penncard'>
-      <input type='text' class='input=small'
-        placeholder='last 2 digits' maxlength='2'
-        name='last_two' id='last_two' style='width:40px;'>
+      <div class="input-prepend span2">
+        <span class="add-on">{{penncard}}</span>
+        <input type='text' class='input-mini'
+          value='00' maxlength='2'
+          name='last_two' id='last_two'>
+      </div>
+      
       <input type='text' style='display:none;'
         value='{{type}}' name='type' id='type'>
       <input type='submit' value='Pay' class='btn btn-primary'>
     </form>
+    <div class="validation-container"></div>
   {% endif %}
   
   {% ifequal type 'cash' %}
-    
+    <p>If you haven't already paid, be sure to pay with cash at the PSA Store (in Williams, accross from Houston Hall) or at our desk in Hill.</p>
   {% endifequal %}
+{% endblock %}
+
+{% block scripts %}
+  <script src="media/js/jquery.validate.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(function() {
+      $('#last_two').validate({
+        expression: "if (VAL.match(/^[0-9]{2}$/)) return true; else return false;",
+        message: "Please enter a 2-digit number. ",
+      });
+    });
+  </script>
 {% endblock %}

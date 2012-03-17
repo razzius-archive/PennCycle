@@ -13,7 +13,7 @@ import random, json, hashlib, hmac
 class SignupForm(BootstrapModelForm):
   class Meta:
     model = Student
-    exclude = ('join_date', 'status', 'waiver_signed', 'paid', 'last_two',)
+    exclude = ('join_date', 'status', 'waiver_signed', 'paid', 'last_two', 'payment_type')
 
 class InfoSubmitForm(forms.ModelForm):
   class Meta:
@@ -109,6 +109,7 @@ def verify_payment(request):
     if (int(reasonCode) in good_reasons) and (amount == '10.00' or amount == '10'):
       print "check passed"
       student.paid = True
+      student.payment_type = 'credit'
       student.save()
       print "paid"
     return HttpResponse('Verifying...')
@@ -148,16 +149,17 @@ def verify_waiver(request):
     return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")
   return HttpResponse('failure')
 
-def pay(request, type):
+def pay(request, type, penncard):
   if request.method == 'POST':
-    type = request.POST.get('type')
-    penncard = request.POST.get('penncard')
+    type = str(request.POST.get('type')).lower()
+    print type
     print penncard
     student = get_object_or_404(Student, penncard=penncard) # verify form is filled out well!
     print student
     last_two = request.POST.get('last_two')
     print last_two
     student.last_two = last_two
+    #student.payment_type = type
     student.save()
     print 'saved'
     message = '''
@@ -171,10 +173,15 @@ def pay(request, type):
     ''' % (student.name, student.penncard, student.last_two, type)
     send_mail('Student Registered w/ %s' % (type), message, 
       'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=False)
-    return HttpResponseRedirect('../../thankyou/%s/?type=%s' % (penncard, type))
+    return HttpResponseRedirect('../../../thankyou/%s/?type=%s' % (penncard, type))
   else: 
     print type
+    student = Student.objects.get(penncard=penncard)
+    student.payment_type = type
+    student.save()
     context = {
       'type': type,
+      'penncard': penncard,
+      'student': student,
     }
     return render_to_response('pay.html', RequestContext(request, context))

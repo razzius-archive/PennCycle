@@ -58,6 +58,16 @@ SCHOOL_CHOICES = (
   ('O', 'Other or N/A'),
 )
 
+PAYMENT_CHOICES = (
+  ('cash','cash'),
+  ('penncash','penncash'),
+  ('bursar','bursar '),
+  ('credit','credit'),
+  ('group','group'),
+  ('free','free'),
+  ('other','other'),
+)
+
 class Manufacturer(models.Model):
   name = models.CharField(max_length=30)
   address = models.CharField(max_length=50, blank=True)
@@ -84,6 +94,7 @@ class Student(models.Model):
   waiver_signed = models.BooleanField(default=False)
   paid = models.BooleanField(default=False)
   status = models.CharField(max_length=100, default='available')
+  payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
 
   def __unicode__(self):
     return u'%s %s' % (self.name, self.penncard)

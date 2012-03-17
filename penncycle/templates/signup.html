@@ -78,7 +78,6 @@
 {% block scripts %}
   <script type="text/javascript">
   
-  
     $('#info-button').click(function() {
       $.ajaxSetup({ 
         beforeSend: function(xhr, settings) {
@@ -200,6 +199,17 @@
       $('#paybycredit').click(function(){
         $('#payform').submit();
       });
+      
+      function appendPcnum (id, pcnum) {
+        var _href = $(id).attr('href');
+        $(id).attr('href', _href + pcnum);
+        console.log('appended');
+      }
+      
+      appendPcnum('#paybycash', pcnum);
+      appendPcnum('#paybypenncash', pcnum);
+      appendPcnum('#paybybursar', pcnum);
+      
     }); 
 
     // set background for active tab in navbar    
