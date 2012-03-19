@@ -95,6 +95,7 @@ class Student(models.Model):
   paid = models.BooleanField(default=False)
   status = models.CharField(max_length=100, default='available')
   payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
+  at_desk = models.NullBooleanField()
 
   def __unicode__(self):
     return u'%s %s' % (self.name, self.penncard)

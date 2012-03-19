@@ -174,7 +174,7 @@ def pay(request, type, penncard):
     ''' % (student.name, student.penncard, student.last_two, type)
     send_mail('Student Registered w/ %s' % (type), message, 
       'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=False)
-    addPerson(student.name, student.penncard, student.last_two, type)
+    addPerson(student.name, student.penncard, student.last_two, type) # adds to the google spreadsheet
     return HttpResponseRedirect('../../../thankyou/%s/?type=%s' % (penncard, type))
   else: 
     print type
