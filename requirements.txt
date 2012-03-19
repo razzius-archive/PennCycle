@@ -17,3 +17,5 @@ South==0.7.3
 pil==1.1.7
 django-phonenumber-field==0.2a1
 -e git+https://github.com/rdegges/django-twilio.git#egg=django_twilio
+ipython==0.12
+gdata==0.2.14
