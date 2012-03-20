@@ -1,8 +1,10 @@
+from django.core.mail import send_mail
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.template.defaultfilters import slugify
 from django.db import models
 from django.db.models import Q
 from django.core.validators import RegexValidator
+from app.docs import recordRide
 import re
 import datetime
 
@@ -155,23 +157,29 @@ class Ride(models.Model):
       return 'in'
 
   def save(self):
+    print 'in save method'
     if not self.num_users:
       self.num_users = len(Student.objects.all())
-      'set the num users'
-    'should pass to normal save func now'
+      #set the num users
+    #should pass to normal save func now
     super(Ride, self).save()
-    'super saved!'
+    print 'super saved!'
     if self.checkin_time == None:
-      'bikes should become out now'
+      print 'bikes should become out now'
       self.bike.status = 'out'
       self.rider.status = 'out'
     else:
       print 'in save else'
-      self.checkin_station = 1
-      'did checkin station'
+      self.checkin_station = Station.objects.get(name='Hill')
+      print 'did checkin station'
       self.bike.status = 'available' #change to be 'at %s' % station
       self.rider.status = 'available'
-      'should have changed to available'
+      print 'should have changed to available'
+      try: 
+        recordRide(self)
+      except:
+        send_mail('PennCycle: Failure', 'inserting ride %s failed' % self, 
+          'messenger@penncycle.org', ['rattray@penncycle.org'], fail_silently=False)
     self.bike.save()
     self.rider.save()
    
@@ -189,3 +197,25 @@ class Page(models.Model):
     
   def __unicode__(self):
     return self.name
+    
+class Comment(models.Model):
+  comment = models.TextField()
+  time = models.DateTimeField(auto_now_add=True)
+  student = models.ForeignKey(Student, blank=True, null=True)
+  ride = models.ForeignKey(Ride, blank=True, null=True)
+  is_problem = models.BooleanField(default=False)
+  
+  def save(self):
+    super(Comment, self).save()
+    message = '''
+      Comment: \n %s \n \n
+      Time: \n %s \n \n
+      Student: \n %s \n \n
+      Ride: \n %s \n \n
+      Marked as problem? \n %s \n \n
+    ''' % (self.comment, self.time, self.student, self.ride, self.is_problem)
+    send_mail('PennCycle: Comment Submitted', message, 
+      'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=False)
+  
+  def __unicode__(self):
+    return self.comment[:30]

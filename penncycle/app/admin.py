@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.sites import AdminSite
-from penncycle.app.models import Manufacturer, Student, Bike, Ride, Station, Page
+from penncycle.app.models import *
 import datetime
 
 class StudentAdmin(admin.ModelAdmin):
@@ -41,6 +41,7 @@ class RidesAdmin(admin.ModelAdmin):
       item.bike.save()
       item.rider.status='available'
       item.rider.save()
+      item.save()
     if rides_updated == 1:
       message_bit = '1 bike was'
     else:
@@ -48,7 +49,7 @@ class RidesAdmin(admin.ModelAdmin):
     self.message_user(request, '%s successfully checked in' % message_bit)
   check_in.short_description = "Check in the selected rides"
 
-
+admin.site.register(Comment)
 admin.site.register(Station)
 admin.site.register(Manufacturer)
 admin.site.register(Student, StudentAdmin)

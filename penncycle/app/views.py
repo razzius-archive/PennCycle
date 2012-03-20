@@ -14,7 +14,7 @@ from app.docs import addPerson
 class SignupForm(BootstrapModelForm):
   class Meta:
     model = Student
-    exclude = ('join_date', 'status', 'waiver_signed', 'paid', 'last_two', 'payment_type')
+    exclude = ('join_date', 'status', 'waiver_signed', 'paid', 'last_two', 'payment_type', 'at_desk')
 
 class InfoSubmitForm(forms.ModelForm):
   class Meta:
