@@ -34,9 +34,10 @@ def pages():
   return pages
 
 def index(request):
-  
+  available = Bike.objects.filter(status='available')
   context = {
-      'pages':pages()
+    'available': available,
+    'pages':pages()
   }
   return render_to_response('index.html', context)
 
