@@ -28,12 +28,13 @@ def addPerson(name, penncard, last_two, type):
   print d
 
   entry = client.InsertRow(d, spreadsheet_key, worksheet_id)
-  if isinstance(entry, gdata.spreadsheet.SpreadsheetsList):
-    print "Insert row succeeded."
-    return "Insert row succeeded."
-  else:
-    print "Insert row failed."
-    return "Insert row failed."
+  print "hopefully inserted student with penncard %s" % penncard
+  ##if isinstance(entry, gdata.spreadsheet.SpreadsheetsList):
+  ##  print "Insert row succeeded."
+  ##  return "Insert row succeeded."
+  ##else:
+  ##  print "Insert row failed."
+  ##  return "Insert row failed."
     
     
 def recordRide(ride):
@@ -60,9 +61,10 @@ def recordRide(ride):
   print d
 
   entry = client.InsertRow(d, spreadsheet_key, worksheet_id)
-  if isinstance(entry, gdata.spreadsheet.SpreadsheetsList):
-    print "Insert row succeeded."
-    return "Insert row succeeded."
-  else:
-    print "Insert row failed."
-    return "Insert row failed."
+  print "hopefully inserted row with with:\n in: %s \n out: %s" % (ride.checkin_time, ride.checkout_time)
+  ##if isinstance(entry, gdata.spreadsheet.SpreadsheetsList):
+  ##  print "Insert row succeeded."
+  ##  return "Insert row succeeded."
+  ##else:
+  ##  print "Insert row failed."
+  ##  return "Insert row failed."

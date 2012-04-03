@@ -4,6 +4,7 @@ from penncycle.app.models import *
 import datetime
 
 class StudentAdmin(admin.ModelAdmin):
+  list_per_page = 500
   list_display = (
       'name', 'grad_year', 'penncard',
       'gender', 'school', 'waiver_signed', 'paid',)
