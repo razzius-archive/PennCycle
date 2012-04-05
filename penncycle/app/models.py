@@ -4,7 +4,7 @@ from django.template.defaultfilters import slugify
 from django.db import models
 from django.db.models import Q
 from django.core.validators import RegexValidator
-from app.docs import recordRide
+# from app.docs import recordRide
 import re
 import datetime
 
