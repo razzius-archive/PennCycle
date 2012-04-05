@@ -25,7 +25,7 @@ GRAD_YEAR_CHOICES = (
   ('2011', '2011'),
   ('grad', 'grad student'),
   ('faculty', 'faculty'),
-  ('staff', 'staff'), 
+  ('staff', 'staff'),
   ('guest', 'guest'),
 )
 
@@ -138,7 +138,7 @@ class Ride(models.Model):
   checkout_station = models.ForeignKey(Station, default=1, related_name='checkouts')
   checkin_station = models.ForeignKey(Station, blank=True, null=True, related_name='checkins')
   num_users = models.IntegerField()
-  
+
   @property
   def ride_duration_days(self):
     if self.checkin_time == None:
@@ -146,7 +146,7 @@ class Ride(models.Model):
     else:
       end = self.checkin_time
     duration = end - self.checkout_time
-    duration_days = duration.days 
+    duration_days = duration.days
     return duration_days
 
   @property
@@ -175,14 +175,14 @@ class Ride(models.Model):
       self.bike.status = 'available' #change to be 'at %s' % station
       self.rider.status = 'available'
       print 'should have changed to available'
-      try: 
-        recordRide(self)
-      except:
-        send_mail('PennCycle: Failure', 'inserting ride %s failed' % self, 
-          'messenger@penncycle.org', ['rattray@penncycle.org'], fail_silently=False)
-    self.bike.save()
+#      try:
+#        recordRide(self)
+#      except:
+#        send_mail('PennCycle: Failure', 'inserting ride %s failed' % self,
+#          'messenger@penncycle.org', ['rattray@penncycle.org'], fail_silently=False)
+   self.bike.save()
     self.rider.save()
-   
+
   def __unicode__(self):
     return u'%s on %s' % (self.rider, self.checkout_time)
 
@@ -194,17 +194,17 @@ class Page(models.Model):
   def save(self):
     self.slug = slugify(self.name)
     super(Page, self).save()
-    
+
   def __unicode__(self):
     return self.name
-    
+
 class Comment(models.Model):
   comment = models.TextField()
   time = models.DateTimeField(auto_now_add=True)
   student = models.ForeignKey(Student, blank=True, null=True)
   ride = models.ForeignKey(Ride, blank=True, null=True)
   is_problem = models.BooleanField(default=False)
-  
+
   def save(self):
     super(Comment, self).save()
     message = '''
@@ -214,8 +214,8 @@ class Comment(models.Model):
       Ride: \n %s \n \n
       Marked as problem? \n %s \n \n
     ''' % (self.comment, self.time, self.student, self.ride, self.is_problem)
-    send_mail('PennCycle: Comment Submitted', message, 
+    send_mail('PennCycle: Comment Submitted', message,
       'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=False)
-  
+
   def __unicode__(self):
     return self.comment[:30]
