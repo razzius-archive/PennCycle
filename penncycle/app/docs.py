@@ -28,15 +28,15 @@ def addPerson(name, penncard, last_two, type):
   print d
 
   entry = client.InsertRow(d, spreadsheet_key, worksheet_id)
-  print "hopefully inserted student with penncard %s" % penncard
+  print "hopefully inserted student with penncard %s" % (penncard)
   ##if isinstance(entry, gdata.spreadsheet.SpreadsheetsList):
   ##  print "Insert row succeeded."
   ##  return "Insert row succeeded."
   ##else:
   ##  print "Insert row failed."
   ##  return "Insert row failed."
-    
-    
+
+
 def recordRide(ride):
   email = 'messenger@penncycle.org'
   password = 'penncycle'
