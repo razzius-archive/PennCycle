@@ -180,7 +180,7 @@ class Ride(models.Model):
 #      except:
 #        send_mail('PennCycle: Failure', 'inserting ride %s failed' % self,
 #          'messenger@penncycle.org', ['rattray@penncycle.org'], fail_silently=False)
-   self.bike.save()
+    self.bike.save()
     self.rider.save()
 
   def __unicode__(self):
