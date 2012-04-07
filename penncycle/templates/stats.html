@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{block.super}} Stats
+{% endblock %}
+
+{% block content %}
+  <h1>Stats</h1>
+    <body>
+    <H1>Table created using ToJSCode</H1>
+    <div id="table_div_jscode"></div>
+    <H1>Table created using ToJSon</H1>
+    <div id="table_div_json"></div>
+  </body>
+{% endblock %}
+
+{% block scripts %}
+      <!--Load the AJAX API-->
+    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
+    <script>
+      google.load('visualization', '1', {packages:['table']});
+
+      google.setOnLoadCallback(drawTable);
+      function drawTable() {
+        //%(jscode)s
+        //var jscode_table = new google.visualization.Table(document.getElementById('table_div_jscode'));
+        //jscode_table.draw(jscode_data, {showRowNumber: true});
+        
+        $.ajaxSetup({ 
+          beforeSend: function(xhr, settings) {
+            function getCookie(name) {
+              var cookieValue = null;
+              if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                  var cookie = jQuery.trim(cookies[i]);
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                  }
+                }
+              }
+              return cookieValue;
+            }
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+              // Only send the token to relative URLs i.e. locally.
+              xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+          } 
+        });
+        /*
+        //var tableData;
+        $.ajax ({
+          url: '../get_stats/', 
+          type: 'GET',
+          //data: data,
+          dataType: 'json',
+          error: function(xhr, status, exception) {
+            console.log(xhr);
+            console.log(status);
+            console.log(exception);
+            alert('whoops! something went wrong');
+          },
+          success: function(data, status, xhr) {
+            console.log('success');
+          },
+        });
+        */
+        
+        console.log('about to get');
+        $.get('../get_stats/', function(data) {
+          console.log('got');
+          console.log(data);
+          var json_table = new google.visualization.Table(document.getElementById('table_div_json'));
+          var json_data = new google.visualization.DataTable(data, 0.6);
+          console.log(json_data);
+          json_table.draw(json_data, {showRowNumber: true});
+        });
+        
+        
+      }
+    </script>
+    <!--<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Rides');
+        
+        $.ajaxSetup({ 
+        beforeSend: function(xhr, settings) {
+          function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+              var cookies = document.cookie.split(';');
+              for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+                }
+              }
+            }
+            return cookieValue;
+          }
+          if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+            // Only send the token to relative URLs i.e. locally.
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+          }
+        } 
+      });
+    
+      $.ajax ({
+        url: '/get_stats/', 
+        type: 'GET',
+        data: tableData,
+        dataType: 'json',
+        error: function(xhr, status, exception) {
+          console.log(xhr);
+          console.log(status);
+          console.log(exception);
+          alert('whoops! something went wrong');
+        },
+        success: function(data, status, xhr) {
+          if (data['form_valid'] == true) {
+            toTab('safety');
+          } else if (data['form_valid'] == false) {
+            $('#info-form').html(data['new_form']);
+            console.log('replaced shit');
+          } else {
+            alert('alex is dumb');
+          }
+        },
+      });
+        
+        data.addRows([
+          ['Mushrooms', 3],
+          ['Onions', 1],
+          ['Olives', 1],
+          ['Zucchini', 1],
+          ['Pepperoni', 2]
+        ]);
+
+        // Set chart options
+        var options = {'title':'Rides Per Day',
+                       'width':400,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+    -->
+{% endblock %}

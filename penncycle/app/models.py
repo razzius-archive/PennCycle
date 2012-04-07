@@ -175,11 +175,13 @@ class Ride(models.Model):
       self.bike.status = 'available' #change to be 'at %s' % station
       self.rider.status = 'available'
       print 'should have changed to available'
+      '''
       try: 
         recordRide(self)
       except:
         send_mail('PennCycle: Failure', 'inserting ride %s failed' % self, 
           'messenger@penncycle.org', ['rattray@penncycle.org'], fail_silently=False)
+      '''
     self.bike.save()
     self.rider.save()
    
