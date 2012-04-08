@@ -8,7 +8,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django import forms
 from django.views.decorators.csrf import csrf_exempt
 from bootstrap.forms import BootstrapModelForm, Fieldset
-import random, json, hashlib, hmac, gviz_api
+#import random, json, hashlib, hmac, gviz_api
+import random, json, hashlib, hmac
 #from app.docs import addPerson
 
 class SignupForm(BootstrapModelForm):
