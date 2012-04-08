@@ -190,59 +190,6 @@ def pay(request, type, penncard):
     return render_to_response('pay.html', RequestContext(request, context))
 
 def stats(request):
-  # Creating the data
-  description = {"name": ("string", "Name"),
-                 "salary": ("number", "Salary"),
-                 "full_time": ("boolean", "Full Time Employee")}
-  data = [{"name": "Mike", "salary": (10000, "$10,000"), "full_time": True},
-          {"name": "Jim", "salary": (800, "$800"), "full_time": False},
-          {"name": "Alice", "salary": (12500, "$12,500"), "full_time": True},
-          {"name": "Bob", "salary": (7000, "$7,000"), "full_time": True}]
-
-  # Loading it into gviz_api.DataTable
-  data_table = gviz_api.DataTable(description)
-  data_table.LoadData(data)
-
-  # Creating a JavaScript code string
-  jscode = data_table.ToJSCode("jscode_data",
-                               columns_order=("name", "salary", "full_time"),
-                               order_by="salary")
-  # Creating a JSon string
-  json = data_table.ToJSon(columns_order=("name", "salary", "full_time"),
-                           order_by="salary")
-
-  # Putting the JS code and JSon string into the template
- # print "Content-type: text/html"
- # print
- # print data_table.ToJSonResponse(columns_order=("name", "salary", "full_time"),
-      #                          order_by="salary")
-
-
-  '''
-  # Creating the data
-  description = {"date": ("string", "Date"),
-                 "numrides": ("number", "Number of Rides"),
-  data = [{"date": "4/5/12", "numrides": (10, "10")}]
-
-  # Loading it into gviz_api.DataTable
-  data_table = gviz_api.DataTable(description)
-  data_table.LoadData(data)
-
-  # Creating a JavaScript code string
-  jscode = data_table.ToJSCode("jscode_data",
-                               columns_order=("name", "salary", "full_time"),
-                               order_by="salary")
-  # Creating a JSon string
-  json = data_table.ToJSon(columns_order=("name", "salary", "full_time"),
-                           order_by="salary")
-
-  # Putting the JS code and JSon string into the template
-  print "Content-type: text/html"
-  print
-  print data_table.ToJSonResponse(columns_order=("date", "numrides"),
-                                order_by="date")
-                                '''
-  
   return render_to_response('stats.html', {})
 
 def get_stats(request):
