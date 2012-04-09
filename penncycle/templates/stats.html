@@ -30,6 +30,8 @@ google.setOnLoadCallback(function(){
   $('document').ready(makeChart('majors', 'Majors', 'PieChart'));
   $('document').ready(makeChart('schools', 'Schools', 'PieChart'));
 });
+
+
 function makeChart(slug, name, chartType) {
   drawChart();
   var wrapper;
@@ -64,111 +66,6 @@ function makeChart(slug, name, chartType) {
     }); 
     editor.openDialog(wrapper);
   }
-  //drawChart();
 }
- /* 
-  google.setOnLoadCallback(drawSignups);
-  var signupsWrapper;
-  function drawSignups() {
-    //console.log('in drawChart');
-    $.get('api/signups/', function(data) {
-      var dataTable = new google.visualization.DataTable(data, 1);
-      //console.log(dataTable);
-      signupsWrapper = new google.visualization.ChartWrapper({
-        chartType: 'AreaChart',
-        dataTable: dataTable,
-        containerId: 'signups',
-        options: {
-          'title': 'Signups',
-          'height':400,
-        },
-      });
-      signupsWrapper.draw();
-     $('h2.signups small a').click(function(){
-        openSignupsEditor();
-      });
-    });
-  }
-  function openSignupsEditor() {
-    console.log('trying to open some shit');
-    // Handler for the "Open Editor" button.
-    var editor = new google.visualization.ChartEditor();
-    google.visualization.events.addListener(editor, 'ok',
-      function() { 
-        signupsWrapper = editor.getChartWrapper();  
-        signupsWrapper.draw(document.getElementById('signups')); 
-    }); 
-    editor.openDialog(signupsWrapper);
-  }
-  
-  google.setOnLoadCallback(drawSchools);
-  var schoolsWrapper;
-  function drawSchools() {
-    //console.log('in drawChart');
-    $.get('api/schools/', function(data) {
-      var dataTable = new google.visualization.DataTable(data, 1);
-      //console.log(dataTable);
-      schoolsWrapper = new google.visualization.ChartWrapper({
-        chartType: 'PieChart',
-        dataTable: dataTable,
-        containerId: 'schools',
-        options: {
-          'title': 'Schools',
-          'height':400,
-        },
-      });
-      schoolsWrapper.draw();
-      $('h2.schools small a').click(function(){
-        openSchoolsEditor();
-      });
-    });
-  }
-  function openSchoolsEditor() {
-    console.log('trying to open some shit');
-    // Handler for the "Open Editor" button.
-    var editor = new google.visualization.ChartEditor();
-    google.visualization.events.addListener(editor, 'ok',
-      function() { 
-        schoolsWrapper = editor.getChartWrapper();  
-        schoolsWrapper.draw(document.getElementById('schools')); 
-    }); 
-    editor.openDialog(schoolsWrapper);
-  }
-  
-  google.setOnLoadCallback(drawMajors);
-  var majorsWrapper;
-  function drawMajors() {
-    //console.log('in drawChart');
-    $.get('api/majors/', function(data) {
-      var dataTable = new google.visualization.DataTable(data, 1);
-      //console.log(dataTable);
-      majorsWrapper = new google.visualization.ChartWrapper({
-        chartType: 'PieChart',
-        dataTable: dataTable,
-        containerId: 'majors',
-        options: {
-          'title': 'Majors',
-          'height':400,
-        },
-      });
-      majorsWrapper.draw();
-      $('h2.majors small a').click(function(){
-        openMajorsEditor();
-      });
-    });
-  }
-  function openMajorsEditor() {
-    console.log('trying to open some shit');
-    // Handler for the "Open Editor" button.
-    var editor = new google.visualization.ChartEditor();
-    google.visualization.events.addListener(editor, 'ok',
-      function() { 
-        majorsWrapper = editor.getChartWrapper();  
-        majorsWrapper.draw(document.getElementById('majors')); 
-    }); 
-    editor.openDialog(majorsWrapper);
-  }
-  
-  */
 </script>
 {% endblock %}
