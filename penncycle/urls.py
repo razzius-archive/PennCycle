@@ -2,6 +2,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 from app.views import *
 from app.pc_admin import pcAdminSite
+from app import api
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -29,7 +30,7 @@ urlpatterns = patterns('',
     (r'^verify_waiver/$', verify_waiver),
     (r'^pay/(?P<type>\w+)/(?P<penncard>\d{8})/$', pay),
     (r'^stats/$', stats),
-    (r'^get_stats/$', get_stats),
+    (r'^get_stats/$', api.get_stats),
 
     # django_twilio stuff
     #url(r'^dial/(?P<number>\w+)/$', 'django_twilio.views.dial'),
