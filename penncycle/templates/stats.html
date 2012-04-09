@@ -24,7 +24,49 @@
       src='https://www.google.com/jsapi'>
 </script>
 <script>
-  google.load('visualization', '1', {packages: ['charteditor']});
+google.load('visualization', '1', {packages: ['charteditor']}); 
+google.setOnLoadCallback(function(){
+  $('document').ready(makeChart('signups', 'Signups', 'AreaChart'));
+  $('document').ready(makeChart('majors', 'Majors', 'PieChart'));
+  $('document').ready(makeChart('schools', 'Schools', 'PieChart'));
+});
+function makeChart(slug, name, chartType) {
+  drawChart();
+  var wrapper;
+  function drawChart() {
+    //console.log('in drawChart');
+    $.get('api/'+slug+'/', function(data) {
+      var dataTable = new google.visualization.DataTable(data, 1);
+      //console.log(dataTable);
+      wrapper = new google.visualization.ChartWrapper({
+        chartType: chartType,
+        dataTable: dataTable,
+        containerId: slug,
+        options: {
+          'title': name,
+          'height':400,
+        },
+      });
+      wrapper.draw();
+     $('h2.'+slug+' small a').click(function(){
+        openEditor();
+      });
+    });
+  }
+  function openEditor() {
+    console.log('trying to open some shit');
+    // Handler for the "Open Editor" button.
+    var editor = new google.visualization.ChartEditor();
+    google.visualization.events.addListener(editor, 'ok',
+      function() { 
+        wrapper = editor.getChartWrapper();  
+        wrapper.draw(document.getElementById(slug)); 
+    }); 
+    editor.openDialog(wrapper);
+  }
+  //drawChart();
+}
+ /* 
   google.setOnLoadCallback(drawSignups);
   var signupsWrapper;
   function drawSignups() {
@@ -126,5 +168,7 @@
     }); 
     editor.openDialog(majorsWrapper);
   }
+  
+  */
 </script>
 {% endblock %}
