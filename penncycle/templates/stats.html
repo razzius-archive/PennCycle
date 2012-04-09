@@ -6,61 +6,125 @@
 
 {% block content %}
   <h1>Stats</h1>
-    <body>
-    <h1>Table created using Normal</h1>
-    <div id="table_div_json">Loading...</div>
-    <h1>Table created using Wrapper</h1>
-    <div id="table_div_json2">Loading...</div>
-  </body>
+  <hr>
+  <h2 class="signups">Signups <small><a>edit</a></small></h2>
+  <div id="signups">Loading...</div>
+  <hr>
+  <h2 class="schools">Schools <small><a>edit</a></small></h2>
+  <div id="schools">Loading...</div>
+  <hr>
+  <h2 class="majors">Majors <small><a>edit</a></small></h2>
+  <div id="majors">Loading...</div>  
 {% endblock %}
 
 {% block scripts %}
 <script src="media/js/djangojax.js" type="text/javascript"></script>
   <!--Load the AJAX API-->
 <script type="text/javascript"
-      src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1"}]}'>
+      src='https://www.google.com/jsapi'>
 </script>
 <script>
-  google.setOnLoadCallback(drawChart);
-  
-  function getData() {
-    var dataTable = $.get('../get_stats/', function(data) {
-      console.log('got');
-      console.log(data);
+  google.load('visualization', '1', {packages: ['charteditor']});
+  google.setOnLoadCallback(drawSignups);
+  var signupsWrapper;
+  function drawSignups() {
+    //console.log('in drawChart');
+    $.get('api/signups/', function(data) {
       var dataTable = new google.visualization.DataTable(data, 1);
-      console.log(dataTable);
-      return dataTable;
-    });
-    return dataTable;
-  }
-  
-  function drawTable() {
-    var dataTable = getData();
-    var dataView = new google.visualization.DataView(dataTable);
-    dataView.setColumns([{calc: function(data, row) { return ''; }, type:'string'}, 0, 1]);
-    var chart = new google.visualization.LineChart(document.getElementById('table_div_json'));
-    console.log(json_data);
-    chart.draw(dataView, {});
-  }
-    
-  function drawChart() {
-  console.log('in drawChart');
-    $.get('../get_stats/', function(data) {
-      var dataTable = new google.visualization.DataTable(data, 1);
-      console.log(dataTable);
-      var wrapper = new google.visualization.ChartWrapper({
-        chartType: 'LineChart',
+      //console.log(dataTable);
+      signupsWrapper = new google.visualization.ChartWrapper({
+        chartType: 'AreaChart',
         dataTable: dataTable,
+        containerId: 'signups',
         options: {
-          'title': 'Countries',
+          'title': 'Signups',
           'height':400,
-          
         },
-        containerId: 'table_div_json'
       });
-    wrapper.draw()
+      signupsWrapper.draw();
+     $('h2.signups small a').click(function(){
+        openSignupsEditor();
+      });
     });
-    // No query callback handler needed!
+  }
+  function openSignupsEditor() {
+    console.log('trying to open some shit');
+    // Handler for the "Open Editor" button.
+    var editor = new google.visualization.ChartEditor();
+    google.visualization.events.addListener(editor, 'ok',
+      function() { 
+        signupsWrapper = editor.getChartWrapper();  
+        signupsWrapper.draw(document.getElementById('signups')); 
+    }); 
+    editor.openDialog(signupsWrapper);
+  }
+  
+  google.setOnLoadCallback(drawSchools);
+  var schoolsWrapper;
+  function drawSchools() {
+    //console.log('in drawChart');
+    $.get('api/schools/', function(data) {
+      var dataTable = new google.visualization.DataTable(data, 1);
+      //console.log(dataTable);
+      schoolsWrapper = new google.visualization.ChartWrapper({
+        chartType: 'PieChart',
+        dataTable: dataTable,
+        containerId: 'schools',
+        options: {
+          'title': 'Schools',
+          'height':400,
+        },
+      });
+      schoolsWrapper.draw();
+      $('h2.schools small a').click(function(){
+        openSchoolsEditor();
+      });
+    });
+  }
+  function openSchoolsEditor() {
+    console.log('trying to open some shit');
+    // Handler for the "Open Editor" button.
+    var editor = new google.visualization.ChartEditor();
+    google.visualization.events.addListener(editor, 'ok',
+      function() { 
+        schoolsWrapper = editor.getChartWrapper();  
+        schoolsWrapper.draw(document.getElementById('schools')); 
+    }); 
+    editor.openDialog(schoolsWrapper);
+  }
+  
+  google.setOnLoadCallback(drawMajors);
+  var majorsWrapper;
+  function drawMajors() {
+    //console.log('in drawChart');
+    $.get('api/majors/', function(data) {
+      var dataTable = new google.visualization.DataTable(data, 1);
+      //console.log(dataTable);
+      majorsWrapper = new google.visualization.ChartWrapper({
+        chartType: 'PieChart',
+        dataTable: dataTable,
+        containerId: 'majors',
+        options: {
+          'title': 'Majors',
+          'height':400,
+        },
+      });
+      majorsWrapper.draw();
+      $('h2.majors small a').click(function(){
+        openMajorsEditor();
+      });
+    });
+  }
+  function openMajorsEditor() {
+    console.log('trying to open some shit');
+    // Handler for the "Open Editor" button.
+    var editor = new google.visualization.ChartEditor();
+    google.visualization.events.addListener(editor, 'ok',
+      function() { 
+        majorsWrapper = editor.getChartWrapper();  
+        majorsWrapper.draw(document.getElementById('majors')); 
+    }); 
+    editor.openDialog(majorsWrapper);
   }
 </script>
 {% endblock %}

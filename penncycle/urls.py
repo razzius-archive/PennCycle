@@ -30,7 +30,10 @@ urlpatterns = patterns('',
     (r'^verify_waiver/$', verify_waiver),
     (r'^pay/(?P<type>\w+)/(?P<penncard>\d{8})/$', pay),
     (r'^stats/$', stats),
-    (r'^get_stats/$', api.get_stats),
+    
+    (r'api/signups/$', api.signups),
+    (r'api/schools/$', api.schools),
+    (r'api/majors/$', api.majors),
 
     # django_twilio stuff
     #url(r'^dial/(?P<number>\w+)/$', 'django_twilio.views.dial'),
