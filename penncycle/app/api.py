@@ -71,3 +71,22 @@ def majors(request):
   json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
 
   return HttpResponse(json, content_type="application/json")
+  
+def numrides(request):
+  students = Student.objects.all()
+  description = [
+    ('numrides','string','Number of Rides'),
+    ('frequency','number','Frequency'),
+    ] 
+  columns_order = ('numrides', 'frequency')
+  order_by = columns_order[0]
+  def num_rides(student):
+    return len(student.ride_set.all())
+  data = Counter([num_rides(s) for s in students]).items()
+  #data = sorted(data, key=operator.itemgetter(0), reverse=True)
+  print data
+  data_table = gviz_api.DataTable(description)
+  data_table.LoadData(data)
+  json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
+
+  return HttpResponse(json, content_type="application/json")

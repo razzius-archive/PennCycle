@@ -15,6 +15,9 @@
   <hr>
   <h2 class="majors">Majors <small><a>edit</a></small></h2>
   <div id="majors">Loading...</div>  
+  <hr>
+  <h2 class="numrides">Number of Rides <small><a>edit</a></small></h2>
+  <div id="numrides">Loading...</div>  
 {% endblock %}
 
 {% block scripts %}
@@ -26,13 +29,15 @@
 <script>
 google.load('visualization', '1', {packages: ['charteditor']}); 
 google.setOnLoadCallback(function(){
-  $('document').ready(makeChart('signups', 'Signups', 'AreaChart'));
+  $('document').ready(makeChart('signups', 'Signups', 'AreaChart', {'theme':'maximized',}));
   $('document').ready(makeChart('majors', 'Majors', 'PieChart'));
   $('document').ready(makeChart('schools', 'Schools', 'PieChart'));
+  $('document').ready(makeChart('numrides', 'Schools', 'BarChart'));
+  
 });
 
 
-function makeChart(slug, name, chartType) {
+function makeChart(slug, name, chartType, options) {
   drawChart();
   var wrapper;
   function drawChart() {
@@ -40,14 +45,17 @@ function makeChart(slug, name, chartType) {
     $.get('api/'+slug+'/', function(data) {
       var dataTable = new google.visualization.DataTable(data, 1);
       //console.log(dataTable);
+      var defaults = {
+          'title': name,
+          'height':400,
+          
+        };
+      options = $.extend(defaults, options)
       wrapper = new google.visualization.ChartWrapper({
         chartType: chartType,
         dataTable: dataTable,
         containerId: slug,
-        options: {
-          'title': name,
-          'height':400,
-        },
+        options: options,
       });
       wrapper.draw();
      $('h2.'+slug+' small a').click(function(){
