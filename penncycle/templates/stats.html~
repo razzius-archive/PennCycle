@@ -20,7 +20,7 @@
   <div id="numrides">Loading...</div>  
   <hr>
   <h2 class="duration">Duration of Rides <small><a>edit</a></small></h2>
-  <div id="duration">Loading...</div>  
+  <div id="numrides">Loading...</div>  
 {% endblock %}
 
 {% block scripts %}

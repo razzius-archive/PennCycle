@@ -135,6 +135,7 @@ class Ride(models.Model):
     related_name='rides')
   checkout_time = models.DateTimeField(auto_now_add=True)
   checkin_time = models.DateTimeField(null=True, blank=True)
+  #duration = models.DateTimeField(null=True, blank=True)
   checkout_station = models.ForeignKey(Station, default=1, related_name='checkouts')
   checkin_station = models.ForeignKey(Station, blank=True, null=True, related_name='checkins')
   num_users = models.IntegerField()

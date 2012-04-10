@@ -1,4 +1,4 @@
-import random, json, hashlib, hmac, gviz_api, operator
+import random, json, hashlib, hmac, gviz_api, operator, math
 from collections import Counter
 from django.http import HttpResponseRedirect, HttpResponse
 from app.models import *
@@ -90,3 +90,48 @@ def numrides(request):
   json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
 
   return HttpResponse(json, content_type="application/json")
+
+def duration(request):
+  print 'in duration function'
+  rides = Ride.objects.all()
+  print 'got rides'
+  description = [
+    ('duration','string','Duration of Rides'),
+    ('count','number','Count'),
+    ] 
+  columns_order = ('duration', 'count')
+  order_by = columns_order[0]
+  #data = [{float(t)/2: 0} for t in range(0, 20, 1)]
+  # here i basically make my own map because a dict is immutable. better way to do this?
+  keyList = [float(t)/2 for t in range(0, 21, 1)]
+  keyList.append('more')
+  valList = [0 for i in range(0, 22, 1)]
+  for r in rides:
+    if r.checkin_time != None:
+      rideDuration = r.checkin_time - r.checkout_time
+      # hocus pocus to get # of hours rounded to nearest half hour
+      #hours = round((float(rideDuration.seconds) / 3600) * 2) / 2
+      hours = math.floor((float(rideDuration.seconds) / 3600) * 2) / 2
+      if hours > 10.0:
+        hours = 'more'
+      index = keyList.index(hours)
+   
+      valList[index] = valList[index] + 1
+      print valList[index]
+
+  # put all that shit back into a dict
+  print 'making data'
+  #data = {{float(t)/2: valList[valList.index(float(t)/2)]} for t in range(0, 21, 1)} 
+  data = []
+  for i in range(len(keyList)):
+    tempTuple = (keyList[i], valList[i])
+    data.append(tempTuple)
+
+  #data = Counter([num_rides(r) for r in rides]).items()
+  print data
+  data_table = gviz_api.DataTable(description)
+  data_table.LoadData(data)
+  json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
+
+  return HttpResponse(json, content_type="application/json")
+
