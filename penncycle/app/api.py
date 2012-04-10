@@ -2,6 +2,7 @@ import random, json, hashlib, hmac, gviz_api, operator
 from collections import Counter
 from django.http import HttpResponseRedirect, HttpResponse
 from app.models import *
+from django.contrib.auth.decorators import login_required
 
 def signups(request):
   print 'in get_stats'
@@ -90,3 +91,30 @@ def numrides(request):
   json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
 
   return HttpResponse(json, content_type="application/json")
+  
+def numrides(request):
+  students = Student.objects.all()
+  description = [
+    ('numrides','string','Number of Rides'),
+    ('frequency','number','Frequency'),
+    ] 
+  columns_order = ('numrides', 'frequency')
+  order_by = columns_order[0]
+  
+  def num_rides(student):
+    return len(student.ride_set.all())
+    
+  data = Counter([num_rides(s) for s in students]).items()
+
+  print data
+  data_table = gviz_api.DataTable(description)
+  data_table.LoadData(data)
+  json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
+
+  return HttpResponse(json, content_type="application/json")
+  
+@login_required
+def emails(request):
+  students = Student.objects.all()
+  string = ', '.join([s.email for s in students])
+  return HttpResponse(string)

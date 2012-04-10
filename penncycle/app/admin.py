@@ -42,6 +42,16 @@ class RidesAdmin(admin.ModelAdmin):
       item.bike.save()
       item.rider.status='available'
       item.rider.save()
+      s = item.rider
+      if len(s.ride_set.all()) < 4:
+        send_mail('How was your ride today?', '''
+Hey %s, \n
+How was your ride today? 
+(Where'd you ride today, how was the bike, were there any problems, etc.) \n
+We'd love to hear how your ride was,
+Alex & the PennCycle Team
+          ''' % (s.name),
+          '"The PennCycle Team" <messenger@penncycle.org>', [s.email], fail_silently=False)
       item.save()
     if rides_updated == 1:
       message_bit = '1 bike was'
