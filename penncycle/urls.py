@@ -36,6 +36,7 @@ urlpatterns = patterns('',
     (r'api/majors/$', api.majors),
     (r'api/numrides/$', api.numrides),
     (r'api/emails/$', api.emails),
+    (r'api/duration/$', api.duration),
 
     # django_twilio stuff
     #url(r'^dial/(?P<number>\w+)/$', 'django_twilio.views.dial'),

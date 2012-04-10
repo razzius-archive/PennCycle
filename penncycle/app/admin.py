@@ -36,8 +36,11 @@ class RidesAdmin(admin.ModelAdmin):
 
   # make this only work for bikes not already checked in
   def check_in(self, request, queryset):
+    #time = datetime.datetime.now()
     rides_updated = queryset.update(checkin_time=datetime.datetime.now())
     for item in queryset:
+      #item.checkin_time=time
+      #item.duration = time - item.checkout_time
       item.bike.status='available'
       item.bike.save()
       item.rider.status='available'

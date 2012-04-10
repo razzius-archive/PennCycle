@@ -4,7 +4,6 @@ from django.template.defaultfilters import slugify
 from django.db import models
 from django.db.models import Q
 from django.core.validators import RegexValidator
-# from app.docs import recordRide
 import re
 import datetime
 
@@ -160,8 +159,6 @@ class Ride(models.Model):
     print 'in save method'
     if not self.num_users:
       self.num_users = len(Student.objects.all())
-      #set the num users
-    #should pass to normal save func now
     super(Ride, self).save()
     print 'super saved!'
     if self.checkin_time == None:
@@ -175,11 +172,6 @@ class Ride(models.Model):
       self.bike.status = 'available' #change to be 'at %s' % station
       self.rider.status = 'available'
       print 'should have changed to available'
-#      try:
-#        recordRide(self)
-#      except:
-#        send_mail('PennCycle: Failure', 'inserting ride %s failed' % self,
-#          'messenger@penncycle.org', ['rattray@penncycle.org'], fail_silently=False)
     self.bike.save()
     self.rider.save()
 
