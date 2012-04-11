@@ -81,25 +81,6 @@ def numrides(request):
     ] 
   columns_order = ('numrides', 'frequency')
   order_by = columns_order[0]
-  def num_rides(student):
-    return len(student.ride_set.all())
-  data = Counter([num_rides(s) for s in students]).items()
-  #data = sorted(data, key=operator.itemgetter(0), reverse=True)
-  print data
-  data_table = gviz_api.DataTable(description)
-  data_table.LoadData(data)
-  json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
-
-  return HttpResponse(json, content_type="application/json")
-  
-def numrides(request):
-  students = Student.objects.all()
-  description = [
-    ('numrides','string','Number of Rides'),
-    ('frequency','number','Frequency'),
-    ] 
-  columns_order = ('numrides', 'frequency')
-  order_by = columns_order[0]
   
   def num_rides(student):
     return len(student.ride_set.all())
@@ -157,6 +138,134 @@ def duration(request):
   print data
   data_table = gviz_api.DataTable(description)
   data_table.LoadData(data)
+  json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
+
+  return HttpResponse(json, content_type="application/json")
+
+def gender(request):
+  students = Student.objects.all()
+  description = [
+    ('gender','string','Gender'),
+    ('count','number','Count'),
+    ] 
+  columns_order = ('gender', 'count')
+  order_by = columns_order[1]
+  data = Counter([s.gender for s in students]).items()
+  #data = sorted(data, key=operator.itemgetter(0), reverse=True)
+  print data
+  data_table = gviz_api.DataTable(description)
+  data_table.LoadData(data)
+  json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
+
+  return HttpResponse(json, content_type="application/json")
+
+def housing(request):
+  students = Student.objects.all()
+  description = [
+    ('housing','string','Housing'),
+    ('count','number','Count'),
+    ] 
+  columns_order = ('housing', 'count')
+  order_by = columns_order[1]
+  data = Counter([s.living_location for s in students]).items()
+  #data = sorted(data, key=operator.itemgetter(0), reverse=True)
+  print data
+  data_table = gviz_api.DataTable(description)
+  data_table.LoadData(data)
+  json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
+
+  return HttpResponse(json, content_type="application/json")
+
+def paid(request):
+  students = Student.objects.all()
+  description = [
+    ('paid','string','Has Paid?'),
+    ('count','number','Count'),
+    ] 
+  columns_order = ('paid', 'count')
+  order_by = columns_order[1]
+  data = Counter([s.paid for s in students]).items()
+  #data = sorted(data, key=operator.itemgetter(0), reverse=True)
+  print data
+  data_table = gviz_api.DataTable(description)
+  data_table.LoadData(data)
+  json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
+
+  return HttpResponse(json, content_type="application/json")
+
+def year(request):
+  students = Student.objects.all()
+  description = [
+    ('year','string','Year'),
+    ('count','number','Count'),
+    ] 
+  columns_order = ('year', 'count')
+  order_by = columns_order[1]
+  data = Counter([s.grad_year for s in students]).items()
+  #data = sorted(data, key=operator.itemgetter(0), reverse=True)
+  print data
+  data_table = gviz_api.DataTable(description)
+  data_table.LoadData(data)
+  json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
+
+  return HttpResponse(json, content_type="application/json")
+
+def waived(request):
+  students = Student.objects.all()
+  description = [
+    ('waived','string','Signed Waiver?'),
+    ('count','number','Count'),
+    ] 
+  columns_order = ('waived', 'count')
+  order_by = columns_order[1]
+  data = Counter([s.waiver_signed for s in students]).items()
+  #data = sorted(data, key=operator.itemgetter(0), reverse=True)
+  print data
+  data_table = gviz_api.DataTable(description)
+  data_table.LoadData(data)
+  json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
+
+  return HttpResponse(json, content_type="application/json")
+
+def payment(request):
+  students = Student.objects.all()
+  description = [
+    ('payment','string','Type of Payment'),
+    ('count','number','Count'),
+    ] 
+  columns_order = ('payment', 'count')
+  order_by = columns_order[1]
+  data = Counter([s.payment_type for s in students]).items()
+  #data = sorted(data, key=operator.itemgetter(0), reverse=True)
+  print data
+  data_table = gviz_api.DataTable(description)
+  data_table.LoadData(data)
+  json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
+
+  return HttpResponse(json, content_type="application/json")
+
+def checkouts(request):
+  print 'in get_stats'
+  rides = Ride.objects.all()
+  description = [
+    ('date', 'date','Checkout Date'), 
+    ('checkouts','number','Checkouts'),
+    ('cum','number','Cumulative'),
+    ] 
+  columns_order = ('date', 'checkouts', 'cum')
+  order_by = columns_order[0]
+  data = Counter([r.checkout_time.date() for r in rides]).items()
+  data = sorted(data, key=operator.itemgetter(0), reverse=False)
+  print data
+  n=0
+  longdata = []
+  for d in data:
+    n+=d[1]
+    longdata.append(d+(n,))
+  print longdata
+  # Loading it into gviz_api.DataTable
+  data_table = gviz_api.DataTable(description)
+  data_table.LoadData(longdata)
   json = data_table.ToJSon(columns_order=columns_order, order_by=order_by)
 
   return HttpResponse(json, content_type="application/json")

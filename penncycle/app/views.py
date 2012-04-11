@@ -9,6 +9,7 @@ from django import forms
 from django.views.decorators.csrf import csrf_exempt
 from bootstrap.forms import BootstrapModelForm, Fieldset
 import random, json, hashlib, hmac, gviz_api
+from django.contrib.auth.decorators import login_required
 #from app.docs import addPerson
 
 class SignupForm(BootstrapModelForm):
@@ -189,5 +190,6 @@ def pay(request, type, penncard):
     }
     return render_to_response('pay.html', RequestContext(request, context))
 
+@login_required
 def stats(request):
   return render_to_response('stats.html', {})

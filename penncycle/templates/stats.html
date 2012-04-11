@@ -10,17 +10,35 @@
   <h2 class="signups">Signups <small><a>edit</a></small></h2>
   <div id="signups">Loading...</div>
   <hr>
-  <h2 class="schools">Schools <small><a>edit</a></small></h2>
-  <div id="schools">Loading...</div>
-  <hr>
-  <h2 class="majors">Majors <small><a>edit</a></small></h2>
-  <div id="majors">Loading...</div>  
+  <h2 class="checkouts">Checkouts Per Day <small><a>edit</a></small></h2>
+  <div id="checkouts">Loading...</div> 
   <hr>
   <h2 class="numrides">Number of Rides <small><a>edit</a></small></h2>
   <div id="numrides">Loading...</div>  
   <hr>
   <h2 class="duration">Duration of Rides <small><a>edit</a></small></h2>
   <div id="duration">Loading...</div>  
+  <hr>
+  <h2 class="schools">Schools <small><a>edit</a></small></h2>
+  <div id="schools">Loading...</div>
+  <hr>
+  <h2 class="majors">Majors <small><a>edit</a></small></h2>
+  <div id="majors">Loading...</div>  
+  <hr>
+  <h2 class="gender">Gender <small><a>edit</a></small></h2>
+  <div id="gender">Loading...</div>  
+  <hr>
+  <h2 class="housing">Housing <small><a>edit</a></small></h2>
+  <div id="housing">Loading...</div>  
+  <hr>
+  <h2 class="paid">Has Paid? <small><a>edit</a></small></h2>
+  <div id="paid">Loading...</div> 
+  <hr>
+  <h2 class="waived">Signed Waiver? <small><a>edit</a></small></h2>
+  <div id="waived">Loading...</div> 
+  <hr>
+  <h2 class="year">Graduation Year <small><a>edit</a></small></h2>
+  <div id="year">Loading...</div> 
 {% endblock %}
 
 {% block scripts %}
@@ -33,10 +51,16 @@
 google.load('visualization', '1', {packages: ['charteditor']}); 
 google.setOnLoadCallback(function(){
   $('document').ready(makeChart('signups', 'Signups', 'AreaChart', {'theme':'maximized',}));
-  $('document').ready(makeChart('majors', 'Majors', 'PieChart'));
-  $('document').ready(makeChart('schools', 'Schools', 'PieChart'));
+  $('document').ready(makeChart('checkouts', 'Checkouts Per Day', 'AreaChart'));
   $('document').ready(makeChart('numrides', 'Frequency', 'ColumnChart'));
   $('document').ready(makeChart('duration', 'Duration', 'ColumnChart'));
+  $('document').ready(makeChart('majors', 'Majors', 'PieChart'));
+  $('document').ready(makeChart('schools', 'Schools', 'PieChart'));
+  $('document').ready(makeChart('gender', 'Gender', 'PieChart'));
+  $('document').ready(makeChart('housing', 'Housing', 'PieChart'));
+  $('document').ready(makeChart('paid', 'Has Paid?', 'PieChart'));
+  $('document').ready(makeChart('waived', 'Signed Waiver?', 'PieChart'));
+  $('document').ready(makeChart('year', 'Graduation Year', 'PieChart'));
   
 });
 
