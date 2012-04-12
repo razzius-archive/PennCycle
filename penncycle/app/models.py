@@ -97,6 +97,7 @@ class Student(models.Model):
   status = models.CharField(max_length=100, default='available')
   payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
   at_desk = models.NullBooleanField()
+  plan = models.ManyToManyField('Plan', blank=True, null=True)
 
   def __unicode__(self):
     return u'%s %s' % (self.name, self.penncard)
@@ -211,3 +212,23 @@ class Comment(models.Model):
 
   def __unicode__(self):
     return self.comment[:30]
+
+class Plan(models.Model):
+  name = models.CharField(max_length = 100)
+  cost = models.IntegerField()
+  start_date = models.DateField()
+  end_date = models.DateField()
+
+  def __unicode__(self):
+    return self.name + ': $' + str(self.cost)
+
+
+class Payment(models.Model):
+  amount = models.DecimalField(decimal_places=2, max_digits=6)
+  plan = models.ForeignKey(Plan, blank=True, null=True)
+  student = models.ForeignKey(Student)
+  date = models.DateField(auto_now_add=True)
+  satisfied = models.BooleanField(default=True)
+
+  def __unicode__(self):
+    return str(self.student) + ' for ' + str(self.plan)

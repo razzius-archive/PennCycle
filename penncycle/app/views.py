@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from bootstrap.forms import BootstrapModelForm, Fieldset
 import random, json, hashlib, hmac, gviz_api
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 #from app.docs import addPerson
 
 class SignupForm(BootstrapModelForm):
@@ -152,11 +153,12 @@ def verify_waiver(request):
     return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")
   return HttpResponse('failure')
 
-def pay(request, type, penncard):
+def pay(request, type, penncard, plan):
   if request.method == 'POST':
     type = str(request.POST.get('type')).lower()
     print type
     print penncard
+    print plan
     student = get_object_or_404(Student, penncard=penncard) # verify form is filled out well!
     print student
     last_two = request.POST.get('last_two')
@@ -193,3 +195,9 @@ def pay(request, type, penncard):
 @login_required
 def stats(request):
   return render_to_response('stats.html', {})
+
+def selectpayment(request):
+  plans = Plan.objects.filter(end_date__gt = datetime.date.today())
+  return render_to_response('selectpayment.html', {'plans': plans})
+
+
