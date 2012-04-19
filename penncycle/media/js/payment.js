@@ -24,7 +24,7 @@ $.ajaxSetup({
 
 $('#paybycredit').click(function(){
   createPayment();
-  //$('#payform').submit();
+  $('#payform').submit();
 });
 
 $('#paybycash').click(function(){
