@@ -130,7 +130,15 @@ class Ride(models.Model):
   rider = models.ForeignKey(Student, limit_choices_to = {
     'status': 'available',
     'waiver_signed':True,
-    'paid':True})
+
+    # comment this out when spring 2012 plan ends
+    'paid':True,
+    
+    # uncomment this when spring2012 plan ends
+    #'payment__satisfied': True,
+    #'payment__plan__end_date__gte': datetime.date.today,
+    #'payment__plan__start_date__lte': datetime.date.today,
+    })
   bike = models.ForeignKey('Bike', limit_choices_to = {'status': 'available'},
     related_name='rides')
   checkout_time = models.DateTimeField(auto_now_add=True)
