@@ -15,12 +15,15 @@
 {% endblock %}
 
 {% block scripts %}
+  <script src="../media/js/payment.js">
+  </script>
   <script>
     //console.log(pcnum);
 
 
     $("#amount-id").val(10);
     $('#paybycredit').click(function(){
+      var pcnum = $("#id_penncard").val();
       $("#penncardnum-id").val(pcnum);
       $('#payform').submit();
     });

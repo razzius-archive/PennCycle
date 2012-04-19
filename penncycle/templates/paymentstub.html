@@ -1,7 +1,7 @@
-<form>
+<form id="planform">
   <select id="select">
     {% for plan in plans %}
-      <option name="{{plan.pk}}"> {{plan}} </option>
+      <option name="{{plan.pk}}" dollar="{{plan.cost}}"> {{plan}} </option>
     {% endfor %}
   </select>
 </form>
@@ -19,8 +19,8 @@
 </p>
 <hr>
 <span>
-  <a class='btn btn-primary paybutton' name='paybycash' value='paybycash' id='paybycash' href='/pay/cash/'>Cash &#187;</a>
-  <a class='btn btn-primary paybutton' name='paybybursar' value='paybybursar' id='paybybursar' href='/pay/bursar/'>Bursar &#187;</a>
+  <a class='btn btn-primary paybutton' name='paybycash' value='paybycash' id='paybycash' href='#'>Cash &#187;</a>
+  <a class='btn btn-primary paybutton' name='paybybursar' value='paybybursar' id='paybybursar' href='#'>Bursar &#187;</a>
   <!--<a class='btn btn-primary' name='paybypenncash' value='paybypenncash' id='paybypenncash' href='/pay/penncash/'>PennCash &#187;</a>-->
   <a class='btn btn-primary' name='paybycredit' value='paybycredit' id='paybycredit' href='#'>Credit Card &#187;</a>
 </span>
@@ -28,3 +28,5 @@
   <input id="penncardnum-id" type="hidden" name="ordernumber" value='12345678' />
   <input id="amount-id" type="hidden" name="amount" value=10 />
 </form>
+
+    

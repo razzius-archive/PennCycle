@@ -15,24 +15,6 @@
 {% endblock %}
 
 {% block scripts %}
-  <script>
-    //console.log(pcnum);
-
-
-    $("#amount-id").val(10);
-    $('#paybycredit').click(function(){
-      var pcnum = $("#id_penncard").val();
-      $("#penncardnum-id").val(pcnum);
-      $('#payform').submit();
-    });
-    
-    $('.paybutton').click(function () {
-      var pcnum = $("#id_penncard").val();
-      $("#penncardnum-id").val(pcnum);
-      var plan = $("select option:selected").attr("name");
-      var _href = $(this).attr('href');
-      $(this).attr('href', _href + pcnum + "/" + plan);
-
-    });
+  <script src="../media/js/payment.js">
   </script>
 {% endblock scripts %}

@@ -53,6 +53,8 @@
 </div>
 {% endblock %}
 {% block scripts %}
+  <script src="../media/js/payment.js">
+  </script>
   <script type="text/javascript">
   
     $('#info-button').click(function() {
@@ -122,73 +124,6 @@
       toTab('waiver');
     });
     
-    $('button#waiver-form').click(function(){
-      toTab('pay');
-      var pcnum = $("#id_penncard").val();
-      console.log(pcnum);
-
-      $.ajaxSetup({ 
-        beforeSend: function(xhr, settings) {
-          function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie != '') {
-              var cookies = document.cookie.split(';');
-              for (var i = 0; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                  break;
-                }
-              }
-            }
-            return cookieValue;
-          }
-          if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-            // Only send the token to relative URLs i.e. locally.
-            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-          }
-        } 
-      });
-
-      var pennidDict = {'pennid': pcnum};
-      var pennidData = $.param(pennidDict);
-      console.log(pennidDict);
-      console.log(pennidData);
-      $.ajax ({
-        url: '../verify_waiver/', 
-        type: 'POST',
-        data: pennidDict,
-        dataType: 'json',
-        error: function(xhr, status, exception) {
-          console.log(xhr);
-          console.log(status);
-          console.log(exception);
-          alert('waiver failed');
-        },
-        success: function(data, status, xhr) {
-          console.log('waiver success');
-        },
-      });
-
-      $("#penncardnum-id").val(pcnum);
-      $("#amount-id").val(10);
-      $('#paybycredit').click(function(){
-        $('#payform').submit();
-      });
-      
-      function appendPcnum (id, pcnum) {
-        var _href = $(id).attr('href');
-        $(id).attr('href', _href + pcnum);
-        console.log('appended');
-      }
-      
-      appendPcnum('#paybycash', pcnum);
-      appendPcnum('#paybypenncash', pcnum);
-      appendPcnum('#paybybursar', pcnum);
-      
-    }); 
-
     // set background for active tab in navbar    
     $('.nav1 li#signup').addClass('active');
 

@@ -16,12 +16,22 @@ from django.db.models import F
 class SignupForm(BootstrapModelForm):
   class Meta:
     model = Student
-    exclude = ('join_date', 'status', 'waiver_signed', 'paid', 'last_two', 'payment_type', 'at_desk')
+    exclude = ('join_date', 
+                'status', 
+                'waiver_signed', 
+                'paid', 
+                'last_two', 
+                'payment_type', 
+                'at_desk',
+                'plan')
 
 class InfoSubmitForm(forms.ModelForm):
   class Meta:
     model = Student
-    exclude = ('join_date', 'status', 'waiver_signed', 'paid',)
+    exclude = ('join_date', 
+                'status', 
+                'waiver_signed', 
+                'paid',)
 
 def pages():
   pages = [
@@ -50,8 +60,15 @@ def info_submit(request):
     print form
     if form.is_valid():
       print "shit is validd"
-      form.save()
+      student = form.save()
+      living_location = student.living_location
+      if living_location == 'Stouffer': 
+        student.paid = True
+        student.save()
+        print "this student lives in stouffer"
+        print str(student) + "; paid = " + str(student.paid)
       print "saved form"
+      print "payment plan: " + str(student.plan)
       reply = {'success': True, 'form_valid': True}
     else:
       print "INVALID bullshit"
@@ -83,6 +100,7 @@ def signup(request):
   context = {
       'safety_info': safety_info,
       'form': form,
+      'plans': Plan.objects.filter(end_date__gt = datetime.date.today())
   }
   context.update({'pages':pages()})
   context_instance = RequestContext(request, context)
@@ -102,21 +120,37 @@ def verify_payment(request):
     
     amount = str(request.POST.get('orderAmount', 0))
     print amount
-    
-    # add in test that amount is $10
-    
-    # if source matches CyberSource, payment completed
-    #if source == source_needed and (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == .01:
-    reasonCode = request.POST.get('reasonCode')
-    good_reasons = [100,200]
-    print reasonCode
-    if (int(reasonCode) in good_reasons) and (amount == '10.00' or amount == '10'):
-      print "check passed"
-      student.paid = True
-      student.payment_type = 'credit'
-      student.save()
-      print "paid"
-    return HttpResponse('Verifying...')
+
+    payments = Payment.objects.filter(satisfied=False, cost=int(amount))
+    p = payments[0]
+
+    # they paid something, but didnt get cleared
+    if len(payments) == 0:
+      message = '''
+        Name: %s \n
+        PennCard: %s \n
+        Type: %s \n
+        Amount: %s \n
+        
+        they paid but didn't get cleared
+      ''' % (student.name, student.penncard, type, amount)
+      send_mail('Faulty Payment w/ %s' % (type), message, 
+        'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=False)
+    else:
+      # if source matches CyberSource, payment completed
+      #if source == source_needed and (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == .01:
+      reasonCode = request.POST.get('reasonCode')
+      good_reasons = [100,200]
+      print reasonCode
+      #if (int(reasonCode) in good_reasons) and (amount == '10.00' or amount == '10'):
+      if (int(reasonCode) in good_reasons): 
+        print "check passed"
+        #student.paid = True
+        p.satisfied=True
+        student.payment_type = 'credit'
+        student.save()
+        print "paid"
+      return HttpResponse('Verifying...')
   else:
     return HttpResponse('Not a POST')
 
@@ -198,6 +232,22 @@ def stats(request):
 
 def selectpayment(request):
   plans = Plan.objects.filter(end_date__gt = datetime.date.today())
+  print plans;
   return render_to_response('selectpayment.html', {'plans': plans})
 
+def addpayment(request):
+  print "in addpayment view"
+  pennid = request.POST.get('pennid')
+  print "pennid = " + str(pennid)
+  associated_student = Student.objects.get(penncard=pennid)
+  print associated_student
+  plan_num = int(request.POST.get('plan'))
+  print "plan num = " + str(plan_num)
+  associated_plan = Plan.objects.get(pk=plan_num)
+  print associated_plan
+  new_payment = Payment(amount=associated_plan.cost, plan=associated_plan, student=associated_student)
+  print new_payment
+  new_payment.save()
+  print "payment saved"
 
+  return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")

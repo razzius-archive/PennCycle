@@ -228,7 +228,7 @@ class Payment(models.Model):
   plan = models.ForeignKey(Plan, blank=True, null=True)
   student = models.ForeignKey(Student)
   date = models.DateField(auto_now_add=True)
-  satisfied = models.BooleanField(default=True)
+  satisfied = models.BooleanField(default=False)
 
   def __unicode__(self):
     return str(self.student) + ' for ' + str(self.plan)
