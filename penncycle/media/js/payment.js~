@@ -29,7 +29,7 @@ $('#paybycredit').click(function(){
 
 $('#paybycash').click(function(){
   var pcnum = $("#id_penncard").val();
-  createPayment();
+  //createPayment();
   var plan = $("form#planform select option:selected");
   var href = '../../pay/cash/' + pcnum + "/" + plan.attr("name");
   //window.location = href;
@@ -37,7 +37,7 @@ $('#paybycash').click(function(){
 
 $('#paybybursar').click(function(){
   var pcnum = $("#id_penncard").val();
-  createPayment();
+  //createPayment();
   var plan = $("form#planform select option:selected");
   var href = '../../pay/bursar/' + pcnum + "/" + plan.attr("name");
   window.location = href;

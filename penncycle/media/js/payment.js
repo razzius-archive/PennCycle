@@ -32,7 +32,7 @@ $('#paybycash').click(function(){
   //createPayment();
   var plan = $("form#planform select option:selected");
   var href = '../../pay/cash/' + pcnum + "/" + plan.attr("name");
-  //window.location = href;
+  window.location = href;
 });
 
 $('#paybybursar').click(function(){
