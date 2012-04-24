@@ -257,7 +257,7 @@ def plans(request):
   print "hit plans view"
   # list of dicts
   plans = [] 
-  for p in Plan.objects.exclude(end_date__lte=datetime.date.today()).order_by('start_date').order_by('cost'):
+  for p in Plan.objects.exclude(end_date__lte=datetime.date.today()).order_by('start_date', 'cost'):
     plans.append({'name': str(p), 'description': p.description})
 
   context = {
