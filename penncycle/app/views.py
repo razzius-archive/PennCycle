@@ -11,6 +11,7 @@ from bootstrap.forms import BootstrapModelForm, Fieldset
 import random, json, hashlib, hmac, gviz_api
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
+import datetime
 #from app.docs import addPerson
 
 class SignupForm(BootstrapModelForm):
@@ -256,7 +257,7 @@ def plans(request):
   print "hit plans view"
   # list of dicts
   plans = [] 
-  for p in Plan.objects.all():
+  for p in Plan.objects.exclude(end_date__lte=datetime.date.today()).order_by('start_date').order_by('cost'):
     plans.append({'name': str(p), 'description': p.description})
 
   context = {
