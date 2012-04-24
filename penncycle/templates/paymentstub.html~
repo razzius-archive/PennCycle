@@ -21,8 +21,6 @@
 <span>
   <a class='btn btn-primary paybutton' name='paybycash' value='paybycash' id='paybycash' href='#'>Cash &#187;</a>
   <a class='btn btn-primary paybutton' name='paybybursar' value='paybybursar' id='paybybursar' href='#'>Bursar &#187;</a>
-  <a class='btn btn-primary paybutton' name='paybycash' value='paybycash' id='paybycash' href='#'>Cash &#187;</a>
-  <a class='btn btn-primary paybutton' name='paybybursar' value='paybybursar' id='paybybursar' href='#'>Bursar &#187;</a>
   <!--<a class='btn btn-primary' name='paybypenncash' value='paybypenncash' id='paybypenncash' href='/pay/penncash/'>PennCash &#187;</a>-->
   <a class='btn btn-primary' name='paybycredit' value='paybycredit' id='paybycredit' href='#'>Credit Card &#187;</a>
 </span>
