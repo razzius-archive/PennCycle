@@ -251,3 +251,13 @@ def addpayment(request):
   print "payment saved"
 
   return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")
+
+def plans(request):
+  print "hit plans view"
+  # list of dicts
+  plans = [] 
+  for p in Plan.objects.all():
+    plans.append({'name': p.name, 'description': p.description})
+
+  print plans
+  return render_to_response('plans.html', {'plans': plans})

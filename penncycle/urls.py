@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     (r'^stats/$', stats),
     (r'^selectpayment/$', selectpayment),
     (r'^addpayment/$', addpayment),
+    (r'^plans/$', plans),
     
     (r'api/signups/$', api.signups),
     (r'api/schools/$', api.schools),
