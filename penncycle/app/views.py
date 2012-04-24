@@ -257,7 +257,11 @@ def plans(request):
   # list of dicts
   plans = [] 
   for p in Plan.objects.all():
-    plans.append({'name': p.name, 'description': p.description})
+    plans.append({'name': str(p), 'description': p.description})
 
+  context = {
+      'plans': plans,
+      'pages': pages(),
+  }
   print plans
-  return render_to_response('plans.html', {'plans': plans})
+  return render_to_response('plans.html', context)

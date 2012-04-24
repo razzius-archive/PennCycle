@@ -226,7 +226,7 @@ class Plan(models.Model):
   cost = models.IntegerField()
   start_date = models.DateField()
   end_date = models.DateField()
-  description = models.CharField(max_length = 1000, default="Details coming soon!")
+  description = models.TextField(max_length = 150, default="Details coming soon!")
 
   def __unicode__(self):
     return self.name + ': $' + str(self.cost)

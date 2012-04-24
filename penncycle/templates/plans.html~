@@ -5,9 +5,15 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Plans</h1>
+  <h1>Payment Plans</h1>
+  <p>Penncycle currently offers the following payment and usage plans.</p>
+  <p></p>
+  <p></p>
+  <hr>
   {% for p in plans %}
-    <h2>{{p.name}}</h2>
-    <p>{{p.description}}</p>
+  <div class="{% cycle 'well' '' %}">
+    <h3>{{p.name}}</h3>
+    <p>{{p.description|safe|linebreaksbr}}</p>
+  </div>
   {% endfor %}
 {% endblock %}
