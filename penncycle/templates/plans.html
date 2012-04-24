@@ -12,7 +12,8 @@
   <hr>
   {% for p in plans %}
   <div class="well">
-    <h3>{{p.name}}</h3>
+    <h2>{{p.name}}</h2>
+    <h4>{{p.start_date}} - {{p.end_date}}</h4>
     <p>{{p.description|safe|linebreaksbr}}</p>
   </div>
   {% endfor %}

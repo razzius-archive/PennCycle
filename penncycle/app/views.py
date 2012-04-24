@@ -258,7 +258,7 @@ def plans(request):
   # list of dicts
   plans = [] 
   for p in Plan.objects.exclude(end_date__lte=datetime.date.today()).order_by('start_date', 'cost'):
-    plans.append({'name': str(p), 'description': p.description})
+    plans.append({'name': str(p), 'description': p.description, 'start_date': p.start_date, 'end_date': p.end_date,})
 
   context = {
       'plans': plans,
