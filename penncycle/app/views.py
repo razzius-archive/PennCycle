@@ -37,6 +37,7 @@ class InfoSubmitForm(forms.ModelForm):
 def pages():
   pages = [
     {'name':'Home','url':'../../'},
+    {'name':'Plans','url':'../../plans/'},
     {'name':'Sign Up','url':'../../signup/'},
     ]
   for page in Page.objects.all():
