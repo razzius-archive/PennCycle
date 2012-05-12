@@ -7,17 +7,6 @@ from django.contrib.auth.decorators import login_required
 def signups(request):
   print 'in get_stats'
   students = Student.objects.all()#.order_by(join_date)
-  # description = {
-    # "signup": ("date", "Signup Date"),
-    ##"name": ("string", "Name"),
-    # "cum": ("number", "Cumulative"),
-		# }
-  # data = []
-  # n = 0
-  # for s in students:
-    # n += 1
-    # dicti = {"signup":s.join_date, "name":str(s.name), "cum":int(n)}
-    # data.append(dicti)
   description = [
     ('date', 'date','Signup Date'), 
     ('signups','number','Signups'),
