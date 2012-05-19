@@ -19,3 +19,4 @@ django-phonenumber-field==0.2a1
 -e git+https://github.com/rdegges/django-twilio.git#egg=django_twilio
 ipython==0.12
 gdata==2.0.16
+xlwt==0.7.4
