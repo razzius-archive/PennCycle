@@ -3,9 +3,9 @@
   <select id="select">
     {% for plan in plans %}
       <option name="{{plan.pk}}" dollar="{{plan.cost}}"> {{plan}} </option>
-      <span><a href="../plans" target="_blank">Read more about our plans here</a></span>
     {% endfor %}
   </select>
+  <span><a href="../plans" target="_blank">Read more about our plans here</a></span>
 </form>
 <hr>
 <h3>You can pay by Cash, Credit Card, Bursar, or PennCash.</h3> 
