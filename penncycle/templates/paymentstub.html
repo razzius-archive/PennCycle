@@ -1,12 +1,15 @@
 <form id="planform">
+  <h3>Select a plan</h3>
   <select id="select">
     {% for plan in plans %}
       <option name="{{plan.pk}}" dollar="{{plan.cost}}"> {{plan}} </option>
+      <span><a href="../plans" target="_blank">Read more about our plans here</a></span>
     {% endfor %}
   </select>
 </form>
 <hr>
 <h3>You can pay by Cash, Credit Card, Bursar, or PennCash.</h3> 
+<br/>
 <p>To pay by <strong>Cash</strong>, pay at the PSA Store or the PennCycle table at Hill</p>
 <p>To pay by <strong>Bursar</strong> or <strong>PennCash</strong>, just hit the button below and wait. 
   It will take up to 48 hours to process your request; 
