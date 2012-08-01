@@ -126,7 +126,7 @@ def verify_payment(request):
     amount = str(request.POST.get('orderAmount', 0))
     print amount
 
-    if str(amount) != str(payment.cost):
+    if str(amount) != str(payment.plan.cost):
       errmessage = 'student didn\'t pay the right amount! Payment: %s' % str(payment.id)
       print errmessage
       email_alex(errmessage)
