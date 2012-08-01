@@ -87,6 +87,10 @@ class Payment(models.Model):
   satisfied = models.BooleanField(default=False)
   payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
 
+  def save(self):
+    super(Payment, self).save()
+    self.student.paid = self.student.paid_now
+
   def __unicode__(self):
     return str(self.student) + ' for ' + str(self.plan)
 
@@ -119,19 +123,24 @@ class Student(models.Model):
   payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
   at_desk = models.NullBooleanField()
   plan = models.ManyToManyField('Plan', blank=True, null=True)
+  paid_now = lambda self: self.payments.filter(
+    satisfied=True,
+    plan__start_date__lte=today,
+    plan__end_date__gte=today,
+    )
 
-  @property
-  def paid_now(self):
-    today = datetime.date.today()
-    payments = self.payments.filter(
-      satisfied=True,
-      plan__start_date__lte=today,
-      plan__end_date__gte=today,
-      )
-    if len(payments) > 0:
-      return True
-    else:
-      return False
+  # @property
+  # def paid_now(self):
+  #   today = datetime.date.today()
+  #   payments = self.payments.filter(
+  #     satisfied=True,
+  #     plan__start_date__lte=today,
+  #     plan__end_date__gte=today,
+  #     )
+  #   if len(payments) > 0:
+  #     return True
+  #   else:
+  #     return False
 # 
   def can_ride(self):
     if self.status == 'available' and self.waiver_signed == True and self.paid_now == True:
@@ -166,13 +175,13 @@ class Station(models.Model):
 
 class Ride(models.Model):
   rider = models.ForeignKey(Student, 
-    choices = [(p.student.id, str(p.student)) for p in Payment.objects.filter(
-      student__status='available',
-      student__waiver_signed=True,
-      plan__start_date__lte=datetime.date.today,
-      plan__end_date__gte=datetime.date.today,
-      satisfied=True,
-      )]
+    limit_choices_to = {
+    'status': 'available',
+    'waiver_signed':True,    
+    'payments__satisfied': True,
+    'payments__plan__end_date__gte': datetime.date.today,
+    'payments__plan__start_date__lte': datetime.date.today,
+    },
     )
   bike = models.ForeignKey('Bike', limit_choices_to = {'status': 'available'},
     related_name='rides')
