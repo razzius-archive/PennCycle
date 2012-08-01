@@ -112,6 +112,7 @@ def signup(request):
 def verify_payment(request):
   if request.method=='POST':
     print "in verify_payment"
+    print request.POST
     # gets the student with penncard specified in POST data
     payment = Payment.objects.get(id=request.POST.get('merchantDefinedData1'))
     student = payment.student
@@ -125,8 +126,10 @@ def verify_payment(request):
     amount = str(request.POST.get('orderAmount', 0))
     print amount
 
-    if amount != payment.cost:
-      email_alex('student didn\'t pay the right amount! Payment: %s' % str(payment.id))
+    if str(amount) != str(payment.cost):
+      errmessage = 'student didn\'t pay the right amount! Payment: %s' % str(payment.id)
+      print errmessage
+      email_alex(errmessage)
     else:
       # if source matches CyberSource, payment completed
       #if source == source_needed and (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == .01:
@@ -263,4 +266,4 @@ def plans(request):
   return render_to_response('plans.html', context)
 
 def email_alex(message):
-  send_mail('an important email from the PennCycle App', unicode(message), 'messenger@penncycle.org', ['rattray.alex@gmail.com'], fail_silently=True)
+  send_mail('an important email from the PennCycle App', str(message), 'messenger@penncycle.org', ['rattray.alex@gmail.com'], fail_silently=True)
