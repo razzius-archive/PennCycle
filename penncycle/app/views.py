@@ -140,7 +140,7 @@ def verify_payment(request):
       if (int(reasonCode) in good_reasons): 
         print "check passed"
         #student.paid = True
-        p.satisfied=True
+        payment.satisfied=True
         student.payment_type = 'credit'
         student.save()
         print "paid"
