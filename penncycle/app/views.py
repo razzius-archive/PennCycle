@@ -146,9 +146,13 @@ def verify_payment(request):
     return HttpResponse('Not a POST')
 
 @csrf_exempt
-def thankyou(request, penncard):
+def thankyou(request, payment_id):
   print "in thanks view"
-  student = get_object_or_404(Student, penncard=penncard)
+  try:
+    payment = Payment.objects.get(id=payment_id)
+    student = payment.student
+  except:
+    student = get_object_or_404(Student, penncard=payment_id)
   #student = Student.objects.get(penncard=request.POST.get('merchantDefinedData1'))
   print student
   type = request.GET.get('type', 'credit')
