@@ -238,6 +238,7 @@ class Payment(models.Model):
   student = models.ForeignKey(Student)
   date = models.DateField(auto_now_add=True)
   satisfied = models.BooleanField(default=False)
-
+  payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
+  
   def __unicode__(self):
     return str(self.student) + ' for ' + str(self.plan)

@@ -141,8 +141,8 @@ def verify_payment(request):
         print "check passed"
         #student.paid = True
         payment.satisfied=True
-        student.payment_type = 'credit'
-        student.save()
+        payment.payment_type = 'credit'
+        payment.save()
         print "paid"
       return HttpResponse('Verified!')
   else:
