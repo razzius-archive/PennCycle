@@ -113,31 +113,20 @@ def verify_payment(request):
   if request.method=='POST':
     print "in verify_payment"
     # gets the student with penncard specified in POST data
-    student = Student.objects.get(penncard=request.POST.get('merchantDefinedData1'))
+    payment = Payment.objects.get(id=request.POST.get('merchantDefinedData1'))
+    student = payment.student
+    print payment
     print student
 
     source = request.META.get('HTTP_REFERER')
-    print 'referrer is %s ' % source
+    print 'referrer is %s ' % unicode(source)
     source_needed = 'https://orderpage.ic3.com/hop/orderform.jsp'
     
     amount = str(request.POST.get('orderAmount', 0))
     print amount
 
-    payments = Payment.objects.filter(satisfied=False, cost=int(amount))
-    p = payments[0]
-
-    # they paid something, but didnt get cleared
-    if len(payments) == 0:
-      message = '''
-        Name: %s \n
-        PennCard: %s \n
-        Type: %s \n
-        Amount: %s \n
-        
-        they paid but didn't get cleared
-      ''' % (student.name, student.penncard, type, amount)
-      send_mail('Faulty Payment w/ %s' % (type), message, 
-        'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=False)
+    if amount != payment.cost:
+      email_alex('student didn\'t pay the right amount! Payment: %s' % str(payment.id))
     else:
       # if source matches CyberSource, payment completed
       #if source == source_needed and (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == .01:
@@ -152,7 +141,7 @@ def verify_payment(request):
         student.payment_type = 'credit'
         student.save()
         print "paid"
-      return HttpResponse('Verifying...')
+      return HttpResponse('Verified!')
   else:
     return HttpResponse('Not a POST')
 
@@ -239,7 +228,8 @@ def selectpayment(request):
 
 def addpayment(request):
   print "in addpayment view"
-  pennid = request.POST.get('pennid')
+  print request.POST
+  pennid = unicode(request.POST.get('pennid'))
   print "pennid = " + str(pennid)
   associated_student = Student.objects.get(penncard=pennid)
   print associated_student
@@ -252,7 +242,7 @@ def addpayment(request):
   new_payment.save()
   print "payment saved"
 
-  return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")
+  return HttpResponse(json.dumps({'message': 'success', 'payment_id':str(new_payment.id)}), content_type="application/json")
 
 def plans(request):
   print "hit plans view"
@@ -267,3 +257,6 @@ def plans(request):
   }
   print plans
   return render_to_response('plans.html', context)
+
+def email_alex(message):
+  send_mail('an important email from the PennCycle App', unicode(message), 'messenger@penncycle.org', ['rattray.alex@gmail.com'], fail_silently=True)
