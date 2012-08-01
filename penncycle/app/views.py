@@ -165,8 +165,16 @@ def thankyou(request, payment_id):
       </p><p> You will not be able to check out a bike until the payment has registered successfully.'''
   elif type == 'cash':
     message = "Once you've paid and your payment has been registered, you'll be good to go!"
-  elif student.paid == True:
-    message = 'You\'re ready to ride!'
+  elif type == "credit":
+    if payment.satisfied == True:
+      message = 'You\'re ready to ride!'
+    else:
+      message = 'Whoops! Something went wrong with your payment. We\'ve been notified and will get on this right away'
+      try:
+        dog = payment.id
+        email_alex('payment gone wrong! %s' % str(payment.id))
+      except:
+        email_alex('payment gone HORRIBLY wrong! (could not email you what the payment id was!) student is %s' % student)
   else:
     message = 'Something went wrong with your payment. Please email us at messenger@penncycle.org.'
   return render_to_response('thanks.html', {'message':message})
