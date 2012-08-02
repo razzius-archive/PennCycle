@@ -4303,3 +4303,10 @@ h2,
 li {
   line-height: 36px;
 }
+.navbar .brand {
+  color: #ffffff;
+}
+.navbar .navbar-text a:hover {
+  color: #ffffff;
+  background-color: transparent;
+}
