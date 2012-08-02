@@ -40,7 +40,7 @@ for ride in late_rides:
     Hey %s, 
     
     I'm a robot working for PennCycle. Looks like you didn't check in your bike today. That's not a problem: feel free to keep it out as long as you like! 
-    We do charge a $10 overnight fee every evening, which you can pay by cash, credit, check, or bursar. 
+    We do charge a $5 overnight fee every evening, which you can pay by cash, credit, check, or bursar. 
     You won't be able to check out bikes while you have fees outstanding: reply to this email to arrange payment, or with any questions.
 
     Thanks, 
