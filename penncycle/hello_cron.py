@@ -10,5 +10,7 @@ os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
 from app.models import *
 from app.views import email_alex
 
-message = 'hello'
-email_alex('hello!')
+students = Student.objects.all()
+message = '\n'.join([s.name for s in students])
+
+email_alex(message)
