@@ -48,11 +48,13 @@ for ride in late_rides:
     P-98-C22
     Robot, PennCycle
     ''' % stud.name
-    send_mail('PennCycle Overnight ride notice',
-      str(outbound_message),
-      'messenger@penncycle.org',
-      [stud.email],
-      fail_silently=False)
+    print 'not sending outbound message'
+    print outbound_message
+    # send_mail('PennCycle Overnight ride notice',
+    #   str(outbound_message),
+    #   'messenger@penncycle.org',
+    #   [stud.email],
+    #   fail_silently=False)
   except:
     print 'tried to email about an overnight ride but couldn\'t' 
     print stud
