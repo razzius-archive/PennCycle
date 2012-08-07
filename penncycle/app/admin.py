@@ -7,7 +7,7 @@ class StudentAdmin(admin.ModelAdmin):
   list_per_page = 500
   list_display = (
       'name', 'grad_year', 'penncard',
-      'gender', 'school', 'waiver_signed', 'paid',)
+      'gender', 'school', 'waiver_signed', 'paid_now',)
   search_fields = ('name', 'penncard',)
   list_filter = ('school', 'gender', 'grad_year')
   date_hierarchy = 'join_date'
@@ -22,10 +22,10 @@ class PageAdmin(admin.ModelAdmin):
 
 class RidesAdmin(admin.ModelAdmin):
   list_display = (
-      'rider', 'bike', 'checkout_time', 'checkin_time', 'ride_duration_days', 'status',
+      'rider', 'bike', 'checkout_time', 'checkin_time', 'ride_duration_days', 'status', 'checkin_station',
   )
   list_filter = (
-      'rider', 'bike', 'checkout_time', 'checkin_time', 
+      'rider', 'bike', 'checkout_time', 'checkin_time', 'checkin_station',
   ) 
   readonly_fields = ('ride_duration_days', 'num_users')
   date_hierarchy = 'checkin_time'
@@ -36,8 +36,9 @@ class RidesAdmin(admin.ModelAdmin):
 
   # make this only work for bikes not already checked in
   def check_in(self, request, queryset):
-    #time = datetime.datetime.now()
-    rides_updated = queryset.update(checkin_time=datetime.datetime.now())
+    station_name = request.user.groups.exclude(name='Associate')[0].name or ''
+    station = Station.objects.get(name=station_name)
+    rides_updated = queryset.update(checkin_time=datetime.datetime.now(), checkin_station=station)
     for item in queryset:
       #item.checkin_time=time
       #item.duration = time - item.checkout_time

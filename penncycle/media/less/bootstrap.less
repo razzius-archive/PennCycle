@@ -1,5 +1,5 @@
 /*!
- * Bootstrap v2.0.0
+ * Bootstrap v2.0.4
  *
  * Copyright 2012 Twitter, Inc
  * Licensed under the Apache License v2.0
@@ -25,7 +25,6 @@
 @import "code.less";
 @import "forms.less";
 @import "tables.less";
-@import "responsive.less";
 
 // Components: common
 @import "sprites.less";
@@ -53,7 +52,7 @@
 
 // Components: Misc
 @import "thumbnails.less";
-@import "labels.less";
+@import "labels-badges.less";
 @import "progress-bars.less";
 @import "accordion.less";
 @import "carousel.less";
@@ -61,63 +60,3 @@
 
 // Utility classes
 @import "utilities.less"; // Has to be last to override when necessary
-
-.well {
-  background-color: @fadedwhite;
-}
-
-.bg-image {
-  display:block !important;
-  position:fixed;
-	top:0px;
-	left:0px;
-	min-height:100%;
-	min-width:100%;
-	width:100%;
-	z-index:-1000;
-}
-
-.centered {
-  display: block;
-  position: relative;
-  margin: 0 auto 0 auto;
-}
-
-.textCentered {
-  text-align: center;
-}
-
-.border {
- // border: solid 2px;
-}
-
-.opaque {
-  background-color: @fadedwhite;
-}
-
-.flat {
-  line-height: 1px;
-}
-
-#waiver-wrapper {
-	height: 300px;
-	overflow:scroll;
-	padding:10px;
-} 
-
-// PADDEDHEADER
-// ------
-.paddedheader {
-  padding-left: 20px;
-  padding-top: 20px;
-}
-
-// NAVBAR
-// ------
-#navbar {
-  margin-top: -1 * @baseFontSize;
-}
-
-.container {
-	padding: 0 25px;
-}

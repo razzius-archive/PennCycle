@@ -69,6 +69,31 @@ PAYMENT_CHOICES = (
   ('other','other'),
 )
 
+class Plan(models.Model):
+  name = models.CharField(max_length = 100)
+  cost = models.IntegerField()
+  start_date = models.DateField()
+  end_date = models.DateField()
+  description = models.TextField(max_length = 150, default="Details coming soon!")
+
+  def __unicode__(self):
+    return self.name + ': $' + str(self.cost)
+
+class Payment(models.Model):
+  amount = models.DecimalField(decimal_places=2, max_digits=6)
+  plan = models.ForeignKey(Plan, default=1)
+  student = models.ForeignKey('Student', related_name="payments")
+  date = models.DateField(auto_now_add=True)
+  satisfied = models.BooleanField(default=False)
+  payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
+
+  def save(self):
+    super(Payment, self).save()
+    self.student.paid = self.student.paid_now
+
+  def __unicode__(self):
+    return str(self.student) + ' for ' + str(self.plan)
+
 class Manufacturer(models.Model):
   name = models.CharField(max_length=30)
   address = models.CharField(max_length=50, blank=True)
@@ -99,6 +124,23 @@ class Student(models.Model):
   at_desk = models.NullBooleanField()
   plan = models.ManyToManyField('Plan', blank=True, null=True)
 
+  @property
+  def paid_now(self):
+    today = datetime.date.today()
+    payments = self.payments.filter(
+      satisfied=True,
+      plan__start_date__lte=today,
+      plan__end_date__gte=today,
+      )
+    if len(payments) > 0:
+      return True
+    else:
+      return False
+# 
+  def can_ride(self):
+    if self.status == 'available' and self.waiver_signed == True and self.paid_now == True:
+      return True
+
   def __unicode__(self):
     return u'%s %s' % (self.name, self.penncard)
 
@@ -121,24 +163,21 @@ class Station(models.Model):
   address = models.CharField(max_length=300, blank=True)
   notes = models.TextField(max_length=100, blank=True)
   picture = models.ImageField(upload_to='img/stations', blank=True)
-  capacity = models.IntegerField()
+  capacity = models.IntegerField(default=15)
 
   def __unicode__(self):
     return self.name
 
 class Ride(models.Model):
-  rider = models.ForeignKey(Student, limit_choices_to = {
+  rider = models.ForeignKey(Student, 
+    limit_choices_to = {
     'status': 'available',
-    'waiver_signed':True,
-
-    # comment this out when spring 2012 plan ends
-    'paid':True,
-    
-    # uncomment this when spring2012 plan ends
-    #'payment__satisfied': True,
-    #'payment__plan__end_date__gte': datetime.date.today,
-    #'payment__plan__start_date__lte': datetime.date.today,
-    })
+    'waiver_signed':True,    
+    'payments__satisfied': True,
+    'payments__plan__end_date__gte': datetime.date.today,
+    'payments__plan__start_date__lte': datetime.date.today,
+    },
+    )
   bike = models.ForeignKey('Bike', limit_choices_to = {'status': 'available'},
     related_name='rides')
   checkout_time = models.DateTimeField(auto_now_add=True)
@@ -220,24 +259,3 @@ class Comment(models.Model):
 
   def __unicode__(self):
     return self.comment[:30]
-
-class Plan(models.Model):
-  name = models.CharField(max_length = 100)
-  cost = models.IntegerField()
-  start_date = models.DateField()
-  end_date = models.DateField()
-  description = models.TextField(max_length = 150, default="Details coming soon!")
-
-  def __unicode__(self):
-    return self.name + ': $' + str(self.cost)
-
-
-class Payment(models.Model):
-  amount = models.DecimalField(decimal_places=2, max_digits=6)
-  plan = models.ForeignKey(Plan, blank=True, null=True)
-  student = models.ForeignKey(Student)
-  date = models.DateField(auto_now_add=True)
-  satisfied = models.BooleanField(default=False)
-
-  def __unicode__(self):
-    return str(self.student) + ' for ' + str(self.plan)

@@ -1,3 +1,4 @@
+var app = {};
 $.ajaxSetup({ 
   beforeSend: function(xhr, settings) {
     function getCookie(name) {
@@ -23,6 +24,7 @@ $.ajaxSetup({
 });
 
 $('#paybycredit').click(function(){
+  var pcnum = $("#id_penncard").val();
   createPayment();
   $('#payform').submit();
 });
@@ -58,8 +60,8 @@ function createPayment () {
   $.extend(payInfo, {'plan': plan.attr("name")});
   console.log(payInfo);
 
-  $.ajax ({
-    url: '../addpayment/',
+  $.ajax({
+    url: '/addpayment/',
     async: false,
     type: 'POST',
     data: payInfo,
@@ -71,11 +73,14 @@ function createPayment () {
       alert('making payment failed');
     },
     success: function(data, status, xhr) {
+      console.log(data);
+      app.payment_id = data.payment_id;
       console.log('payment creation success');
     },
   });
   console.log("ajax call made");
   $("#amount-id").val(plan.attr("dollar"));
+  $("#penncardnum-id").val(app.payment_id);
   console.log("replaced dollar form with " + (plan.attr("dollar")));
 };
   
@@ -89,7 +94,7 @@ $('button#waiver-form').click(function(){
   console.log(payInfo);
   console.log(pennidData);
   $.ajax ({
-    url: '../verify_waiver/', 
+    url: '/verify_waiver/', 
     type: 'POST',
     data: payInfo,
     dataType: 'json',
@@ -111,7 +116,7 @@ $('button#waiver-form').click(function(){
     $('div#pay').replaceWith('<h2>You\'ve already paid. Thanks!</h2>'); 
     console.log("replaced html");
   } else {
-    $("#penncardnum-id").val();
-    createPayment(payInfo);
+    // $("#penncardnum-id").val();
+    // createPayment(payInfo);
   }
 }); 

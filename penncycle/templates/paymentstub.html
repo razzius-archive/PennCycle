@@ -1,15 +1,18 @@
 <form id="planform">
+  <h3>Select a plan</h3>
   <select id="select">
     {% for plan in plans %}
       <option name="{{plan.pk}}" dollar="{{plan.cost}}"> {{plan}} </option>
     {% endfor %}
   </select>
+  <span><a href="../plans" target="_blank">Read more about our plans here</a></span>
 </form>
 <hr>
-<h3>You can pay by Cash, Credit Card, Bursar, or PennCash.</h3> 
-<p>To pay by <strong>Cash</strong>, pay at the PSA Store or the PennCycle table at Hill</p>
-<p>To pay by <strong>Bursar</strong> or <strong>PennCash</strong>, just hit the button below and wait. 
-  It will take up to 48 hours to process your request; 
+<h3>You can pay by Cash, Credit Card, or Bursar.</h3> 
+<br/>
+<p>To pay by <strong>Cash</strong>, pay at the PSA Store or the PennCycle table at Hill.</p>
+<p>To pay by <strong>Bursar</strong>, just hit the button below and wait. 
+  It will take up to <strong>48 hours</strong> to process your request; 
   you will not be able to check out a bike until you have been successfully billed. 
 </p>
 <p>
@@ -26,7 +29,7 @@
 </span>
 <form name="payform" id="payform" method="post" action="https://secure.www.upenn.edu/vpul/psa/bike/index.php" style="display:none;">
   <input id="penncardnum-id" type="hidden" name="ordernumber" value='12345678' />
-  <input id="amount-id" type="hidden" name="amount" value=10 />
+  <input id="amount-id" type="hidden" name="amount" value=".10" />
 </form>
 
    

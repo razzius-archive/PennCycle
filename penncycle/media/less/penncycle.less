@@ -1,0 +1,104 @@
+@import "bootstrap.less";
+
+@fadedwhite:            fade(@grayLighter, 80%);
+@transparent:           fade(@white, 0%);
+@font-face { font-family: Gotham; font-style: normal; font-weight:normal; src: url('../Gotham/GothamHTF-Medium.otf'); }
+@font-face { font-family: Gotham; font-style: normal; font-weight:200; src: url('../Gotham/GothamHTF-Book.otf'); }
+@font-face { font-family: Gotham; font-style: italic; font-weight:normal; src: url('../Gotham/GothamHTF-BookItalic.otf');  }
+@font-face { font-family: Gotham; font-style: normal; font-weight:bolder; src: url('../Gotham/GothamHTF-Black.otf');  }
+@font-face { font-family: Gotham; font-style: normal; font-weight:bold; src: url('../Gotham/GothamHTF-Bold.otf');  }
+
+// in variables: 
+@blueDarkest:  #212e65;
+@baseFontFamily:        Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+@navbarLinkColor:                 @blueDarkest;
+@navbarLinkColorHover:            @red;
+
+.well {
+  background-color: @fadedwhite;
+}
+.bg-image {
+  display:block !important;
+  position:fixed;
+	top:0px;
+	left:0px;
+	min-height:100%;
+	min-width:100%;
+	width:100%;
+	z-index:-1000;
+}
+.centered {
+  display: block;
+  position: relative;
+  margin: 0 auto 0 auto;
+}
+
+.textCentered {
+  text-align: center;
+}
+
+.border {
+ // border: solid 2px;
+}
+.opaque {
+  background-color: @fadedwhite;
+}
+.paddedheader {
+  padding-left: 20px;
+  padding-top: 20px;
+}
+
+#navbar {
+  margin-top: -1 * @baseFontSize;
+}
+
+.flat {
+  line-height: 1px;
+}
+
+#waiver-wrapper {
+	height: 300px;
+	overflow:scroll;
+	padding:10px;
+} 
+.container {
+	padding: 0 25px;
+}
+.navbar-inner .container, {
+  background-color: @white;
+}
+.navbar .nav li a {
+	font-weight: bold;
+}
+.navbar .nav > li > a:hover {
+  background-color: @white;
+  font-weight: bold;
+}
+.navbar .nav .active > a,
+.navbar .nav .active > a:hover {
+	color: @red;
+}
+.nav > li > a:hover {
+	background-color: @white;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 200;
+}
+h1, h2, li {
+	line-height: @baseLineHeight * 2;
+}
+.navbar {
+	.brand {
+		color: @white;
+	}
+	.navbar-text {
+		a:hover {
+			color:@white;
+			background-color: white;
+		}
+	}
+}
+.navbar-inner {
+  background:white;
+  filter:none;
+}

@@ -14,9 +14,14 @@
     type="text/javascript"></script>
 <link rel="stylesheet" href="media/css/chosen.css"/>
 <script type="text/javascript">
-setTimeout(function() {
+
+$(function(){
+  var default_station = $('select#id_checkout_station option:contains("{{station}}")').val();
+  $('#id_checkout_station').val(default_station);
+  setTimeout(function() {
     $('select').not('.filtered').chosen();
-}, 200);
+  }, 200);
+});
 
 </script>
 <style type="text/css">

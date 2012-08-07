@@ -112,32 +112,24 @@ def signup(request):
 def verify_payment(request):
   if request.method=='POST':
     print "in verify_payment"
+    print request.POST
     # gets the student with penncard specified in POST data
-    student = Student.objects.get(penncard=request.POST.get('merchantDefinedData1'))
+    payment = Payment.objects.get(id=request.POST.get('merchantDefinedData1'))
+    student = payment.student
+    print payment
     print student
 
     source = request.META.get('HTTP_REFERER')
-    print 'referrer is %s ' % source
+    print 'referrer is %s ' % unicode(source)
     source_needed = 'https://orderpage.ic3.com/hop/orderform.jsp'
     
     amount = str(request.POST.get('orderAmount', 0))
     print amount
 
-    payments = Payment.objects.filter(satisfied=False, cost=int(amount))
-    p = payments[0]
-
-    # they paid something, but didnt get cleared
-    if len(payments) == 0:
-      message = '''
-        Name: %s \n
-        PennCard: %s \n
-        Type: %s \n
-        Amount: %s \n
-        
-        they paid but didn't get cleared
-      ''' % (student.name, student.penncard, type, amount)
-      send_mail('Faulty Payment w/ %s' % (type), message, 
-        'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=False)
+    if str(amount) != str(payment.plan.cost):
+      errmessage = 'student didn\'t pay the right amount! Payment: %s' % str(payment.id)
+      print errmessage
+      email_alex(errmessage)
     else:
       # if source matches CyberSource, payment completed
       #if source == source_needed and (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == .01:
@@ -148,18 +140,22 @@ def verify_payment(request):
       if (int(reasonCode) in good_reasons): 
         print "check passed"
         #student.paid = True
-        p.satisfied=True
-        student.payment_type = 'credit'
-        student.save()
+        payment.satisfied=True
+        payment.payment_type = 'credit'
+        payment.save()
         print "paid"
-      return HttpResponse('Verifying...')
+      return HttpResponse('Verified!')
   else:
     return HttpResponse('Not a POST')
 
 @csrf_exempt
-def thankyou(request, penncard):
+def thankyou(request, payment_id):
   print "in thanks view"
-  student = get_object_or_404(Student, penncard=penncard)
+  try:
+    payment = Payment.objects.get(id=payment_id)
+    student = payment.student
+  except:
+    student = get_object_or_404(Student, penncard=payment_id)
   #student = Student.objects.get(penncard=request.POST.get('merchantDefinedData1'))
   print student
   type = request.GET.get('type', 'credit')
@@ -169,11 +165,19 @@ def thankyou(request, penncard):
       </p><p> You will not be able to check out a bike until the payment has registered successfully.'''
   elif type == 'cash':
     message = "Once you've paid and your payment has been registered, you'll be good to go!"
-  elif student.paid == True:
-    message = 'You\'re ready to ride!'
+  elif type == "credit":
+    if payment.satisfied == True:
+      message = 'You\'re ready to ride!'
+    else:
+      message = 'Whoops! Something went wrong with your payment. We\'ve been notified and will get on this right away'
+      try:
+        dog = payment.id
+        email_alex('payment gone wrong! %s' % str(payment.id))
+      except:
+        email_alex('payment gone HORRIBLY wrong! (could not email you what the payment id was!) student is %s' % student)
   else:
     message = 'Something went wrong with your payment. Please email us at messenger@penncycle.org.'
-  return render_to_response('thanks.html', {'message':message})
+  return render_to_response('thanks.html', {'message':message, 'pages':pages()})
 
 def verify_waiver(request):
   print 'in verify_waiver'
@@ -226,20 +230,22 @@ def pay(request, type, penncard, plan):
       'penncard': penncard,
       'student': student,
     }
+    context.update({'pages':pages()})
     return render_to_response('pay.html', RequestContext(request, context))
 
 @login_required
 def stats(request):
-  return render_to_response('stats.html', {})
+  return render_to_response('stats.html', {'pages':pages()})
 
 def selectpayment(request):
   plans = Plan.objects.filter(end_date__gt = datetime.date.today())
   print plans;
-  return render_to_response('selectpayment.html', {'plans': plans})
+  return render_to_response('selectpayment.html', {'plans': plans, 'pages':pages()})
 
 def addpayment(request):
   print "in addpayment view"
-  pennid = request.POST.get('pennid')
+  print request.POST
+  pennid = unicode(request.POST.get('pennid'))
   print "pennid = " + str(pennid)
   associated_student = Student.objects.get(penncard=pennid)
   print associated_student
@@ -252,7 +258,7 @@ def addpayment(request):
   new_payment.save()
   print "payment saved"
 
-  return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")
+  return HttpResponse(json.dumps({'message': 'success', 'payment_id':str(new_payment.id)}), content_type="application/json")
 
 def plans(request):
   print "hit plans view"
@@ -267,3 +273,6 @@ def plans(request):
   }
   print plans
   return render_to_response('plans.html', context)
+
+def email_alex(message):
+  send_mail('an important email from the PennCycle App', str(message), 'messenger@penncycle.org', ['rattray.alex@gmail.com'], fail_silently=True)

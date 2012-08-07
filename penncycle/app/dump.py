@@ -28,41 +28,8 @@ def dump(request):
       break
     ws = wb.add_sheet(slugify(name))
     xl_export(model, ws, datestyle, plainstyle)
-    # commas = export(model)
-    # commaReader = csv.reader(commas)
-    # for rowx, row in enumerate(commaReader):
-    #   for colx, value in enumerate(row):
-    #     ws.write(rowx - 1, colx, value)
-
+    
   wb.save(response)
-  return response
-
-def export(model, fields=None):
-  # model = qs.model
-  response = HttpResponse(mimetype='text/csv')
-  response['Content-Disposition'] = 'attachment; filename=%s.csv' % slugify(model.__name__)
-  writer = csv.writer(response)
-  # Write headers to CSV file
-  if fields:
-    headers = fields
-  else:
-    headers = []
-    for field in model._meta.fields:
-      headers.append(field.name)
-  writer.writerow(headers)
-  # Write data to CSV file
-  qs = model.objects.all()
-  for obj in qs:
-    row = []
-    for field in headers:
-      if field in headers:
-        val = getattr(obj, field)
-        if callable(val):
-          val = val()
-        val = encoding.smart_str(val, encoding='ascii', errors='ignore')
-        row.append(val)
-    writer.writerow(row)
-  # Return CSV file to browser as download
   return response
 
 def xl_export(model, ws, datestyle, plainstyle):
