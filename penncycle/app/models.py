@@ -22,7 +22,6 @@ GRAD_YEAR_CHOICES = (
   ('2014', '2014'),
   ('2013', '2013'),
   ('2012', '2012'),
-  ('2011', '2011'),
   ('grad', 'grad student'),
   ('faculty', 'faculty'),
   ('staff', 'staff'),
