@@ -81,7 +81,9 @@ class Plan(models.Model):
 
 class Payment(models.Model):
   amount = models.DecimalField(decimal_places=2, max_digits=6)
-  plan = models.ForeignKey(Plan, default=1)
+  plan = models.ForeignKey(Plan, default=1, limit_choices_to={
+    'end_date__gte':datetime.datetime.today(),
+    })
   student = models.ForeignKey('Student', related_name="payments")
   date = models.DateField(auto_now_add=True)
   satisfied = models.BooleanField(default=False)
