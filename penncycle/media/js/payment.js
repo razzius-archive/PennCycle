@@ -33,7 +33,7 @@ $('#paybycash').click(function(){
   var pcnum = $("#id_penncard").val();
   //createPayment();
   var plan = $("form#planform select option:selected");
-  var href = '../../pay/cash/' + pcnum + "/" + plan.attr("name");
+  var href = '/pay/cash/' + pcnum + "/" + plan.attr("name");
   window.location = href;
 });
 
@@ -41,12 +41,12 @@ $('#paybybursar').click(function(){
   var pcnum = $("#id_penncard").val();
   //createPayment();
   var plan = $("form#planform select option:selected");
-  var href = '../../pay/bursar/' + pcnum + "/" + plan.attr("name");
+  var href = '/pay/bursar/' + pcnum + "/" + plan.attr("name");
   window.location = href;
 });
 
 function appendPcnum (id, pcnum) {
-  alert('append');
+  // alert('append');
   var _href = $(id).attr('href');
   $(id).attr('href', _href + pcnum);
   console.log('appended');
@@ -80,7 +80,7 @@ function createPayment () {
   });
   console.log("ajax call made");
   $("#amount-id").val(plan.attr("dollar") * 1.08);
-  alert($('#amount-id').val());
+  // alert($('#amount-id').val());
   $("#penncardnum-id").val(app.payment_id);
   console.log("replaced dollar form with " + (plan.attr("dollar")));
 };

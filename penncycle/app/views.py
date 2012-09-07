@@ -206,23 +206,34 @@ def pay(request, type, penncard, plan):
     student.last_two = last_two
     #student.payment_type = type
     student.save()
+    plan = get_object_or_404(Plan, id=plan)
+    payment = Payment(
+      amount=plan.cost,
+      plan=plan,
+      student=student,
+      date=datetime.datetime.today(),
+      satisfied=False,
+      payment_type=type,
+      )
+    payment.save()
     print 'saved'
     message = '''
       Name: %s \n
       PennCard: %s \n
       Last Two Digits: %s \n
       Type: %s \n
+      Plan: %s \n
       
       bill them and remember to check 'paid'! 
       Thanks d00d >.<
-    ''' % (student.name, student.penncard, student.last_two, type)
+    ''' % (student.name, student.penncard, student.last_two, type, plan)
     send_mail('Student Registered w/ %s' % (type), message, 
       'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=False)
-    addPerson(student.name, student.penncard, student.last_two, type) # adds to the google spreadsheet
-    return HttpResponseRedirect('../../../thankyou/%s/?type=%s' % (penncard, type))
+    # addPerson(student.name, student.penncard, student.last_two, type) # adds to the google spreadsheet
+    return HttpResponseRedirect('/thankyou/%s/?type=%s' % (penncard, type))
   else: 
     print type
-    student = Student.objects.get(penncard=penncard)
+    student = get_object_or_404(Student, penncard=penncard)
     student.payment_type = type
     student.save()
     context = {
@@ -239,7 +250,7 @@ def stats(request):
 
 def selectpayment(request):
   plans = Plan.objects.filter(end_date__gt = datetime.date.today())
-  print plans;
+  print plans
   return render_to_response('selectpayment.html', {'plans': plans, 'pages':pages()})
 
 def addpayment(request):
