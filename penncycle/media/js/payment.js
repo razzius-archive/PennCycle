@@ -79,7 +79,8 @@ function createPayment () {
     },
   });
   console.log("ajax call made");
-  $("#amount-id").val(plan.attr("dollar"));
+  $("#amount-id").val(plan.attr("dollar") * 1.08);
+  alert($('#amount-id').val());
   $("#penncardnum-id").val(app.payment_id);
   console.log("replaced dollar form with " + (plan.attr("dollar")));
 };
