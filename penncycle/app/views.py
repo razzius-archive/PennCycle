@@ -125,11 +125,14 @@ def verify_payment(request):
     
     amount = str(request.POST.get('orderAmount', 0))
     print amount
+    costwtax = float(payment.plan.cost)*1.08
+    print costwtax
 
-    if float(amount) != float(payment.plan.cost)*1.08:
-      errmessage = 'student didn\'t pay the right amount! Payment: %s' % str(payment.id)
+    if float(amount) != costwtax:
+      errmessage = 'student didn\'t pay the right amount! Payment: %s \n Amount: %d Cost+tax: %d' % (str(payment.id), float(amount),  costwtax)
       print errmessage
       email_alex(errmessage)
+      return HttpResponse('eh okay.')
     else:
       # if source matches CyberSource, payment completed
       #if source == source_needed and (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == .01:
