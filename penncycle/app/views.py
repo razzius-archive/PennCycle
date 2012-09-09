@@ -102,7 +102,7 @@ def signup(request):
   context = {
       'safety_info': safety_info,
       'form': form,
-      'plans': Plan.objects.filter(end_date__gt = datetime.date.today())
+      'plans': Plan.objects.filter(end_date__gte = datetime.date.today())
   }
   context.update({'pages':pages()})
   context_instance = RequestContext(request, context)
@@ -252,8 +252,22 @@ def stats(request):
   return render_to_response('stats.html', {'pages':pages()})
 
 def selectpayment(request):
-  plans = Plan.objects.filter(end_date__gt = datetime.date.today())
+  plans = Plan.objects.filter(end_date__gte = datetime.date.today())
   print plans
+  day_plan = Plan.objects.filter(end_date=datetime.date.today(), name__contains='Day Plan')
+  if len(day_plan) < 1:
+    print 'about to create a new day plan'
+    day_plan = Plan(
+      name = 'Day Plan %s' % str(datetime.date.today()),
+      cost = 10,
+      start_date = datetime.date.today(),
+      end_date = datetime.date.today(),
+      description = 'A great way to try out PennCycle. Or, use this to check out a bike for a friend or family member! Add more day plans to your account to check out more bikes. Day plans can only be purchased day-of.',
+      )
+    day_plan.save()
+  elif len(day_plan) == 1:
+    print 'there already was a day plan! how convenient.'
+  print day_plan
   return render_to_response('selectpayment.html', {'plans': plans, 'pages':pages()})
 
 def addpayment(request):

@@ -82,7 +82,7 @@ class Plan(models.Model):
 class Payment(models.Model):
   amount = models.DecimalField(decimal_places=2, max_digits=6)
   plan = models.ForeignKey(Plan, default=1, limit_choices_to={
-    'end_date__gte':datetime.datetime.today(),
+    'end_date__gte':datetime.date.today(),
     })
   student = models.ForeignKey('Student', related_name="payments")
   date = models.DateField(auto_now_add=True)
@@ -176,8 +176,8 @@ class Ride(models.Model):
     'status': 'available',
     'waiver_signed':True,    
     'payments__satisfied': True,
-    'payments__plan__end_date__gte': datetime.date.today,
-    'payments__plan__start_date__lte': datetime.date.today,
+    'payments__plan__end_date__gte': datetime.date.today(),
+    'payments__plan__start_date__lte': datetime.date.today(),
     },
     )
   bike = models.ForeignKey('Bike', limit_choices_to = {'status': 'available'},
