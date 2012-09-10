@@ -88,6 +88,7 @@ class Payment(models.Model):
   date = models.DateField(auto_now_add=True)
   satisfied = models.BooleanField(default=False)
   payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
+  status = models.CharField(max_length=100, default='available')
 
   def save(self):
     super(Payment, self).save()
@@ -121,26 +122,30 @@ class Student(models.Model):
   living_location = models.CharField(max_length=100, choices=LIVING_LOCATIONS)
   waiver_signed = models.BooleanField(default=False)
   paid = models.BooleanField(default=False)
-  status = models.CharField(max_length=100, default='available')
+  # status = models.CharField(max_length=100, default='available')
   payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
   at_desk = models.NullBooleanField()
   plan = models.ManyToManyField('Plan', blank=True, null=True)
 
   @property
   def paid_now(self):
-    today = datetime.date.today()
-    payments = self.payments.filter(
-      satisfied=True,
-      plan__start_date__lte=today,
-      plan__end_date__gte=today,
-      )
+    payments = self.current_payments
     if len(payments) > 0:
       return True
     else:
       return False
-# 
+
+  @property
+  def current_payments(self):
+    today = datetime.date.today()
+    return self.payments.filter(
+      satisfied=True,
+      plan__start_date__lte=today,
+      plan__end_date__gte=today,
+      )
+
   def can_ride(self):
-    if self.status == 'available' and self.waiver_signed == True and self.paid_now == True:
+    if len(self.current_payments.filter(status='available')>0) and self.waiver_signed == True and self.paid_now == True:
       return True
 
   def __unicode__(self):
@@ -173,7 +178,7 @@ class Station(models.Model):
 class Ride(models.Model):
   rider = models.ForeignKey(Student, 
     limit_choices_to = {
-    'status': 'available',
+    'payments__status': 'available',
     'waiver_signed':True,    
     'payments__satisfied': True,
     'payments__plan__end_date__gte': datetime.date.today(),
@@ -214,16 +219,18 @@ class Ride(models.Model):
     if self.checkin_time == None:
       print 'bikes should become out now'
       self.bike.status = 'out'
-      self.rider.status = 'out'
+      payment = self.rider.current_payments.filter(status='available')[0]
+      payment.status = 'out'
     else:
       print 'in save else'
       self.checkin_station = Station.objects.get(name='Hill')
       print 'did checkin station'
       self.bike.status = 'available' #change to be 'at %s' % station
-      self.rider.status = 'available'
+      payment = self.rider.current_payments.filter(status='out')[0]
+      payment.status = 'available'
       print 'should have changed to available'
     self.bike.save()
-    self.rider.save()
+    payment.save()
 
   def __unicode__(self):
     return u'%s on %s' % (self.rider, self.checkout_time)
