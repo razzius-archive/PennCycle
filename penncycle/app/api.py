@@ -275,12 +275,13 @@ def dump(request):
 
   app = get_app('app')
   models = get_models(app)
+  print models
 
   for model in models:
     name = model.__name__
     print name
     if name == 'Plan':
-      break
+      continue
     ws = wb.add_sheet(slugify(name))
     xl_export(model, ws, datestyle, plainstyle)
 
