@@ -65,6 +65,7 @@ PAYMENT_CHOICES = (
   ('bursar','bursar '),
   ('credit','credit'),
   ('group','group'),
+  ('stouffer','stouffer'),
   ('free','free'),
   ('other','other'),
 )

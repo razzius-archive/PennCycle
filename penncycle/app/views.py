@@ -65,8 +65,14 @@ def info_submit(request):
       student = form.save()
       living_location = student.living_location
       if living_location == 'Stouffer': 
-        student.paid = True
-        student.save()
+        payment = Payment(
+          amount=0,
+          plan=Plan.objects.filter(name__contains='Year').exclude(name__contains='Unlimited', end_date__lt=datetime.date.today()).order_by('-start_date')[0],
+          student=student,
+          satisfied=True,
+          payment_type='stouffer',
+          )
+        payment.save()
         print "this student lives in stouffer"
         print str(student) + "; paid = " + str(student.paid)
       print "saved form"
