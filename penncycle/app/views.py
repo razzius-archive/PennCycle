@@ -73,6 +73,14 @@ def info_submit(request):
           payment_type='stouffer',
           )
         payment.save()
+        message = '''
+        student name: %s
+        student penncard: %s
+        payment: %s
+
+        tell alex if you want more info in this email
+        ''' % (student.name, student.penncard, payment)
+        send_mail('stoufferite signed up', message, 'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=True)
         print "this student lives in stouffer"
         print str(student) + "; paid = " + str(student.paid)
       print "saved form"
