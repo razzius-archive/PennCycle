@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.sites import AdminSite
 from penncycle.app.models import Manufacturer, Student, Bike, Ride, Station, Payment, Comment
 import datetime
-from penncycle.app.admin_stuff import PaymentAdmin, RidesAdmin, StudentAdmin, Bike
+from penncycle.app.admin_stuff import PaymentAdmin, RidesAdmin, StudentAdmin, BikeAdmin
 # from penncycle.app.admin_stuff.RidesAdmin import check_in as admin_check_in
 
 class pcRidesAdmin(RidesAdmin):
