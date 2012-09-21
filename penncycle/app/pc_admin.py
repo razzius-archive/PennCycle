@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.sites import AdminSite
-from penncycle.app.models import Manufacturer, Student, Bike, Ride, Station, Payment
+from penncycle.app.models import Manufacturer, Student, Bike, Ride, Station, Payment, Comment
 import datetime
 from penncycle.app.admin_stuff import PaymentAdmin, RidesAdmin
 # from penncycle.app.admin_stuff.RidesAdmin import check_in as admin_check_in
@@ -43,3 +43,7 @@ class pcRidesAdmin(RidesAdmin):
 pcAdminSite = AdminSite(name='pcadmin')
 pcAdminSite.register(Ride, pcRidesAdmin)
 pcAdminSite.register(Payment, PaymentAdmin)
+pcAdminSite.register(Bike)
+pcAdminSite.register(Student)
+pcAdminSite.register(Comment)
+# pcAdminSite.register(Station)

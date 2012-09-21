@@ -62,7 +62,7 @@ SCHOOL_CHOICES = (
 PAYMENT_CHOICES = (
   ('cash','cash'),
   ('penncash','penncash'),
-  ('bursar','bursar '),
+  ('bursar','bursar'),
   ('credit','credit'),
   ('group','group'),
   ('stouffer','stouffer'),
@@ -161,8 +161,20 @@ class Bike(models.Model):
   serial_number = models.CharField(max_length=100, blank=True)
   tag_id = models.CharField(max_length=100, blank=True)
 
+  @property
+  def location(self):
+    print self.bike_name
+    last_ride = self.rides.filter(checkin_station__isnull=False).order_by('-checkin_time')
+    print last_ride
+    try:
+      last_ride = last_ride[0]
+      location = last_ride.checkin_station
+    except:
+      location = Station.objects.get(name__contains="Penn Student Agencies")
+    return location
+
   def __unicode__(self):
-    return '%s (%s)' % (self.bike_name, self.manufacturer)
+    return '%s (%s) - %s' % (self.bike_name, self.manufacturer, self.location.name)
 
 class Station(models.Model):
   name = models.CharField(max_length=100)
