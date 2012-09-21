@@ -163,9 +163,9 @@ class Bike(models.Model):
 
   @property
   def location(self):
-    print self.bike_name
+    # print self.bike_name
     last_ride = self.rides.filter(checkin_station__isnull=False).order_by('-checkin_time')
-    print last_ride
+    # print last_ride
     try:
       last_ride = last_ride[0]
       location = last_ride.checkin_station
