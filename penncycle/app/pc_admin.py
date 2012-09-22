@@ -7,7 +7,7 @@ from penncycle.app.admin_stuff import PaymentAdmin, RidesAdmin, StudentAdmin, Bi
 
 class pcRidesAdmin(RidesAdmin):
   list_display = (
-      'rider', 'status', 'checkout_station', 'checkin_station',
+      'rider', 'bike', 'status', 'checkout_station', 'checkin_station',
   )
   list_filter = (
       'bike__status', 'bike', 'checkout_time', 'checkin_time', 'checkin_station',
