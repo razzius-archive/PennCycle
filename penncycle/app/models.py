@@ -160,6 +160,7 @@ class Bike(models.Model):
   status = models.CharField(max_length=100, default='available')
   serial_number = models.CharField(max_length=100, blank=True)
   tag_id = models.CharField(max_length=100, blank=True)
+  key_serial_number = models.CharField(max_length=100, blank=True)
 
   @property
   def location(self):
