@@ -45,14 +45,14 @@ class RidesAdmin(admin.ModelAdmin):
   list_display = (
       'rider', 'bike', 'checkout_time', 'checkin_time', 'ride_duration_days', 'status', 'checkin_station',
   )
-  list_filter = (
-      'bike', 'checkout_time', 'checkin_time', 'checkin_station', 'checkout_station',
-  ) 
+  # list_filter = (
+  #     'bike', 'checkout_time', 'checkin_time', 'checkin_station', 'checkout_station',
+  # ) 
   readonly_fields = ('ride_duration_days', 'num_users')
   date_hierarchy = 'checkin_time'
   ordering = ('-checkout_time',)
   actions = ['check_in']
-  search_fields = ['rider__name','rider__penncard','bike__bike_name', 'checkin_station', 'checkout_stations']
+  search_fields = ['rider__name','rider__penncard','bike__bike_name', 'bike', 'checkin_station', 'checkout_station']
   save_on_top = True
 
   @csrf_protect_m
