@@ -58,7 +58,7 @@
 </div>
 {% endblock %}
 {% block scripts %}
-  <script src="../media/js/payment.js">
+  <script src="/media/js/payment.js">
   </script>
   <script type="text/javascript">
   
@@ -89,7 +89,7 @@
     
       var formData = $('#info-form').serialize();
       $.ajax ({
-        url: '../info_submit/', 
+        url: '/info_submit/', 
         type: 'POST',
         data: formData,
         dataType: 'json',
