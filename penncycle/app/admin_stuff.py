@@ -52,7 +52,7 @@ class RidesAdmin(admin.ModelAdmin):
   date_hierarchy = 'checkin_time'
   ordering = ('-checkout_time',)
   actions = ['check_in']
-  search_fields = ['rider', 'bike', 'checkin_station', 'checkout_station']
+  search_fields = ['rider__name','rider__penncard','bike__bike_name', 'checkin_station__name', 'checkout_station__name']
   save_on_top = True
 
   @csrf_protect_m
