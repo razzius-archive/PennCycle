@@ -196,6 +196,7 @@ How was your ride today?
 (Where'd you ride today, how was the bike, were there any problems, etc.) \n
 We'd love to hear how your ride was,
 Alex & the PennCycle Team
+<a href="http://api.addthis.com/oexchange/0.8/forward/facebook/offer?pco=tbx32nj-1.0&url=http://app.penncycle.org&pubid=xa-506765865cc9f0e8" target="_blank" ><img src="http://cache.addthiscdn.com/icons/v1/thumbs/32x32/facebook.png" border="0" alt="Facebook" /></a>
           ''' % (s.name),
           '"The PennCycle Team" <messenger@penncycle.org>', [s.email], fail_silently=False)
       item.save()
