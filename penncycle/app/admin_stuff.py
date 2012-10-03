@@ -33,7 +33,7 @@ class PaymentAdmin(admin.ModelAdmin):
   list_display = (
       'student', 'plan',
       'amount', 'payment_type', 'satisfied', 'date','status')
-  search_fields = ('student', 'plan',)
+  search_fields = ('student__name', 'plan__name',)
   list_filter = ('plan', 'payment_type', 'satisfied')
   date_hierarchy = 'date'
     
