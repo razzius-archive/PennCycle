@@ -63,26 +63,26 @@ def info_submit(request):
     if form.is_valid():
       print "shit is validd"
       student = form.save()
-      living_location = student.living_location
-      if living_location == 'Stouffer': 
-        payment = Payment(
-          amount=0,
-          plan=Plan.objects.filter(name__contains='Year').exclude(name__contains='Unlimited', end_date__lt=datetime.date.today()).order_by('-start_date')[0],
-          student=student,
-          satisfied=True,
-          payment_type='stouffer',
-          )
-        payment.save()
-        message = '''
-        student name: %s
-        student penncard: %s
-        payment: %s
+      # living_location = student.living_location
+      # if living_location == 'Stouffer': 
+      #   payment = Payment(
+      #     amount=0,
+      #     plan=Plan.objects.filter(name__contains='Year').exclude(name__contains='Unlimited', end_date__lt=datetime.date.today()).order_by('-start_date')[0],
+      #     student=student,
+      #     satisfied=True,
+      #     payment_type='stouffer',
+      #     )
+      #   payment.save()
+      #   message = '''
+      #   student name: %s
+      #   student penncard: %s
+      #   payment: %s
 
-        tell alex if you want more info in this email
-        ''' % (student.name, student.penncard, payment)
-        send_mail('stoufferite signed up', message, 'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=True)
-        print "this student lives in stouffer"
-        print str(student) + "; paid = " + str(student.paid)
+      #   tell alex if you want more info in this email
+      #   ''' % (student.name, student.penncard, payment)
+      #   send_mail('stoufferite signed up', message, 'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=True)
+      #   print "this student lives in stouffer"
+      #   print str(student) + "; paid = " + str(student.paid)
       print "saved form"
       print "payment plan: " + str(student.plan)
       reply = {'success': True, 'form_valid': True}
