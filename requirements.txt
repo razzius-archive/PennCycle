@@ -19,3 +19,4 @@ django-phonenumber-field==0.2a1
 ipython==0.12
 gdata==2.0.16
 xlwt==0.7.4
+dj-database-url==0.2.1
