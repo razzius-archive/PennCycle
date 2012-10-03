@@ -111,13 +111,13 @@ $('button#waiver-form').click(function(){
   });
 
 
-  // var living_location = $("#id_living_location").val();
-  // console.log(living_location);
-  // if(living_location == "Stouffer") {
-  //   $('div#pay').replaceWith('<h2>You\'ve already paid. Thanks!</h2>'); 
-  //   console.log("replaced html");
-  // } else {
-  //   // $("#penncardnum-id").val();
-  //   // createPayment(payInfo);
-  // }
+  var living_location = $("#id_living_location").val();
+  console.log(living_location);
+  if(living_location == "Stouffer") {
+    $('div#pay').replaceWith('<h2>You\'ve already paid. Thanks!</h2>'); 
+    console.log("replaced html");
+  } else {
+    // $("#penncardnum-id").val();
+    // createPayment(payInfo);
+  }
 }); 
