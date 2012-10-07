@@ -1,0 +1,18 @@
+Current:
+Fixed nesting on FAQ
+
+Moved into pcout:
+settigs_old.py
+b001.dump
+url.txt
+src and its pip-delete-this-directory
+admin_styles.css (body {background-color:red})
+
+Possible/stylistic:
+"Save 20% on Unlimited single-day checkouts for the entire academic year."
+to "Save 20% on unlimited checkouts for the entire academic year."
+Same for "Unlimited single-day checkouts for the fall semester."
+"Unlimited single-day" is strange
+
+Planned:
+Fixing relative links
