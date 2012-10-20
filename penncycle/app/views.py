@@ -36,14 +36,14 @@ class InfoSubmitForm(forms.ModelForm):
 
 def pages():
   pages = [
-    {'name':'Home','url':'../../'},
-    {'name':'Plans','url':'../../plans/'},
-    {'name':'Sign Up','url':'../../signup/'},
+    {'name':'Home','url':'/'},
+    {'name':'Plans','url':'/plans/'},
+    {'name':'Sign Up','url':'/signup/'},
     ]
   for page in Page.objects.all():
     pages.append({
       'name': page.name,
-      'url': '../../about/%s/' % page.slug
+      'url': '/about/%s/' % page.slug
       })
   return pages
 
@@ -63,12 +63,26 @@ def info_submit(request):
     if form.is_valid():
       print "shit is validd"
       student = form.save()
-      living_location = student.living_location
-      if living_location == 'Stouffer': 
-        student.paid = True
-        student.save()
-        print "this student lives in stouffer"
-        print str(student) + "; paid = " + str(student.paid)
+      # living_location = student.living_location
+      # if living_location == 'Stouffer': 
+      #   payment = Payment(
+      #     amount=0,
+      #     plan=Plan.objects.filter(name__contains='Year').exclude(name__contains='Unlimited', end_date__lt=datetime.date.today()).order_by('-start_date')[0],
+      #     student=student,
+      #     satisfied=True,
+      #     payment_type='stouffer',
+      #     )
+      #   payment.save()
+      #   message = '''
+      #   student name: %s
+      #   student penncard: %s
+      #   payment: %s
+
+      #   tell alex if you want more info in this email
+      #   ''' % (student.name, student.penncard, payment)
+      #   send_mail('stoufferite signed up', message, 'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=True)
+      #   print "this student lives in stouffer"
+      #   print str(student) + "; paid = " + str(student.paid)
       print "saved form"
       print "payment plan: " + str(student.plan)
       reply = {'success': True, 'form_valid': True}
@@ -102,7 +116,7 @@ def signup(request):
   context = {
       'safety_info': safety_info,
       'form': form,
-      'plans': Plan.objects.filter(end_date__gt = datetime.date.today())
+      'plans': Plan.objects.filter(end_date__gte = datetime.date.today())
   }
   context.update({'pages':pages()})
   context_instance = RequestContext(request, context)
@@ -125,11 +139,14 @@ def verify_payment(request):
     
     amount = str(request.POST.get('orderAmount', 0))
     print amount
+    costwtax = float(payment.plan.cost)*1.08
+    print costwtax
 
-    if float(amount) != float(payment.plan.cost)*1.08:
-      errmessage = 'student didn\'t pay the right amount! Payment: %s' % str(payment.id)
+    if float(amount) != costwtax:
+      errmessage = 'student didn\'t pay the right amount! Payment: %s \n Amount: %d Cost+tax: %d' % (str(payment.id), float(amount),  costwtax)
       print errmessage
       email_alex(errmessage)
+      return HttpResponse('eh okay.')
     else:
       # if source matches CyberSource, payment completed
       #if source == source_needed and (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == .01:
@@ -249,8 +266,22 @@ def stats(request):
   return render_to_response('stats.html', {'pages':pages()})
 
 def selectpayment(request):
-  plans = Plan.objects.filter(end_date__gt = datetime.date.today())
+  plans = Plan.objects.filter(end_date__gte = datetime.date.today())
   print plans
+  day_plan = Plan.objects.filter(end_date=datetime.date.today(), name__contains='Day Plan')
+  if len(day_plan) < 1:
+    print 'about to create a new day plan'
+    day_plan = Plan(
+      name = 'Day Plan %s' % str(datetime.date.today()),
+      cost = 10,
+      start_date = datetime.date.today(),
+      end_date = datetime.date.today(),
+      description = 'A great way to try out PennCycle. Or, use this to check out a bike for a friend or family member! Add more day plans to your account to check out more bikes. Day plans can only be purchased day-of.',
+      )
+    day_plan.save()
+  elif len(day_plan) == 1:
+    print 'there already was a day plan! how convenient.'
+  print day_plan
   return render_to_response('selectpayment.html', {'plans': plans, 'pages':pages()})
 
 def addpayment(request):

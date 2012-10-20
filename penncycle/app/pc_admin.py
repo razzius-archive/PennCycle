@@ -1,11 +1,13 @@
 from django.contrib import admin
 from django.contrib.admin.sites import AdminSite
-from penncycle.app.models import Manufacturer, Student, Bike, Ride, Station
+from penncycle.app.models import Manufacturer, Student, Bike, Ride, Station, Payment, Comment
 import datetime
+from penncycle.app.admin_stuff import PaymentAdmin, RidesAdmin, StudentAdmin, BikeAdmin
+# from penncycle.app.admin_stuff.RidesAdmin import check_in as admin_check_in
 
-class pcRidesAdmin(admin.ModelAdmin):
+class pcRidesAdmin(RidesAdmin):
   list_display = (
-      'rider', 'status', 'checkout_station', 'checkin_station',
+      'rider', 'bike', 'status', 'checkout_station', 'checkin_station',
   )
   list_filter = (
       'bike__status', 'bike', 'checkout_time', 'checkin_time', 'checkin_station',
@@ -26,25 +28,9 @@ class pcRidesAdmin(admin.ModelAdmin):
 ##  change_form_template = 'c:/djcode/penncycle/templates/admin/app/change_form.html'
 
   # make this only work for bikes not already checked in
-  def check_in(self, request, queryset):
-    station_name = request.user.groups.exclude(name='Associate')[0].name or ''
-    station = Station.objects.get(name=station_name)
-    print station
-    rides_updated = queryset.update(
-      checkin_time=datetime.datetime.now(), 
-      checkin_station=station)
-
-    for item in queryset:
-      item.bike.status='available'
-      item.rider.status = 'available'
-      item.rider.save()
-      item.bike.save()
-    if rides_updated == 1:
-      message_bit = '1 bike was'
-    else:
-      message_bit = '%s bikes were' % rides_updated
-    self.message_user(request, '%s successfully checked in to %s (if this not correct, please modify it!' % (message_bit, station_name))
-  check_in.short_description = "Check in the selected rides"
+  # def check_in(self, request, queryset):
+  #   return RidesAdmin.check_in(self, request, queryset)
+  # check_in = admin_check_in
 
   def add_view(self, request, extra_context=None):
     extra_context = extra_context or {}
@@ -56,3 +42,8 @@ class pcRidesAdmin(admin.ModelAdmin):
 
 pcAdminSite = AdminSite(name='pcadmin')
 pcAdminSite.register(Ride, pcRidesAdmin)
+pcAdminSite.register(Payment, PaymentAdmin)
+pcAdminSite.register(Bike, BikeAdmin)
+pcAdminSite.register(Student, StudentAdmin)
+pcAdminSite.register(Comment)
+# pcAdminSite.register(Station)
