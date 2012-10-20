@@ -1,4 +1,5 @@
 @import "bootstrap.less";
+@import "responsive.less";
 
 @fadedwhite:            fade(@grayLighter, 80%);
 @transparent:           fade(@white, 0%);
@@ -71,7 +72,7 @@
 	font-weight: bold;
 }
 .navbar .nav > li > a:hover {
-  background-color: @white;
+  // background-color: @white;
   font-weight: bold;
 }
 .navbar .nav .active > a,
@@ -84,21 +85,22 @@
 h1, h2, h3, h4, h5, h6 {
 	font-weight: 200;
 }
-h1, h2, li {
+h1, h2 li {
 	line-height: @baseLineHeight * 2;
 }
 .navbar {
+	max-width: 750px;
 	.brand {
 		color: @white;
 	}
 	.navbar-text {
 		a:hover {
-			color:@white;
-			background-color: white;
+			// color:@white;
+			// background-color: white;
 		}
 	}
 }
 .navbar-inner {
-  background:white;
-  filter:none;
+  // background:white;
+  // filter:none;
 }
