@@ -1,3 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{block.super}} Team
+{% endblock %}
+
+{% block content %}
 <p>PennCycle is a part of Penn Student Agencies.</p>
 <hr>
 <h3>Alex Rattray, Operations Director</h3>
@@ -12,3 +19,4 @@
 <p>College &#8217;13    <a href="mailto:ecutler@penncycle.org">ecutler@penncycle.org</a></p>
 <h3>Kevin Shen, Web Developer</h3>
 <p>SEAS &#8217;14       <a href="mailto:kevin@penncycle.org">kevin@penncycle.org</a></p>
+{% endblock %}
