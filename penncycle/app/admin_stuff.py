@@ -13,6 +13,10 @@ from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.forms.formsets import all_valid
 
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 csrf_protect_m = method_decorator(csrf_protect)
 
 class StudentAdmin(admin.ModelAdmin):
@@ -29,7 +33,7 @@ class PaymentAdmin(admin.ModelAdmin):
   list_display = (
       'student', 'plan',
       'amount', 'payment_type', 'satisfied', 'date','status')
-  search_fields = ('student', 'plan',)
+  search_fields = ('student__name', 'plan__name',)
   list_filter = ('plan', 'payment_type', 'satisfied')
   date_hierarchy = 'date'
     
@@ -190,14 +194,26 @@ class RidesAdmin(admin.ModelAdmin):
       item.rider.save()
       s = item.rider
       if len(s.ride_set.all()) < 4:
-        send_mail('How was your ride today?', '''
-Hey %s, \n
-How was your ride today? 
-(Where'd you ride today, how was the bike, were there any problems, etc.) \n
-We'd love to hear how your ride was,
-Alex & the PennCycle Team
-          ''' % (s.name),
-          '"The PennCycle Team" <messenger@penncycle.org>', [s.email], fail_silently=False)
+        subject ='How was your ride today?'
+        from_email='"The PennCycle Team" <messenger@penncycle.org>'
+        to = [s.email,]
+
+        html_content = render_to_string('feedback_email.html', {'student_name':s.name})
+        text_content = strip_tags(html_content) # this strips the html, so people will have the text as well.
+
+        # create the email, and attach the HTML version as well.
+        msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+        msg.attach_alternative(html_content, "text/html")
+        msg.send(fail_silently=True)
+#         send_mail('How was your ride today?', '''
+# Hey %s, \n
+# How was your ride today? 
+# (Where'd you ride today, how was the bike, were there any problems, etc.) \n
+# We'd love to hear how your ride was,
+# Alex & the PennCycle Team
+# <a href="http://api.addthis.com/oexchange/0.8/forward/facebook/offer?pco=tbx32nj-1.0&url=http://app.penncycle.org&pubid=xa-506765865cc9f0e8" target="_blank" ><img src="http://cache.addthiscdn.com/icons/v1/thumbs/32x32/facebook.png" border="0" alt="Facebook" /></a>
+#           ''' % (s.name),
+#           '"The PennCycle Team" <messenger@penncycle.org>', [s.email], fail_silently=False)
       item.save()
     if rides_updated == 1:
       message_bit = '1 bike was'

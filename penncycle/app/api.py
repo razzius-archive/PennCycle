@@ -89,7 +89,17 @@ def numrides(request):
 @login_required
 def emails(request):
   students = Student.objects.all()
-  string = ', '.join([s.email for s in students])
+  string = 'MAKE THIS BCC OR A SCARY GHOST WILL SHANK YOU \n'
+  string += ', '.join([s.email for s in students])
+  string += 'MAKE THIS BCC OR A SCARY GHOST WILL SHANK YOU \n'
+  return HttpResponse(string)
+
+@login_required
+def current_emails(request):
+  students = Student.objects.all()
+  string = 'MAKE THIS BCC OR A SCARY GHOST WILL SHANK YOU \n'
+  string += ', '.join([s.email for s in students if s.paid_now])
+  string += 'MAKE THIS BCC OR A SCARY GHOST WILL SHANK YOU \n'
   return HttpResponse(string)
 
 def duration(request):
