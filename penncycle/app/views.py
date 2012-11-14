@@ -57,8 +57,17 @@ def pages():
 
 def index(request):
   available = Bike.objects.filter(status='available')
+  stoufferCount = 0
+  psaCount = 0
+  for bike in available:
+    if bike.location.name=="Stouffer":
+      stoufferCount += 1
+    elif bike.location.name=="Penn Student Agencies / Houston":
+      psaCount += 1
   context = {
     'available': available,
+    'stoufferCount': stoufferCount,
+    'psaCount': psaCount,
     'pages':pages()
   }
   return render_to_response('index.html', context)

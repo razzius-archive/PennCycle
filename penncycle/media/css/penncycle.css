@@ -7342,7 +7342,7 @@ a.badge:hover {
 @font-face {
   font-family: Gotham;
   font-style: normal;
-  font-weight: 100;
+  font-weight: 200;
   src: url('../Gotham/GothamHTF-Book.otf');
 }
 @font-face {
@@ -7364,7 +7364,7 @@ a.badge:hover {
   src: url('../Gotham/GothamHTF-Bold.otf');
 }
 body {
-  font-weight: 200;
+  font-weight: 300;
 }
 .well {
   background-color: rgba(238, 238, 238, 0.8);
