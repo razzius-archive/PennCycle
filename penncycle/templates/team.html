@@ -1,30 +1,114 @@
-{% extends 'base.html' %}
+{% extends 'baseTeam.html' %}
 
 {% block title %}
   {{block.super}} Team
 {% endblock %}
 
 {% block content %}
-<p class="textCentered">PennCycle is a part of Penn Student Agencies.</p>
-<hr>
-<h3>Chris Cruz, Sales and Expansion Manager</h3>
-<p>College &#8217;13 <a href="mailto:chris@penncycle.org">chris@penncycle.org</a></p>
-<h3>Madison Roberts, Director</h3>
-<p>College &#8217;14 <a href="mailto:madisonr@penncycle.org">madisonr@penncycle.org</a></p>
-<h3>Jenny Xia, Finance and Data Manager</h3>
-<p>College &#8217;14 <a href="mailto:jxia@penncycle.org">jxia@penncycle.org</a></p>
-<h3>Razzi Abuissa, Webmaster</h3>
-<p>College &#8217;15 <a href="mailto:rabuissa@sas.upenn.edu">rabuissa@sas.upenn.edu</a></p>
-<h3>Fleet Managers</h3>
-<p>Bobby Lundquist, College &#8217;16 <a href="mailto:bobbylundquist@gmail.com">bobbylundquist@gmail.com</a></p>
-<p>Michael Patini, College &#8217;16 <a href="mailto:mpatini.penncycle@gmail.com">mpatini.penncycle@gmail.com</a></p>
-<p>Mitchell Hung, Engineering &#8217;16 <a href="mailto:mitchhung@gmail.com">mitchhung.@gmail.com</a></p>
-<h3>Sales Associates</h3>
-<p>Zoe Blickenderfer, College &#8217;16 <a href="mailto:bzoe@sas.upenn.edu">bzoe@sas.upenn.edu</p></a>
-<p>Sara Jones, College &#8217;16 <a href="mailto:jonessar@sas.upenn.edu">jonessar@sas.upenn.edu</p></a>
-<p>Brian Rawn, College &#8217;15 <a href="mailto:rawnb@sas.upenn.edu">bzoe@sas.upenn.edu</p></a>
-<p>Sheila Deng, College &#8217;16 <a href="mailto:sdeng02@gmail.com">sdeng02@gmail.com</p></a>
-<h3>Alumni</h3>
-<p>Elizabeth Cutler, co-founder, College &#8217;13 <a href="mailto:ecutler@sas.upenn.edu">ecutler@sas.upenn.edu</a></p>
-<p>Alex Rattray, co-founder, Wharton &#8217;14 <a href="mailto:rattray.alex@gmail.com">rattray.alex@gmail.com</a></p>
+<div class="row">
+	<div class="span4">
+		<img src="/media/img/faceDemo.png" class="profile">
+		<h3>Chris Cruz</h3>
+		<h4>Sales and Expansion Manager</h4>
+		<p class="school">College &#8217;13</p>
+		<p><a href="mailto:chris@penncycle.org">chris@penncycle.org</a></p>
+	</div>
+	<div class="span4">
+		<img src="/media/img/faceDemo.png" class="profile">
+		<h3>Madison Roberts</h3>
+		<h4>Director</h4>
+		<p class="school">College &#8217;14</p>
+		<p><a href="mailto:madisonr@penncycle.org">madisonr@penncycle.org</a></p>
+	</div>
+</div>
+<div class="row">
+	<div class="span4">
+		<img src="/media/img/faceDemo.png" class="profile">
+		<h3>Jenny Xia</h3>
+		<h4>Finance and Data Manager</h4>
+		<p class="school">College &#8217;14</p>
+		<p><a href="mailto:jxia@penncycle.org">jxia@penncycle.org</a></p>
+	</div>
+	<div class="span4">
+		<img src="/media/img/razziDemo.png" class="profile">
+		<h3>Razzi Abuissa</h3>
+		<h4>Webmaster</h4>
+		<p class="school">College &#8217;15</p>
+		<p><a href="mailto:rabuissa@sas.upenn.edu">rabuissa@sas.upenn.edu</a></p>
+	</div>
+</div>
+<br>
+
+<h3 class="textCentered">Fleet Managers</h3>
+<div class="row">
+	<div class="span4">
+		<img src="/media/img/faceDemo.png" class="profile">
+		<h4>Bobby Lundquist</h4>
+		<p class="school">College &#8217;16</p>
+		<p><a href="mailto:bobbylundquist@gmail.com">bobbylundquist@gmail.com</a></p>
+	</div>
+	<div class="span4">
+		<img src="/media/img/faceDemo.png" class="profile">
+		<h4>Michael Patini</h4>
+		<p class="school">College &#8217;16</p>
+		<p><a href="mailto:mpatini.penncycle@gmail.com">mpatini.penncycle@gmail.com</a></p>
+	</div>
+	<div class="span4">
+		<img src="/media/img/faceDemo.png" class="profile">
+		<h4>Mitchell Hung</h4>
+		<p class="school">Engineering &#8217;16</p>
+		<p><a href="mailto:mitchhung@gmail.com">mitchhung@gmail.com</a></p>
+	</div>
+</div>
+<br>
+
+<h3 class="textCentered">Sales Associates</h3>
+<div class="row">
+	<div class="span4">
+		<img src="/media/img/faceDemo.png" class="profile">
+		<h4>Zoe Blickenderfer</h4>
+		<p class="school">College &#8217;16</p>
+		<p><a href="mailto:bzoe@sas.upenn.edu">bzoe@sas.upenn.edu</a></p>
+	</div>
+	<div class="span4">
+		<img src="/media/img/faceDemo.png" class="profile">
+		<h4>Sara Jones</h4>
+		<p class="school">College &#8217;16</p>
+		<p><a href="mailto:jonessar@sas.upenn.edu">jonessar@sas.upenn.edu</a></p>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="span4">
+		<img src="/media/img/faceDemo.png" class="profile">
+		<h4>Brian Rawn</h4>
+		<p class="school">College &#8217;15</p>
+		<p><a href="mailto:rawnb@sas.upenn.edu">bzoe@sas.upenn.edu</a></p>
+	</div>
+	<div class="span4">
+		<img src="/media/img/faceDemo.png" class="profile">
+		<h4>Sheila Deng</h4>
+		<p class="school">College &#8217;16
+		<p><a href="mailto:sdeng02@gmail.com">sdeng02@gmail.com</a></p>
+	</div>
+</div>
+<br>
+
+<div class="row">
+	<h3 class="textCentered">Alumni</h3>
+	<div class="span4">
+		<img src="/media/img/faceDemo.png" class="profile">
+		<h4>Elizabeth Cutler</h4>
+		<p>Co-founder</p>
+		<p class="school">College &#8217;15</p>
+		<a href="mailto:ecutler@sas.upenn.edu">ecutler@sas.upenn.edu</a>
+	</div>
+	<div class="span4">
+		<img src="/media/img/faceDemo.png" class="profile">
+		<h4>Alex Rattray</h4>
+		<p>Co-founder</p>
+		<p class="school">Wharton &#8217;14</p>
+		<a href="mailto:rattray.alex@gmail.com">rattray.alex@gmail.com</a>
+	</div>
+</div>
 {% endblock %}
