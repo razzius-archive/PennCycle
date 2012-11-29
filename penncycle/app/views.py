@@ -374,4 +374,7 @@ def email_alex(message):
   send_mail('an important email from the PennCycle App', str(message), 'messenger@penncycle.org', ['rattray.alex@gmail.com'], fail_silently=True)
 
 def secret(request):
-  return render_to_response("teamSecret.html")
+  context = {
+    'pages': pages(),
+  }
+  return render_to_response("teamSecret.html", context)
