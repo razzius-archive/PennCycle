@@ -7363,6 +7363,26 @@ a.badge:hover {
   font-weight: bold;
   src: url('../Gotham/GothamHTF-Bold.otf');
 }
+img.profile {
+  float: left;
+  overflow: hidden;
+  margin: 10px 10px 30px 10px;
+  width: 90px;
+  height: 90px;
+}
+img.fleetProfile {
+  float: left;
+  overflow: hidden;
+  margin: 10px 5px 0px 0px;
+  width: 90px;
+  height: 90px;
+}
+.span4 h3 {
+  line-height: 100%;
+}
+.school {
+  line-height: 80%;
+}
 body {
   font-weight: 300;
 }
