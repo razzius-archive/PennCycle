@@ -55,12 +55,6 @@ def pages():
   #     })
   return pages
 
-def winterIndex(request):
-  context = {
-      'pages':pages()
-  }
-  return render_to_response('winterIndex.html', context)
-
 def index(request):
   available = Bike.objects.filter(status='available')
   stoufferCount = 0
