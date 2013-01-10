@@ -1,52 +1,93 @@
-<p>
-For a $10 fee, a registration process, and a swipe of PennCard, you can have full access to bikes (including locks and helmets). After you have registered, visit Hill College House and present your PennCard to a PennCycle Associate at the desk. Take the numbered key and find the corresponding PennCycle. Inspect the bike and report issues, adjust the seat, and PennCycle! Remember to return the bike to Hill College House before 7 PM!
-</p>
-<hr><ul>
-<li><strong>Who is eligible to participate in PennCycle?</strong></li>
-</ul>
-<p><strong></strong>Bike are available to the entire Penn Community including students, staff, and faculty. Anyone with a PennCard</p>
-<hr><ul>
-<li><strong>How much does it cost?</strong></li>
-</ul>
-<p>Bikes are available for rental for a $10 fee for the rest of the Spring 2012 semester.</p>
-<hr><ul>
-<li><strong>When are PennCycle hours/when can I rent and return bikes?</strong></li>
-</ul>
-<p><strong></strong>Bike rental is open from 9AM to 7PM.</p>
-<hr><ul>
-<li><strong>How are bikes assigned?</strong></li>
-</ul>
-<p><strong></strong>Bikes are assigned on a first-come first-serve basis.</p>
-<hr><ul>
-<li><strong>For how long can I keep a rented bike?</strong></li>
-</ul>
-<p><strong></strong>You can keep a bike for a day. If you keep the bike overnight, overnight charges apply.</p>
-<hr><ul>
-<li><strong>Drats! My bike got lost/damaged &#8211; what do I do?!</strong></li>
-</ul>
-<p><strong></strong>When you rent a bike, you are held responsible for its condition beyond normal wear and tear.</p>
-<hr><ul>
-<li><strong>Who are the people in charge of PennCycle?</strong></li>
-</ul>
-<p><strong></strong>PennCycle is run by student managers out of Penn Student Agencies.</p>
-<hr><ul>
-<li><strong>How can I pay for my PennCycle membership?</strong></li>
-</ul>
-<div>When you sign up on our website you can pay with PennCash, Bursar and Credit Card online. If you would like to pay with cash, you can complete the registration process online and bring your $10 in cash to Hill College House between 9 am and 7 pm, 7 days a week, or the PSA Store during its business hours.</div>
-<div></div>
-<div>
-<hr><ul>
-<li><strong>How can I get more involved in PennCycle?</strong></li>
-</ul>
-<div>We are currently hiring PennCycle Associates, to check out bikes at Hill College House. If you are interested, or would like more information, email messenger@penncycle.org.</div>
-</div>
-<div></div>
-<div>
-<hr><ul>
-<li><strong>Do you have maps of bike paths in Philly?</strong></li>
-</ul>
-<div>We are currently working on finding the best bike maps. These will be up soon!</div>
-</div>
-<hr>
-<p><strong>Still looking for an answer? <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a></strong></p>
-<p>
+{% extends 'base.html' %}
+
+{% block title %}
+  {{block.super}} FAQ
+{% endblock %}
+
+{% block content %}
+  <h1 class="textCentered">FAQ</h1>
+  <hr>
+  <p>
+	For a membership fee, a registration process, and a swipe of PennCard, you can have full access to bikes (including locks and helmets). After you have registered, visit one of our locations (Penn Student Agencies Store, Stouffer, or Houston) and present your PennCard to an employee at the desk. Take the numbered key and find the corresponding PennCycle. Inspect the bike and report issues, adjust the seat, and PennCycle! Remember to return the bike to any location before closing!
+	</p>
+
+	<div class="well">
+	<ul>
+	<li><strong>Who is eligible to participate in PennCycle?</strong></li>
+	<hr></ul>
+	<p><strong></strong>Bikes are available to the entire Penn community including students, staff, and faculty. Anyone with a PennCard.</p>
+	</div>
+
+	<div class="well">
+	<ul>
+	<li><strong>How much does it cost?</strong></li>
+	<hr></ul>
+	<p>Bikes are available for rental for as low as $25 a semester. Please see our <a href="/plans">Plans</a> page for more information.</p>
+	</div>
+
+	<div class="well">
+	<ul>
+	<li><strong>When are PennCycle hours/when can I rent and return bikes?</strong></li>
+	<hr></ul>
+	<p><strong></strong>Bike rental hours vary by location. Please see our <a href="/about/locations">Locations</a> page for more information on hours.</p>
+	</div>
+
+	<div class="well">
+	<ul>
+	<li><strong>How are bikes assigned?</strong></li>
+	<hr></ul>
+	<p><strong></strong>Bikes are assigned on a first-come first-serve basis.</p>
+	</div>
+
+	<div class="well">
+	<ul>
+	<li><strong>For how long can I keep a rented bike?</strong></li>
+	<hr></ul>
+	<p><strong></strong>You can keep a bike for a day. If you keep the bike overnight, overnight charges apply. However, if you have the unlimited plan, you can keep the bike out for as long as you like.</p>
+	</div>
+
+	<div class="well">
+	<ul>
+	<li><strong>Drats! My bike got lost/damaged &#8211; what do I do?!</strong></li>
+	<hr></ul>
+	<p><strong></strong>When you rent a bike, you are held responsible for its condition beyond normal wear and tear. Notify an employee at the location you rented it from of the loss or damage and email messenger@penncycle.org.</p>
+	</div>
+
+	<div class="well">
+	<ul>
+	<li><strong>Who are the people in charge of PennCycle?</strong></li>
+	<hr></ul>
+	<p><strong></strong>PennCycle is run by student managers out of Penn Student Agencies.</p>
+	</div>
+
+	<div class="well">
+	<ul>
+	<li><strong>How can I pay for my PennCycle membership?</strong></li>
+	<hr></ul>
+	<div>When you sign up on our website you can pay with Bursar and Credit Card online. If you would like to pay with cash, you can complete the registration process online and bring your membership fee in cash to the Penn Student Agencies Store between 10 am and 6 pm, Monday through Friday.</div>
+	</div>
+
+	<div class="well">
+	<ul>
+	<li><strong>How can I get more involved in PennCycle?</strong></li>
+	<hr></ul>
+	<div>We are currently looking for volunteers to publicize and help run PennCycle. Volunteers will have a high chance of promotion to management. If you are interested, or would like more information, email <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a>.</div>
+	</div>
+
+	<div class="well">
+	<ul>
+	<li><strong>Do you have maps of bike paths in Philly?</strong></li>
+	<hr></ul>
+	<div>We are currently working on finding the best bike maps. These will be up soon!</div>
+	</div>
+
+	<div class="well">
+
+	<p><strong>Still looking for an answer? Email <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a>.</strong></p>
+	<p>
+	</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+

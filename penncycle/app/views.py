@@ -24,7 +24,9 @@ class SignupForm(BootstrapModelForm):
                 'last_two', 
                 'payment_type', 
                 'at_desk',
-                'plan')
+                'plan',
+                'major',
+                )
 
 class InfoSubmitForm(forms.ModelForm):
   class Meta:
@@ -39,12 +41,18 @@ def pages():
     {'name':'Home','url':'/'},
     {'name':'Plans','url':'/plans/'},
     {'name':'Sign Up','url':'/signup/'},
+    {'name':'Safety', 'url':'/safety/'},
+    {'name':'Team', 'url':'/team/'},
+    {'name':'Partners', 'url':'/partners/'},
+    {'name':'Events', 'url':'/events/'},
+    {'name':'Locations', 'url':'/locations/'},
+    {'name':'FAQ', 'url':'/faq/'},
     ]
-  for page in Page.objects.all():
-    pages.append({
-      'name': page.name,
-      'url': '/about/%s/' % page.slug
-      })
+  # for page in Page.objects.all():
+  #   pages.append({
+  #     'name': page.name,
+  #     'url': '/about/%s/' % page.slug
+  #     })
   return pages
 
 def index(request):
@@ -54,6 +62,43 @@ def index(request):
     'pages':pages()
   }
   return render_to_response('index.html', context)
+
+def faq(request):
+  context = {
+    'pages':pages()
+  }
+  return render_to_response('faq.html', context)
+
+def safety(request):
+  context = {
+    'pages':pages()
+  }
+  return render_to_response('safety.html', context)
+
+def team(request):
+  context = {
+    'pages':pages()
+  }
+  return render_to_response('team.html', context)
+
+def partners(request):
+  context = {
+    'pages':pages()
+  }
+  return render_to_response('partners.html', context)
+
+def events(request):
+  context = {
+    'pages':pages()
+  }
+  return render_to_response('events.html', context)
+
+def locations(request):
+  context = {
+    'pages':pages()
+  }
+  return render_to_response('locations.html', context)
+
 
 def info_submit(request):
   if request.method == 'POST':
