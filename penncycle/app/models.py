@@ -171,7 +171,7 @@ class Bike(models.Model):
       last_ride = last_ride[0]
       location = last_ride.checkin_station
     except:
-      location = Station.objects.get(name__contains="Penn Student Agencies")
+      location = Station.objects.get(name__contains="PSA")
     return location
 
   def __unicode__(self):
