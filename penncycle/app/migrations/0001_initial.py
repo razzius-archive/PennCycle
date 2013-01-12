@@ -72,7 +72,7 @@ class Migration(SchemaMigration):
             ('bike', self.gf('django.db.models.fields.related.ForeignKey')(related_name='rides', to=orm['app.Bike'])),
             ('checkout_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('checkin_time', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('checkout_station', self.gf('django.db.models.fields.related.ForeignKey')(default='Hill', related_name='checkouts', to=orm['app.Station'])),
+            ('checkout_station', self.gf('django.db.models.fields.related.ForeignKey')(related_name='checkouts', to=orm['app.Station'])),
             ('checkin_station', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='checkins', null=True, to=orm['app.Station'])),
         ))
         db.send_create_signal('app', ['Ride'])
@@ -146,7 +146,7 @@ class Migration(SchemaMigration):
             'bike': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'rides'", 'to': "orm['app.Bike']"}),
             'checkin_station': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'checkins'", 'null': 'True', 'to': "orm['app.Station']"}),
             'checkin_time': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'checkout_station': ('django.db.models.fields.related.ForeignKey', [], {'default': "'Hill'", 'related_name': "'checkouts'", 'to': "orm['app.Station']"}),
+            'checkout_station': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'checkouts'", 'to': "orm['app.Station']"}),
             'checkout_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'rider': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['app.Student']"})
