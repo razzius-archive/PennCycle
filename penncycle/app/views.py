@@ -62,7 +62,7 @@ def index(request):
   for bike in available:
     if bike.location.name=="Stouffer":
       stoufferCount += 1
-    elif bike.location.name=="Penn Student Agencies / Houston":
+    elif bike.location.name=="PSA / Houston":
       psaCount += 1
   context = {
     'available': available,
