@@ -182,7 +182,10 @@ class RidesAdmin(admin.ModelAdmin):
 
   # make this only work for bikes not already checked in
   def check_in(self, request, queryset):
-    station_name = request.user.groups.exclude(name='Associate')[0].name or ''
+    try:
+      station_name = request.user.groups.exclude(name='Associate')[0].name
+    except:
+      return HttpResponse("You don't have any groups. Go to app.penncycle.org/admin/auth/user and make sure 'associate' and your station are checked.")
     station = Station.objects.get(name=station_name)
     rides_updated = queryset.update(checkin_time=datetime.datetime.now(), checkin_station=station)
     for item in queryset:

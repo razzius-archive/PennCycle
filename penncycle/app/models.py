@@ -68,6 +68,7 @@ PAYMENT_CHOICES = (
   ('stouffer','stouffer'),
   ('free','free'),
   ('other','other'),
+  ('fisher', 'fisher')
 )
 
 class Plan(models.Model):
