@@ -5,12 +5,16 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Pay with {{ type }}</h1>
+  {% if type == 'fisher' or type == 'ware' %}
+    <h3>{{type|capfirst }} Residents</h3>
+  {% else %}
+    <h3>Pay with {{ type }}</h3>
+  {% endif %}
   <hr>
   {% if type == 'bursar' or type == 'penncash' %}
-    <h2> 
-      We need the last two digits of your PennCard
-    </h2>
+    <p>
+      Please input the last two digits of your PennCard to pay with bursar.
+    </p>
     <form action='.' method='POST' class='form-inline'>{% csrf_token %}
       <div class="input-prepend span2">
         <span class="add-on">{{penncard}}</span>
@@ -27,7 +31,15 @@
   {% endif %}
   
   {% ifequal type 'cash' %}
-    <p>If you haven't already paid, be sure to pay with cash at the PSA Store (in Williams, accross from Houston Hall). Remember to bring your change for the tax man!</p>
+    <p>If you haven't already paid, be sure to pay with cash at the PSA Store (in Williams, across from Houston Hall). Remember to bring your change for the tax man!</p>
+  {% endifequal %}
+
+  {% ifequal type 'fisher' %}
+    <p>You can now start checking out bikes at any of our <a href="/locations">locations</a>. Fisher's bikes can be checked out at the Fisher house office. Happy cycling!</p>
+  {% endifequal %}
+
+  {% ifequal type 'ware' %}
+    <p>You can now start checking out bikes at any of our <a href="/locations">locations</a>. Ware's bikes can be checked out at the Ware house office or from any RA or GA. Happy cycling!</p>
   {% endifequal %}
 {% endblock %}
 

@@ -172,12 +172,11 @@
       appendPcnum('#paybycash', pcnum);
       appendPcnum('#paybypenncash', pcnum);
       appendPcnum('#paybybursar', pcnum);
+      // Might not be necessary
+      appendPcnum("#fisher", pcnum);
+      appendPcnum("#ware", pcnum);
     }
   }); 
 
   // set background for active tab in navbar    
   $('.nav1 li#signup').addClass('active');
-
-  $('button#video-form').click(function(){
-    $('#quiz').tab('show');
-  });

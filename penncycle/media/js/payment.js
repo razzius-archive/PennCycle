@@ -44,6 +44,18 @@ $('#paybybursar').click(function(){
   var href = '/pay/bursar/' + pcnum + "/" + plan.attr("name");
   window.location = href;
 });
+$('#fisher').click(function(){
+  var pcnum = $("#id_penncard").val();
+  var plan = $("form#planform select option:selected");
+  var href = '/pay/fisher/' + pcnum + "/" + plan.attr("name");
+  window.location = href;
+});
+$('#ware').click(function(){
+  var pcnum = $("#id_penncard").val();
+  var plan = $("form#planform select option:selected");
+  var href = '/pay/ware/' + pcnum + "/" + plan.attr("name");
+  window.location = href;
+});
 
 function appendPcnum (id, pcnum) {
   // alert('append');
