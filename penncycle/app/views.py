@@ -147,6 +147,8 @@ def info_submit(request):
                'new_form': str(form)}
     print reply
     return HttpResponse(json.dumps(reply), content_type="application/json")
+  else:
+    return HttpResponse("You have reached this page in error. Please contact messenger@penncycle.org with details on how you got here.")
       
 def page(request, slug):
   page = get_object_or_404(Page, slug=slug)
