@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.sites import AdminSite
 from penncycle.app.models import Manufacturer, Student, Bike, Ride, Station, Payment, Comment
 import datetime
+from penncycle.app.views import email_alex
 from penncycle.app.admin_stuff import PaymentAdmin, RidesAdmin, StudentAdmin, BikeAdmin
 # from penncycle.app.admin_stuff.RidesAdmin import check_in as admin_check_in
 
@@ -34,7 +35,11 @@ class pcRidesAdmin(RidesAdmin):
 
   def add_view(self, request, extra_context=None):
     extra_context = extra_context or {}
-    station = request.user.groups.exclude(name='Associate')[0].name or ''
+    try:
+      station = request.user.groups.exclude(name='Associate')[0].name or ''
+    except:
+      email_alex("{} tried to sign somebody in it would seem. They were told to check their /admin/auth/user status. They had groups {}".format(request.user, request.user.groups))
+      return HttpResponse("You don't have any groups. Go to app.penncycle.org/admin/auth/user and make sure 'associate' and your station are checked.")
     print station
     extra_context['station'] = station
     return super(pcRidesAdmin, self).add_view(request,

@@ -373,7 +373,7 @@ def plans(request):
   return render_to_response('plans.html', context)
 
 def email_alex(message):
-  send_mail('an important email from the PennCycle App', str(message), 'messenger@penncycle.org', ['rattray.alex@gmail.com'], fail_silently=True)
+  send_mail('an important email from the PennCycle App', str(message), 'messenger@penncycle.org', ['rattray.alex@gmail.com', 'razzi53@gmail.com'], fail_silently=True)
 
 def secret(request):
   context = {
