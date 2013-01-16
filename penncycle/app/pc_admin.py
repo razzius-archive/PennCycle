@@ -4,6 +4,7 @@ from penncycle.app.models import Manufacturer, Student, Bike, Ride, Station, Pay
 import datetime
 from penncycle.app.views import email_alex
 from penncycle.app.admin_stuff import PaymentAdmin, RidesAdmin, StudentAdmin, BikeAdmin
+from django.http import HttpResponse
 # from penncycle.app.admin_stuff.RidesAdmin import check_in as admin_check_in
 
 class pcRidesAdmin(RidesAdmin):

@@ -12,7 +12,7 @@ from django.utils.translation import ugettext as _
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.forms.formsets import all_valid
-
+from django.http import HttpResponse
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags

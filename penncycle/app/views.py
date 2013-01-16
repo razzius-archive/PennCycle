@@ -10,7 +10,6 @@ from django.views.decorators.csrf import csrf_exempt
 from bootstrap.forms import BootstrapModelForm, Fieldset
 import random, json, hashlib, hmac, gviz_api
 from django.contrib.auth.decorators import login_required
-from django.db.models import F
 import datetime
 #from app.docs import addPerson
 
