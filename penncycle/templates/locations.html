@@ -9,6 +9,7 @@
 	PennCycle is happy to announce the opening of check-out locations in Rodin, Fisher-Hassenfeld and Ware!
 </h4>
  -->
+<div id="map_canvas" style="width:auto; height:400px"></div>
 <div class = "well">
 	<div class="textCentered">
 		<h3>Houston Hall</h3>
@@ -62,4 +63,40 @@
 		<p>Ware's bikes can be checked out at any house office or from any RA or GA.</p>
 	</div>
 </div> -->
+{% endblock %}
+
+{% block scripts %}
+	<style type="text/css">
+	.labels {
+		background-color: white;
+		text-align: center;
+		border: 1px solid black;
+		width: 60px;
+	}
+	</style>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBKBg19QWvNQ2U5Skk9nJrG9c43rtJuf-A&amp;sensor=false"></script>
+	<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/markerwithlabel/1.0.1/src/markerwithlabel.js"></script>
+	<script type="text/javascript">
+		// $(document).ready(function (){
+			// map();
+		// });
+		function map() {
+	    	var mapOptions = {
+		            center: new google.maps.LatLng(39.952517,-75.19618),
+		            zoom: 1905607,
+		            mapTypeId: google.maps.MapTypeId.ROADMAP,
+		            disableDefaultUI: true
+		    	};
+		    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+		    var marker = new MarkerWithLabel({
+		    	position: new google.maps.LatLng(39.9529399,-75.1905607),
+		    	labelAnchor: new google.maps.Point(25, 0),
+                map: map,
+                title:"Rodin",
+                labelContent:"Rodin",
+                labelClass:"labels",
+                icon: "/media/img/marker.png"
+		    })
+		}
+	</script>
 {% endblock %}
