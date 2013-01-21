@@ -9,6 +9,8 @@
 	PennCycle is happy to announce the opening of checkout locations in Rodin, Fisher-Hassenfeld and Ware!
 </h4>
 
+<div id="map_canvas" style="width:auto; height:480px"></div>
+<br>
 <div class = "well">
 	<div class="textCentered">
 		<h3>Houston Hall</h3>
@@ -62,4 +64,47 @@
 		<p>Ware's bikes can be checked out at any house office or from any RA or GA.</p>
 	</div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+	<style type="text/css">
+	.labels {
+		font-weight: 900;
+		font-size: 10px;
+		line-height: 10px;
+		background-color: white;
+		text-align: center;
+		border-radius: 2px;
+		width: 42px;
+	}
+	</style>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBKBg19QWvNQ2U5Skk9nJrG9c43rtJuf-A&amp;sensor=false"></script>
+	<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/markerwithlabel/1.0.1/src/markerwithlabel.js"></script>
+	<script type="text/javascript">
+		// $(document).ready(function (){
+			// map();
+		// });
+		function map() {
+	    	var mapOptions = {
+		            center: new google.maps.LatLng(39.951818,-75.197994),
+		            zoom: 17,
+		            mapTypeId: google.maps.MapTypeId.ROADMAP,
+		            disableDefaultUI: true,
+	                zoomControl: false,
+	                scrollwheel: false,
+		    	};
+		    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+		    {% for station in stations %}
+			    var marker = new MarkerWithLabel({
+			    	position: new google.maps.LatLng({{station.latitude}},{{station.longitude}}),
+			    	labelAnchor: new google.maps.Point(25, 0),
+			    	// title: "hours go here",
+	                map: map,
+	                labelContent:"{{station.name}}",
+	                labelClass:"labels",
+	                icon: "/media/img/marker.png"
+			    });
+			{% endfor %}
+		}
+	</script>
 {% endblock %}

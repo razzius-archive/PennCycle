@@ -103,7 +103,8 @@ def events(request):
 
 def locations(request):
   context = {
-    'pages':pages()
+    'pages':pages(),
+    'stations':Station.objects.filter(capacity__gt=0)
   }
   return render_to_response('locations.html', context)
 
