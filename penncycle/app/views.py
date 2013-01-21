@@ -56,16 +56,13 @@ def pages():
 
 def index(request):
   available = Bike.objects.filter(status='available')
-  stoufferCount = 0
-  psaCount = 0
-  for bike in available:
-    if bike.location.name=="Stouffer":
-      stoufferCount += 1
-    elif bike.location.name=="PSA / Houston":
-      psaCount += 1
+  stoufferCount = sum((1 for bike in available if bike.location.name == "Stouffer"))
+  psaCount = sum((1 for bike in available if bike.location.name == "PSA / Houston"))
+  rodinCount = sum((1 for bike in available if bike.location.name == "Rodin"))
   context = {
     'available': available,
     'stoufferCount': stoufferCount,
+    'rodinCount':rodinCount,
     'psaCount': psaCount,
     'pages':pages()
   }
