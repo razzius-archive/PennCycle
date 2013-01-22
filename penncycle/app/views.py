@@ -43,7 +43,7 @@ def pages():
     {'name':'Safety', 'url':'/safety/'},
     {'name':'Team', 'url':'/team/'},
     {'name':'Partners', 'url':'/partners/'},
-    {'name':'Events', 'url':'/events/'},
+    # {'name':'Events', 'url':'/events/'},
     {'name':'Locations', 'url':'/locations/'},
     {'name':'FAQ', 'url':'/faq/'},
     ]
@@ -92,11 +92,11 @@ def partners(request):
   }
   return render_to_response('partners.html', context)
 
-def events(request):
-  context = {
-    'pages':pages()
-  }
-  return render_to_response('events.html', context)
+# def events(request):
+#   context = {
+#     'pages':pages()
+#   }
+#   return render_to_response('events.html', context)
 
 def locations(request):
   context = {
@@ -169,7 +169,7 @@ def signup(request):
   context = {
       'safety_info': safety_info,
       'form': form,
-      'plans': Plan.objects.filter(end_date__gte = datetime.date.today())
+      'plans': Plan.objects.filter(end_date__gte = datetime.date.today(), cost__gt = 0)
   }
   context.update({'pages':pages()})
   context_instance = RequestContext(request, context)
@@ -319,7 +319,7 @@ def stats(request):
   return render_to_response('stats.html', {'pages':pages()})
 
 def selectpayment(request):
-  plans = Plan.objects.filter(end_date__gte = datetime.date.today())
+  plans = Plan.objects.filter(end_date__gte = datetime.date.today(), cost__gt = 0)
   print plans
   day_plan = Plan.objects.filter(end_date=datetime.date.today(), name__contains='Day Plan')
   if len(day_plan) < 1:
@@ -359,7 +359,7 @@ def plans(request):
   print "hit plans view"
   # list of dicts
   plans = [] 
-  for p in Plan.objects.exclude(end_date__lte=datetime.date.today()).order_by('start_date', 'cost'):
+  for p in Plan.objects.filter(end_date__gte=datetime.date.today(), cost__gt = 0).order_by('start_date', 'cost'):
     plans.append({'name': str(p), 'description': p.description, 'start_date': p.start_date, 'end_date': p.end_date,})
 
   context = {

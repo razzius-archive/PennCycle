@@ -31,7 +31,9 @@ GRAD_YEAR_CHOICES = (
 LIVING_LOCATIONS = (
   ('Hill', 'Hill'),
   ('KCECH', 'KCECH'),
-  ('Quad', 'Quad'),
+  ('Riepe', 'Riepe'),
+  ('Fisher', 'Fisher'),
+  ('Ware', 'Ware'), 
   ('Harrison', 'Harrison'),
   ('Harnwell', 'Harnwell'),
   ('Rodin', 'Rodin'),

@@ -27,7 +27,6 @@ urlpatterns = patterns('',
     (r'^safety/$', safety),
     (r'^team/$', team),
     (r'^partners/$', partners),
-    (r'^events/$', events),
     (r'^locations/$', locations),
     (r'^info_submit/$', info_submit),
     (r'^verify_payment/$', verify_payment),
@@ -56,6 +55,9 @@ urlpatterns = patterns('',
     (r'api/checkouts/$', api.checkouts),
 
     (r'api/dump/$', api.dump)
+
+    #could resurface
+    # (r'^events/$', events),
 
     # django_twilio stuff
     #url(r'^dial/(?P<number>\w+)/$', 'django_twilio.views.dial'),
