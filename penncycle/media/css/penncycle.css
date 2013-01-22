@@ -7460,7 +7460,7 @@ h2 li {
   font-size: 24px;
 }
 .navbar {
-  max-width: 750px;
+  width: 680px;
 }
 .navbar .brand {
   color: #ffffff;
