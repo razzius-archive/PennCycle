@@ -149,9 +149,7 @@ class Student(models.Model):
       )
   @property
   def can_ride(self):
-    if len(self.current_payments.filter(status='available'))>0 and self.waiver_signed == True and self.paid_now == True or self.living_location=='Quad' or self.living_location=='Fisher' or self.living_location=='Ware':
-      if self.living_location=="Quad" or self.living_location=='Fisher' or self.living_location=='Ware':
-        email_razzi("Somebody is getting through on living_location...!")
+    if len(self.current_payments.filter(status='available'))>0 and self.waiver_signed == True and self.paid_now == True:
       return True
     else:
       return False
