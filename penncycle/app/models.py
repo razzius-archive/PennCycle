@@ -147,10 +147,12 @@ class Student(models.Model):
       plan__start_date__lte=today,
       plan__end_date__gte=today,
       )
-
+  @property
   def can_ride(self):
-    if len(self.current_payments.filter(status='available')>0) and self.waiver_signed == True and self.paid_now == True:
+    if len(self.current_payments.filter(status='available')>0) and self.waiver_signed == True and self.paid_now == True || self.living_location=='Quad':
       return True
+    else:
+      return False
 
   def __unicode__(self):
     return u'%s %s' % (self.name, self.penncard)
