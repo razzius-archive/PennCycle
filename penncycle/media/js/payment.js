@@ -106,6 +106,13 @@ $('button#waiver-form').click(function(){
   var pennidData = $.param(payInfo);
   console.log(payInfo);
   console.log(pennidData);
+  var living_location = $("#id_living_location").val();
+  console.log("Lives in " + living_location);
+  if((living_location == "Fisher") || (living_location == "Ware")) {
+    message = "<h2>Your house dean has already paid for you.</h2><p>PennCycle is happy to announce a partnership with Fisher-Hassenfeld and Ware that allows current Fisher-Hassenfeld and Ware residents to check out and return Penncycle bikes at any PennCycle station. Visit our <a href='/locations'>locations</a> to see our stations. Bikes in the Quad can be checked out at either of Fisher and Ware's house offices.</p>";
+    $('div#pay').replaceWith(message); 
+    console.log("replaced html");
+  }
   $.ajax ({
     url: '/verify_waiver/', 
     type: 'POST',
@@ -120,15 +127,5 @@ $('button#waiver-form').click(function(){
     success: function(data, status, xhr) {
       console.log('waiver success');
     },
-    var living_location = $("#id_living_location").val();
-    console.log("Lives in " + living_location);
-    if((living_location == "Fisher") || (living_location == "Ware")) {
-      message = "<h2>Your house dean has already paid for you.</h2><p>PennCycle is happy to announce a partnership with Fisher-Hassenfeld and Ware that allows current Fisher-Hassenfeld and Ware residents to check out and return Penncycle bikes at any PennCycle station. Visit our <a href='/locations'>locations</a> to see our stations. Bikes in the Quad can be checked out at either of Fisher and Ware's house offices.</p>";
-      $('div#pay').replaceWith(message); 
-      console.log("replaced html");
-    } else {
-      // $("#penncardnum-id").val();
-      // createPayment(payInfo);
-    }
   });
 }); 
