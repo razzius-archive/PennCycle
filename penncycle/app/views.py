@@ -283,7 +283,7 @@ def pay(request, type, penncard, plan):
       plan=plan,
       student=student,
       date=datetime.datetime.today(),
-      satisfied=False,
+      satisfied=True,
       payment_type=type,
       )
     payment.save()
@@ -295,8 +295,16 @@ def pay(request, type, penncard, plan):
       Type: %s \n
       Plan: %s \n
       
-      bill them and remember to check 'paid'! 
-      Thanks d00d >.<
+      Chris and Razzi deciced that it would be easier for students to have the ability
+      to check out bikes immediately, so that students wouldn't have
+      to wait for us to bill them and in case we forget, they can still ride. 
+
+      It is still necessary to bill them, and if this has a problem, go to the admin interface and remove their
+      payment, then email them with what went wrong.
+
+      Email razzi53@gmail.com if something goes wrong.
+
+      Thanks!
     ''' % (student.name, student.penncard, student.last_two, type, plan)
     send_mail('Student Registered w/ %s' % (type), message, 
       'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=False)
