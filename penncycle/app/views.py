@@ -231,16 +231,16 @@ def thankyou(request, payment_id):
   print student
   type = request.GET.get('type', 'credit')
   if type == 'penncash' or type == 'bursar':
-    message = '''Please allow up to 48 hours for your payment to be registered
-      (but we'll try hard to be as fast as possible!). 
-      </p><p> You will not be able to check out a bike until the payment has registered successfully.'''
+    message = '''Please allow up to 48 hours for your payment to be registered.
+    </p><p> You can start checking out bikes immediately in the meantime. Visit our <a href="/locations">locations</a> page
+    to view our stations and their hours.'''
   elif type == 'cash':
     message = "Once you've paid and your payment has been registered, you'll be good to go!"
   elif type == "credit":
     if payment.satisfied == True:
       message = 'You\'re ready to ride!'
     else:
-      message = 'Whoops! Something went wrong with your payment. We\'ve been notified and will get on this right away'
+      message = 'Something went wrong with your payment. We\'ve been notified and will get on this right away.'
       try:
         dog = payment.id
         email_alex('payment gone wrong! %s' % str(payment.id))
@@ -275,7 +275,6 @@ def pay(request, type, penncard, plan):
     last_two = request.POST.get('last_two')
     print last_two
     student.last_two = last_two
-    #student.payment_type = type
     student.save()
     plan = get_object_or_404(Plan, id=plan)
     payment = Payment(
