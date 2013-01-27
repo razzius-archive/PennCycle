@@ -59,11 +59,15 @@ def index(request):
   stoufferCount = sum((1 for bike in available if bike.location.name == "Stouffer"))
   psaCount = sum((1 for bike in available if bike.location.name == "PSA / Houston"))
   rodinCount = sum((1 for bike in available if bike.location.name == "Rodin"))
+  wareCount = sum((1 for bike in available if bike.location.name == "Ware"))
+  fisherCount = sum((1 for bike in available if bike.location.name == "Fisher"))
   context = {
     'available': available,
     'stoufferCount': stoufferCount,
     'rodinCount':rodinCount,
     'psaCount': psaCount,
+    'wareCount': wareCount,
+    'fisherCount': fisherCount,
     'pages':pages()
   }
   return render_to_response('index.html', context)
