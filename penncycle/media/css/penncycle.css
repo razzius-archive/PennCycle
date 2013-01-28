@@ -7458,11 +7458,13 @@ h2 li {
 h2 li {
   font-size: 24px;
 }
-.navbar {
-  width: 680px;
-}
-.navbar .brand {
-  color: #ffffff;
+@media (min-width: 767px) {
+  .navbar {
+    width: 680px;
+  }
+  .navbar .brand {
+    color: #ffffff;
+  }
 }
 img.profile {
   float: left;

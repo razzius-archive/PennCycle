@@ -114,15 +114,17 @@ h1, h2 li {
 h2 li {
 	font-size: 24px;
 }
-.navbar {
-	width: 680px;
-	.brand {
-		color: @white;
-	}
-	.navbar-text {
-		a:hover {
-			// color:@white;
-			// background-color: white;
+@media (min-width: 767px) {
+	.navbar {
+		width: 680px;
+		.brand {
+			color: @white;
+		}
+		.navbar-text {
+			a:hover {
+				// color:@white;
+				// background-color: white;
+			}
 		}
 	}
 }
