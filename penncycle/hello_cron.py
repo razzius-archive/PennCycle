@@ -8,7 +8,7 @@ sys.path.insert(0, path)
 os.environ["DJANGO_SETTINGS_MODULE"] = "settings"
 
 from app.models import *
-from app.views import email_alex
+from app.views import email_razzi
 from django.core.mail import send_mail
 
 late_rides = Ride.objects.filter(checkin_time=None)
@@ -58,5 +58,5 @@ for ride in late_rides:
   except:
     print 'tried to email about an overnight ride but couldn\'t' 
     print stud
-    email_alex('tried to email %s about an overnight ride but couldn\'t' % stud)
+    email_razzi('tried to email %s about an overnight ride but couldn\'t' % stud)
   print 'sent email'

@@ -287,6 +287,3 @@ class Comment(models.Model):
 
   def __unicode__(self):
     return self.comment[:30]
-
-def email_razzi(message):
-  send_mail('an important email from the PennCycle App', str(message), 'messenger@penncycle.org', ['razzi53@gmail.com'], fail_silently=True)

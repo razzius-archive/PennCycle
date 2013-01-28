@@ -203,7 +203,7 @@ def verify_payment(request):
     if float(amount) != costwtax:
       errmessage = 'student didn\'t pay the right amount! Payment: %s \n Amount: %d Cost+tax: %d' % (str(payment.id), float(amount),  costwtax)
       print errmessage
-      email_alex(errmessage)
+      email_razzi(errmessage)
       return HttpResponse('eh okay.')
     else:
       # if source matches CyberSource, payment completed
@@ -247,9 +247,9 @@ def thankyou(request, payment_id):
       message = 'Something went wrong with your payment. We\'ve been notified and will get on this right away.'
       try:
         dog = payment.id
-        email_alex('payment gone wrong! %s' % str(payment.id))
+        email_razzi('payment gone wrong! %s' % str(payment.id))
       except:
-        email_alex('payment gone HORRIBLY wrong! (could not email you what the payment id was!) student is %s' % student)
+        email_razzi('payment gone HORRIBLY wrong! (could not email you what the payment id was!) student is %s' % student)
   else:
     message = 'Something went wrong with your payment. Please email us at messenger@penncycle.org.'
   return render_to_response('thanks.html', {'message':message, 'pages':pages()})
@@ -381,8 +381,8 @@ def plans(request):
   print plans
   return render_to_response('plans.html', context)
 
-def email_alex(message):
-  send_mail('an important email from the PennCycle App', str(message), 'messenger@penncycle.org', ['rattray.alex@gmail.com', 'razzi53@gmail.com'], fail_silently=True)
+def email_razzi(message):
+  send_mail('an important email from the PennCycle App', str(message), 'messenger@penncycle.org', ['razzi53@gmail.com'], fail_silently=True)
 
 def secret(request):
   context = {
