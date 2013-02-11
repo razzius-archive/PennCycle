@@ -180,7 +180,7 @@ class Bike(models.Model):
     return location
 
   def __unicode__(self):
-    return '%s (%s) - %s' % (self.bike_name, self.manufacturer, self.location.name)
+    return '#%s. Location: %s' % (self.bike_name, self.location.name)
 
 class Station(models.Model):
   name = models.CharField(max_length=100)

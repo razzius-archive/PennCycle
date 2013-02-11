@@ -135,7 +135,7 @@
       console.log("exited loop");
 
       $.ajax ({
-        url: '../addpayment/',
+        url: '/addpayment/',
         type: 'POST',
         data: payInfo,
         //dataType: 'json',

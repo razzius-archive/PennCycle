@@ -184,7 +184,7 @@ def signup(request):
 def verify_payment(request):
   if request.method=='POST':
     print "in verify_payment"
-    print request.POST
+    email_razzi(request.POST)
     # gets the student with penncard specified in POST data
     payment = Payment.objects.get(id=request.POST.get('merchantDefinedData1'))
     student = payment.student
