@@ -40,7 +40,6 @@ class pcRidesAdmin(RidesAdmin):
     except:
       email_razzi("{} tried to sign somebody in it would seem. They were told to check their /admin/auth/user status. They had groups {}".format(request.user.get_full_name(), request.user.groups.all()))
       return HttpResponse("You don't have any groups. Go to app.penncycle.org/admin/auth/user and make sure 'associate' and your station are checked.")
-    print station
     extra_context['station'] = station
     return super(pcRidesAdmin, self).add_view(request, extra_context=extra_context)
 
