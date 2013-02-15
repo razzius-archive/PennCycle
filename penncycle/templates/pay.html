@@ -22,16 +22,18 @@
           value='00' maxlength='2'
           name='last_two' id='last_two'>
       </div>
-      
+      <div class="error" style="color:red">{{message|safe}}</div>   
+      {% if not message %}   
       <input type='text' style='display:none;'
         value='{{type}}' name='type' id='type'>
       <input type='submit' value='Pay' class='btn btn-primary'>
+      {% endif %}
     </form>
     <div class="validation-container"></div>
   {% endif %}
   
   {% ifequal type 'cash' %}
-    <p>If you haven't already paid, be sure to pay with cash at the PSA Store (in Williams, across from Houston Hall). Remember to bring your change for the tax man!</p>
+    <p>Your cash payment can be handled at the Penn Student Agencies Store (in Williams, across from Houston Hall). Remember to bring your change for the tax.</p>
   {% endifequal %}
 
   {% ifequal type 'fisher' %}

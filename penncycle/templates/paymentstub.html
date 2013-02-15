@@ -1,6 +1,6 @@
 <form id="planform">
   <h3>Select a plan</h3>
-  <select id="select">
+  <select id="select" style="width: 300px">
     {% for plan in plans %}
       <option name="{{plan.pk}}" dollar="{{plan.cost}}"> {{plan}} </option>
     {% endfor %}

@@ -33,8 +33,7 @@ class pcRidesAdmin(RidesAdmin):
   #   return RidesAdmin.check_in(self, request, queryset)
   # check_in = admin_check_in
 
-  def add_view(self, request, extra_context=None):
-    extra_context = extra_context or {}
+  def add_view(self, request, extra_context={}):
     try:
       station = request.user.groups.exclude(name='Associate')[0].name
     except:

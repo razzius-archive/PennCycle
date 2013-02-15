@@ -271,13 +271,16 @@ def verify_waiver(request):
 def pay(request, type, penncard, plan):
   if request.method == 'POST':
     type = str(request.POST.get('type')).lower()
-    print type
-    print penncard
-    print plan
-    student = get_object_or_404(Student, penncard=penncard) # verify form is filled out well!
-    print student
+    try:
+      student = Student.objects.get(penncard=penncard) # verify form is filled out well!
+    except:
+      context = {
+      'message': "No student matching that PennCard was found. Please try again, or sign up.",
+      'type': type,
+      'pages': pages()
+      }
+      return render_to_response("pay.html", RequestContext(request, context))
     last_two = request.POST.get('last_two')
-    print last_two
     student.last_two = last_two
     student.save()
     plan = get_object_or_404(Plan, id=plan)
@@ -288,9 +291,8 @@ def pay(request, type, penncard, plan):
       date=datetime.datetime.today(),
       satisfied=True,
       payment_type=type,
-      )
+    )
     payment.save()
-    print 'saved'
     message = '''
       Name: %s \n
       PennCard: %s \n
@@ -311,19 +313,23 @@ def pay(request, type, penncard, plan):
     ''' % (student.name, student.penncard, student.last_two, type, plan)
     send_mail('Student Registered w/ %s' % (type), message, 
       'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=False)
-    # addPerson(student.name, student.penncard, student.last_two, type) # adds to the google spreadsheet
     return HttpResponseRedirect('/thankyou/%s/?type=%s' % (penncard, type))
   else: 
-    print type
-    student = get_object_or_404(Student, penncard=penncard)
-    student.payment_type = type
-    student.save()
-    context = {
-      'type': type,
-      'penncard': penncard,
-      'student': student,
-    }
-    context.update({'pages':pages()})
+    try:
+      student = Student.objects.get(penncard=penncard) # verify form is filled out well!
+      context = {
+        'type': type,
+        'penncard': penncard,
+        'student': student,
+        'pages': pages(),
+      }
+    except:
+      context = {
+        'type': type,
+        'penncard': penncard,
+        'pages': pages(),
+        'message': "No student matching that PennCard was found. <a href='/signup'>Sign up</a> here.",
+      }
     return render_to_response('pay.html', RequestContext(request, context))
 
 @login_required
@@ -354,7 +360,10 @@ def addpayment(request):
   print request.POST
   pennid = unicode(request.POST.get('pennid'))
   print "pennid = " + str(pennid)
-  associated_student = Student.objects.get(penncard=pennid)
+  try:
+    associated_student = Student.objects.get(penncard=pennid)
+  except:
+    raise LookupError
   print associated_student
   plan_num = int(request.POST.get('plan'))
   print "plan num = " + str(plan_num)
@@ -371,9 +380,8 @@ def plans(request):
   print "hit plans view"
   # list of dicts
   plans = [] 
-  for p in Plan.objects.filter(end_date__gte=datetime.date.today(), cost__gt = 0).order_by('start_date', 'cost'):
+  for p in Plan.objects.filter(end_date__gte=datetime.date.today(), cost__gt=0).order_by('start_date', 'cost'):
     plans.append({'name': str(p), 'description': p.description, 'start_date': p.start_date, 'end_date': p.end_date,})
-
   context = {
       'plans': plans,
       'pages': pages(),

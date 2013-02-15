@@ -1,4 +1,5 @@
 var app = {};
+var problem = false;
 $.ajaxSetup({ 
   beforeSend: function(xhr, settings) {
     function getCookie(name) {
@@ -25,13 +26,18 @@ $.ajaxSetup({
 
 $('#paybycredit').click(function(){
   var pcnum = $("#id_penncard").val();
-  createPayment();
-  $('#payform').submit();
+  if (!pcnum) {
+    $("#error").html('Please enter your 8-digit Penncard Number.');
+  } else {
+    createPayment();
+    if (!problem) {
+      $('#payform').submit();
+    }
+  }
 });
 
 $('#paybycash').click(function(){
   var pcnum = $("#id_penncard").val();
-  //createPayment();
   var plan = $("form#planform select option:selected");
   var href = '/pay/cash/' + pcnum + "/" + plan.attr("name");
   window.location = href;
@@ -39,23 +45,15 @@ $('#paybycash').click(function(){
 
 $('#paybybursar').click(function(){
   var pcnum = $("#id_penncard").val();
-  //createPayment();
-  var plan = $("form#planform select option:selected");
-  var href = '/pay/bursar/' + pcnum + "/" + plan.attr("name");
-  window.location = href;
+  if (!pcnum) {
+    $("#error").html('Please enter your 8-digit Penncard Number.');
+  } else {
+    var plan = $("form#planform select option:selected");
+    var href = '/pay/bursar/' + pcnum + "/" + plan.attr("name");
+    window.location = href;
+  }
 });
-$('#fisher').click(function(){
-  var pcnum = $("#id_penncard").val();
-  var plan = $("form#planform select option:selected");
-  var href = '/pay/fisher/' + pcnum + "/" + plan.attr("name");
-  window.location = href;
-});
-$('#ware').click(function(){
-  var pcnum = $("#id_penncard").val();
-  var plan = $("form#planform select option:selected");
-  var href = '/pay/ware/' + pcnum + "/" + plan.attr("name");
-  window.location = href;
-});
+
 
 function appendPcnum (id, pcnum) {
   // alert('append');
@@ -82,12 +80,14 @@ function createPayment () {
       console.log(xhr);
       console.log(status);
       console.log(exception);
-      alert('making payment failed');
+      $("#error").html('No student was found with that Penncard. Sign up to get a plan.')
+      problem = true;
     },
     success: function(data, status, xhr) {
       console.log(data);
       app.payment_id = data.payment_id;
       console.log('payment creation success');
+      problem = false;
     },
   });
   console.log("ajax call made");
@@ -111,6 +111,7 @@ $('button#waiver-form').click(function(){
   if((living_location == "Fisher") || (living_location == "Ware")) {
     message = "<h2>Your house dean has already paid for you.</h2><p>PennCycle is happy to announce a partnership with Fisher-Hassenfeld and Ware that allows current Fisher-Hassenfeld and Ware residents to check out and return Penncycle bikes at any PennCycle station. Visit our <a href='/locations'>locations</a> to see our stations. Bikes in the Quad can be checked out at either of Fisher and Ware's house offices.</p>";
     $('div#pay').replaceWith(message); 
+    $('#greeter').replaceWith("");
     console.log("replaced html");
   }
   $.ajax ({
