@@ -392,6 +392,20 @@ def plans(request):
 def email_razzi(message):
   send_mail('an important email from the PennCycle App', str(message), 'messenger@penncycle.org', ['razzi53@gmail.com'], fail_silently=True)
 
+def sms(request):
+  if request.method=="POST":
+    email_razzi(request.POST)
+    return HttpResponse("OK")
+  else:
+    return HttpResponse("not post")
+
+def debug(request):
+  try:
+    email_razzi(request.GET)
+  except:
+    email_razzi("Problem with debug.")
+  return HttpResponse("Ok")
+  
 def secret(request):
   context = {
     'pages': pages(),

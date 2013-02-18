@@ -53,9 +53,9 @@ urlpatterns = patterns('',
     (r'api/payment/$', api.payment),
     (r'api/waived/$', api.waived),
     (r'api/checkouts/$', api.checkouts),
-
-    (r'api/dump/$', api.dump)
-
+    (r'api/dump/$', api.dump),
+    (r'sms/$', sms),
+    (r'debug/$', debug)
     #could resurface
     # (r'^events/$', events),
 
