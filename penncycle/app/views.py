@@ -1,4 +1,3 @@
-# Create your views here.
 from django.core.mail import send_mail
 from app.models import *
 from django.shortcuts import render_to_response, get_object_or_404
@@ -11,7 +10,7 @@ from bootstrap.forms import BootstrapModelForm, Fieldset
 import random, json, hashlib, hmac, gviz_api
 from django.contrib.auth.decorators import login_required
 import datetime
-#from app.docs import addPerson
+import twilio.twiml
 
 class SignupForm(BootstrapModelForm):
   class Meta:
@@ -395,12 +394,19 @@ def email_razzi(message):
 @csrf_exempt
 def sms(request):
   if request.method=="POST":
+    fromNumber = request.POST.get("From", None)
+    number = fromNumber[0][2:]
+    lookup = number[0:3]+"-"+number[3:6]+"-"+number[6:]
+    person = Student.objects.get(phone=lookup)
+    response = twilio.twiml.Response()
+    response.sms("Hi {}".format(person.name))
     email_razzi(request.POST)
     email_razzi(request)
-    print(request.POST)
-    return HttpResponse("OK")
+    return str(response)
   else:
-    return HttpResponse("not post")
+    response = twilio.twiml.Response()
+    response.body = "Not post"
+    return str(response)
 
 def debug(request):
   try:
