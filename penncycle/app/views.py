@@ -392,9 +392,12 @@ def plans(request):
 def email_razzi(message):
   send_mail('an important email from the PennCycle App', str(message), 'messenger@penncycle.org', ['razzi53@gmail.com'], fail_silently=True)
 
+@csrf_exempt
 def sms(request):
   if request.method=="POST":
     email_razzi(request.POST)
+    email_razzi(request)
+    print(request.POST)
     return HttpResponse("OK")
   else:
     return HttpResponse("not post")
