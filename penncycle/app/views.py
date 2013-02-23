@@ -397,7 +397,7 @@ def sms(request):
     fromNumber = request.POST.get("From", None)
     number = fromNumber[0][2:]
     lookup = number[0:3]+"-"+number[3:6]+"-"+number[6:]
-    email_razzi((lookup + number)
+    email_razzi((lookup + number))
     person = Student.objects.get(phone=lookup)
     response = twilio.twiml.Response()
     response.sms("Hi {}".format(person.name))
