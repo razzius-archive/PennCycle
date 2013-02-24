@@ -171,7 +171,7 @@ class Bike(models.Model):
 
   @property
   def knowsCombo(self):
-    rides = self.rides.filter(checkout_time__gt=combo_update)
+    rides = self.rides.filter(checkout_time__gt=self.combo_update)
     return [ride.rider for ride in rides]
     
   @property
