@@ -195,9 +195,6 @@ class Station(models.Model):
   def __unicode__(self):
     return self.name
 
-    @property
-
-
 class Ride(models.Model):
   rider = models.ForeignKey(Student, 
     limit_choices_to = {
