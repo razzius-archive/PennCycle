@@ -459,9 +459,28 @@ def debug(request):
   except:
     email_razzi("Problem with debug.")
   return HttpResponse("Ok")
-  
-def secret(request):
+
+@login_required  
+def combo(request):
   context = {
     'pages': pages(),
+    'bikes': Bike.objects.all()
   }
-  return render_to_response("teamSecret.html", context)
+  context_instance = RequestContext(request, context)
+  return render_to_response("combo.html", context_instance)
+
+def updateCombo(request):
+  print("updating combo")
+  data = request.POST
+  bike = data.get("bike")
+  bike = Bike.objects.get(id=bike)
+  bike.combo = data.get("combo")
+  print(data.get("combo"))
+  bike.combo_update = datetime.datetime.today()
+  bike.save()
+  context = {
+    'pages': pages(),
+    'bikes': Bike.objects.all()
+  }
+  context_instance = RequestContext(request, context)
+  return render_to_response("combo.html", context_instance)

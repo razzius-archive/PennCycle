@@ -166,7 +166,14 @@ class Bike(models.Model):
   serial_number = models.CharField(max_length=100, blank=True)
   tag_id = models.CharField(max_length=100, blank=True)
   key_serial_number = models.CharField(max_length=100, blank=True)
+  combo = models.CharField(max_length=4, blank=True)
+  combo_update = models.DateField()
 
+  @property
+  def knowsCombo(self):
+    rides = self.rides.filter(checkout_time__gt=combo_update)
+    return [ride.rider for ride in rides]
+    
   @property
   def location(self):
     # print self.bike_name

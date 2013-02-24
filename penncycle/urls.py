@@ -38,7 +38,7 @@ urlpatterns = patterns('',
     (r'^selectpayment/$', selectpayment),
     (r'^addpayment/$', addpayment),
     (r'^plans/$', plans),
-    (r'^secret/$', secret),
+    (r'^combo/$', combo
     (r'api/signups/$', api.signups),
     (r'api/schools/$', api.schools),
     (r'api/majors/$', api.majors),
@@ -55,7 +55,9 @@ urlpatterns = patterns('',
     (r'api/checkouts/$', api.checkouts),
     (r'api/dump/$', api.dump),
     (r'sms/$', sms),
-    (r'debug/$', debug)
+    (r'debug/$', debug),
+    (r'updateCombo/$', updateCombo),
+
     #could resurface
     # (r'^events/$', events),
 

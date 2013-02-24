@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{block.super}} Combo management
+{% endblock %}
+
+{% block content %}
+	<div id="random" style="font-size:20px">Click me or press r to randomize</div>
+	<script type="text/javascript">
+		function randomCombo(){
+			var one = Math.floor(Math.random()*10);
+			var two = Math.floor(Math.random()*10);
+			var three = Math.floor(Math.random()*10);
+			var four = Math.floor(Math.random()*10);		
+			return one.toString() + two.toString() + three.toString() + four.toString()
+		}
+		function randomize(){
+			fields = document.getElementsByClassName("combo");
+			for (var i = 0; i < fields.length; i++) {
+				fields[i].value = randomCombo();
+			}
+		}
+		document.getElementById("random").onclick = randomize();
+		window.onkeydown = function(e){
+			if (e.keyCode == 82) {
+				randomize();
+			}
+		}
+	</script>
+	<div class="row-fluid">
+		<div class="bike span2">Bike Name</div>
+		<div class="combo span2">Combo</div>
+		<div class="span4"></div>
+		<div class="location span4">Location</div>
+	</div>
+	{% for bike in bikes reversed %}
+		<div class="row-fluid">
+			<div class="bike span2">{{bike.bike_name}}</div>
+			<div class="combo span2">{{bike.combo}}</div>
+			<div class="span4">
+				<form action="/updateCombo/" method="post">
+					{% csrf_token %}
+					New combo: <input class="combo" type="text" name="combo">
+					<input type="text" name="bike" style="display:none" value="{{bike.id}}">
+					<input type="submit">
+				</form>
+			</div>
+			<div class="location span4">{{bike.location}}</div>
+		</div>
+	{% endfor %}
+{% endblock %}
