@@ -38,7 +38,7 @@ urlpatterns = patterns('',
     (r'^selectpayment/$', selectpayment),
     (r'^addpayment/$', addpayment),
     (r'^plans/$', plans),
-    (r'^combo/$', combo
+    (r'^combo/$', combo),
     (r'api/signups/$', api.signups),
     (r'api/schools/$', api.schools),
     (r'api/majors/$', api.majors),
