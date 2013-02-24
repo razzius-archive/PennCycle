@@ -407,12 +407,16 @@ def sms(request):
     return response
   body = request.POST.get("Body", "").lower()
   email_razzi(body)
-  if any(command in body for command in ["return", "checkout"]):
+  if any(command in body for command in ["rent", "checkout"]):
+    if not student.can_ride:
+      message = "Hi {}! You are currently unable to checkout bikes. Visit app.penncycle.org and go to returning members to fix this.".format(student.name)
+      response.sms(message)
+      return response
     try:
       bikeNumber = re.search("\d+", body).group()
     except:
       response.sms("Command not understood. Example of checking out a bike would be: Checkout 10")
-      email_razzi("looks like somebody had the wrong bike number. ")
+      email_razzi("Looks like somebody had the wrong bike number. Message: {}".format(body))
     try:
       bike = Bike.objects.filter(status="available").get(id=int(bikeNumber))
       ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
@@ -422,11 +426,7 @@ def sms(request):
     except:
       message = "The bike you have requested was unavailable or not found. Text 'Checkout (number)', where number is 1 or 2 digits."
       response.sms(message)
-  elif "checkin" in body:
-    if not student.can_ride:
-      message = "Hi {}! You are currently unable to checkout bikes. Visit app.penncycle.org and go to returning members to fix this.".format(student.name)
-      response.sms(message)
-      return response
+  elif any(command in body for command in ["checkin", "return"]):
     location = None
     stations = [station.name.lower() for station in Station.objects.all()]
     for station in stations:
