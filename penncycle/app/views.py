@@ -11,6 +11,7 @@ import random, json, hashlib, hmac, gviz_api
 from django.contrib.auth.decorators import login_required
 import datetime
 import twilio.twiml
+from django_twilio.decorators import twilio_view
 
 class SignupForm(BootstrapModelForm):
   class Meta:
@@ -391,6 +392,7 @@ def plans(request):
 def email_razzi(message):
   send_mail('an important email from the PennCycle App', str(message), 'messenger@penncycle.org', ['razzi53@gmail.com'], fail_silently=True)
 
+@twilio_view
 def sms(request):
   if request.method=="GET":
     fromNumber = request.GET.get("From", "None")
@@ -400,11 +402,11 @@ def sms(request):
     response = twilio.twiml.Response()
     response.sms("Hi {}".format(person.name))
     email_razzi(request)
-    return str(response)
+    return response
   else:
     response = twilio.twiml.Response()
     response.body = "Not post"
-    return str(response)
+    return response
 
 def debug(request):
   try:

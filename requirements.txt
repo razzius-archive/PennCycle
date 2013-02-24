@@ -20,4 +20,5 @@ ipython==0.12
 gdata==2.0.16
 xlwt==0.7.4
 dj-database-url==0.2.1
-twilio>=3.4.3
+twilio==3.4.3
+django-twilio==0.4
