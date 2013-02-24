@@ -395,14 +395,11 @@ def email_razzi(message):
 def sms(request):
   if request.method=="POST":
     fromNumber = request.POST.get("From", "None")
-    email_razzi(fromNumber+"from")
-    number = fromNumber[0][2:]
+    number = fromNumber[2:]
     lookup = number[0:3]+"-"+number[3:6]+"-"+number[6:]
-    email_razzi((lookup + number))  
     person = Student.objects.get(phone=lookup)
     response = twilio.twiml.Response()
     response.sms("Hi {}".format(person.name))
-    email_razzi(request.POST)
     email_razzi(request)
     return str(response)
   else:
