@@ -203,7 +203,7 @@ class Ride(models.Model):
     'payments__plan__end_date__gte': datetime.date.today(),
     'payments__plan__start_date__lte': datetime.date.today(),
     },
-    )
+  )
   bike = models.ForeignKey('Bike', limit_choices_to = {'status': 'available'},
     related_name='rides')
   checkout_time = models.DateTimeField(auto_now_add=True)
@@ -231,8 +231,6 @@ class Ride(models.Model):
 
   def save(self):
     print 'in save method'
-    if not self.num_users:
-      self.num_users = len(Student.objects.all())
     super(Ride, self).save()
     print 'super saved!'
     if self.checkin_time == None:
@@ -242,8 +240,6 @@ class Ride(models.Model):
       payment.status = 'out'
     else:
       print 'in save else'
-      self.checkin_station = Station.objects.get(name='Hill')
-      print 'did checkin station'
       self.bike.status = 'available' #change to be 'at %s' % station
       payment = self.rider.current_payments.filter(status='out')[0]
       payment.status = 'available'
