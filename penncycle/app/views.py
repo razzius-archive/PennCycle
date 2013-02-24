@@ -406,7 +406,6 @@ def sms(request):
     response.sms(message)
     return response
   body = request.POST.get("Body", "").lower()
-  email_razzi(body)
   if any(command in body for command in ["rent", "checkout"]):
     if not student.can_ride:
       message = "Hi {}! You are currently unable to checkout bikes. Visit app.penncycle.org and go to returning members to fix this.".format(student.name)
@@ -431,7 +430,9 @@ def sms(request):
     stations = [station.name.lower() for station in Station.objects.all()]
     for station in stations:
       if station in body:
-        location = Station.objects.get(name=station)
+        if station == "psa":
+          station = "PSA"
+        location = Station.objects.get(name=station.capitalize())
     if not location:
       email_razzi("Station didn't match for checkin. Message was {}".format(body))
       message = "Station not found. Options: PSA, Rodin, Ware, Fisher, Stouffer, Houston, Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
