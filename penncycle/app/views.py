@@ -418,10 +418,12 @@ def sms(request):
         response.sms("Command not understood. Example of checking out a bike would be: Checkout 10")
       try:
         bike = Bike.objects.get(id=int(bikeNumber))
-      ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
-      ride.save()
-      message = "You have successfully checked out bike {}. Have fun, and be safe! To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bikeNumber)
-      response.sms(message)
+        ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
+        ride.save()
+        message = "You have successfully checked out bike {}. Have fun, and be safe! To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bikeNumber)
+        response.sms(message)
+      except:
+        message = "The bike you have requested was not found. Text 'Checkout (number)', where number is 1 or 2 digits."
     elif "checkin" in body:
       location = None
       stations = [station.name for station in Station.objects.all()]
