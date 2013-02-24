@@ -412,7 +412,7 @@ def sms(request):
       return response
     body = request.POST.get("Body", "").lower()
     email_razzi(body)
-    if ("return" or "checkout") in body:
+    if any(command in body for command in ["return", "checkout"]):
       try:
         bikeNumber = re.search("\d+", body).group()
       except:
@@ -446,7 +446,7 @@ def sms(request):
       message = "Stations: PSA, Rodin, Ware, Fisher, Stouffer, Houston, and Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
       response.sms(message)
     else:
-      message = "Hi, {}! Checkout a bike: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations. You're eligible to checkout bikes."
+      message = "Hi, {}! Checkout a bike: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations. You're eligible to checkout bikes.".format(student.name)
       response.sms(message)
       if not "help" in body:
         email_razzi(body)

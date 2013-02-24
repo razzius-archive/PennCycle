@@ -146,7 +146,7 @@ class Student(models.Model):
       satisfied=True,
       plan__start_date__lte=today,
       plan__end_date__gte=today,
-      )
+    )
   @property
   def can_ride(self):
     if len(self.current_payments.filter(status='available'))>0 and self.waiver_signed == True and self.paid_now == True:
@@ -166,6 +166,7 @@ class Bike(models.Model):
   serial_number = models.CharField(max_length=100, blank=True)
   tag_id = models.CharField(max_length=100, blank=True)
   key_serial_number = models.CharField(max_length=100, blank=True)
+  combination = models.CharField(max_length=4, blank=True)
 
   @property
   def location(self):
@@ -193,6 +194,9 @@ class Station(models.Model):
 
   def __unicode__(self):
     return self.name
+
+    @property
+
 
 class Ride(models.Model):
   rider = models.ForeignKey(Student, 
@@ -231,6 +235,8 @@ class Ride(models.Model):
 
   def save(self):
     print 'in save method'
+    if not self.num_users:
+      self.num_users = len(Student.objects.all())
     super(Ride, self).save()
     print 'super saved!'
     if self.checkin_time == None:
