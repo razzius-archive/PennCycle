@@ -391,10 +391,9 @@ def plans(request):
 def email_razzi(message):
   send_mail('an important email from the PennCycle App', str(message), 'messenger@penncycle.org', ['razzi53@gmail.com'], fail_silently=True)
 
-@csrf_exempt
 def sms(request):
-  if request.method=="POST":
-    fromNumber = request.POST.get("From", "None")
+  if request.method=="GET":
+    fromNumber = request.GET.get("From", "None")
     number = fromNumber[2:]
     lookup = number[0:3]+"-"+number[3:6]+"-"+number[6:]
     person = Student.objects.get(phone=lookup)
