@@ -395,62 +395,62 @@ def email_razzi(message):
 
 @twilio_view
 def sms(request):
-  if request.method=="POST":
-    response = twilio.twiml.Response()
-    fromNumber = request.POST.get("From", "None")
-    number = fromNumber[2:]
-    lookup = number[0:3]+"-"+number[3:6]+"-"+number[6:]
+  response = twilio.twiml.Response()
+  fromNumber = request.POST.get("From", "None")
+  number = fromNumber[2:]
+  lookup = number[0:3]+"-"+number[3:6]+"-"+number[6:]
+  try:
+    student = Student.objects.get(phone=lookup)
+  except:
+    message = "Welcome to PennCycle! Visit app.penncycle.org to get started. Signup for the unlimited plan to check out bikes by texting."
+    response.sms(message)
+    return response
+  body = request.POST.get("Body", "").lower()
+  email_razzi(body)
+  if any(command in body for command in ["return", "checkout"]):
     try:
-      student = Student.objects.get(phone=lookup)
-      if not student.can_ride:
-        message = "Hi {}! You are currently unable to checkout bikes. Visit app.penncycle.org and go to returning members to fix this.".format(student.name)
-        response.sms(message)
-        return response
+      bikeNumber = re.search("\d+", body).group()
     except:
-      message = "Welcome to PennCycle! Visit app.penncycle.org to get started. Signup for the unlimited plan to check out bikes by texting."
+      response.sms("Command not understood. Example of checking out a bike would be: Checkout 10")
+      email_razzi("looks like somebody had the wrong bike number. ")
+    try:
+      bike = Bike.objects.filter(status="available").get(id=int(bikeNumber))
+      ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
+      ride.save()
+      message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bikeNumber, bike.combo)
+      response.sms(message)
+    except:
+      message = "The bike you have requested was unavailable or not found. Text 'Checkout (number)', where number is 1 or 2 digits."
+      response.sms(message)
+  elif "checkin" in body:
+    if not student.can_ride:
+      message = "Hi {}! You are currently unable to checkout bikes. Visit app.penncycle.org and go to returning members to fix this.".format(student.name)
       response.sms(message)
       return response
-    body = request.POST.get("Body", "").lower()
-    email_razzi(body)
-    if any(command in body for command in ["return", "checkout"]):
-      try:
-        bikeNumber = re.search("\d+", body).group()
-      except:
-        response.sms("Command not understood. Example of checking out a bike would be: Checkout 10")
-      try:
-        bike = Bike.objects.get(id=int(bikeNumber))
-        ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
-        ride.save()
-        message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bikeNumber, bike.combo)
-        response.sms(message)
-      except:
-        message = "The bike you have requested was not found. Text 'Checkout (number)', where number is 1 or 2 digits."
-        response.sms(message)
-    elif "checkin" in body:
-      location = None
-      stations = [station.name for station in Station.objects.all()]
-      for station in stations:
-        if station in body:
-          location = Station.objects.get(name=station)
-      if not location:
-        email_razzi("Station didn't match for checkin. Message was {}".format(body))
-        message = "Station not found. Options: PSA, Rodin, Ware, Fisher, Stouffer, Houston, Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
-      ride = student.ride_set.all()[len(student.ride_set.all())-1]
-      ride.checkin_time = datetime.datetime.now()
-      ride.checkin_station = location
-      ride.save()
-      message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shorty. Thanks!"
-      response.sms(message)
-      email_razzi("Bike {} successfully returned! Ride was {}".format(ride, ride.bike))
-    elif any(command in body for command in ["station", "stations", "location", "locations"]):
-      message = "Stations: PSA, Rodin, Ware, Fisher, Stouffer, Houston, and Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
-      response.sms(message)
-    else:
-      message = "Hi, {}! Checkout a bike: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations. You're eligible to checkout bikes.".format(student.name)
-      response.sms(message)
-      if not "help" in body:
-        email_razzi(body)
-    return response
+    location = None
+    stations = [station.name.lower() for station in Station.objects.all()]
+    for station in stations:
+      if station in body:
+        location = Station.objects.get(name=station)
+    if not location:
+      email_razzi("Station didn't match for checkin. Message was {}".format(body))
+      message = "Station not found. Options: PSA, Rodin, Ware, Fisher, Stouffer, Houston, Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
+    ride = student.ride_set.all()[len(student.ride_set.all())-1]
+    ride.checkin_time = datetime.datetime.now()
+    ride.checkin_station = location
+    ride.save()
+    message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shorty. Thanks!"
+    response.sms(message)
+    email_razzi("Bike {} successfully returned! Ride was {}".format(ride, ride.bike))
+  elif any(command in body for command in ["station", "stations", "location", "locations"]):
+    message = "Stations: PSA, Rodin, Ware, Fisher, Stouffer, Houston, and Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
+    response.sms(message)
+  else:
+    message = "Hi, {}! Checkout a bike: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations. You're eligible to checkout bikes.".format(student.name)
+    response.sms(message)
+    if not "help" in body:
+      email_razzi(body)
+  return response
 
 @twilio_view
 def debug(request):
