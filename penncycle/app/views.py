@@ -411,6 +411,7 @@ def sms(request):
       response.sms(message)
       return response
     body = request.POST.get("Body", "").lower()
+    email_razzi(body)
     if ("return" or "checkout") in body:
       try:
         bikeNumber = re.search("\d+", body).group()
@@ -441,12 +442,14 @@ def sms(request):
       message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shorty. Thanks!"
       response.sms(message)
       email_razzi("Bike {} successfully returned! Ride was {}".format(ride, ride.bike))
-    elif ("station" or "locations") in body:
+    elif any(command in body for command in ["station", "stations", "location", "locations"]):
       message = "Stations: PSA, Rodin, Ware, Fisher, Stouffer, Houston, and Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
       response.sms(message)
-    elif "help" in body:
+    else:
       message = "Hi, {}! Checkout a bike: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations. You're eligible to checkout bikes."
       response.sms(message)
+      if not "help" in body:
+        email_razzi(body)
     return response
 
 @twilio_view
