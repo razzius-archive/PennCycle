@@ -424,6 +424,7 @@ def sms(request):
         response.sms(message)
       except:
         message = "The bike you have requested was not found. Text 'Checkout (number)', where number is 1 or 2 digits."
+        response.sms(message)
     elif "checkin" in body:
       location = None
       stations = [station.name for station in Station.objects.all()]
