@@ -146,7 +146,7 @@ class Student(models.Model):
       satisfied=True,
       plan__start_date__lte=today,
       plan__end_date__gte=today,
-    )
+      )
   @property
   def can_ride(self):
     if len(self.current_payments.filter(status='available'))>0 and self.waiver_signed == True and self.paid_now == True:
@@ -166,7 +166,6 @@ class Bike(models.Model):
   serial_number = models.CharField(max_length=100, blank=True)
   tag_id = models.CharField(max_length=100, blank=True)
   key_serial_number = models.CharField(max_length=100, blank=True)
-  combination = models.CharField(max_length=4, blank=True)
 
   @property
   def location(self):
@@ -204,7 +203,7 @@ class Ride(models.Model):
     'payments__plan__end_date__gte': datetime.date.today(),
     'payments__plan__start_date__lte': datetime.date.today(),
     },
-  )
+    )
   bike = models.ForeignKey('Bike', limit_choices_to = {'status': 'available'},
     related_name='rides')
   checkout_time = models.DateTimeField(auto_now_add=True)
@@ -243,6 +242,8 @@ class Ride(models.Model):
       payment.status = 'out'
     else:
       print 'in save else'
+      self.checkin_station = Station.objects.get(name='Hill')
+      print 'did checkin station'
       self.bike.status = 'available' #change to be 'at %s' % station
       payment = self.rider.current_payments.filter(status='out')[0]
       payment.status = 'available'
