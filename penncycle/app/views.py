@@ -440,7 +440,7 @@ def sms(request):
     ride.checkin_time = datetime.datetime.now()
     ride.checkin_station = location
     ride.save()
-    message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shorty. Thanks!"
+    message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shorty. Thanks!".format(location)
     response.sms(message)
     email_razzi("Bike {} successfully returned! Ride was {}".format(ride, ride.bike))
   elif any(command in body for command in ["station", "stations", "location", "locations"]):
