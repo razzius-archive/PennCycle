@@ -414,7 +414,7 @@ def sms(request):
     try:
       bikeNumber = re.search("\d+", body).group()
     except:
-      response.sms("Command not understood. Example of checking out a bike would be: Checkout 10")
+      response.sms("Command not understood. Text 'info' for a list of commands. Example of checking out a bike would be: Checkout 10")
       email_razzi("Looks like somebody had the wrong bike number. Message: {}".format(body))
     try:
       bike = Bike.objects.filter(status="available").get(id=int(bikeNumber))
@@ -449,7 +449,7 @@ def sms(request):
   else:
     message = "Hi, {}! Checkout a bike: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations. You're eligible to checkout bikes.".format(student.name)
     response.sms(message)
-    if not "help" in body:
+    if not "info" in body:
       email_razzi(body)
   return response
 
