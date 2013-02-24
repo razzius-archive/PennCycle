@@ -420,7 +420,7 @@ def sms(request):
         bike = Bike.objects.get(id=int(bikeNumber))
         ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
         ride.save()
-        message = "You have successfully checked out bike {}. Have fun, and be safe! To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bikeNumber)
+        message = "You have successfully checked out bike {}. The combination is 1005. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bikeNumber)
         response.sms(message)
       except:
         message = "The bike you have requested was not found. Text 'Checkout (number)', where number is 1 or 2 digits."
