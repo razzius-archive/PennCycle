@@ -416,6 +416,10 @@ def sms(request):
     try:
       bike = Bike.objects.filter(status="available").get(id=int(bikeNumber))
       ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
+      student.payments.filter(status="available")[0].status = "out"
+      ride.bike.status = "out"
+      student.save()
+      ride.bike.save()
       ride.save()
       message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bikeNumber, bike.combo)
     except:
@@ -437,6 +441,8 @@ def sms(request):
     ride.checkin_time = datetime.datetime.now()
     ride.checkin_station = location
     ride.bike.status = "available"
+    student.payments.filter(status="out")[0].status = "available"
+    student.save()
     ride.bike.save()
     ride.save()
     message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shorty. Thanks!".format(location)
