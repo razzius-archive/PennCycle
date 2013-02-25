@@ -44,10 +44,9 @@ def pages():
     {'name':'Safety', 'url':'/safety/'},
     {'name':'Team', 'url':'/team/'},
     {'name':'Partners', 'url':'/partners/'},
-    # {'name':'Events', 'url':'/events/'},
     {'name':'Locations', 'url':'/locations/'},
     {'name':'FAQ', 'url':'/faq/'},
-    ]
+  ]
   # for page in Page.objects.all():
   #   pages.append({
   #     'name': page.name,
@@ -58,7 +57,8 @@ def pages():
 def index(request):
   available = Bike.objects.filter(status='available')
   stoufferCount = sum((1 for bike in available if bike.location.name == "Stouffer"))
-  psaCount = sum((1 for bike in available if bike.location.name == "PSA / Houston"))
+  psaCount = sum((1 for bike in available if bike.location.name == "PSA"))
+  houstonCount = sum((1 for bike in available if bike.location.name == "Houston"))
   rodinCount = sum((1 for bike in available if bike.location.name == "Rodin"))
   wareCount = sum((1 for bike in available if bike.location.name == "Ware"))
   fisherCount = sum((1 for bike in available if bike.location.name == "Fisher"))
@@ -69,6 +69,7 @@ def index(request):
     'psaCount': psaCount,
     'wareCount': wareCount,
     'fisherCount': fisherCount,
+    'houstonCount': houstonCount,
     'pages':pages()
   }
   return render_to_response('index.html', context)
@@ -96,12 +97,6 @@ def partners(request):
     'pages':pages()
   }
   return render_to_response('partners.html', context)
-
-# def events(request):
-#   context = {
-#     'pages':pages()
-#   }
-#   return render_to_response('events.html', context)
 
 def locations(request):
   context = {
@@ -191,11 +186,9 @@ def verify_payment(request):
     student = payment.student
     print payment
     print student
-
     source = request.META.get('HTTP_REFERER')
     print 'referrer is %s ' % unicode(source)
     source_needed = 'https://orderpage.ic3.com/hop/orderform.jsp'
-    
     amount = str(request.POST.get('orderAmount', 0))
     print amount
     costwtax = float(payment.plan.cost)*1.08
@@ -258,9 +251,7 @@ def thankyou(request, payment_id):
 def verify_waiver(request):
   print 'in verify_waiver'
   if request.method=='POST':
-    print 'its a post'
     pennid = request.POST.get('pennid')
-    print pennid
     student = Student.objects.get(penncard=pennid)
     print student
     student.waiver_signed = True
@@ -276,9 +267,9 @@ def pay(request, type, penncard, plan):
       student = Student.objects.get(penncard=penncard) # verify form is filled out well!
     except:
       context = {
-      'message': "No student matching that PennCard was found. Please try again, or sign up.",
-      'type': type,
-      'pages': pages()
+        'message': "No student matching that PennCard was found. Please try again, or sign up.",
+        'type': type,
+        'pages': pages()
       }
       return render_to_response("pay.html", RequestContext(request, context))
     last_two = request.POST.get('last_two')
@@ -345,7 +336,7 @@ def selectpayment(request):
     print 'about to create a new day plan'
     day_plan = Plan(
       name = 'Day Plan %s' % str(datetime.date.today()),
-      cost = 10,
+      cost = 8,
       start_date = datetime.date.today(),
       end_date = datetime.date.today(),
       description = 'A great way to try out PennCycle. Or, use this to check out a bike for a friend or family member! Add more day plans to your account to check out more bikes. Day plans can only be purchased day-of.',
@@ -421,10 +412,8 @@ def sms(request):
       ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
       ride.save()
       message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bikeNumber, bike.combo)
-      response.sms(message)
     except:
       message = "The bike you have requested was unavailable or not found. Text 'Checkout (number)', where number is 1 or 2 digits."
-      response.sms(message)
   elif any(command in body for command in ["checkin", "return"]):
     location = None
     stations = [station.name.lower() for station in Station.objects.all()]
@@ -441,16 +430,17 @@ def sms(request):
     ride.checkin_station = location
     ride.save()
     message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shorty. Thanks!".format(location)
-    response.sms(message)
     email_razzi("Bike {} successfully returned! Ride was {}".format(ride, ride.bike))
   elif any(command in body for command in ["station", "stations", "location", "locations"]):
     message = "Stations: PSA, Rodin, Ware, Fisher, Stouffer, Houston, and Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
-    response.sms(message)
   else:
-    message = "Hi, {}! Checkout a bike: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations. You're eligible to checkout bikes.".format(student.name)
-    response.sms(message)
+    if student.can_ride:
+      message = "Hi, {}! Checkout a bike: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations. You're eligible to checkout bikes.".format(student.name)
+    else:
+      message = "Hi {}! You are currently unable to checkout bikes. Visit app.penncycle.org and go to returning members to fix this.".format(student.name)
     if not "info" in body:
       email_razzi(body)
+  response.sms(message)
   return response
 
 @twilio_view
@@ -471,12 +461,10 @@ def combo(request):
   return render_to_response("combo.html", context_instance)
 
 def updateCombo(request):
-  print("updating combo")
   data = request.POST
   bike = data.get("bike")
   bike = Bike.objects.get(id=bike)
   bike.combo = data.get("combo")
-  print(data.get("combo"))
   bike.combo_update = datetime.datetime.today()
   bike.save()
   context = {
