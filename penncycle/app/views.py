@@ -393,6 +393,8 @@ def sms(request):
   try:
     student = Student.objects.get(phone=lookup)
   except:
+    if len(student.objects.filter(phone=lookup))>1:
+      message = "There are multiple students associated with this phone. Email messenger@penncycle.org with whether you are {}"
     message = "Welcome to PennCycle! Visit app.penncycle.org to get started. Signup for the unlimited plan to check out bikes by texting."
     response.sms(message)
     return response
@@ -419,9 +421,9 @@ def sms(request):
     stations = [station.name.lower() for station in Station.objects.all()]
     for station in stations:
       if station in body:
-        if station == "psa":
-          station = "PSA"
-        location = Station.objects.get(name=station.capitalize())
+          location = Station.objects.get(name="PSA")
+        else:
+          location = Station.objects.get(name=station.capitalize())
     if not location:
       email_razzi("Station didn't match for checkin. Message was {}".format(body))
       message = "Station not found. Options: PSA, Rodin, Ware, Fisher, Stouffer, Houston, Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
