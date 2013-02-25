@@ -393,13 +393,16 @@ def sms(request):
   try:
     student = Student.objects.get(phone=lookup)
   except:
-    if len(student.objects.filter(phone=lookup))>1:
-      message = "There are multiple students associated with this phone. Email messenger@penncycle.org with whether you are {}"
-    message = "Welcome to PennCycle! Visit app.penncycle.org to get started. Signup for the unlimited plan to check out bikes by texting."
+    duplicates = student.objects.filter(phone=lookup)
+    if len(duplicates)>1:
+      message = ("There are multiple students with your number. Email messenger@penncycle.org whether you're " + "{} or " * (len(duplicates)-1) + "{}.").format(*duplicates)
+      email_razzi("Duplicates! {}".format(duplicates))
+    else:
+      message = "Welcome to PennCycle! Visit app.penncycle.org to get started. Sign up for any plan to start checking bikes out by texting."
     response.sms(message)
     return response
   body = request.POST.get("Body", "").lower()
-  if any(command in body for command in ["rent", "checkout"]):
+  if any(command in body for command in ["rent", "checkout", "check out", "check-out"]):
     if not student.can_ride:
       message = "Hi {}! You are currently unable to checkout bikes. Visit app.penncycle.org and go to returning members to fix this.".format(student.name)
       response.sms(message)
@@ -416,11 +419,12 @@ def sms(request):
       message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bikeNumber, bike.combo)
     except:
       message = "The bike you have requested was unavailable or not found. Text 'Checkout (number)', where number is 1 or 2 digits."
-  elif any(command in body for command in ["checkin", "return"]):
+  elif any(command in body for command in ["checkin", "return", "check in", "check-in"]):
     location = None
     stations = [station.name.lower() for station in Station.objects.all()]
     for station in stations:
       if station in body:
+        if station=="psa":
           location = Station.objects.get(name="PSA")
         else:
           location = Station.objects.get(name=station.capitalize())
