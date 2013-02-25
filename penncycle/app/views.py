@@ -441,8 +441,9 @@ def sms(request):
     ride.checkin_time = datetime.datetime.now()
     ride.checkin_station = location
     ride.bike.status = "available"
-    student.payments.filter(status="out")[0].status = "available"
-    student.save()
+    payment = student.payments.filter(status="out")[0]
+    payment.status = "available"
+    payment.save()
     ride.bike.save()
     ride.save()
     message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shorty. Thanks!".format(location)
