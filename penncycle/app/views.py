@@ -412,6 +412,7 @@ def sms(request):
     except:
       response.sms("Command not understood. Text 'info' for a list of commands. Example of checking out a bike would be: Checkout 10")
       email_razzi("Looks like somebody had the wrong bike number. Message: {}".format(body))
+      return response
     try:
       bike = Bike.objects.filter(status="available").get(id=int(bikeNumber))
       ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
@@ -426,14 +427,16 @@ def sms(request):
       if station in body:
         if station=="psa":
           location = Station.objects.get(name="PSA")
+          email_razzi("Changed to PSA")
         else:
           location = Station.objects.get(name=station.capitalize())
     if not location:
       email_razzi("Station didn't match for checkin. Message was {}".format(body))
       message = "Station not found. Options: PSA, Rodin, Ware, Fisher, Stouffer, Houston, Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
-    ride = student.ride_set.all()[len(student.ride_set.all())-1]
+    ride = student.ride_set.all().order_by("-id")[0]
     ride.checkin_time = datetime.datetime.now()
     ride.checkin_station = location
+    ride.bike.status = "available"
     ride.save()
     message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shorty. Thanks!".format(location)
     email_razzi("Bike {} successfully returned! Ride was {}".format(ride, ride.bike))
