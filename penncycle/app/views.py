@@ -393,7 +393,7 @@ def sms(request):
   try:
     student = Student.objects.get(phone=lookup)
   except:
-    duplicates = student.objects.filter(phone=lookup)
+    duplicates = Student.objects.filter(phone=lookup)
     if len(duplicates)>1:
       message = ("There are multiple students with your number. Email messenger@penncycle.org whether you're " + "{} or " * (len(duplicates)-1) + "{}.").format(*duplicates)
       email_razzi("Duplicates! {}".format(duplicates))

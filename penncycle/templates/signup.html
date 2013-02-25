@@ -28,7 +28,7 @@
     </form>
     <div class="form-actions">
             <button id="info-button" class="btn btn-primary">Next &#187;</button>
-            <div id="message"></div>
+            <span id="message"></span>
         </div>
   </div>
   <!------------- safety pane ---------------->
@@ -86,7 +86,7 @@
             // Only send the token to relative URLs i.e. locally.
             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
           }
-        } 
+        }
       });
     
       var formData = $('#info-form').serialize();
@@ -102,6 +102,7 @@
           alert('whoops! something went wrong');
         },
         success: function(data, status, xhr) {
+          $("#message").html("");
           if (data['form_valid'] == true) {
             toTab('safety');
           } else if (data['form_valid'] == false) {

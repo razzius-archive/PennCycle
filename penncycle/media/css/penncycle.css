@@ -7387,7 +7387,7 @@ body {
   font-weight: 300;
 }
 .well {
-  background-color: rgba(238, 238, 238, 0.8);
+  background-color: rgba(238, 238, 238, 0.85);
 }
 .bg-image {
   position: fixed;
@@ -7407,7 +7407,7 @@ body {
   text-align: center;
 }
 .opaque {
-  background-color: rgba(238, 238, 238, 0.8);
+  background-color: rgba(238, 238, 238, 0.85);
 }
 .paddedheader {
   padding-left: 20px;
