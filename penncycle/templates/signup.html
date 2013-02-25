@@ -28,6 +28,7 @@
     </form>
     <div class="form-actions">
             <button id="info-button" class="btn btn-primary">Next &#187;</button>
+            <div id="message"></div>
         </div>
   </div>
   <!------------- safety pane ---------------->
@@ -63,6 +64,7 @@
   <script type="text/javascript">
   
     $('#info-button').click(function() {
+      $("#message").html("Processing...")
       $.ajaxSetup({ 
         beforeSend: function(xhr, settings) {
           function getCookie(name) {
