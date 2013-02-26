@@ -3,4 +3,4 @@ from app.models import *
 
 class Command(NoArgsCommand):
 	def handle_noargs(self, **options):
-		print("Stats go here")
+		print("Hi.")

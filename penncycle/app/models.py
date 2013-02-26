@@ -237,24 +237,15 @@ class Ride(models.Model):
       return 'in'
 
   def save(self):
-    print 'in save method'
+    print 'in Ride save method'
     if not self.num_users:
       self.num_users = len(Student.objects.all())
     super(Ride, self).save()
     print 'super saved!'
     if self.checkin_time == None:
-      print 'bikes should become out now'
       self.bike.status = 'out'
       payment = self.rider.current_payments.filter(status='available')[0]
       payment.status = 'out'
-    else:
-      print 'in save else'
-      self.checkin_station = Station.objects.get(name='Hill')
-      print 'did checkin station'
-      self.bike.status = 'available' #change to be 'at %s' % station
-      payment = self.rider.current_payments.filter(status='out')[0]
-      payment.status = 'available'
-      print 'should have changed to available'
     self.bike.save()
     payment.save()
 

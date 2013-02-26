@@ -122,7 +122,7 @@ def info_submit(request):
           student=student,
           satisfied=True,
           payment_type='pre-paid',
-          )
+        )
         payment.save()
         message = '''
         student name: %s
@@ -184,8 +184,6 @@ def verify_payment(request):
     # gets the student with penncard specified in POST data
     payment = Payment.objects.get(id=request.POST.get('merchantDefinedData1'))
     student = payment.student
-    print payment
-    print student
     source = request.META.get('HTTP_REFERER')
     print 'referrer is %s ' % unicode(source)
     source_needed = 'https://orderpage.ic3.com/hop/orderform.jsp'
@@ -205,14 +203,11 @@ def verify_payment(request):
       reasonCode = request.POST.get('reasonCode')
       good_reasons = [100,200]
       print reasonCode
-      #if (int(reasonCode) in good_reasons) and (amount == '10.00' or amount == '10'):
       if (int(reasonCode) in good_reasons): 
         print "check passed"
-        #student.paid = True
         payment.satisfied=True
         payment.payment_type = 'credit'
         payment.save()
-        print "paid"
       return HttpResponse('Verified!')
   else:
     return HttpResponse('Not a POST')
@@ -253,7 +248,6 @@ def verify_waiver(request):
   if request.method=='POST':
     pennid = request.POST.get('pennid')
     student = Student.objects.get(penncard=pennid)
-    print student
     student.waiver_signed = True
     student.save()
     print 'waiver signed'
@@ -369,8 +363,6 @@ def addpayment(request):
   return HttpResponse(json.dumps({'message': 'success', 'payment_id':str(new_payment.id)}), content_type="application/json")
 
 def plans(request):
-  print "hit plans view"
-  # list of dicts
   plans = [] 
   for p in Plan.objects.filter(end_date__gte=datetime.date.today(), cost__gt=0).order_by('start_date', 'cost'):
     plans.append({'name': str(p), 'description': p.description, 'start_date': p.start_date, 'end_date': p.end_date,})
@@ -417,9 +409,6 @@ def sms(request):
       bike = Bike.objects.filter(status="available").get(id=int(bikeNumber))
       ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
       student.payments.filter(status="available")[0].status = "out"
-      ride.bike.status = "out"
-      student.save()
-      ride.bike.save()
       ride.save()
       message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bikeNumber, bike.combo)
     except:
@@ -431,7 +420,6 @@ def sms(request):
       if station in body:
         if station=="psa":
           location = Station.objects.get(name="PSA")
-          email_razzi("Changed to PSA")
         else:
           location = Station.objects.get(name=station.capitalize())
     if not location:
@@ -441,10 +429,6 @@ def sms(request):
     ride.checkin_time = datetime.datetime.now()
     ride.checkin_station = location
     ride.bike.status = "available"
-    payment = student.payments.filter(status="out")[0]
-    payment.status = "available"
-    payment.save()
-    ride.bike.save()
     ride.save()
     message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shorty. Thanks!".format(location)
     email_razzi("Bike {} successfully returned! Ride was {}".format(ride, ride.bike))
