@@ -396,7 +396,14 @@ def sms(request):
   body = request.POST.get("Body", "").lower()
   if any(command in body for command in ["rent", "checkout", "check out", "check-out"]):
     if not student.can_ride:
-      message = "Hi {}! You are currently unable to checkout bikes. Visit app.penncycle.org and go to returning members to fix this.".format(student.name)
+      message = "Hi {}! ".format(student.name)
+      currentRides = student.ride_set.filter(checkin_time=None)
+      if len(currentRides)>0:
+        bike = currentRides[0].bike.bike_name
+        message += "You can't check bikes out until you check bike {} back in. ".format(bike)
+      if student.waiver_signed==False:
+        email_razzi("Waiver not signed by {}".format(student))
+        message += "You need to fill out a waiver. Go to app.penncycle.org/waiver to do so."
       response.sms(message)
       return response
     try:
@@ -438,8 +445,17 @@ def sms(request):
     if student.can_ride:
       message = "Hi, {}! Checkout a bike: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations. You're eligible to checkout bikes.".format(student.name)
     else:
-      message = "Hi {}! You are currently unable to checkout bikes. Visit app.penncycle.org and go to returning members to fix this.".format(student.name)
-    if not "info" in body:
+      currentRides = student.ride_set.filter(checkin_time=None)
+      if len(currentRides)>0:
+        bike = currentRides[0].bike.bike_name
+        message = "Hi {}! You still have {} out. Until you check it in, you cannot check out bikes. Text 'locations' for checkin stations.".format(student.name, bike)
+      elif student.waiver_signed==False:
+        email_razzi("Waiver not signed by {}".format(student))
+        message = "You need to fill out a waiver. Go to app.penncycle.org/waiver to do so."
+      else:
+        email_razzi("{} doesn't have any payments, it would seem. Contact him at {}".format(student.name, student.email))
+        message = "You are currently unable to check out bikes. Go to penncycle.org and enter your penncard to check your status."
+    if not any(command in body for command in ["help", "info", "information", "?"]):
       email_razzi(body)
   response.sms(message)
   return response

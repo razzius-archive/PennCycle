@@ -126,7 +126,6 @@ class Student(models.Model):
   living_location = models.CharField(max_length=100, choices=LIVING_LOCATIONS)
   waiver_signed = models.BooleanField(default=False)
   paid = models.BooleanField(default=False)
-  # status = models.CharField(max_length=100, default='available')
   payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
   at_desk = models.NullBooleanField()
   plan = models.ManyToManyField('Plan', blank=True, null=True)
@@ -149,7 +148,7 @@ class Student(models.Model):
       )
   @property
   def can_ride(self):
-    if len(self.current_payments.filter(status='available'))>0 and self.waiver_signed == True and self.paid_now == True:
+    if len(self.current_payments.filter(status='available'))>0 and self.waiver_signed == True:
       return True
     else:
       return False
@@ -176,7 +175,6 @@ class Bike(models.Model):
     
   @property
   def location(self):
-    # print self.bike_name
     last_ride = self.rides.filter(checkin_station__isnull=False).order_by('-checkin_time')
     # print last_ride
     try:
