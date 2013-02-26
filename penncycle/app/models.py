@@ -171,7 +171,7 @@ class Bike(models.Model):
   @property
   def knowsCombo(self):
     rides = self.rides.filter(checkout_time__gt=self.combo_update)
-    return [ride.rider for ride in rides]
+    return list(set([ride.rider for ride in rides]))
     
   @property
   def location(self):
@@ -193,6 +193,7 @@ class Station(models.Model):
   longitude = models.FloatField(default=-75.1905607)
   address = models.CharField(max_length=300, blank=True)
   notes = models.TextField(max_length=100, blank=True)
+  hours = models.TextField(max_length=100, blank=True)
   picture = models.ImageField(upload_to='img/stations', blank=True)
   capacity = models.IntegerField(default=15)
 

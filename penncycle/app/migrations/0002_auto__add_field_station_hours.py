@@ -8,14 +8,14 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding field 'Plan.description'
-        db.add_column('app_plan', 'description', self.gf('django.db.models.fields.CharField')(default='foo', max_length=1000), keep_default=False)
+        # Adding field 'Station.hours'
+        db.add_column('app_station', 'hours', self.gf('django.db.models.fields.TextField')(default='', max_length=100, blank=True), keep_default=False)
 
 
     def backwards(self, orm):
         
-        # Deleting field 'Plan.description'
-        db.delete_column('app_plan', 'description')
+        # Deleting field 'Station.hours'
+        db.delete_column('app_station', 'hours')
 
 
     models = {
@@ -23,7 +23,10 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Bike'},
             'bike_name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
             'color': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'combo': ('django.db.models.fields.CharField', [], {'max_length': '4', 'blank': 'True'}),
+            'combo_update': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'key_serial_number': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'manufacturer': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['app.Manufacturer']"}),
             'purchase_date': ('django.db.models.fields.DateField', [], {}),
             'serial_number': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
@@ -61,14 +64,16 @@ class Migration(SchemaMigration):
             'amount': ('django.db.models.fields.DecimalField', [], {'max_digits': '6', 'decimal_places': '2'}),
             'date': ('django.db.models.fields.DateField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'plan': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['app.Plan']", 'null': 'True', 'blank': 'True'}),
+            'payment_type': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'plan': ('django.db.models.fields.related.ForeignKey', [], {'default': '1', 'to': "orm['app.Plan']"}),
             'satisfied': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'student': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['app.Student']"})
+            'status': ('django.db.models.fields.CharField', [], {'default': "'available'", 'max_length': '100'}),
+            'student': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'payments'", 'to': "orm['app.Student']"})
         },
         'app.plan': {
             'Meta': {'object_name': 'Plan'},
             'cost': ('django.db.models.fields.IntegerField', [], {}),
-            'description': ('django.db.models.fields.CharField', [], {'default': "'foo'", 'max_length': '1000'}),
+            'description': ('django.db.models.fields.TextField', [], {'default': "'Details coming soon!'", 'max_length': '150'}),
             'end_date': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -88,7 +93,8 @@ class Migration(SchemaMigration):
         'app.station': {
             'Meta': {'object_name': 'Station'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '300', 'blank': 'True'}),
-            'capacity': ('django.db.models.fields.IntegerField', [], {}),
+            'capacity': ('django.db.models.fields.IntegerField', [], {'default': '15'}),
+            'hours': ('django.db.models.fields.TextField', [], {'max_length': '100', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'latitude': ('django.db.models.fields.FloatField', [], {'default': '39.9529399'}),
             'longitude': ('django.db.models.fields.FloatField', [], {'default': '-75.1905607'}),
@@ -103,7 +109,7 @@ class Migration(SchemaMigration):
             'gender': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
             'grad_year': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'join_date': ('django.db.models.fields.DateField', [], {'default': 'datetime.date(2012, 4, 23)'}),
+            'join_date': ('django.db.models.fields.DateField', [], {'default': 'datetime.date(2013, 2, 25)'}),
             'last_two': ('django.db.models.fields.CharField', [], {'max_length': '2', 'null': 'True', 'blank': 'True'}),
             'living_location': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'major': ('django.db.models.fields.CharField', [], {'max_length': '50', 'blank': 'True'}),
@@ -114,7 +120,6 @@ class Migration(SchemaMigration):
             'phone': ('django.contrib.localflavor.us.models.PhoneNumberField', [], {'max_length': '20'}),
             'plan': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['app.Plan']", 'null': 'True', 'blank': 'True'}),
             'school': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'status': ('django.db.models.fields.CharField', [], {'default': "'available'", 'max_length': '100'}),
             'waiver_signed': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
         }
     }
