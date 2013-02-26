@@ -245,7 +245,7 @@ class Ride(models.Model):
       payment = self.rider.current_payments.filter(status='available')[0]
       payment.status = 'out'
     else:
-      self.bike.status = 'available' #change to be 'at %s' % station
+      self.bike.status = 'available'
       payment = self.rider.current_payments.filter(status='out')[0]
       payment.status = 'available'
     self.bike.save()
