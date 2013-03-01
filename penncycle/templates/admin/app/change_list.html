@@ -56,8 +56,9 @@ function do_action(action) {
     $('button[name="index"]').click();
 }
 $(document).ready(function(){
-  var replacement = '<a class="button" style="cursor:pointer;">Check&nbsp;In</a>'
+  var replacement = '<a class="button checkin" style="cursor:pointer;">Check&nbsp;In</a>'
   $('td:contains("out")').click(function(){
+    $('a.checkin').html("Processing..."); 
     var selectbox = $(this).parent().children('td:first').children('input:first');
     var id = selectbox.attr('value');
     selectbox.click();
