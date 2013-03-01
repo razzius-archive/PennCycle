@@ -47,11 +47,6 @@ def pages():
     {'name':'Locations', 'url':'/locations/'},
     {'name':'FAQ', 'url':'/faq/'},
   ]
-  # for page in Page.objects.all():
-  #   pages.append({
-  #     'name': page.name,
-  #     'url': '/about/%s/' % page.slug
-  #     })
   return pages
 
 def index(request):
@@ -108,7 +103,6 @@ def locations(request):
 
 def info_submit(request):
   if request.method == 'POST':
-    print "its a post!"
     form = SignupForm(request.POST)
     print form
     if form.is_valid():
@@ -130,7 +124,7 @@ def info_submit(request):
         payment: %s
         living_location: %s
 
-        tell alex if you want more info in this email
+        tell Razzi if you want more info in this email
         ''' % (student.name, student.penncard, payment, living_location)
         send_mail('quaddie signed up', message, 'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=True)
         print "this student lives in %s" % living_location
@@ -161,7 +155,6 @@ def signup(request):
       # Process the data in form.cleaned data
       form.save()
       return HttpResponse('ok')
-      #return render_to_response('thanks.html', {})
   else:
     form = SignupForm()
 
@@ -220,8 +213,6 @@ def thankyou(request, payment_id):
     student = payment.student
   except:
     student = get_object_or_404(Student, penncard=payment_id)
-  #student = Student.objects.get(penncard=request.POST.get('merchantDefinedData1'))
-  print student
   type = request.GET.get('type', 'credit')
   if type == 'penncash' or type == 'bursar':
     message = '''Please allow up to 48 hours for your payment to be registered.
@@ -235,7 +226,6 @@ def thankyou(request, payment_id):
     else:
       message = 'Something went wrong with your payment. We\'ve been notified and will get on this right away.'
       try:
-        dog = payment.id
         email_razzi('payment gone wrong! %s' % str(payment.id))
       except:
         email_razzi('payment gone HORRIBLY wrong! (could not email you what the payment id was!) student is %s' % student)
@@ -324,7 +314,6 @@ def stats(request):
 
 def selectpayment(request):
   plans = Plan.objects.filter(end_date__gte = datetime.date.today(), cost__gt = 0)
-  print plans
   day_plan = Plan.objects.filter(end_date=datetime.date.today(), name__contains='Day Plan')
   if len(day_plan) < 1:
     print 'about to create a new day plan'
@@ -336,9 +325,6 @@ def selectpayment(request):
       description = 'A great way to try out PennCycle. Or, use this to check out a bike for a friend or family member! Add more day plans to your account to check out more bikes. Day plans can only be purchased day-of.',
       )
     day_plan.save()
-  elif len(day_plan) == 1:
-    print 'there already was a day plan! how convenient.'
-  print day_plan
   return render_to_response('selectpayment.html', {'plans': plans, 'pages':pages()})
 
 def addpayment(request):
@@ -432,6 +418,8 @@ def sms(request):
     if not location:
       email_razzi("Station didn't match for checkin. Message was {}".format(body))
       message = "Station not found. Options: PSA, Rodin, Ware, Fisher, Stouffer, Houston, Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
+      response.sms(message)
+      return response
     ride = student.ride_set.all().order_by("-id")[0]
     ride.checkin_time = datetime.datetime.now()
     ride.checkin_station = location
