@@ -425,7 +425,7 @@ def sms(request):
     ride.checkin_station = location
     ride.bike.status = "available"
     ride.save()
-    message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shorty. Thanks!".format(location)
+    message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shortly. Thanks!".format(location)
     email_razzi("Bike {} successfully returned! Ride was {}".format(ride, ride.bike))
   elif any(command in body for command in ["station", "stations", "location", "locations"]):
     message = "Stations: PSA, Rodin, Ware, Fisher, Stouffer, Houston, and Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
