@@ -104,9 +104,7 @@ def locations(request):
 def info_submit(request):
   if request.method == 'POST':
     form = SignupForm(request.POST)
-    print form
     if form.is_valid():
-      print "shit is validd"
       student = form.save()
       living_location = student.living_location
       if living_location in ['Fisher', 'Ware']: 
@@ -127,17 +125,11 @@ def info_submit(request):
         tell Razzi if you want more info in this email
         ''' % (student.name, student.penncard, payment, living_location)
         send_mail('quaddie signed up', message, 'messenger@penncycle.org', ['messenger@penncycle.org'], fail_silently=True)
-        print "this student lives in %s" % living_location
-        print str(student) + "; paid = " + str(student.paid)
-      print "saved form"
-      print "payment plan: " + str(student.plan)
       reply = {'success': True, 'form_valid': True}
     else:
-      print "INVALID bullshit"
       reply = {'success': True,
                'form_valid': False,
                'new_form': str(form)}
-    print reply
     return HttpResponse(json.dumps(reply), content_type="application/json")
   else:
     return HttpResponse("You have reached this page in error. Please contact messenger@penncycle.org with details on how you got here.")
