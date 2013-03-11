@@ -1,5 +1,8 @@
+import datetime
+import re
+import json
+
 from django.core.mail import send_mail
-from app.models import *
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.context_processors import csrf
@@ -7,12 +10,11 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django import forms
 from django.views.decorators.csrf import csrf_exempt
 from bootstrap.forms import BootstrapModelForm, Fieldset
-import random, json, hashlib, hmac, gviz_api
+from app.models import *
+
 from django.contrib.auth.decorators import login_required
-import datetime
 import twilio.twiml
 from django_twilio.decorators import twilio_view
-import re
 
 class SignupForm(BootstrapModelForm):
   class Meta:
