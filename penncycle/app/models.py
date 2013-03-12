@@ -188,38 +188,65 @@ class Bike(models.Model):
     return '#%s. Location: %s' % (self.bike_name, self.location.name)
 
 days = {
-  "Monday": 0
-  "Tuesday": 1
-  "Wednesday": 2
-  "Thursday": 3
-  "Friday": 4
-  "Saturday": 5
-  "Sunday": 6
+  "Monday": 0,
+  "Tuesday": 1,
+  "Wednesday": 2,
+  "Thursday": 3,
+  "Friday": 4,
+  "Saturday": 5,
+  "Sunday": 6,
 }
 
+strings = {value:key for key,value in days.items()}
+
+def decimal(time):
+  if len(time)<=2:
+    return int(time)
+  else:
+    hours, minutes = time.split(":")
+    return int(hours) + float(minutes) / 60
+
+def hour(time):
+  return decimal(time[0]) if (time[1]=="am" or time[0]=="12") else decimal(time[0])+12
+
+def enter_hours(interval, info, day):
+  print(info)
+  start_time = hour(info[0:2])
+  end_time = hour(info[3:5])
+  if day in interval:
+    interval[day].append((start_time, end_time))
+  else:
+    interval[day] = [(start_time, end_time)]
+
 def get_hours(description):
-  intervals = []
+  intervals = {}
   day = 0
-  for line in description.split("\n"):
-    if line.split()[1]=="-":
+  for line in description.split("\n"): #assumes to be in order      
+    if line.split()[1]=="-": #there is a range of days
+      print("range of days")
       start = days[line.split()[0]]
-      end = days[line.split()[2]]
-      start_time = line.split()[3]
-      end_time = line.split()[5]
-      for i in range(start-end):
+      end = days[line.split()[2][:-1]]
+      for i in range(end-start+1):
+        that_day = strings[day]
+        if "and" in line: #multiple ranges
+          enter_hours(intervals, line.split()[3:8], that_day)
+          enter_hours(intervals, line.split()[9:14], that_day)
+        else:
+          enter_hours(intervals, line.split()[3:8], that_day)
         day += 1
-        intervals.append(
-          (day*24 + int(start_time), day*24 + int(end_time))
-        )
-    else:
-      day += 1
-      start_time = line.split()[1]
-      end_time = line.split()[3]
-      intervals.append(
-        (day*24 + int(start_time), day*24 + int(end_time))
-      )
-  assert day==7
-  assert len(intervals)==7
+    elif line.split()[0][-1]==":":
+      print("matched :")
+      that_day = strings[day]
+      if "and" in line: #multiple ranges
+        enter_hours(intervals, line.split()[1:6], that_day)
+        enter_hours(intervals, line.split()[7:12], that_day)
+      else:
+        enter_hours(intervals, line.split()[1:6], that_day)
+        day += 1
+    else: #7 days a week.
+      print("7 days")
+      for i in range(7):
+        enter_hours(intervals, line.split()[2:7], strings[day])
   return intervals
 
 class Station(models.Model):
@@ -238,7 +265,14 @@ class Station(models.Model):
   @property
   def is_open(self):
     ranges = get_hours(self.hours)
-    for day in 
+    today = datetime.datetime.today().weekday()
+    this_hour = datetime.datetime.today().hour
+    if strings[today] in ranges:
+      hours = ranges[strings[today]]
+      for opening in hours:
+        if this_hour > opening[0] and this_hour < opening[1]:
+          return True
+    return False
 
 class Ride(models.Model):
   rider = models.ForeignKey(Student, 
