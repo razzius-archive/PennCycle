@@ -11,9 +11,9 @@
 <div class = "well">
 	<div class="textCentered">
 		<h3>
-			{{ station.full_name }} - 
+			{{ station.full_name }}
 			{% if station.is_open %}
-				<span class="glow"> Currently open!</span>
+				- <span class="glow"> Currently open!</span>
 			{% endif %}
 		</h3>
 
@@ -51,7 +51,7 @@
 	                {% if station.is_open %}
 	                labelContent:"{{station.name}} OPEN",
 	                {% else %}
-	                labelContent:"{{station.name}} Closed"
+	                labelContent:"{{station.name}} Closed",
 	                {% endif %}
 	                labelClass:"labels",
 	                icon: "/media/img/marker.png"
