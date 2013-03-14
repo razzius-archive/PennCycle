@@ -5,91 +5,27 @@
 {% endblock %}
 
 {% block content %}
-<h4>
-	PennCycle is happy to announce the opening of checkout locations in Rodin, Fisher-Hassenfeld and Ware!
-</h4>
-
-<div id="map_canvas" style="width:auto; height:480px"></div>
+<div id="map_canvas" style="width:auto; height:430px"></div>
 <br>
+{% for station in stations %}
 <div class = "well">
 	<div class="textCentered">
-		<h3>Houston Hall</h3>
-		<h4>3417 Spruce Street</h4>
-		<h4>Hours: 9 am to 9:30 pm, 7 days a week</h4>
-		<p>Bikes can be checked out at the info desk on the first floor. If there is no one there, please speak to the manager in room 119, directly behind you when you are facing the desk. The manager should be able to check out a bike to you.</p>
-	</div>
-</div>
-<div class = "well">
-	<div class="textCentered">
-		<h3>Stouffer College House </h3>
-		<h4>3702 Spruce Street (above Wawa)</h4>
-		<h4>Hours:</h4>
-	</div>
-	<h4>
-		<ul class="offset1">
-			<li>9:45 am - 4 pm and 6 pm - 11 pm Monday</li>
-			<li>9:45 am - 5:30 pm and 6 pm - 11 pm Tuesday through Thursday</li>
-			<li>9:45 am - 5:30 pm and 6 pm - 9 pm Friday</li>
-			<li>11am to 11pm Saturday and Sunday</li>
-		</ul>
-	</h4>
-	<div class="textCentered">
-		<p>Bikes are stored in the Stouffer courtyard up the stairs. To check-out or return a bike, go into the D building and to the right. </p>
-		</p>
-		<p>Weekend hours to be announced.</p>
-	</div>
-</div>
+		<h3>
+			{{ station.full_name }} - 
+			{% if station.is_open %}
+				<span class="glow"> Currently open!</span>
+			{% endif %}
+		</h3>
 
-<div class="well">
-	<div class="textCentered">
-		<h3>Penn Student Agencies Store </h3>
-		<h4>117 Williams Hall (across from Houston Hall)</h4>
-		<h4>Hours: 10 am to 6 pm Monday through Friday</h4>
+		<h4>{{ station.address }}</h4>
+		<h4>{{ station.hours|linebreaks }}</h4>
+		<p>{{ station.notes }}</p>
 	</div>
 </div>
-
-<div class="well">
-	<div class="textCentered">
-		<h3>Rodin</h3>
-		<p>NOW OPEN!</p>
-		<h4>3901 Locust Walk</h4>
-		<h4>Hours: 9 am to 9 pm Monday through Thursday, Friday 9am to 7pm, Saturday noon to 5 pm, Sunday 3 pm to 8 pm</h4>
-		<p>Bikes are stored on the Rodin bike racks and can be checked out at the house office on the mezzanine.</p>
-	</div>
-</div>
-
-<div class="well">
-	<div class="textCentered">
-		<h3>Fisher-Hassenfeld</h3>
-		<p>NOW OPEN!</p>
-		<h4>3700 Spruce Street (the Quad)</h4>
-		<h4>Hours: 9 am to 5 pm and 6pm to 10 pm Monday through Friday, 2 pm to 10 pm Saturday and Sunday</h4>
-	</div>
-</div>
-
-<div class="well">
-	<div class="textCentered">
-		<h3>Ware</h3>
-		<p>NOW OPEN!</p>
-		<h4>3650 Spruce Street (the Quad)</h4>
-		<h4>Hours: 9 am to 5 pm Monday through Friday</h4>
-		<p>Ware's bikes can be checked out at any house office.</p>
-	</div>
-</div>
+{% endfor %}
 {% endblock %}
 
 {% block scripts %}
-	<style type="text/css">
-	.labels {
-		font-weight: 900;
-		font-size: 10px;
-		line-height: 10px;
-		background-color: white;
-		text-align: center;
-		border-radius: 2px;
-		width: 42px;
-	}
-	</style>
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBKBg19QWvNQ2U5Skk9nJrG9c43rtJuf-A&amp;sensor=false"></script>
 	<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/markerwithlabel/1.0.1/src/markerwithlabel.js"></script>
 	<script type="text/javascript">
@@ -98,7 +34,7 @@
 		});
 		function map() {
 	    	var mapOptions = {
-		            center: new google.maps.LatLng(39.951818,-75.197994),
+		            center: new google.maps.LatLng(39.951600,-75.197794),
 		            zoom: 17,
 		            mapTypeId: google.maps.MapTypeId.ROADMAP,
 		            disableDefaultUI: true,
@@ -110,9 +46,13 @@
 			    var marker = new MarkerWithLabel({
 			    	position: new google.maps.LatLng({{station.latitude}},{{station.longitude}}),
 			    	labelAnchor: new google.maps.Point(25, 0),
-			    	// title: "hours go here",
+			    	title: "{{ station.comma_name|linebreaks|striptags }}",
 	                map: map,
-	                labelContent:"{{station.name}}",
+	                {% if station.is_open %}
+	                labelContent:"{{station.name}} OPEN",
+	                {% else %}
+	                labelContent:"{{station.name}} Closed"
+	                {% endif %}
 	                labelClass:"labels",
 	                icon: "/media/img/marker.png"
 			    });

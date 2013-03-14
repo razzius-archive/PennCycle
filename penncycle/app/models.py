@@ -176,7 +176,6 @@ class Bike(models.Model):
   @property
   def location(self):
     last_ride = self.rides.filter(checkin_station__isnull=False).order_by('-checkin_time')
-    # print last_ride
     try:
       last_ride = last_ride[0]
       location = last_ride.checkin_station
@@ -210,7 +209,7 @@ def hour(time):
   return decimal(time[0]) if (time[1]=="am" or time[0]=="12") else decimal(time[0])+12
 
 def enter_hours(interval, info, day):
-  print(info)
+  # print(info)
   start_time = hour(info[0:2])
   end_time = hour(info[3:5])
   if day in interval:
@@ -221,9 +220,11 @@ def enter_hours(interval, info, day):
 def get_hours(description):
   intervals = {}
   day = 0
+  if len(description)==0: #empty station
+    return {}
   for line in description.split("\n"): #assumes to be in order      
     if line.split()[1]=="-": #there is a range of days
-      print("range of days")
+      # print("range of days")
       start = days[line.split()[0]]
       end = days[line.split()[2][:-1]]
       for i in range(end-start+1):
@@ -235,7 +236,7 @@ def get_hours(description):
           enter_hours(intervals, line.split()[3:8], that_day)
         day += 1
     elif line.split()[0][-1]==":":
-      print("matched :")
+      # print("matched :")
       that_day = strings[day]
       if "and" in line: #multiple ranges
         enter_hours(intervals, line.split()[1:6], that_day)
@@ -244,8 +245,8 @@ def get_hours(description):
         enter_hours(intervals, line.split()[1:6], that_day)
         day += 1
     else: #7 days a week.
-      print("7 days")
-      for i in range(7):
+      # print("7 days")
+      for day in range(7):
         enter_hours(intervals, line.split()[2:7], strings[day])
   return intervals
 
@@ -258,6 +259,7 @@ class Station(models.Model):
   hours = models.TextField(max_length=100, blank=True)
   picture = models.ImageField(upload_to='img/stations', blank=True)
   capacity = models.IntegerField(default=15)
+  full_name = models.CharField(max_length=100, default="")
 
   def __unicode__(self):
     return self.name
@@ -273,6 +275,10 @@ class Station(models.Model):
         if this_hour > opening[0] and this_hour < opening[1]:
           return True
     return False
+
+  @property
+  def comma_name(self):
+    return ", ".join(self.hours.split("\n"))
 
 class Ride(models.Model):
   rider = models.ForeignKey(Student, 

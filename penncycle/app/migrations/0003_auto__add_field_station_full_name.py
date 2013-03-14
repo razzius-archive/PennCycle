@@ -8,14 +8,14 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding field 'Station.hours'
-        db.add_column('app_station', 'hours', self.gf('django.db.models.fields.TextField')(default='', max_length=100, blank=True), keep_default=False)
+        # Adding field 'Station.full_name'
+        db.add_column('app_station', 'full_name', self.gf('django.db.models.fields.CharField')(default='', max_length=100), keep_default=False)
 
 
     def backwards(self, orm):
         
-        # Deleting field 'Station.hours'
-        db.delete_column('app_station', 'hours')
+        # Deleting field 'Station.full_name'
+        db.delete_column('app_station', 'full_name')
 
 
     models = {
@@ -94,6 +94,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Station'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '300', 'blank': 'True'}),
             'capacity': ('django.db.models.fields.IntegerField', [], {'default': '15'}),
+            'full_name': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '100'}),
             'hours': ('django.db.models.fields.TextField', [], {'max_length': '100', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'latitude': ('django.db.models.fields.FloatField', [], {'default': '39.9529399'}),
