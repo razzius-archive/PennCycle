@@ -16,11 +16,11 @@ class pcRidesAdmin(RidesAdmin):
   )
   fieldsets = (
     (None, {'fields':(('rider','bike','checkout_station'),),
-            'classes':('main_options',)}),
-    ('Edit Check-In Time and Station', {'classes':('collapse','extrapretty'),
-                'fields':('checkin_time','checkin_station')
-                }),
-    )
+            'classes':('main_options',)}),)
+    # ('Edit Check-In Time and Station', {'classes':('collapse','extrapretty'),
+    #             'fields':('checkin_time','checkin_station')
+    #             }),
+#    )
   date_hierarchy = 'checkin_time'
   ordering = ('-checkout_time',)
   actions = ['check_in']
