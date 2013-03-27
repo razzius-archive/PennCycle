@@ -7373,10 +7373,7 @@ a.badge:hover {
   width: 42px;
 }
 .glow {
-  -webkit-animation-name: glow;
-  -webkit-animation-duration: 3s;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-timing-function: linear;
+  color: #008d0c;
 }
 @-webkit-keyframes glow {
   0% {
