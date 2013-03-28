@@ -56,7 +56,6 @@ urlpatterns = patterns('',
     (r'api/dump/$', api.dump),
     (r'sms/$', sms),
     (r'debug/$', debug),
-    (r'updateCombo/$', updateCombo),
 
     #could resurface
     # (r'^events/$', events),

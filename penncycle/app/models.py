@@ -372,4 +372,6 @@ class Comment(models.Model):
 class Info(models.Model):
   message = models.TextField()
   date = models.DateField(auto_now_add=True)
-  
+
+  def __unicode__(self):
+    return self.message + " on " + self.date.isoformat()

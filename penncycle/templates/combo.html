@@ -40,7 +40,7 @@
 			<div class="span4">
 				<form action="/combo/" method="post">
 					{% csrf_token %}
-					New combo: <input class="combo" type="text" name="combo">
+					New combo: <input class="combo" type="text" name="combo" maxlength="4">
 					<input type="text" name="bike" style="display:none" value="{{bike.id}}">
 					<input type="submit">
 				</form>
