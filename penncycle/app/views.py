@@ -393,7 +393,7 @@ def sms(request):
       email_razzi("Looks like somebody had the wrong bike number. Message: {}".format(body))
       return response
     try:
-      bikes = Bike.objects.filter(status="available").filter(name__startswith=bike_number)
+      bikes = Bike.objects.filter(status="available").filter(bike_name__startswith=bike_number)
       for b in bikes:
         if b.bike_name.split()[0]==bike_number:
           bike = b
@@ -404,9 +404,9 @@ def sms(request):
     except:
       message = "The bike you have requested was unavailable or not found. Text 'Checkout (number)', where number is 1 or 2 digits."
       count = 0
-      bikes = Bike.objects.filter(status="available").filter(name__startswith=bike_number)
+      bikes = Bike.objects.filter(status="available").filter(bike_name__startswith=bike_number)
       for b in bikes:
-        if b.bike_name.split()[0]==bike_name:
+        if b.bike_name.split()[0]==bike_number:
           count += 1
       email_razzi("Problem with bike {} and student {}. Message was {}. Found {} / {}".format(bike_number, student, body, count, len(bikes)))
   elif any(command in body for command in ["checkin", "return", "check in", "check-in"]):
