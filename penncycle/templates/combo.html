@@ -38,7 +38,7 @@
 			<div class="bike span2">{{bike.bike_name}}</div>
 			<div class="combo span2">{{bike.combo}}</div>
 			<div class="span4">
-				<form action="/updateCombo/" method="post">
+				<form action="/combo/" method="post">
 					{% csrf_token %}
 					New combo: <input class="combo" type="text" name="combo">
 					<input type="text" name="bike" style="display:none" value="{{bike.id}}">

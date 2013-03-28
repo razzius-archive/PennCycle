@@ -368,3 +368,8 @@ class Comment(models.Model):
 
   def __unicode__(self):
     return self.comment[:30]
+
+class Info(models.Model):
+  message = models.TextField()
+  date = models.DateField(auto_now_add=True)
+  

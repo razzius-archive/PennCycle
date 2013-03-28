@@ -455,23 +455,23 @@ def debug(request):
 
 @login_required  
 def combo(request):
-  context = {
-    'pages': pages(),
-    'bikes': Bike.objects.all()
-  }
-  context_instance = RequestContext(request, context)
-  return render_to_response("combo.html", context_instance)
-
-def updateCombo(request):
-  data = request.POST
-  bike = data.get("bike")
-  bike = Bike.objects.get(id=bike)
-  bike.combo = data.get("combo")
-  bike.combo_update = datetime.datetime.today()
-  bike.save()
-  context = {
-    'pages': pages(),
-    'bikes': Bike.objects.all()
-  }
+  if request.method=="POST":
+    data = request.POST
+    bike = data.get("bike")
+    bike = Bike.objects.get(id=bike)
+    log = Info(message="Bike {} had combo {} and is now {}".format(bike, bike.combo, data.get("combo")));
+    log.save()
+    bike.combo = data.get("combo")
+    bike.combo_update = datetime.datetime.today()
+    bike.save()
+    context = {
+      'pages': pages(),
+      'bikes': Bike.objects.all()
+    }
+  else:
+    context = {
+      'pages': pages(),
+      'bikes': Bike.objects.all()
+    }
   context_instance = RequestContext(request, context)
   return render_to_response("combo.html", context_instance)
