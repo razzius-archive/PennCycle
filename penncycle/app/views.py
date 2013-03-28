@@ -387,17 +387,20 @@ def sms(request):
       response.sms(message)
       return response
     try:
-      bikeNumber = re.search("\d+", body).group()
+      bike_number = re.search("\d+", body).group()
     except:
       response.sms("Command not understood. Text 'info' for a list of commands. Example of checking out a bike would be: Checkout 10")
       email_razzi("Looks like somebody had the wrong bike number. Message: {}".format(body))
       return response
     try:
-      bike = Bike.objects.filter(status="available").get(id=int(bikeNumber))
+      bikes = Bike.objects.filter(status="available").filter(name__startswith=bike_number)
+      for b in bikes:
+        if b.bike_name.split()[0]==bike_number:
+          bike = b
       ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
       student.payments.filter(status="available")[0].status = "out"
       ride.save()
-      message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bikeNumber, bike.combo)
+      message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bike_number, bike.combo)
     except:
       message = "The bike you have requested was unavailable or not found. Text 'Checkout (number)', where number is 1 or 2 digits."
   elif any(command in body for command in ["checkin", "return", "check in", "check-in"]):
