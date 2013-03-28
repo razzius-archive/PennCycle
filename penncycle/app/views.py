@@ -403,6 +403,12 @@ def sms(request):
       message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bike_number, bike.combo)
     except:
       message = "The bike you have requested was unavailable or not found. Text 'Checkout (number)', where number is 1 or 2 digits."
+      count = 0
+      bikes = Bike.objects.filter(status="available").filter(name__startswith=bike_number)
+      for b in bikes:
+        if b.bike_name.split()[0]==bike_name:
+          count += 1
+      email_razzi("Problem with bike {} and student {}. Message was {}. Found {} / {}".format(bike_number, student, body, count, len(bikes)))
   elif any(command in body for command in ["checkin", "return", "check in", "check-in"]):
     location = None
     stations = [station.name.lower() for station in Station.objects.all()]
