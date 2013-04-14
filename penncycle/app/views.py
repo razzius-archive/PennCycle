@@ -343,9 +343,7 @@ def addpayment(request):
   return HttpResponse(json.dumps({'message': 'success', 'payment_id':str(new_payment.id)}), content_type="application/json")
 
 def plans(request):
-  plans = [] 
-  for p in Plan.objects.filter(end_date__gte=datetime.date.today(), cost__gt=0).order_by('start_date', 'cost'):
-    plans.append({'name': str(p), 'description': p.description, 'start_date': p.start_date, 'end_date': p.end_date,})
+  plans = Plan.objects.filter(end_date__gte=datetime.date.today(), cost__gt=0).order_by('start_date', 'cost')
   context = {
       'plans': plans,
       'pages': pages(),
@@ -429,7 +427,7 @@ def sms(request):
     ride.bike.status = "available"
     ride.save()
     message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shortly. Thanks!".format(location)
-    email_razzi("Bike {} successfully returned! Ride was {}".format(ride, ride.bike))
+    email_razzi("{} successfully returned! Ride was {}".format(ride, ride.bike))
   elif any(command in body for command in ["station", "stations", "location", "locations"]):
     message = "Stations: PSA, Rodin, Ware, Fisher, Stouffer, Houston, and Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
   else:
@@ -481,3 +479,4 @@ def combo(request):
     }
   context_instance = RequestContext(request, context)
   return render_to_response("combo.html", context_instance)
+

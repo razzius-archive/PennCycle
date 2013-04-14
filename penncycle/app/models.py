@@ -79,6 +79,7 @@ class Plan(models.Model):
   start_date = models.DateField()
   end_date = models.DateField()
   description = models.TextField(max_length = 150, default="Details coming soon!")
+  banner = models.CharField(max_length=50, default="")
 
   def __unicode__(self):
     return self.name + ': $' + str(self.cost)
