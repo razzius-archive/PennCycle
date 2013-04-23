@@ -1,9 +1,9 @@
   $('#info-button').click(function() {
-    $.ajaxSetup({ 
+    $.ajaxSetup({
       beforeSend: function(xhr, settings) {
         function getCookie(name) {
           var cookieValue = null;
-          if (document.cookie && document.cookie != '') {
+          if (document.cookie && document.cookie !== '') {
             var cookies = document.cookie.split(';');
             for (var i = 0; i < cookies.length; i++) {
               var cookie = jQuery.trim(cookies[i]);
@@ -20,12 +20,12 @@
           // Only send the token to relative URLs i.e. locally.
           xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
         }
-      } 
+      }
     });
-  
+
     var formData = $('#info-form').serialize();
     $.ajax ({
-      url: '../info_submit/', 
+      url: '../info_submit/',
       type: 'POST',
       data: formData,
       dataType: 'json',
@@ -36,15 +36,15 @@
         alert('whoops! something went wrong');
       },
       success: function(data, status, xhr) {
-        if (data['form_valid'] == true) {
+        if (data['form_valid']) {
           toTab('safety');
-        } else if (data['form_valid'] == false) {
+        } else if (!data['form_valid']) {
           $('#info-form').html(data['new_form']);
           console.log('replaced shit');
         } else {
           alert('alex is dumb');
         }
-      },
+      }
     });
   });
 
@@ -55,26 +55,26 @@
     $('#tab-'+id + ' a').attr("href", "#"+id);
     $('#'+id).addClass('active');
     $('a[href="#'+id+'"]').parent().addClass('active');
-  };
-  
+  }
+
   $('button#info-form').click(function(){
     toTab('safety');
   });
-  
+
   $('button#safety-form').click(function(){
     toTab('waiver');
   });
-  
+
   $('button#waiver-form').click(function(){
     toTab('pay');
     var pcnum = $("#id_penncard").val();
     console.log(pcnum);
 
-    $.ajaxSetup({ 
+    $.ajaxSetup({
       beforeSend: function(xhr, settings) {
         function getCookie(name) {
           var cookieValue = null;
-          if (document.cookie && document.cookie != '') {
+          if (document.cookie && document.cookie !== '') {
             var cookies = document.cookie.split(';');
             for (var i = 0; i < cookies.length; i++) {
               var cookie = jQuery.trim(cookies[i]);
@@ -91,7 +91,7 @@
           // Only send the token to relative URLs i.e. locally.
           xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
         }
-      } 
+      }
     });
 
     var payInfo = {'pennid': pcnum};
@@ -99,7 +99,7 @@
     console.log(payInfo);
     console.log(pennidData);
     $.ajax ({
-      url: '../verify_waiver/', 
+      url: '../verify_waiver/',
       type: 'POST',
       data: payInfo,
       dataType: 'json',
@@ -111,14 +111,21 @@
       },
       success: function(data, status, xhr) {
         console.log('waiver success');
-      },
+      }
     });
 
 
     var living_location = $("#id_living_location").val();
     console.log(living_location);
+
+    function appendPcnum (id, pcnum) {
+      var _href = $(id).attr('href');
+      $(id).attr('href', _href + pcnum);
+      console.log('appended');
+    }
+
     if(living_location == "Stouffer") {
-      $('div#pay').replaceWith('<h2>You\'ve already paid. Thanks!</h2>'); 
+      $('div#pay').replaceWith('<h2>You\'ve already paid. Thanks!</h2>');
       console.log("replaced html");
     } else {
       $("#penncardnum-id").val(pcnum);
@@ -147,7 +154,7 @@
         },
         success: function(data, status, xhr) {
           console.log('payment creation success');
-        },
+        }
       });
 
       console.log("ajax call made");
@@ -162,13 +169,7 @@
       $('#paybycredit').click(function(){
         $('#payform').submit();
       });
-      
-      function appendPcnum (id, pcnum) {
-        var _href = $(id).attr('href');
-        $(id).attr('href', _href + pcnum);
-        console.log('appended');
-      }
-      
+
       appendPcnum('#paybycash', pcnum);
       appendPcnum('#paybypenncash', pcnum);
       appendPcnum('#paybybursar', pcnum);
@@ -176,7 +177,7 @@
       appendPcnum("#fisher", pcnum);
       appendPcnum("#ware", pcnum);
     }
-  }); 
+  });
 
   // set background for active tab in navbar    
   $('.nav1 li#signup').addClass('active');
