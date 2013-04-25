@@ -47,7 +47,7 @@ def pages():
     pages = [
         {'name': 'Home', 'url': '/'},
         {'name': 'Plans', 'url': '/plans/'},
-        {'name': 'Sign U p', 'url': '/signup/'},
+        {'name': 'Sign Up', 'url': '/signup/'},
         {'name': 'Safety', 'url': '/safety/'},
         {'name': 'Team', 'url': '/team/'},
         {'name': 'Partners', 'url': '/partners/'},
@@ -466,6 +466,9 @@ def sms(request):
                 message = "You are currently unable to check out bikes. Go to penncycle.org and enter your penncard to check your status."
         if not any(command in body for command in ["help", "info", "information", "?"]):
             email_razzi(body)
+    if len(message) > 150:
+        message += "--quite a long message. In fact, {}".format(len(message))
+        email_razzi(message)
     response.sms(message)
     return response
 
