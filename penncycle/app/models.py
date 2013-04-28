@@ -131,7 +131,7 @@ class Student(models.Model):
     waiver_signed = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
     payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
-    at_desk = models.NullBooleanField()
+    staff = models.BooleanField(default=False)
     plan = models.ManyToManyField('Plan', blank=True, null=True)
 
     @property
