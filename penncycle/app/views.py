@@ -26,7 +26,7 @@ class SignupForm(BootstrapModelForm):
             'paid',
             'last_two',
             'payment_type',
-            'at_desk',
+            'staff',
             'plan',
             'major',
         )
@@ -201,7 +201,7 @@ def verify_payment(request):
             # if source matches CyberSource, payment completed
             #if source == source_needed and (int(request.POST.get('reasonCode')) == (100 or 200)) and amount == .01:
             reasonCode = request.POST.get('reasonCode')
-            # good_reasons = [100,200]
+            good_reasons = [100, 200]
             if (int(reasonCode) in good_reasons):
                 print "check passed"
                 payment.satisfied = True
@@ -467,8 +467,8 @@ def sms(request):
         if not any(command in body for command in ["help", "info", "information", "?"]):
             email_razzi(body)
     if len(message) > 150:
-        message += "--quite a long message. In fact, {}".format(len(message))
-        email_razzi(message)
+        info = message + "--quite a long message. In fact, {}".format(len(message))
+        email_razzi(info)
     response.sms(message)
     return response
 
