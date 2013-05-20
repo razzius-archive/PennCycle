@@ -14,11 +14,10 @@ GENDER_CHOICES = (
 )
 
 GRAD_YEAR_CHOICES = (
+    ('2017', '2017'),
     ('2016', '2016'),
     ('2015', '2015'),
     ('2014', '2014'),
-    ('2013', '2013'),
-    ('2012', '2012'),
     ('grad', 'grad student'),
     ('faculty', 'faculty'),
     ('staff', 'staff'),
