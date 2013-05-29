@@ -76,8 +76,8 @@ def checkout(request):
         student.payments.filter(status="available")[0].status = "out"
         ride.save()
         return HttpResponse("success")
-    except:
-        email_razzi("Admin crashed. Locals: {}".format(locals()))
+    except Exception as error:
+        email_razzi("Admin crashed. Locals: {}. Error: {}".format(locals(), error))
         return HttpResponse("failure")
 
 @login_required_ajax

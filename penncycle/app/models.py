@@ -1,4 +1,5 @@
 import datetime
+import pytz
 
 from django.core.mail import send_mail
 from django_localflavor_us.models import PhoneNumberField
@@ -309,12 +310,11 @@ class Ride(models.Model):
     @property
     def ride_duration_days(self):
         if self.checkin_time is None:
-            end = datetime.datetime.now()
+            end = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
         else:
             end = self.checkin_time
         duration = end - self.checkout_time
-        duration_days = duration.days
-        return duration_days
+        return duration.days
 
     @property
     def status(self):
