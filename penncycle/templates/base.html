@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{% block title %}PennCycle / {% endblock title %}</title>
+    <title>{% block title %}PennCycle | {% endblock title %}</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,16 +13,12 @@
     <![endif]-->
     <!-- Le styles -->
 
-    <link href="/media/css/penncycle.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/penncycle.css" rel="stylesheet">
 	<!-- more css -->
 	{% block css %}
 	{% endblock css %}
 
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="/media/img/favicon.ico">
-    <!-- <link rel="apple-touch-icon" href="/media/img/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/media/img/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/media/img/apple-touch-icon-114x114.png"> -->
+    <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico">
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-29452231-1']);
@@ -38,32 +34,36 @@
   </head>
 
   <body>
-  <!-- facebook shiit-->
     <div id="fb-root"></div>
       <script>(function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
         js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_PI/all.js#xfbml=1&appId=282950051818699";
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=282950051818699";
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));</script>
-    <img class="bg-image hidden-phone" src="/media/img/philly.jpg" alt="" />
+    <img class="bg-image hidden-phone" src="{{ STATIC_URL }}img/philly.jpg">
     <div class="container opaque">
       <center>
-        <a href="/"><img class="centered" src="/media/img/PennCycle-Logo-3-web-570.png"/></a>
+        <a href="/"><img class="centered" src="{{ STATIC_URL }}img/PennCycle-Logo-3-web-570.png"></a>
         <div class="navbar">
           <div class="navbar-inner">
             <ul class="nav1 nav">
               {% block navbar %}
                 {% for p in pages %}
-                  {% autoescape on %}
-                    <li><a href="{{p.url}}">{{p.name}}</a></li>
-                  {% endautoescape %}
+                  <li><a href="{{p.url}}">{{p.name}}</a></li>
                 {% endfor %}
               {% endblock navbar %}
             </ul>
           </div><!-- /navbar-inner -->
         </div><!-- /navbar -->
+        {% if messages %}
+          <div class="messages">
+            {% for message in messages %}
+              <h4 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+            {% endfor %}
+         </div>
+       {% endif %} 
       </center>
       
       <div class="row">
@@ -75,10 +75,9 @@
         <div class="span3 flat">&nbsp;</div>
       </div>
       <hr>
-      <div class="row">
-        <div class="fb-like span6 offset2" data-href="http://www.facebook.com/pages/PennCycle/345622718793885" data-send="true" data-width="400px" data-show-faces="true">
-        </div>
-        <div class="span4">
+      <div class="row-fluid">
+        <div class="fb-like span6 offset2" data-href="http://www.facebook.com/pages/PennCycle/345622718793885" data-send="true" data-width="450" data-show-faces="true"></div>
+        <div class="span3 flat offset1">
           <a href="http://www.twilio.com/" style="text: decoration: none; display: inline-block; width: 166px; height: 0; padding-top: 31px; overflow: hidden;background: url(http://www.twilio.com/packages/company/img/logos_icon_poweredbysmall.png) no-repeat;"></a>
         </div>
       </div>
@@ -90,8 +89,8 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/media/js/jquery.js"></script>
-    <script src="/media/js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 	<!-- more scripts -->
 	{% block scripts %}
     

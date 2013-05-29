@@ -1,0 +1,169 @@
+{% extends 'base_admin.html' %}
+
+{% load partition %}
+
+{% block content %}
+<div class="dashboard-nav">
+    <div class="row">
+        <div class="span4">
+            <img src="{{ STATIC_URL }}img/PennCycle-Logo-3-web-570.png">
+        </div>
+        <div class="span6">
+            <h1><a href="/admin/">Fleet Administration</a></h1>        
+        </div>
+        <div class="span1">
+            <h4 class="location">
+                Location: <br>
+                {{ location }}
+            </h4>
+        </div>
+        <div class="span2">
+            <h4>
+                <a href="/admin/logout">Log out</a>                
+            </h4>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row-fluid">
+    <div class="row-fluid">
+        <div class="span6 well">
+            <div class="row-fluid">
+                <h3>Check out to</h3>
+                <div class="chzn-container">
+                    <select id="chooser" data-placeholder="Select student..." style="width:250px;" class="chzn-select" tabindex="1">
+                        <option value=""></option>
+                        {% for s in eligible %}
+                            <option value="{{ s.name }}">{{ s.name }}</option>
+                        {% endfor %}
+                    </select>                    
+                </div>
+                <div id="checkout-message">&nbsp;</div>
+            </div>
+            {% for row in bikes_for_checkout|columns:"2" %}
+                <div class="row-fluid">
+                    {% for bike in row %}
+                        <div class="bike span6" id="{{ bike.bike_name }}">
+                            <img src="{{ STATIC_URL }}img/bikes/{{ bike.manufacturer|lower }}.jpg" width="50%">
+                            <h3>{{ bike.bike_name }}</h3>
+                            <p>Last returned at {{ bike.location }} by {{ bike.rider }} on {{ bike.return_date }}</p>
+                            <div class="btn btn-success checkout">
+                                Check out to <span class="name"></span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="span6 well">
+            <h3>Check in</h3>
+            <div id="checkin-message">&nbsp;</div>
+            {% for row in bikes_for_checkin|columns:"2" %}
+                <div class="row-fluid">
+                    {% for bike in row %}
+                        <div class="bike span6">
+                            <img src="{{ STATIC_URL }}img/bikes/{{ bike.manufacturer|lower }}.jpg" width="50%">
+                            <h3>{{ bike.bike_name }}</h3>
+                            <p>Checked out to {{ bike.rider }}</p>
+                            <div class="btn btn-primary checkin" id="{{ bike.rider_id }}">Check in</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% empty %}
+                <div>No bikes to check in.</div> 
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    //CSRF + Django
+    $(document).ajaxSend(function(event, xhr, settings) {
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        function sameOrigin(url) {
+            // url could be relative or scheme relative or absolute
+            var host = document.location.host; // host + port
+            var protocol = document.location.protocol;
+            var sr_origin = '//' + host;
+            var origin = protocol + sr_origin;
+            // Allow absolute or scheme relative URLs to same origin
+            return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+                (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+                // or any other URL that isn't scheme relative or absolute i.e relative.
+                !(/^(\/\/|http:|https:).*/.test(url));
+        }
+        function safeMethod(method) {
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+        }
+    });
+
+    // end CSRF, activate fancy dropdown with search
+
+    $(".chzn-select").chosen({allow_single_deselect: true})
+
+    //
+
+    $("#chooser").chosen().change(function() {
+        $(".checkout").show();
+        var student = $("a.chzn-single span").text();
+        if (student === "Select student...") { // "Select student..." means the form was cleared
+            $(".checkout").hide();
+        }
+        $(".name").html(student);
+    });
+    $(".checkout").click(function() {
+        var bike = $(this).parent().attr("id");
+        var student = $("a.chzn-single span").text()
+        $.ajax({
+            type: "POST",
+            url: "checkout",
+            data: {"student": student, "bike": bike}
+        }).done(function(result) {
+            if(result==="success") {
+                $("#checkout-message").html("Successfully checked out " + bike + " to " + student);
+                location.reload();
+            } else {
+                $("#checkout-message").html("Checkout unsuccessful. Updating information.");
+                location.reload();
+            }
+        });
+    });
+    $(".checkin").click(function() {
+        var student_id = $(this).attr("id");
+        $.ajax({
+            type: "POST",
+            url: "checkin",
+            data: {"student_id": student_id}
+        }).done(function(result) {
+            if(result==="success") {
+                $("#checkin-message").html("Successfully checked in.");
+                location.reload();
+            } else {
+                $("#checkin-message").html("Checkin unsuccessful. Updating information.");
+                location.reload();
+            }
+        });
+    });
+    $(".chzn-single").focus();
+</script>
+{% endblock %}

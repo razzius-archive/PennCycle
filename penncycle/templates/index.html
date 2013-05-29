@@ -5,13 +5,29 @@
 {% endblock %}
 
 {% block content %}
-  <h1 class="textCentered">{{available.count}}<small>/26</small> bikes are available right now</h1>
-  <h4 class="textCentered">{{stoufferCount}} in <a href="/locations/">Stouffer</a>, {{psaCount}} in <a href="/locations/">Penn Student Agencies</a> and {{houstonCount}} in <a href="/locations/">Houston</a>.</p>
-    <p>NEW LOCATIONS: {{rodinCount}} in <a href="/locations">Rodin</a>, {{wareCount}} in <a href="/locations">Ware</a> and {{fisherCount}} in <a href="/locations">Fisher-Hassenfeld</a>.</p></h4>
+  <div class="row-fluid">
+    <div class="span6">
+      <h1 class="textCentered">{{psaCount}}<small>/13</small> bikes are available right now.</h1>
+      <h4 class="textcentered">During the summer, bikes are available at <a href="/locations">Penn Student Agencies</a>. Check bikes out for 1 day at a time with our basic plan or <a href="/signup">sign up</a> for an unlimited plan to keep bikes out for as long as you'd like.</h4>
+    </div>
+    <div class="span6" style="padding: 20px;">
+      <h1>Summer Session 1: $25</h1>
+      <h4>Unlimited rides until the end of June for only $25.</h4>
+      <form method="GET" action="/lookup/">
+        <input type="text" name="penncard" maxlength="8" placeholder="Enter your PennCard">
+        <button class="btn btn-primary">
+          Get Started &raquo;
+        </button>
+        <button class="btn">
+          <a href="plans">View all plans</a>
+        </button>
+      </form>
+    </div>
+  </div>
   <hr>
   <h2><ol>
     <li><a href="/plans">Check out our plans.</a></li>
-    <li><a href="/signup/">Sign up.</a></li>
+    <li><a href="/signup/">Sign up or view account by entering your penncard.</a></li>
     <li>Come to one of our <a href="/locations">locations</a>. Show us your PennCard.</li>
     <li>Take your PennCycle for a ride!</li>
     <li>Return by <a href="/locations">closing time</a> (or keep it overnight for $5).
@@ -21,7 +37,7 @@
   <div class="fb-like offset1" data-href="http://www.facebook.com/pages/PennCycle/345622718793885" data-send="false" data-width="500" data-show-faces="true"></div>
   <hr>
   <center>
-    <img src='media/img/katie-sitting-reading.jpg' class="thumbnail">
+    <img src='{{ STATIC_URL }}img/katie-sitting-reading.jpg' class="thumbnail">
   </center>
   
   <p>Philly is one of the best parts about being at Penn, but getting around can be an incredible pain. Biking is the easiest option, but owning a bike? Not so much.</p>
@@ -32,8 +48,4 @@
 {% endblock %}
 
 {% block scripts %}
-  <script type="text/javascript">
-    // set background for active tab in navbar    
-    $('.nav1 li#home').addClass('active');
-  </script>
 {% endblock %}

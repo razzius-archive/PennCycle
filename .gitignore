@@ -1,8 +1,6 @@
-dot6
-d13
-venv
 *.pyc
 *.db
 *.py~
-celerybeat-schedule.db 
-changes.*
+*.dump
+static
+manage_local.py

@@ -20,7 +20,7 @@
 				fields[i].value = randomCombo();
 			}
 		}
-		document.getElementById("random").onclick = randomize();
+		document.getElementById("random").addEventListener('click', randomize);
 		window.onkeydown = function(e){
 			if (e.keyCode == 82) {
 				randomize();

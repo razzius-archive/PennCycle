@@ -5,53 +5,53 @@
 {% endblock %}
 
 {% block content %}
-  {% if type == 'fisher' or type == 'ware' %}
-    <h3>{{type|capfirst }} Residents</h3>
+  {% if payment_type == 'fisher' or payment_type == 'ware' %}
+    <h3>{{ payment_type|capfirst }} Residents</h3>
   {% else %}
-    <h3>Pay with {{ type }}</h3>
+    <h3>Pay with {{ payment_type }}</h3>
   {% endif %}
   <hr>
-  {% if type == 'bursar' or type == 'penncash' %}
+  {% if payment_type == 'bursar' or payment_type == 'penncash' %}
     <p>
       Please input the last two digits of your PennCard to pay with bursar.
     </p>
     <form action='.' method='POST' class='form-inline'>{% csrf_token %}
       <div class="input-prepend span2">
-        <span class="add-on">{{penncard}}</span>
+        <span class="add-on">{{ penncard }}</span>
         <input type='text' class='input-mini'
           value='00' maxlength='2'
           name='last_two' id='last_two'>
       </div>
-      <div class="error" style="color:red">{{message|safe}}</div>   
+      <div class="error" style="color:red">{{ message|safe }}</div>   
       {% if not message %}   
       <input type='text' style='display:none;'
-        value='{{type}}' name='type' id='type'>
+        value='{{ payment_type }}' name='payment_type' id='payment_type'>
       <input type='submit' value='Pay' class='btn btn-primary'>
       {% endif %}
     </form>
     <div class="validation-container"></div>
   {% endif %}
   
-  {% ifequal type 'cash' %}
+  {% ifequal payment_type 'cash' %}
     <p>Your cash payment can be handled at the Penn Student Agencies Store (in Williams, across from Houston Hall). Remember to bring your change for the tax.</p>
   {% endifequal %}
 
-  {% ifequal type 'fisher' %}
+  {% ifequal payment_type 'fisher' %}
     <p>You can now start checking out bikes at any of our <a href="/locations">locations</a>. Fisher's bikes can be checked out at the Fisher house office. Happy cycling!</p>
   {% endifequal %}
 
-  {% ifequal type 'ware' %}
+  {% ifequal payment_type 'ware' %}
     <p>You can now start checking out bikes at any of our <a href="/locations">locations</a>. Ware's bikes can be checked out at the Ware house office or from any RA or GA. Happy cycling!</p>
   {% endifequal %}
 {% endblock %}
 
 {% block scripts %}
-  <script src="/media/js/jquery.validate.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/jquery.validate.js" type="text/javascript"></script>
   <script type="text/javascript">
     $(function() {
       $('#last_two').validate({
         expression: "if (VAL.match(/^[0-9]{2}$/)) return true; else return false;",
-        message: "Please enter a 2-digit number. ",
+        message: "Please enter a 2-digit number.",
       });
     });
   </script>

@@ -210,9 +210,9 @@ class RidesAdmin(admin.ModelAdmin):
                 text_content = strip_tags(html_content) # this strips the html, so people will have the text as well.
 
                 # create the email, and attach the HTML version as well.
-                msg = EmailMultiAlternatives(subject, text_content, from_email, to)
-                msg.attach_alternative(html_content, "text/html")
-                msg.send(fail_silently=True)
+                # msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+                # msg.attach_alternative(html_content, "text/html")
+                # msg.send(fail_silently=True)
 #         send_mail('How was your ride today?', '''
 # Hey %s, \n
 # How was your ride today? 

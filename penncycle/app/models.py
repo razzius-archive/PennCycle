@@ -1,12 +1,15 @@
+import datetime
+
 from django.core.mail import send_mail
-from django.contrib.localflavor.us.models import PhoneNumberField
+from django_localflavor_us.models import PhoneNumberField
 from django.template.defaultfilters import slugify
 from django.db import models
 from django.core.validators import RegexValidator
-import datetime
 
-day_end = datetime.time(23, 0, 0)
-day_start = datetime.time(9, 0, 0)
+from south.modelsinspector import add_introspection_rules
+
+# Necessary because South hasn't been updated since localflavors was broken up.
+add_introspection_rules([], ['django_localflavor_us\.models\.PhoneNumberField'])
 
 GENDER_CHOICES = (
     ('M', 'Male'),
@@ -14,7 +17,7 @@ GENDER_CHOICES = (
 )
 
 GRAD_YEAR_CHOICES = (
-    ('2017', '2017'),
+    ("2017", "2017"),
     ('2016', '2016'),
     ('2015', '2015'),
     ('2014', '2014'),
@@ -130,16 +133,12 @@ class Student(models.Model):
     waiver_signed = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
     payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
-    staff = models.BooleanField(default=False)
+    staff = models.NullBooleanField(default=False)
     plan = models.ManyToManyField('Plan', blank=True, null=True)
 
     @property
     def paid_now(self):
-        payments = self.current_payments
-        if len(payments) > 0:
-            return True
-        else:
-            return False
+        return len(self.current_payments) > 0
 
     @property
     def current_payments(self):
@@ -174,7 +173,7 @@ class Bike(models.Model):
     combo_update = models.DateField()
 
     @property
-    def knowsCombo(self):
+    def knows_combo(self):
         rides = self.rides.filter(checkout_time__gt=self.combo_update)
         return list(set([ride.rider for ride in rides]))
 

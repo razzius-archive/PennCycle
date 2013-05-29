@@ -12,8 +12,10 @@
 	<div class="textCentered">
 		<h3>
 			{{ station.full_name }}
-			{% if station.is_open %}
+			{% if station.name == "PSA" %}
 				- <span class="glow"> Currently open!</span>
+			{% else %}
+				- Closed for the summer
 			{% endif %}
 		</h3>
 
@@ -38,29 +40,48 @@
 		            zoom: 17,
 		            mapTypeId: google.maps.MapTypeId.ROADMAP,
 		            disableDefaultUI: true,
-	                zoomControl: false,
+	                zoomControl: true,
 	                scrollwheel: false,
 		    	};
 		    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-		    {% for station in stations %}
+			    {% for station in stations %}
 			    var marker = new MarkerWithLabel({
 			    	position: new google.maps.LatLng({{station.latitude}},{{station.longitude}}),
 			    	labelAnchor: new google.maps.Point(25, 0),
 			    	title: "{{ station.comma_name|linebreaks|striptags }}",
 	                map: map,
-	                {% if station.is_open %}
+	                {% if station.name == "PSA" %}
 	                labelContent:"{{station.name}} OPEN",
 	                {% else %}
 	                labelContent:"{{station.name}} Closed",
 	                {% endif %}
-					{% if station.is_open %}
+					{% if station.name == "PSA" %}
 	                labelClass:"labels glow",
 	                {% else %}
 	                labelClass:"labels",
 	                {% endif %}
-	                icon: "/media/img/marker.png"
+	                icon: "{{ STATIC_URL }}img/marker.png"
 			    });
 			{% endfor %}
+		 //    {% for station in stations %}
+			//     var marker = new MarkerWithLabel({
+			//     	position: new google.maps.LatLng({{station.latitude}},{{station.longitude}}),
+			//     	labelAnchor: new google.maps.Point(25, 0),
+			//     	title: "{{ station.comma_name|linebreaks|striptags }}",
+	  //               map: map,
+	  //               {% if station.is_open %}
+	  //               labelContent:"{{station.name}} OPEN",
+	  //               {% else %}
+	  //               labelContent:"{{station.name}} Closed",
+	  //               {% endif %}
+			// 		{% if station.is_open %}
+	  //               labelClass:"labels glow",
+	  //               {% else %}
+	  //               labelClass:"labels",
+	  //               {% endif %}
+	  //               icon: "{{ STATIC_URL }}img/marker.png"
+			//     });
+			// {% endfor %}
 		}
 	</script>
 {% endblock %}

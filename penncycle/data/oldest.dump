@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Error><Code>SignatureDoesNotMatch</Code><Message>The request signature we calculated does not match the signature you provided. Check your key and signing method.</Message><StringToSignBytes>47 45 54 0a 0a 0a 31 33 36 31 36 34 37 39 35 35 0a 2f 68 6b 70 67 62 61 63 6b 75 70 73 2f 61 70 70 33 31 38 37 31 32 34 40 68 65 72 6f 6b 75 2e 63 6f 6d 2f 62 30 30 31 2e 64 75 6d 70</StringToSignBytes><RequestId>EB17BD360993EE9D</RequestId><HostId>awNKbCprlRDqpXEdE0bySvIeBmQgcFWMk+53ZdUZJHlgkBVmQWiJrP1Y8KnZ/KBe</HostId><SignatureProvided>ZeLefSL7zLXH8i1MAsjj/5ov3wo=</SignatureProvided><StringToSign>GET
-
-
-1361647955
-/hkpgbackups/app3187124@heroku.com/b001.dump</StringToSign><AWSAccessKeyId>AKIAIYZ2BP3RBVXEIZDA</AWSAccessKeyId></Error>

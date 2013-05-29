@@ -6,11 +6,13 @@
 
 {% block content %}
 <div class="paddedheader" id="greeter">
-    <h1 class="textCentered">Sign Up &amp; Get Riding!</h1>
-    <hr>
-    <h3 class="textCentered"> Already a member? 
-      <a href="/selectpayment/" class="btn btn-primary">Sign up for a new plan &#187;</a>
-    </h3>
+  {% if not messages %}
+  <h1 class="textCentered">Sign Up &amp; Get Riding!</h1>
+  <hr>
+  <h3 class="textCentered"> Already a member? 
+    <a href="/selectpayment/" class="btn btn-primary">Sign up for a new plan &#187;</a>
+  </h3>
+  {% endif %}
   <div class="pagination">
     <ul id="secondnav" class="nav nav-tabs">
       <li id="tab-info" class="active"><a data-toggle="tab" href="#info">Info</a></li>
@@ -33,14 +35,13 @@
   </div>
   <!------------- safety pane ---------------->
   <div class="tab-pane" id="safety">
-    {{ safety_info.content|safe }}
-    <hr>
+    {% include 'safety_info.html' %}
     <button id="safety-form" class="btn btn-primary">I have read and understand the safety information &#187;</button>
   </div>
   <!------------- waiver pane ---------------->
   <div class="tab-pane" id="waiver">
-    <div id='waiver-wrapper'>
-      {% include "waiver3.html" %}
+    <div class='waiver-wrapper'>
+      {% include "waiver.html" %}
     </div>
     <hr>
     <div class='clearfix'>
@@ -59,13 +60,12 @@
 </div>
 {% endblock %}
 {% block scripts %}
-  <script src="/media/js/payment.js">
+  <script src="{{ STATIC_URL }}js/payment.js">
   </script>
   <script type="text/javascript">
-  
     $('#info-button').click(function() {
       $("#message").html("Processing...")
-      $.ajaxSetup({ 
+      $.ajaxSetup({
         beforeSend: function(xhr, settings) {
           function getCookie(name) {
             var cookieValue = null;
@@ -90,7 +90,7 @@
       });
     
       var formData = $('#info-form').serialize();
-      $.ajax ({
+      $.ajax({
         url: '/info_submit/', 
         type: 'POST',
         data: formData,
@@ -99,7 +99,7 @@
           console.log(xhr);
           console.log(status);
           console.log(exception);
-          alert('whoops! something went wrong');
+          alert('Something went wrong. We have been notified and are looking into it.');
         },
         success: function(data, status, xhr) {
           $("#message").html("");
@@ -108,8 +108,6 @@
           } else if (data['form_valid'] == false) {
             $('#info-form').html(data['new_form']);
             console.log('replaced shit');
-          } else {
-            alert('alex is dumb');
           }
         },
       });
