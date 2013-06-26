@@ -3,3 +3,5 @@
 [Razzi Abuissa](http://razzi.abuissa.net) is the current webmaster. [Alex Rattray](http://alexrattray.com) and [Kevin Shen](http://kevinshen.net) previously developed this site.
 
 If you are interested in using a similar site to manage a bikeshare for your college, email messenger@penncycle.org.
+
+Coming soon: a mobile application! Visit [penncycle-ios](http://github.com/razzius/penncycle-ios).
