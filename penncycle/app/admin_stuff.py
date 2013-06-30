@@ -42,13 +42,10 @@ class PaymentAdmin(admin.ModelAdmin):
 
 
 class BikeAdmin(admin.ModelAdmin):
-    list_display = ('bike_name', 'status', 'manufacturer', 'purchase_date')
+    list_display = ('name', 'status', 'manufacturer', 'purchase_date')
     list_filter = ('purchase_date', 'manufacturer',)
     date_hierarchy = 'purchase_date'
 
-
-class PageAdmin(admin.ModelAdmin):
-    readonly_fields = ('slug',)
 
 
 class RidesAdmin(admin.ModelAdmin):
@@ -56,7 +53,7 @@ class RidesAdmin(admin.ModelAdmin):
         'rider', 'bike', 'checkout_time', 'checkin_time',
         'ride_duration_days', 'status', 'checkin_station',
     )
-    readonly_fields = ('ride_duration_days', 'num_users')
+    readonly_fields = ('ride_duration_days',)
     date_hierarchy = 'checkin_time'
     ordering = ('-checkout_time',)
     actions = ['check_in']

@@ -3,11 +3,12 @@ import pytz
 
 from django.core.mail import send_mail
 from django_localflavor_us.models import PhoneNumberField
-from django.template.defaultfilters import slugify
 from django.db import models
 from django.core.validators import RegexValidator
 
 from south.modelsinspector import add_introspection_rules
+
+import hour_util
 
 # Necessary because South hasn't been updated since localflavors was broken up.
 add_introspection_rules([], ['django_localflavor_us\.models\.PhoneNumberField'])
@@ -96,12 +97,8 @@ class Payment(models.Model):
     student = models.ForeignKey('Student', related_name="payments")
     date = models.DateField(auto_now_add=True)
     satisfied = models.BooleanField(default=False)
-    payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
+    payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, null=True)
     status = models.CharField(max_length=100, default='available')
-
-    def save(self):
-        super(Payment, self).save()
-        self.student.paid = self.student.paid_now
 
     def __unicode__(self):
         return str(self.student) + ' for ' + str(self.plan)
@@ -132,8 +129,6 @@ class Student(models.Model):
     major = models.CharField(max_length=50, blank=True)
     living_location = models.CharField(max_length=100, choices=LIVING_LOCATIONS)
     waiver_signed = models.BooleanField(default=False)
-    paid = models.BooleanField(default=False)
-    payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True, null=True)
     staff = models.NullBooleanField(default=False)
     plan = models.ManyToManyField('Plan', blank=True, null=True)
 
@@ -152,17 +147,14 @@ class Student(models.Model):
 
     @property
     def can_ride(self):
-        if len(self.current_payments.filter(status='available')) > 0 and self.waiver_signed:
-            return True
-        else:
-            return False
+        return len(self.current_payments.filter(status='available')) > 0 and self.waiver_signed
 
     def __unicode__(self):
         return u'%s %s' % (self.name, self.penncard)
 
 
 class Bike(models.Model):
-    bike_name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True)
     manufacturer = models.ForeignKey(Manufacturer)
     purchase_date = models.DateField()
     color = models.CharField(max_length=30, blank=True)
@@ -189,74 +181,7 @@ class Bike(models.Model):
         return location
 
     def __unicode__(self):
-        return '#%s. Location: %s' % (self.bike_name, self.location.name)
-
-days = {
-    "Monday": 0,
-    "Tuesday": 1,
-    "Wednesday": 2,
-    "Thursday": 3,
-    "Friday": 4,
-    "Saturday": 5,
-    "Sunday": 6,
-}
-
-strings = dict([v, k] for k, v in days.items())
-
-
-def decimal(time):
-    if len(time) <= 2:
-        return int(time)
-    else:
-        hours, minutes = time.split(":")
-        return int(hours) + float(minutes) / 60
-
-
-def hour(time):
-    return decimal(time[0]) if (time[1] == "am" or time[0] == "12") else decimal(time[0])+12
-
-
-def enter_hours(interval, info, day):
-    # print(info)
-    start_time = hour(info[0:2])
-    end_time = hour(info[3:5])
-    if day in interval:
-        interval[day].append((start_time, end_time))
-    else:
-        interval[day] = [(start_time, end_time)]
-
-
-def get_hours(description):
-    intervals = {}
-    day = 0
-    if not description:  # empty station
-        return {}
-    for line in description.split("\n"):  # assumes to be in order
-        if line.split()[1] == "-":  # there is a range of days
-            # print("range of days")
-            start = days[line.split()[0]]
-            end = days[line.split()[2][:-1]]
-            for i in range(end-start+1):
-                that_day = strings[day]
-                if "and" in line:  # multiple ranges
-                    enter_hours(intervals, line.split()[3:8], that_day)
-                    enter_hours(intervals, line.split()[9:14], that_day)
-                else:
-                    enter_hours(intervals, line.split()[3:8], that_day)
-                day += 1
-        elif line.split()[0][-1] == ":":
-            # print("matched :")
-            that_day = strings[day]
-            if "and" in line:  # multiple ranges
-                enter_hours(intervals, line.split()[1:6], that_day)
-                enter_hours(intervals, line.split()[7:12], that_day)
-            else:
-                enter_hours(intervals, line.split()[1:6], that_day)
-                day += 1
-        else:  # 7 days a week.
-            for day in range(7):
-                enter_hours(intervals, line.split()[2:7], strings[day])
-    return intervals
+        return '#%s. Location: %s' % (self.name, self.location.name)
 
 
 class Station(models.Model):
@@ -275,15 +200,7 @@ class Station(models.Model):
 
     @property
     def is_open(self):
-        ranges = get_hours(self.hours)
-        today = datetime.datetime.today().weekday()
-        this_hour = datetime.datetime.today().hour
-        if strings[today] in ranges:
-            hours = ranges[strings[today]]
-            for opening in hours:
-                if this_hour > opening[0] and this_hour < opening[1]:
-                    return True
-        return False
+        return hour_util.is_open(self.hours)
 
     @property
     def comma_name(self):
@@ -302,10 +219,9 @@ class Ride(models.Model):
     )
     bike = models.ForeignKey('Bike', limit_choices_to={'status': 'available'}, related_name='rides')
     checkout_time = models.DateTimeField(auto_now_add=True)
-    checkin_time = models.DateTimeField(null=True, blank=True)
+    checkin_time = models.DateTimeField(null=True)
     checkout_station = models.ForeignKey(Station, default=1, related_name='checkouts')
-    checkin_station = models.ForeignKey(Station, blank=True, null=True, related_name='checkins')
-    num_users = models.IntegerField()
+    checkin_station = models.ForeignKey(Station, null=True, related_name='checkins')
 
     @property
     def ride_duration_days(self):
@@ -325,10 +241,7 @@ class Ride(models.Model):
 
     def save(self):
         print 'in Ride save method'
-        if not self.num_users:
-            self.num_users = len(Student.objects.all())
         super(Ride, self).save()
-        print 'super saved!'
         if self.checkin_time is None:
             self.bike.status = 'out'
             payment = self.rider.current_payments.filter(status='available')[0]
@@ -342,19 +255,6 @@ class Ride(models.Model):
 
     def __unicode__(self):
         return u'%s on %s' % (self.rider, self.checkout_time)
-
-
-class Page(models.Model):
-    content = models.TextField()
-    name = models.CharField(max_length=100)
-    slug = models.SlugField()
-
-    def save(self):
-        self.slug = slugify(self.name)
-        super(Page, self).save()
-
-    def __unicode__(self):
-        return self.name
 
 
 class Comment(models.Model):

@@ -12,6 +12,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+
 class SignupForm(BootstrapModelForm):
     class Meta:
         model = Student
@@ -145,9 +146,7 @@ def info_submit(request):
 def signup(request):
     penncard = request.GET.get("penncard")
     form = SignupForm(initial={'penncard': penncard})
-    safety_info = Page.objects.get(slug='safety')
     context = {
-        'safety_info': safety_info,
         'form': form,
         'plans': Plan.objects.filter(end_date__gte=datetime.date.today(), cost__gt=0),
         'pages': pages

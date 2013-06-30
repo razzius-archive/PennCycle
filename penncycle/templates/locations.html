@@ -13,7 +13,11 @@
 		<h3>
 			{{ station.full_name }}
 			{% if station.name == "PSA" %}
-				- <span class="glow"> Currently open!</span>
+				{% if station.is_open %}
+					- <span class="glow"> Currently open!</span>
+				{% else %}
+					hours- Closed
+				{% endif %}
 			{% else %}
 				- Closed for the summer
 			{% endif %}
@@ -50,13 +54,13 @@
 			    	labelAnchor: new google.maps.Point(25, 0),
 			    	title: "{{ station.comma_name|linebreaks|striptags }}",
 	                map: map,
-	                {% if station.name == "PSA" %}
-	                labelContent:"{{station.name}} OPEN",
+	                {% if station.name == "PSA" and station.is_open %}
+		                labelContent:"{{station.name}} OPEN",
 	                {% else %}
-	                labelContent:"{{station.name}} Closed",
+		                labelContent:"{{station.name}} Closed",
 	                {% endif %}
-					{% if station.name == "PSA" %}
-	                labelClass:"labels glow",
+					{% if station.name == "PSA" and station.is_open %}
+		                labelClass:"labels glow",
 	                {% else %}
 	                labelClass:"labels",
 	                {% endif %}
