@@ -16,7 +16,6 @@ def email_razzi(message):
 class Signup(TemplateView):
     template_name = "index.html"
 
-hsk kfej
 # def info_submit(request):
 #     form = SignupForm(request.POST)
 #     if form.is_valid():

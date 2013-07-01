@@ -47,7 +47,6 @@ class BikeAdmin(admin.ModelAdmin):
     date_hierarchy = 'purchase_date'
 
 
-
 class RidesAdmin(admin.ModelAdmin):
     list_display = (
         'rider', 'bike', 'checkout_time', 'checkin_time',
