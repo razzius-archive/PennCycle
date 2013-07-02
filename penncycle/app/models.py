@@ -153,37 +153,6 @@ class Student(models.Model):
         return u'%s %s' % (self.name, self.penncard)
 
 
-class Bike(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    manufacturer = models.ForeignKey(Manufacturer)
-    purchase_date = models.DateField()
-    color = models.CharField(max_length=30, blank=True)
-    status = models.CharField(max_length=100, default='available')
-    serial_number = models.CharField(max_length=100, blank=True)
-    tag_id = models.CharField(max_length=100, blank=True)
-    key_serial_number = models.CharField(max_length=100, blank=True)
-    combo = models.CharField(max_length=4, blank=True)
-    combo_update = models.DateField()
-
-    @property
-    def knows_combo(self):
-        rides = self.rides.filter(checkout_time__gt=self.combo_update)
-        return list(set([ride.rider for ride in rides]))
-
-    @property
-    def location(self):
-        last_ride = self.rides.filter(checkin_station__isnull=False).order_by('-checkin_time')
-        try:
-            last_ride = last_ride[0]
-            location = last_ride.checkin_station
-        except:
-            location = Station.objects.get(name__contains="PSA")
-        return location
-
-    def __unicode__(self):
-        return '#%s. Location: %s' % (self.name, self.location.name)
-
-
 class Station(models.Model):
     name = models.CharField(max_length=100)
     latitude = models.FloatField(default=39.9529399)
@@ -207,6 +176,39 @@ class Station(models.Model):
         return ", ".join(self.hours.split("\n"))
 
 
+class Bike(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    manufacturer = models.ForeignKey(Manufacturer)
+    purchase_date = models.DateField()
+    color = models.CharField(max_length=30, blank=True)
+    status = models.CharField(max_length=100, default='available')
+    serial_number = models.CharField(max_length=100, blank=True)
+    tag_id = models.CharField(max_length=100, blank=True)
+    key_serial_number = models.CharField(max_length=100, blank=True)
+    combo = models.CharField(max_length=4, blank=True)
+    combo_update = models.DateField()
+    location = models.ForeignKey(Station, default=2)
+
+    @property
+    def knows_combo(self):
+        rides = self.rides.filter(checkout_time__gt=self.combo_update)
+        return list(set([ride.rider for ride in rides]))
+
+    @property
+    def set_location(self):
+        last_ride = self.rides.filter(checkin_station__isnull=False).order_by('-checkin_time')
+        try:
+            last_ride = last_ride[0]
+            location = last_ride.checkin_station
+        except:
+            location = Station.objects.get(name__contains="PSA")
+        self.location = location
+        self.save()
+
+    def __unicode__(self):
+        return '#%s. Location: %s' % (self.name, self.location.name)
+
+
 class Ride(models.Model):
     rider = models.ForeignKey(
         Student, limit_choices_to={
@@ -220,7 +222,7 @@ class Ride(models.Model):
     bike = models.ForeignKey('Bike', limit_choices_to={'status': 'available'}, related_name='rides')
     checkout_time = models.DateTimeField(auto_now_add=True)
     checkin_time = models.DateTimeField(null=True)
-    checkout_station = models.ForeignKey(Station, default=1, related_name='checkouts')
+    checkout_station = models.ForeignKey(Station, default=2, related_name='checkouts')
     checkin_station = models.ForeignKey(Station, null=True, related_name='checkins')
 
     @property
