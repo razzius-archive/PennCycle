@@ -51,7 +51,7 @@ def lookup(request):
         context['student'] = student
         return render_to_response("welcome.html", RequestContext(request, context))
     except Student.DoesNotExist:
-        messages.add_message(request, 20, "Fill out the form below to sign up!")
+        messages.info(request, "Fill out the form below to sign up!")
         return HttpResponseRedirect("/signup?penncard={}".format(penncard), RequestContext(request, context))
 
 

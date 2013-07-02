@@ -9,7 +9,7 @@
             <img src="{{ STATIC_URL }}img/PennCycle-Logo-3-web-570.png">
         </div>
         <div class="span6">
-            <h1><a href="/admin/">Fleet Administration</a></h1>        
+            <h1><a href="/admin/">Fleet Administration</a></h1>
         </div>
         <div class="span1">
             <h4 class="location">
@@ -19,7 +19,7 @@
         </div>
         <div class="span2">
             <h4>
-                <a href="/admin/logout">Log out</a>                
+                <a href="/admin/logout">Log out</a>
             </h4>
         </div>
     </div>
@@ -36,16 +36,16 @@
                         {% for s in eligible %}
                             <option value="{{ s.name }}">{{ s.name }}</option>
                         {% endfor %}
-                    </select>                    
+                    </select>
                 </div>
                 <div id="checkout-message">&nbsp;</div>
             </div>
             {% for row in bikes_for_checkout|columns:"2" %}
                 <div class="row-fluid">
                     {% for bike in row %}
-                        <div class="bike span6" id="{{ bike.bike_name }}">
+                        <div class="bike span6" id="{{ bike.name }}">
                             <img src="{{ STATIC_URL }}img/bikes/{{ bike.manufacturer|lower }}.jpg" width="50%">
-                            <h3>{{ bike.bike_name }}</h3>
+                            <h3>{{ bike.name }}</h3>
                             <p>Last returned at {{ bike.location }} by {{ bike.rider }} on {{ bike.return_date }}</p>
                             <div class="btn btn-success checkout">
                                 Check out to <span class="name"></span>
@@ -63,14 +63,14 @@
                     {% for bike in row %}
                         <div class="bike span6">
                             <img src="{{ STATIC_URL }}img/bikes/{{ bike.manufacturer|lower }}.jpg" width="50%">
-                            <h3>{{ bike.bike_name }}</h3>
+                            <h3>{{ bike.name }}</h3>
                             <p>Checked out to {{ bike.rider }}</p>
                             <div class="btn btn-primary checkin" id="{{ bike.rider_id }}">Check in</div>
                         </div>
                     {% endfor %}
                 </div>
             {% empty %}
-                <div>No bikes to check in.</div> 
+                <div>No bikes to check in.</div>
             {% endfor %}
         </div>
     </div>

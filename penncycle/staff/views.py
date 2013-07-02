@@ -44,6 +44,7 @@ class Dashboard(LoginRequiredMixin, TemplateView):
         context['bikes_for_checkin'] = bikes_for_checkin
         return context
 
+
 def login_required_ajax(function=None, redirect_field_name=None):
     """
     Make sure the user is authenticated to access a certain ajax view
@@ -71,7 +72,7 @@ def checkout(request):
         student = request.POST.get("student")
         bike = request.POST.get("bike")
         student = Student.objects.get(name=student)
-        bike = Bike.objects.get(bike_name=bike)
+        bike = Bike.objects.get(name=bike)
         ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
         student.payments.filter(status="available")[0].status = "out"
         ride.save()
@@ -79,6 +80,7 @@ def checkout(request):
     except Exception as error:
         email_razzi("Admin crashed. Locals: {}. Error: {}".format(locals(), error))
         return HttpResponse("failure")
+
 
 @login_required_ajax
 def checkin(request):
@@ -93,7 +95,7 @@ def checkin(request):
         ride.bike.status = "available"
         ride.save()
         return HttpResponse("success")
-    except:
+    except Exception as error:
         email_razzi("Admin crashed. Locals: {}".format(locals()))
         return HttpResponse("failure")
 

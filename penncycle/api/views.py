@@ -32,6 +32,14 @@ class Signup(TemplateView):
 #         }
 #     return HttpResponse(json.dumps(reply), content_type="application/json")
 
+class Verify(Phonegap):
+    try:
+        student = Student.objects.get(phone=data.phone)
+    except Student.DoesNotExist:
+        return "goto signup"
+    if student.pin != data.pin:
+        return "bad pin"
+
 def send_pin(phone_number):
     student = Student.objects.get(phone=phone_number)
     pin = student.pin
