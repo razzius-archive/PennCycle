@@ -42,7 +42,7 @@ class PaymentAdmin(admin.ModelAdmin):
 
 
 class BikeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'status', 'manufacturer', 'purchase_date')
+    list_display = ('name', 'status', 'location', 'manufacturer', 'purchase_date')
     list_filter = ('purchase_date', 'manufacturer',)
     date_hierarchy = 'purchase_date'
 
@@ -56,7 +56,7 @@ class RidesAdmin(admin.ModelAdmin):
     date_hierarchy = 'checkin_time'
     ordering = ('-checkout_time',)
     actions = ['check_in']
-    search_fields = ['rider__name', 'rider__penncard', 'bike__bike_name', 'checkin_station__name', 'checkout_station__name']
+    search_fields = ['rider__name', 'rider__penncard', 'bike__name', 'checkin_station__name', 'checkout_station__name']
     save_on_top = True
 
     @csrf_protect_m

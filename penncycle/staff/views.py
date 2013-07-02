@@ -99,9 +99,11 @@ def checkin(request):
         email_razzi("Admin crashed. Locals: {}".format(locals()))
         return HttpResponse("failure")
 
+
 def end_session(request):
     logout(request)
     return redirect("/")
+
 
 def email_razzi(message):
     send_mail('an important email from the PennCycle app', str(message), 'messenger@penncycle.org', ['razzi53@gmail.com'], fail_silently=True)
