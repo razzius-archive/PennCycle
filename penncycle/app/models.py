@@ -88,9 +88,12 @@ class Plan(models.Model):
 
 
 class Payment(models.Model):
+    class Meta:
+        get_latest_by = 'date'
+
     amount = models.DecimalField(decimal_places=2, max_digits=6)
     plan = models.ForeignKey(
-        Plan, default=1, limit_choices_to={
+        Plan, limit_choices_to={
             'end_date__gte': datetime.date.today(),
         }
     )
@@ -246,11 +249,11 @@ class Ride(models.Model):
         super(Ride, self).save()
         if self.checkin_time is None:
             self.bike.status = 'out'
-            payment = self.rider.current_payments.filter(status='available')[0]
+            payment = self.rider.payments.latest()
             payment.status = 'out'
         else:
             self.bike.status = 'available'
-            payment = self.rider.current_payments.filter(status='out')[0]
+            payment = self.rider.payments.latest()
             payment.status = 'available'
         self.bike.save()
         payment.save()

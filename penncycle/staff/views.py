@@ -79,6 +79,7 @@ def checkout(request):
         return HttpResponse("success")
     except Exception as error:
         email_razzi("Admin crashed. Locals: {}. Error: {}".format(locals(), error))
+        print("Admin: {}".format(locals()))
         return HttpResponse("failure")
 
 
@@ -97,6 +98,7 @@ def checkin(request):
         return HttpResponse("success")
     except Exception as error:
         email_razzi("Admin crashed. Locals: {}".format(locals()))
+        print("Admin: {}".format(locals()))
         return HttpResponse("failure")
 
 
