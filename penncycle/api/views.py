@@ -15,7 +15,9 @@ def email_razzi(message):
 
 
 def check_for_student(request):
+    email_razzi("Got request: {}".format(request))
     number = request.POST.get("number")
+    email_razzi("")
     if not number or len(number) not in (8, 10, 12):
         return HttpResponse("failure")
     if len(number) == 8:

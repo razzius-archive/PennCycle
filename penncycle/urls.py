@@ -40,7 +40,7 @@ urlpatterns = patterns(
     (r'debug/$', debug),
 
     # PhoneGap
-    (r'^mobile/', include('api.urls')),
+    (r'^api/', include('api.urls')),
 
     # Stats
     (r'^stats/$', stats),
