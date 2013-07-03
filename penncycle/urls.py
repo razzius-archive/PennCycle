@@ -34,11 +34,13 @@ urlpatterns = patterns(
     (r'^addpayment/$', addpayment),
     (r'^lookup/$', lookup),
 
-
     # Mobile
     (r'^combo/$', combo),
     (r'sms/$', sms),
     (r'debug/$', debug),
+
+    # PhoneGap
+    (r'^mobile/', include('api.urls')),
 
     # Stats
     (r'^stats/$', stats),
