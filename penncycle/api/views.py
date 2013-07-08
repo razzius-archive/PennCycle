@@ -3,11 +3,12 @@
 import json
 
 from django.core.mail import send_mail
-from app.models import Student, Bike, Ride  # , Station
 from django.http import HttpResponse
-
-import twilio.twiml
 from django.views.generic import TemplateView
+
+from django_twilio.client import twilio_client
+
+from app.models import Student, Bike, Ride  # , Station
 
 
 def email_razzi(message):
@@ -16,8 +17,8 @@ def email_razzi(message):
 
 def check_for_student(request):
     email_razzi("Got request: {}".format(request))
-    number = request.POST.get("number")
-    email_razzi("")
+    number = request.GET.get("number")
+    email_razzi(number)
     if not number or len(number) not in (8, 10, 12):
         return HttpResponse("failure")
     if len(number) == 8:
@@ -61,15 +62,22 @@ class Signup(TemplateView):
 
 def verify(response):
     data = response.POST
+    phone = data.get("phone")
+    pin = data.get("PIN")
     try:
-        student = Student.objects.get(phone=data.phone)
+        student = Student.objects.get(phone=phone)
     except Student.DoesNotExist:
         return "goto signup"
-    if student.pin != data.pin:
+    if student.pin != pin:
         return "bad pin"
 
 
 def send_pin(phone_number):
     student = Student.objects.get(phone=phone_number)
     pin = student.pin
-    return "fix mess"
+    twilio_client.sms.messages.create(
+        to=student.twilio_phone,
+        body="Your PIN for PennCycle is {}. Don't have the mobile app?"\
+        "Get it from {{url}}.",
+        from_="+12156885468"
+    )
