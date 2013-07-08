@@ -1,5 +1,6 @@
 import datetime
 import pytz
+import random
 
 from django.core.mail import send_mail
 from django_localflavor_us.models import PhoneNumberField
@@ -118,6 +119,8 @@ class Manufacturer(models.Model):
     def __unicode__(self):
         return self.name
 
+def generate_pin():
+    return str(random.randint(1000, 10000))
 
 class Student(models.Model):
     name = models.CharField(max_length=100)
@@ -134,6 +137,7 @@ class Student(models.Model):
     waiver_signed = models.BooleanField(default=False)
     staff = models.NullBooleanField(default=False)
     plan = models.ManyToManyField('Plan', blank=True, null=True)
+    pin = models.CharField(max_length=4, default=generate_pin)
 
     @property
     def paid_now(self):
