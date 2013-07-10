@@ -19,12 +19,20 @@ class Dashboard(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self):
         context = super(Dashboard, self).get_context_data()
+        user = self.request.user
         try:
-            station_name = self.request.user.groups.exclude(name='Associate')[0].name
+            station = user.groups.exclude(name='Associate')[0]
+            station_name = station.name
         except IndexError:
+            station = None
             station_name = "No Station"
 
-        bikes_for_checkout = [b for b in Bike.objects.all() if b.location.name == station_name and b.status == 'available']
+        available_bikes = Bike.objects.filter(status="available")
+        if user.is_superuser:
+            bikes_for_checkout = available_bikes
+        else:
+            bikes_for_checkout = available_bikes.fiter(location=station)
+
         for bike in bikes_for_checkout:
             ride = bike.rides.latest("checkout_time")
             bike.rider = ride.rider.name

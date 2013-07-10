@@ -3,13 +3,33 @@ import datetime
 
 from django.core.mail import send_mail
 from app.models import Student, Bike, Ride, Station
+from django.contrib import messages
 
 import twilio.twiml
 from django_twilio.decorators import twilio_view
 
+import util
 
 def email_razzi(message):
     send_mail('an important email from the PennCycle app', str(message), 'messenger@penncycle.org', ['razzi53@gmail.com'], fail_silently=True)
+
+
+def send_pin(request):
+    penncard = request.GET.get("penncard")
+    print(request.GET)
+    print(penncard)
+    try:
+        student = Student.objects.get(penncard=penncard)
+    except Student.DoesNotExist:
+        messages.info(
+            request,
+            "Student with penncard {} does not exist."
+            "Sign up for PennCycle using the form below".format(penncard)
+        )
+        return HttpResponseRedirect("/signup?penncard={}".format(penncard))
+    util.send_pin_to_phone(student.phone)
+    messages.info(request, "Pin sent to {}.".format(student.phone))
+    return HttpResponseRedirect("/signin?penncard={}".format(penncard))
 
 
 @twilio_view

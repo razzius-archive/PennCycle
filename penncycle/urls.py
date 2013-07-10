@@ -5,31 +5,33 @@ from django.contrib.auth.views import login
 admin.autodiscover()
 
 from app.views import *
-from mobile.views import sms, debug
+from mobile.views import sms, debug, send_pin
 
 urlpatterns = patterns(
     '',
     url(r'^manage/', include(admin.site.urls)),
     url(r'^admin/', include('staff.urls')),
-    url(r'^pc-admin/', include('staff.urls')),
     url(r'^login/$', login),
 
     # Normal pages
-    (r'^$', index),
+    (r'^$', Index.as_view()),
     (r'^signup/$', signup),
-    (r'^faq/$', faq),
-    (r'^safety/$', safety),
-    (r'^team/$', team),
-    (r'^partners/$', partners),
-    (r'^locations/$', locations),
-    (r'^plans/$', plans),
-    (r'^thankyou/(\d{1,8})/$', thankyou),
+    (r'^signin/$', login, {"template_name": "signin.html"}),
+    (r'^faq/$', Faq.as_view()),
+    (r'^safety/$', Safety.as_view()),
+    (r'^team/$', Team.as_view()),
+    (r'^locations/$', Locations.as_view()),
+    (r'^plans/$', Plans.as_view()),
+    (r'^welcome/$', welcome),
+    (r'^thankyou/(?P<penncard>\d{1,8})/$', thankyou),
     (r'^pay/(?P<payment_type>\w+)/(?P<penncard>\d{8})/(?P<plan>\d+)/$', pay),
 
     # Backend-related
     (r'^info_submit/$', info_submit),
+    (r'^login/$', login),
     (r'^verify_payment/$', verify_payment),
     (r'^verify_waiver/$', verify_waiver),
+    (r'^verify_pin/$', verify_pin),
     (r'^selectpayment/$', selectpayment),
     (r'^addpayment/$', addpayment),
     (r'^lookup/$', lookup),
@@ -38,12 +40,13 @@ urlpatterns = patterns(
     (r'^combo/$', combo),
     (r'sms/$', sms),
     (r'debug/$', debug),
+    (r'send_pin/$', send_pin),
 
     # PhoneGap
     (r'^api/', include('api.urls')),
 
     # Stats
-    (r'^stats/$', stats),
+    (r'^stats/$', Stats.as_view()),
     url(r'^stats/api/', include('stats.urls')),
 
     # only on local

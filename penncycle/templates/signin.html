@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+<h3>Please log in.</h3>
+<p>Email <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a> if you are having trouble logging in.</p>
+<form method="post" action="/verify_pin/">
+{% csrf_token %}
+    <div class="row-fluid">
+        <div class="span3">
+        <b>
+            Penncard:
+            <br><br>
+            PIN:
+        </b>
+        </div>
+        <div class="span9">
+            <input type="text" name="penncard">
+            <br>
+            <input type="password" name="pin" maxlength="4">
+        </div>
+        <input type="submit" value="Log In" />
+    </div>
+</form>
+{% endblock %}

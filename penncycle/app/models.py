@@ -140,6 +140,10 @@ class Student(models.Model):
     pin = models.CharField(max_length=4, default=generate_pin)
 
     @property
+    def twilio_phone(self):
+        return "+1" + self.phone
+
+    @property
     def paid_now(self):
         return len(self.current_payments) > 0
 

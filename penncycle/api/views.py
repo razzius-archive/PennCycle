@@ -60,8 +60,8 @@ class Signup(TemplateView):
 #     return HttpResponse(json.dumps(reply), content_type="application/json")
 
 
-def verify(response):
-    data = response.POST
+def verify(request):
+    data = request.POST
     phone = data.get("phone")
     pin = data.get("PIN")
     try:
@@ -72,12 +72,4 @@ def verify(response):
         return "bad pin"
 
 
-def send_pin(phone_number):
-    student = Student.objects.get(phone=phone_number)
-    pin = student.pin
-    twilio_client.sms.messages.create(
-        to=student.twilio_phone,
-        body="Your PIN for PennCycle is {}. Don't have the mobile app?"\
-        "Get it from {{url}}.",
-        from_="+12156885468"
-    )
+

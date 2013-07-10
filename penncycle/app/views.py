@@ -6,12 +6,15 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from bootstrap.forms import BootstrapModelForm
-from models import *
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.generic import TemplateView
 
+from bootstrap.forms import BootstrapModelForm
+from braces.views import LoginRequiredMixin
+
+from models import *
 
 class SignupForm(BootstrapModelForm):
     class Meta:
@@ -26,103 +29,99 @@ class SignupForm(BootstrapModelForm):
             'staff',
             'plan',
             'major',
+            'pin'
         )
-
-
-pages = [
-    {'name': 'Home', 'url': '/'},
-    {'name': 'Plans', 'url': '/plans/'},
-    {'name': 'Sign Up', 'url': '/signup/'},
-    {'name': 'Safety', 'url': '/safety/'},
-    {'name': 'Team', 'url': '/team/'},
-    {'name': 'Partners', 'url': '/partners/'},
-    {'name': 'Locations', 'url': '/locations/'},
-    {'name': 'FAQ', 'url': '/faq/'},
-]
 
 
 def lookup(request):
     penncard = request.GET.get("penncard")
-    context = {
-        'pages': pages
-    }
+    context = {}
     try:
         student = Student.objects.get(penncard=penncard)
         context['student'] = student
         return render_to_response("welcome.html", RequestContext(request, context))
     except Student.DoesNotExist:
         messages.info(request, "Fill out the form below to sign up!")
-        return HttpResponseRedirect("/signup?penncard={}".format(penncard), RequestContext(request, context))
+        return HttpResponseRedirect("/signup?penncard={}".format(penncard))
+
+def verify_pin(request):
+    data = request.POST
+    penncard = request.POST.get('penncard')
+    pin = request.POST.get('pin')
+    context = {}
+    try:
+        student = Student.objects.get(penncard=penncard)
+    except Student.DoesNotExist:
+        messages.info(
+            request,
+            "No student with Penncard {} found. Sign up or email"
+            "messenger@penncycle.org if you have already signed up.".format(penncard)
+        )
+        return HttpResponseRedirect('/signup?penncard={}'.format(penncard))
+    if student.pin != pin:
+        messages.error(
+            request,
+            "Your pin did not match. <a href='/send_pin/?penncard={}'>Click here</a> "
+            "to resend it to {}.".format(penncard, student.phone)
+        )
+        return render_to_response("signin.html", RequestContext(request, context))
+    else:
+        request.session['penncard'] = penncard
+        return HttpResponseRedirect('/welcome/')
 
 
-def welcome(request, student):
+def welcome(request):
     return render_to_response("welcome.html", RequestContext(request, context))
 
 
-def index(request):
-    available = Bike.objects.filter(status='available')
-    stoufferCount = sum((1 for bike in available if bike.location.name == "Stouffer"))
-    psaCount = sum((1 for bike in available if bike.location.name == "PSA"))
-    houstonCount = sum((1 for bike in available if bike.location.name == "Houston"))
-    rodinCount = sum((1 for bike in available if bike.location.name == "Rodin"))
-    wareCount = sum((1 for bike in available if bike.location.name == "Ware"))
-    fisherCount = sum((1 for bike in available if bike.location.name == "Fisher"))
-    context = {
-        'available': available,
-        'stoufferCount': stoufferCount,
-        'rodinCount': rodinCount,
-        'psaCount': psaCount,
-        'wareCount': wareCount,
-        'fisherCount': fisherCount,
-        'houstonCount': houstonCount,
-        'pages': pages
-    }
-    return render_to_response('index.html', RequestContext(request, context))
+class Index(TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        psa = Station.objects.get(name="PSA")
+        count = Bike.objects.filter(location=psa).filter(status="available").count()
+        context = {
+            'psa_count': count
+        }
+        return context
 
 
-def faq(request):
-    context = {
-        'pages': pages
-    }
-    return render_to_response('faq.html', RequestContext(request, context))
+class Faq(TemplateView):
+    template_name ='faq.html'
 
 
-def safety(request):
-    context = {
-        'pages': pages
-    }
-    return render_to_response('safety.html', RequestContext(request, context))
+class Safety(TemplateView):
+    template_name = 'safety.html'
 
 
-def team(request):
-    context = {
-        'pages': pages
-    }
-    return render_to_response('team.html', RequestContext(request, context))
+class Team(TemplateView):
+    template_name = 'team.html'
 
 
-def partners(request):
-    context = {
-        'pages': pages
-    }
-    return render_to_response('partners.html', RequestContext(request, context))
+class SignIn(TemplateView):
+    template_name = 'signin.html'
 
 
-def locations(request):
-    context = {
-        'pages': pages,
-        'stations': Station.objects.filter(capacity__gt=0).order_by("id")
-    }
-    return render_to_response('locations.html', RequestContext(request, context))
+class Locations(TemplateView):
+    template_name = 'locations.html'
+
+    def get_context_data(self, **kwargs):
+        context = {
+            'stations': Station.objects.filter(capacity__gt=0).order_by("id")
+        }
+        return context
 
 
-def plans(request):
-    plans = Plan.objects.filter(end_date__gte=datetime.date.today(), cost__gt=0).order_by('start_date', 'cost')
-    context = {
-        'plans': plans,
-        'pages': pages,
-    }
-    return render_to_response('plans.html', RequestContext(request, context))
+class Plans(TemplateView):
+    template_name = 'plans.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Plans, self).get_context_data(**kwargs)
+        context['plans'] = Plan.objects.filter(
+            end_date__gte=datetime.date.today(),
+            cost__gt=0
+        ).order_by('start_date', 'cost')
+        return context
 
 
 @require_POST
@@ -149,7 +148,6 @@ def signup(request):
     context = {
         'form': form,
         'plans': Plan.objects.filter(end_date__gte=datetime.date.today(), cost__gt=0),
-        'pages': pages
     }
     return render_to_response('signup.html', RequestContext(request, context))
 
@@ -185,6 +183,7 @@ def verify_payment(request):
 @csrf_exempt
 def thankyou(request, payment_id):
     print "in thanks view"
+    context = {}
     try:
         payment = Payment.objects.get(id=payment_id)
         student = payment.student
@@ -208,14 +207,13 @@ def thankyou(request, payment_id):
                 email_razzi('payment gone HORRIBLY wrong! (could not email you what the payment id was!) student is %s' % student)
     else:
         message = 'Something went wrong with your payment. Please email us at messenger@penncycle.org.'
-    return render_to_response('thanks.html', RequestContext(request, {'message': message, 'pages': pages}))
+    context['message'] = message
+    return render_to_response('thanks.html', RequestContext(request, context))
 
 
 @require_POST
 def verify_waiver(request):
-    print 'in verify_waiver'
     pennid = request.POST.get('pennid')
-    print(request.POST)
     student = Student.objects.get(penncard=pennid)
     student.waiver_signed = True
     student.save()
@@ -233,7 +231,6 @@ def pay(request, payment_type, penncard, plan):
             context = {
                 'message': "No student matching that PennCard was found. Please try again, or sign up.",
                 'payment_type': payment_type,
-                'pages': pages
             }
             return render_to_response("pay.html", RequestContext(request, context))
         last_two = request.POST.get('last_two')
@@ -277,21 +274,18 @@ def pay(request, payment_type, penncard, plan):
                 'payment_type': payment_type,
                 'penncard': penncard,
                 'student': student,
-                'pages': pages,
             }
         except:
             context = {
                 'payment_type': payment_type,
                 'penncard': penncard,
-                'pages': pages,
                 'message': "No student matching that PennCard was found. <a href='/signup'>Sign up</a> here.",
             }
         return render_to_response('pay.html', RequestContext(request, context))
 
 
-@login_required
-def stats(request):
-    return render_to_response('stats.html', RequestContext(request, {'pages': pages}))
+class Stats(LoginRequiredMixin, TemplateView):
+    template_name = "stats.html"
 
 
 def selectpayment(request):
@@ -300,24 +294,25 @@ def selectpayment(request):
     if len(day_plan) < 1:
         day_plan = Plan(
             name='Day Plan %s' % str(datetime.date.today()),
-            cost=8,
+            cost=5,
             start_date=datetime.date.today(),
             end_date=datetime.date.today(),
             description='A great way to try out PennCycle. Or, use this to check out a bike for a friend or family member! Add more day plans to your account to check out more bikes. Day plans can only be purchased day-of.',
         )
         day_plan.save()
-    return render_to_response('selectpayment.html', RequestContext(request, {'plans': plans, 'pages': pages}))
+    context = {
+        'plans': plans,
+    }
+    return render_to_response('selectpayment.html', RequestContext(request, context))
 
 
 @require_POST
 def addpayment(request):
-    print "in addpayment view"
-    print request.POST
-    pennid = unicode(request.POST.get('pennid'))
-    print "pennid = " + str(pennid)
+    pennid = request.POST.get('pennid')
     try:
         associated_student = Student.objects.get(penncard=pennid)
     except:
+        email_razzi("addpayment failed: {}".format(pennid))
         raise LookupError
     print associated_student
     plan_num = int(request.POST.get('plan'))
@@ -348,12 +343,10 @@ def combo(request):
         bike.combo_update = datetime.datetime.today()
         bike.save()
         context = {
-            'pages': pages,
             'bikes': Bike.objects.all()
         }
     else:
         context = {
-            'pages': pages,
             'bikes': Bike.objects.all()
         }
     context_instance = RequestContext(request, context)

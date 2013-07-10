@@ -49,30 +49,33 @@
         <div class="navbar">
           <div class="navbar-inner">
             <ul class="nav1 nav">
-              {% block navbar %}
-                {% for p in pages %}
-                  <li><a href="{{p.url}}">{{p.name}}</a></li>
-                {% endfor %}
-              {% endblock navbar %}
+              <li><a href="/">Home</a></li>
+              <li><a href="/plans/">Plans</a></li>
+              <li><a href="/signup/">Sign Up</a></li>
+              <li><a href="/signin/">Sign In</a></li>
+              <li><a href="/locations/">Locations</a></li>
+              <li><a href="/safety/">Safety</a></li>
+              <li><a href="/faq/">FAQ</a></li>
+              <li><a href="/team/">Team</a></li>
             </ul>
           </div><!-- /navbar-inner -->
         </div><!-- /navbar -->
         {% if messages %}
           <div class="messages">
             {% for message in messages %}
-              <h4 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+              <h4 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</h4>
             {% endfor %}
          </div>
-       {% endif %} 
+       {% endif %}
       </center>
-      
+
       <div class="row">
         <div class="span2 flat">&nbsp;</div>
         <div class="span8 border">
           {% block content %}
           {% endblock content %}
         </div>
-        <div class="span3 flat">&nbsp;</div>
+        <div class="span2 flat">&nbsp;</div>
       </div>
       <hr>
       <div class="row-fluid">
@@ -93,9 +96,9 @@
     <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 	<!-- more scripts -->
 	{% block scripts %}
-    
+
 	{% endblock scripts %}
-	
+
   </body>
 </html>
 
