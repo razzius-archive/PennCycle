@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block title %}
+    {{block.super}} Sign In
+{% endblock %}
 
+{% block content %}
 <h3>Please log in.</h3>
-<p>Don't have a PIN? <a href="#" id="send_pin">Click here</a> to send it</p>
+<p>Don't have a PIN? <a href="#" id="send_pin">Click here</a> to send it.</p>
 <form method="post" action="/verify_pin/">
 {% csrf_token %}
     <div class="row-fluid">
@@ -15,12 +18,38 @@
         </b>
         </div>
         <div class="span9">
-            <input type="text" name="penncard">
-            <div style="display: none">Enter your 8-digit Penncard</div>
+            <input type="text" name="penncard" id="penncard" maxlength="8" value="{{ penncard }}">
+            <div id="instructions" style="display: none">Enter your 8-digit Penncard</div>
             <br>
             <input type="password" name="pin" maxlength="4">
         </div>
-        <input type="submit" value="Log In" />
+        <input type="submit" value="Log In">
     </div>
 </form>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+$(function() {
+    $("#send_pin").click(function() {
+        var penncard = $("#penncard").val();
+        if (penncard.length == 8) {
+            window.location="/send_pin?penncard=" + penncard;
+        } else {
+            $("#instructions").show();
+        }
+    });
+    // oh god fix
+    function getURLParameter(name) {
+        return decodeURI(
+            (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+        );
+    }
+    var placeholder = getURLParameter("penncard");
+    if (placeholder != "null") {
+        $("#penncard").val(placeholder);
+    }
+    // end fix
+});
+</script>
 {% endblock %}

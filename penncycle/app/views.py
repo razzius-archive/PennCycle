@@ -19,17 +19,14 @@ from models import *
 class SignupForm(BootstrapModelForm):
     class Meta:
         model = Student
-        exclude = (
-            'join_date',
-            'status',
-            'waiver_signed',
-            'paid',
-            'last_two',
-            'payment_type',
-            'staff',
-            'plan',
-            'major',
-            'pin'
+        fields = (
+            'penncard',
+            'name',
+            'phone',
+            'email',
+            'gender',
+            'grad_year',
+            'living_location',
         )
 
 
@@ -38,8 +35,9 @@ def lookup(request):
     context = {}
     try:
         student = Student.objects.get(penncard=penncard)
-        context['student'] = student
-        return render_to_response("welcome.html", RequestContext(request, context))
+        messages.info(request, "Enter your PIN to add plans.")
+        print(penncard, "!")
+        return HttpResponseRedirect('/signin?penncard={}'.format(penncard))
     except Student.DoesNotExist:
         messages.info(request, "Fill out the form below to sign up!")
         return HttpResponseRedirect("/signup?penncard={}".format(penncard))
@@ -72,9 +70,13 @@ def verify_pin(request):
 
 def welcome(request):
     penncard = request.session.get('penncard')
-    print(penncard)
+    try:
+        student = Student.objects.get(penncard=penncard)
+    except Student.DoesNotExist:
+        email_razzi("Strangely, a student dne on welcome. {}".format(student))
+        return HttpResponseRedirect("/signin/")
     context = {
-        "penncard": penncard
+        "student": student
     }
     return render_to_response("welcome.html", RequestContext(request, context))
 
@@ -103,8 +105,15 @@ class Team(TemplateView):
     template_name = 'team.html'
 
 
-class SignIn(TemplateView):
-    template_name = 'signin.html'
+# def signin(request):
+# fix me
+# class SignIn(TemplateView):
+#     template_name = 'signin.html'
+
+#     def get_context_data(self, **kwargs):
+#         penncard = self.request.GET.get('penncard')
+#         print(penncard)
+#         return {"penncard": penncard}
 
 
 class Locations(TemplateView):

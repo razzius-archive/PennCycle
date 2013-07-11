@@ -131,7 +131,7 @@ class Student(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     grad_year = models.CharField(max_length=50, choices=GRAD_YEAR_CHOICES)
     join_date = models.DateField(default=datetime.date.today())
-    school = models.CharField(max_length=100, choices=SCHOOL_CHOICES)
+    school = models.CharField(max_length=100, choices=SCHOOL_CHOICES, null=True)
     major = models.CharField(max_length=50, blank=True)
     living_location = models.CharField(max_length=100, choices=LIVING_LOCATIONS)
     waiver_signed = models.BooleanField(default=False)
