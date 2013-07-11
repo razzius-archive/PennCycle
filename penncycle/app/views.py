@@ -71,6 +71,11 @@ def verify_pin(request):
 
 
 def welcome(request):
+    penncard = request.session.get('penncard')
+    print(penncard)
+    context = {
+        "penncard": penncard
+    }
     return render_to_response("welcome.html", RequestContext(request, context))
 
 

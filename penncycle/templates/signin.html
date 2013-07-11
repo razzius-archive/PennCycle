@@ -2,11 +2,8 @@
 
 {% block content %}
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
 <h3>Please log in.</h3>
-<p>Email <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a> if you are having trouble logging in.</p>
+<p>Don't have a PIN? <a href="#" id="send_pin">Click here</a> to send it</p>
 <form method="post" action="/verify_pin/">
 {% csrf_token %}
     <div class="row-fluid">
@@ -19,6 +16,7 @@
         </div>
         <div class="span9">
             <input type="text" name="penncard">
+            <div style="display: none">Enter your 8-digit Penncard</div>
             <br>
             <input type="password" name="pin" maxlength="4">
         </div>
