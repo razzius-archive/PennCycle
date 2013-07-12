@@ -22,7 +22,7 @@ def send_pin(request):
         messages.info(
             request,
             "Student with penncard {} does not exist. "
-            "Sign up for PennCycle using the form below".format(penncard)
+            "Sign up for PennCycle using the form below.".format(penncard)
         )
         return HttpResponseRedirect("/signup?penncard={}".format(penncard))
     util.send_pin_to_phone(student.phone)

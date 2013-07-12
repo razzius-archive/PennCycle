@@ -8,63 +8,162 @@
 
 {% block css %}
 <style type="text/css">
-.details {
-  padding-right: 25px;
+/** {margin: 0; padding: 0;}*/
+
+.pricing_table {
+  width: 600px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 150%;
+  text-align: center;
+  margin: 100px auto 0 auto;
 }
-.box {
-    position: relative;
+/*Only the direct LI child, not the .features li*/
+.pricing_table>li {
+  background: linear-gradient(#666, #333);
+  width: 33.33%;
+  float: left;
+  list-style-type: none;
+  /*For smooth hover effects if .active is replaced by :hover*/
+  transition: all 0.2s;
 }
-.ribbon {
-  -webkit-transform: rotate(-45deg); 
-  -moz-transform: rotate(-45deg); 
-  -ms-transform: rotate(-45deg); 
-  -o-transform: rotate(-45deg); 
-  transform: rotate(-45deg); 
-  border: 25px solid transparent;
-  border-top: 25px solid blue;
-  position: absolute;
-  bottom: 20px;
-  right: -50px;
-  padding: 0 10px;
-  width: 120px;
-  color: white;
-  font-family: sans-serif;
-  size: 11px;
+.pricing_table>li.active {
+  background: linear-gradient(#F9B84A, #DB7224);
+  transform: scale(1.03);
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.5);
 }
-.ribbon a {
-  font-size: 18px;
-  color: white;
-  position: absolute;
-  top: -20px;
-  left: 10px;
+.pricing_table h3 {
+  text-transform: uppercase;
+  padding: 15px 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+.pricing_table .price_body {
+  width: 125px;
+  height: 125px;
+  margin: 0 auto 15px auto;
+  border: 2px solid #fff;
+  border-radius: 100%;
+  display: table;
+}
+.pricing_table .price {
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+  /*Lets vertically center align the price now*/
+  vertical-align: middle;
+  display: table-cell;
+}
+.pricing_table .price .price_figure {
+  display: block;
+}
+.pricing_table .price .price_term {
+  font-size: 11px;
+  font-weight: normal;
+}
+
+.pricing_table .features li {
+  list-style-type: none;
+  padding: 5px 0;
+}
+
+.pricing_table .footer {
+  padding: 10px;
+  background: #333;
+  margin-top: 10px;
+}
+.pricing_table .footer .action_button{
+  color: #ddd;
+  font-size: 11px;
+  display: inline-block;
   text-decoration: none;
-}​
+  font-weight: bold;
+  background: #000;
+  padding: 4px 20px;
+  border-radius: 15px;
+  background: linear-gradient(#666, #333);
+}
+.pricing_table li.active .footer .action_button {
+  background: linear-gradient(#F9B84A, #DB7224);
+}
+
+.clr {clear: both;}
+
+
+
 
 </style>
 {% endblock %}
 
 {% block content %}
-  <h1>Payment Plans</h1>
-  <p>Penncycle currently offers the following payment and usage plans. <a href="/signup">Sign up today!</a></p>
-  <hr>
-  {% for row in plans|columns:"2" %}
-  <div class="row-fluid">
-    {% for plan in row %}
-    <div class="well box span6">
-      {% if plan.banner %}
-      <div class="ribbon" href="/signup">
-        <a href="/signup">{{plan.banner}}</a>
+<ul class="pricing_table">
+  <li>
+    <h3>Day Plan</h3>
+    <div class="price_body">
+      <div class="price">
+        $5
       </div>
-      {% endif %}
-      <h2>{{plan.name}}: ${{plan.cost}}</h2>
-      <h4>{{plan.start_date}} - {{plan.end_date}}</h4>
-      <p 
-      {% if plan.banner %}
-      class="details"
-      {% endif %}
-      >{{plan.description|safe|linebreaksbr}}</p>
     </div>
-    {% endfor %}
-  </div>
-  {% endfor %}
+    <div class="features">
+      <ul>
+        <li>Premium Profile Listing</li>
+        <li>Unlimited File Access</li>
+        <li>Free Appointments</li>
+        <li><strong>5 Bonus Points</strong> every month</li>
+        <li>Customizable Profile Page</li>
+        <li><strong>2 months</strong> support</li>
+      </ul>
+    </div>
+    <div class="footer">
+      <a href="#" class="action_button">Get Started</a>
+    </div>
+  </li>
+  <!-- Active/Hover styles -->
+  <li class="active">
+    <h3>Basic</h3>
+    <div class="price_body">
+      <div class="price">
+        <span class="price_figure">$24</span>
+        <span class="price_term">per month</span>
+      </div>
+    </div>
+    <div class="features">
+      <ul>
+        <li>Premium Profile Listing</li>
+        <li>Unlimited File Access</li>
+        <li>Free Appointments</li>
+        <li><strong>20 Bonus Points</strong> every month</li>
+        <li>Customizable Profile Page</li>
+        <li><strong>6 months</strong> support</li>
+      </ul>
+    </div>
+    <div class="footer">
+      <a href="#" class="action_button">Get Started</a>
+    </div>
+  </li>
+  <li>
+    <h3>Day Plan</h3>
+    <div class="price_body">
+      <div class="price">
+        $5
+      </div>
+    </div>
+    <div class="features">
+      <ul>
+        <li>Premium Profile Listing</li>
+        <li>Unlimited File Access</li>
+        <li>Free Appointments</li>
+        <li><strong>5 Bonus Points</strong> every month</li>
+        <li>Customizable Profile Page</li>
+        <li><strong>2 months</strong> support</li>
+      </ul>
+    </div>
+    <div class="footer">
+      <a href="#" class="action_button">Get Started</a>
+    </div>
+  </li>
+  <!-- To prevent .pricing_table height collapse(as its children are floated) -->
+  <div class="clr"></div>
+</ul>
 {% endblock %}
+

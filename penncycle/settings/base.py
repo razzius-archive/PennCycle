@@ -76,7 +76,6 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'app',
-    'bootstrap',
     'boto',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -84,10 +83,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
     'mobile',
     'gunicorn',
     'south',
@@ -96,6 +92,7 @@ INSTALLED_APPS = (
     'storages',
     'django_twilio',
     'django_extensions',
+    'crispy_forms',
 )
 
 # A sample logging configuration. The only tangible logging

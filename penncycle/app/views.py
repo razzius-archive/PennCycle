@@ -10,17 +10,37 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import TemplateView
+from django import forms
 
-from bootstrap.forms import BootstrapModelForm
 from braces.views import LoginRequiredMixin
 
-from models import *
+from crispy_forms.layout import Layout, Fieldset, HTML
+from crispy_forms.helper import FormHelper
+from crispy_forms.bootstrap import InlineRadios, FormActions
 
-class SignupForm(BootstrapModelForm):
+from models import *
+from ..utils import foo
+
+
+class SignupForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SignupForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            Fieldset(
+                """
+                Please ensure your PennCard is correct as we
+                use it to check out bikes.
+                """,
+                'penncard'
+            ),
+            InlineRadios('gender')
+        )
     class Meta:
         model = Student
         fields = (
             'penncard',
+            'last_two',
             'name',
             'phone',
             'email',
@@ -29,6 +49,13 @@ class SignupForm(BootstrapModelForm):
             'living_location',
         )
 
+    gender = forms.TypedChoiceField(
+        label="Gender",
+        choices=(("M", "Male"), ("F", "Female")),
+        widget=forms.RadioSelect(),
+        required=True,
+    )
+
 
 def lookup(request):
     penncard = request.GET.get("penncard")
@@ -36,7 +63,6 @@ def lookup(request):
     try:
         student = Student.objects.get(penncard=penncard)
         messages.info(request, "Enter your PIN to add plans.")
-        print(penncard, "!")
         return HttpResponseRedirect('/signin?penncard={}'.format(penncard))
     except Student.DoesNotExist:
         messages.info(request, "Fill out the form below to sign up!")
@@ -238,7 +264,7 @@ def verify_waiver(request):
 def pay(request, payment_type, penncard, plan):
     if request.method == 'POST':
         payment_type = str(request.POST.get('payment_type')).lower()
-        print("Pay <view></view>")
+        print("Pay view")
         try:
             student = Student.objects.get(penncard=penncard)  # verify form is filled out well!
         except:

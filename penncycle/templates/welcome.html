@@ -16,7 +16,9 @@
     		<h4>You currently don't have any plans.</h4>
             <a href="/selectpayment/" class="btn btn-primary">Sign up for a plan &raquo;</a>
     	{% endif %}
-    	{% if not student.waiver_signed %}
+        {% if student.waiver_signed %}
+            <p>Waiver signed: <i class="icon-ok-circle icon-large"></i></p>
+    	{% else %}
     		<h3>You must sign the following waiver before you are eligible to ride.</h3>
     		<div class='waiver-wrapper'>
     	       {% include "waiver.html" %}

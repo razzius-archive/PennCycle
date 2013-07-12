@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}
   {{block.super}} Sign Up
 {% endblock %}
@@ -8,28 +10,18 @@
 <div class="paddedheader" id="greeter">
   {% if not messages %}
   <h1 class="textCentered">Sign Up &amp; Get Riding!</h1>
-  <hr>
-  <h3 class="textCentered"> Already a member? 
-    <a href="/selectpayment/" class="btn btn-primary">Sign up for a new plan &#187;</a>
+  <h3 class="textCentered"> Already a member?
+    <a href="/signin/" class="btn btn-primary">Sign in &#187;</a>
   </h3>
   {% endif %}
-  <div class="pagination">
-    <ul id="secondnav" class="nav nav-tabs">
-      <li id="tab-info" class="active"><a data-toggle="tab" href="#info">Info</a></li>
-      <li id="tab-safety" class="disabled"><a data-toggle="tab">Safety Info</a></li>
-      <li id="tab-waiver" class="disabled"><a data-toggle="tab">Waiver</a></li>
-      <li id="tab-pay" class="disabled"><a data-toggle="tab">Pay</a></li>
-    </ul>
-  </div>
 </div>
-<div class="tab-content">
-  <!------------- info pane ---------------->
+<div class="tab-content well">
   <div class="tab-pane active" id="info">
     <form id="info-form" class="form-horizontal">{% csrf_token %}
-        {{ form }}
+        {% crispy form %}
     </form>
     <div class="form-actions">
-            <button id="info-button" class="btn btn-primary">Next &#187;</button>
+            <button id="info-button" class="btn btn-primary">Sign Up &#187;</button>
             <span id="message"></span>
         </div>
   </div>
@@ -38,18 +30,6 @@
     {% include 'safety_info.html' %}
     <button id="safety-form" class="btn btn-primary">I have read and understand the safety information &#187;</button>
   </div>
-  <!------------- waiver pane ---------------->
-  <div class="tab-pane" id="waiver">
-    <div class='waiver-wrapper'>
-      {% include "waiver.html" %}
-    </div>
-    <hr>
-    <div class='clearfix'>
-      <button id="waiver-form" class="btn btn-primary">I Accept this Waiver &#187;</button>
-      <label>Clicking this button counts as your digital signature and is legally binding</label>
-    </div>
-  </div>
-  <!----------- pay pane ------------------>
   <div class="tab-pane" id="pay">
     {% include "paymentstub.html" %}
   </div>
@@ -88,10 +68,10 @@
           }
         }
       });
-    
+
       var formData = $('#info-form').serialize();
       $.ajax({
-        url: '/info_submit/', 
+        url: '/info_submit/',
         type: 'POST',
         data: formData,
         dataType: 'json',
@@ -112,7 +92,7 @@
         },
       });
     });
-  
+
     function toTab(id) {
       $('#secondnav .active').removeClass('active');
       $('.tab-content .active').removeClass('active');
@@ -121,17 +101,14 @@
       $('#'+id).addClass('active');
       $('a[href="#'+id+'"]').parent().addClass('active');
     };
-    
+
     $('button#info-form').click(function(){
       toTab('safety');
     });
-    
+
     $('button#safety-form').click(function(){
       toTab('waiver');
     });
-    
-    // set background for active tab in navbar    
-    $('.nav1 li#signup').addClass('active');
 
   </script>
 {% endblock %}
