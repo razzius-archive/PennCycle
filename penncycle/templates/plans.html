@@ -8,32 +8,21 @@
 
 {% block css %}
 <style type="text/css">
-/** {margin: 0; padding: 0;}*/
-
 .pricing_table {
-  width: 600px;
-  color: #fff;
   font-size: 12px;
-  line-height: 150%;
   text-align: center;
-  margin: 100px auto 0 auto;
 }
-/*Only the direct LI child, not the .features li*/
 .pricing_table>li {
-  background: linear-gradient(#666, #333);
+  background-color: #777;
   width: 33.33%;
   float: left;
   list-style-type: none;
-  /*For smooth hover effects if .active is replaced by :hover*/
-  transition: all 0.2s;
 }
 .pricing_table>li.active {
-  background: linear-gradient(#F9B84A, #DB7224);
-  transform: scale(1.03);
+  background-color: #ccc;
   box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.5);
 }
 .pricing_table h3 {
-  text-transform: uppercase;
   padding: 15px 0;
   font-size: 14px;
   font-weight: bold;
@@ -41,16 +30,13 @@
 .pricing_table .price_body {
   width: 125px;
   height: 125px;
-  margin: 0 auto 15px auto;
+  margin: 0 auto;
   border: 2px solid #fff;
   border-radius: 100%;
   display: table;
 }
 .pricing_table .price {
   font-size: 30px;
-  font-weight: bold;
-  text-transform: uppercase;
-  /*Lets vertically center align the price now*/
   vertical-align: middle;
   display: table-cell;
 }
@@ -83,20 +69,11 @@
   border-radius: 15px;
   background: linear-gradient(#666, #333);
 }
-.pricing_table li.active .footer .action_button {
-  background: linear-gradient(#F9B84A, #DB7224);
-}
-
-.clr {clear: both;}
-
-
-
-
 </style>
 {% endblock %}
 
 {% block content %}
-<ul class="pricing_table">
+<ul class="pricing_table span8 offset2">
   <li>
     <h3>Day Plan</h3>
     <div class="price_body">
@@ -106,16 +83,12 @@
     </div>
     <div class="features">
       <ul>
-        <li>Premium Profile Listing</li>
-        <li>Unlimited File Access</li>
-        <li>Free Appointments</li>
-        <li><strong>5 Bonus Points</strong> every month</li>
-        <li>Customizable Profile Page</li>
-        <li><strong>2 months</strong> support</li>
+        <li>Great for visitors</li>
+        <li>U-Lock and helmet provided</li>
       </ul>
     </div>
     <div class="footer">
-      <a href="#" class="action_button">Get Started</a>
+      <a href="#" class="action_button">Sign Up</a>
     </div>
   </li>
   <!-- Active/Hover styles -->
@@ -123,7 +96,7 @@
     <h3>Basic</h3>
     <div class="price_body">
       <div class="price">
-        <span class="price_figure">$24</span>
+        <span class="price_figure">$9</span>
         <span class="price_term">per month</span>
       </div>
     </div>
@@ -145,7 +118,8 @@
     <h3>Day Plan</h3>
     <div class="price_body">
       <div class="price">
-        $5
+        <span class="price_figure">$29</span>
+        <span class="price_term">per month</span>
       </div>
     </div>
     <div class="features">

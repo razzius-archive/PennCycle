@@ -9,51 +9,57 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView
 from django import forms
 
 from braces.views import LoginRequiredMixin
 
-from crispy_forms.layout import Layout, Fieldset, HTML
+from crispy_forms.layout import Layout, Fieldset, Submit, Div
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import InlineRadios, FormActions
 
 from models import *
-from ..utils import foo
 
+from pdb import set_trace
 
 class SignupForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
-            Fieldset(
-                """
-                Please ensure your PennCard is correct as we
-                use it to check out bikes.
-                """,
-                'penncard'
-            ),
-            InlineRadios('gender')
+            Div(
+                Div(
+                    'penncard',
+                    'name',
+                    'phone',
+                    'email', css_class="span5 offset1"
+                ), Div(
+                    'last_two',
+                    'grad_year',
+                    'living_location',
+                    InlineRadios('gender'), css_class="span6"
+                ), css_class = "row-fluid"
+            )
         )
+        self.helper.form_action = '/signup/'
+        self.helper.add_input(Submit('submit', "Submit"))
+        self.helper.form_method = 'post'
+
     class Meta:
         model = Student
-        fields = (
+        fields = [
             'penncard',
-            'last_two',
             'name',
             'phone',
             'email',
-            'gender',
+            'last_two',
             'grad_year',
             'living_location',
-        )
+            'gender',
+        ]
 
     gender = forms.TypedChoiceField(
-        label="Gender",
         choices=(("M", "Male"), ("F", "Female")),
-        widget=forms.RadioSelect(),
-        required=True,
     )
 
 
@@ -95,6 +101,8 @@ def verify_pin(request):
 
 
 def welcome(request):
+    print(request.session)
+    set_trace()
     penncard = request.session.get('penncard')
     try:
         student = Student.objects.get(penncard=penncard)
@@ -147,7 +155,7 @@ class Locations(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = {
-            'stations': Station.objects.filter(capacity__gt=0).order_by("id")
+            'stations': Station.objects.order_by("id")
         }
         return context
 
@@ -164,33 +172,28 @@ class Plans(TemplateView):
         return context
 
 
-@require_POST
-def info_submit(request):
-    form = SignupForm(request.POST)
-    if form.is_valid():
-        form.save()
-        reply = {
-            'success': True,
-            'form_valid': True
+class Signup(CreateView):
+    model = Student
+    template_name = "signup.html"
+    form_class = SignupForm
+    success_url = "/welcome"
+
+    def get_initial(self):
+        return {
+            'penncard': self.request.GET.get('penncard')
         }
-    else:
-        reply = {
-            'success': True,
-            'form_valid': False,
-            'new_form': str(form)
-        }
-    return HttpResponse(json.dumps(reply), content_type="application/json")
 
+    def form_valid(self, form):
+        student = form.save()
+        messages.info(self.request,
+            "Welcome to PennCycle!, {}".format(form.name)
+        )
+        print(form)
+        return HttpResponseRedirect('/welcome')
 
-def signup(request):
-    penncard = request.GET.get("penncard")
-    form = SignupForm(initial={'penncard': penncard})
-    context = {
-        'form': form,
-        'plans': Plan.objects.filter(end_date__gte=datetime.date.today(), cost__gt=0),
-    }
-    return render_to_response('signup.html', RequestContext(request, context))
-
+    def form_invalid(self, form):
+        print("INVALID?")
+        set_trace()
 
 @require_POST
 @csrf_exempt

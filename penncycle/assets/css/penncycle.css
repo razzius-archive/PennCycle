@@ -205,7 +205,7 @@ textarea {
 }
 body {
   margin: 0;
-  font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Gotham, Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #333333;
@@ -892,7 +892,7 @@ input,
 button,
 select,
 textarea {
-  font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Gotham, Helvetica, Arial, sans-serif;
 }
 label {
   display: block;
@@ -6352,27 +6352,12 @@ a.badge:focus {
   font-weight: bold;
   src: url('../Gotham/GothamHTF-Bold.otf');
 }
-.labels {
-  font-weight: 900;
-  font-size: 10px;
-  line-height: 10px;
-  background-color: white;
-  text-align: center;
-  border-radius: 2px;
-  width: 42px;
-}
-.glow {
-  color: #008d0c;
-}
 img.profile {
   float: left;
   overflow: hidden;
   margin: 10px 5px 0px 0px;
   width: 90px;
   height: 90px;
-}
-.span4 h3 {
-  line-height: 100%;
 }
 .school {
   line-height: 80%;
@@ -6382,6 +6367,9 @@ body {
 }
 .well {
   background-color: rgba(238, 238, 238, 0.85);
+}
+.foreground {
+  background-color: rgba(238, 238, 238, 0.95);
 }
 .bg-image {
   position: fixed;
@@ -6397,21 +6385,12 @@ body {
   position: relative;
   margin: 0 auto 0 auto;
 }
-.textCentered {
-  text-align: center;
-}
 .opaque {
   background-color: rgba(238, 238, 238, 0.85);
 }
 .paddedheader {
   padding-left: 20px;
   padding-top: 20px;
-}
-#navbar {
-  margin-top: -14px;
-}
-.flat {
-  line-height: 1px;
 }
 .waiver-wrapper {
   height: 300px;
@@ -6457,9 +6436,6 @@ h2 li {
   .navbar {
     width: 680px;
   }
-  .navbar .brand {
-    color: #ffffff;
-  }
 }
 .messages .info {
   width: 70%;
@@ -6470,6 +6446,11 @@ h2 li {
 .btn a:hover {
   text-decoration: none;
 }
+/*Rendering signup form*/
 .asteriskField {
   display: none;
+}
+.radio {
+  /*float: left;*/
+
 }

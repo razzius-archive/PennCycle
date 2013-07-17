@@ -1,8 +1,7 @@
 @import "bootstrap/bootstrap.less";
 @import "bootstrap/responsive.less";
 
-@fadedwhite:            fade(@grayLighter, 85%);
-@transparent:           fade(@white, 0%);
+@fadedwhite: fade(@grayLighter, 85%);
 @font-face { font-family: Gotham; font-style: normal; font-weight:normal; src: url('../Gotham/GothamHTF-Medium.otf'); }
 @font-face { font-family: Gotham; font-style: normal; font-weight:200; src: url('../Gotham/GothamHTF-Book.otf'); }
 @font-face { font-family: Gotham; font-style: italic; font-weight:normal; src: url('../Gotham/GothamHTF-BookItalic.otf');  }
@@ -10,24 +9,10 @@
 @font-face { font-family: Gotham; font-style: normal; font-weight:bold; src: url('../Gotham/GothamHTF-Bold.otf');  }
 
 // in variables:
-@blueDarkest:  #212e65;
-@baseFontFamily:        Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
-@navbarLinkColor:                 @blueDarkest;
-@navbarLinkColorHover:            @red;
-
-.labels {
-	font-weight: 900;
-	font-size: 10px;
-	line-height: 10px;
-	background-color: white;
-	text-align: center;
-	border-radius: 2px;
-	width: 42px;
-}
-
-.glow {
-    color: rgb(0,141,12);
-}
+@blueDarkest: #212e65;
+@baseFontFamily: Gotham, Helvetica, Arial, sans-serif;
+@navbarLinkColor: @blueDarkest;
+@navbarLinkColorHover: @red;
 
 img.profile {
   float: left;
@@ -35,10 +20,6 @@ img.profile {
   margin: 10px 5px 0px 0px;
   width: 90px;
   height: 90px;
-}
-
-.span4 h3 {
-	line-height: 100%;
 }
 .school {
 	line-height: 80%;
@@ -49,9 +30,11 @@ body{
 .well {
   background-color: @fadedwhite;
 }
+.foreground {
+    background-color: fade(@grayLighter, 95%);
+}
 .bg-image {
-  // display:block !important;
-  position:fixed;
+    position:fixed;
 	top:0px;
 	left:0px;
 	min-height:50%;
@@ -65,10 +48,6 @@ body{
   margin: 0 auto 0 auto;
 }
 
-.textCentered {
-  text-align: center;
-}
-
 .opaque {
   background-color: @fadedwhite;
 }
@@ -76,18 +55,9 @@ body{
   padding-left: 20px;
   padding-top: 20px;
 }
-
-#navbar {
-  margin-top: -1 * @baseFontSize;
-}
-
-.flat {
-  line-height: 1px;
-}
-
 .waiver-wrapper {
 	height: 300px;
-	overflow:scroll;
+	overflow: scroll;
 	padding:10px;
     background-color: white;
 }
@@ -123,12 +93,8 @@ h2 li {
 @media (min-width: 767px) {
 	.navbar {
 		width: 680px;
-		.brand {
-			color: @white;
-		}
 		.navbar-text {
 			a:hover {
-				// color:@white;
 				// background-color: white;
 			}
 		}
@@ -151,5 +117,5 @@ h2 li {
     display: none;
 }
 .radio {
-    float: left;
+    /*float: left;*/
 }

@@ -158,7 +158,7 @@ class Student(models.Model):
 
     @property
     def can_ride(self):
-        return len(self.current_payments.filter(status='available')) > 0 and self.waiver_signed
+        return self.current_payments.filter(status='available') and self.waiver_signed
 
     def __unicode__(self):
         return u'%s %s' % (self.name, self.penncard)
@@ -172,7 +172,6 @@ class Station(models.Model):
     notes = models.TextField(max_length=100, blank=True)
     hours = models.TextField(max_length=100, blank=True)
     picture = models.ImageField(upload_to='img/stations', blank=True)
-    capacity = models.IntegerField(default=15)
     full_name = models.CharField(max_length=100, default="")
 
     def __unicode__(self):
@@ -180,7 +179,8 @@ class Station(models.Model):
 
     @property
     def is_open(self):
-        return hour_util.is_open(self.hours)
+        hour = datetime.datetime.now().hour
+        return hour > 10 and hour < 18
 
     @property
     def comma_name(self):

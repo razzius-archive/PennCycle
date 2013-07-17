@@ -3,112 +3,18 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-  {{block.super}} Sign Up
+{{block.super}} Sign Up
 {% endblock %}
 
 {% block content %}
-<div class="paddedheader" id="greeter">
-  {% if not messages %}
-  <h1 class="textCentered">Sign Up &amp; Get Riding!</h1>
-  <h3 class="textCentered"> Already a member?
-    <a href="/signin/" class="btn btn-primary">Sign in &#187;</a>
-  </h3>
-  {% endif %}
+<div class="span8 offset2 well">
+  <center>
+    <h2>Sign Up &amp; Get Riding!</h2>
+    <h3> Already a member?
+      <a href="/signin/" class="btn btn-primary">Sign in &#187;</a>
+    </h3>
+      {% crispy form %}
+    </div>
+  </center>
 </div>
-<div class="tab-content well">
-  <div class="tab-pane active" id="info">
-    <form id="info-form" class="form-horizontal">{% csrf_token %}
-        {% crispy form %}
-    </form>
-    <div class="form-actions">
-            <button id="info-button" class="btn btn-primary">Sign Up &#187;</button>
-            <span id="message"></span>
-        </div>
-  </div>
-  <!------------- safety pane ---------------->
-  <div class="tab-pane" id="safety">
-    {% include 'safety_info.html' %}
-    <button id="safety-form" class="btn btn-primary">I have read and understand the safety information &#187;</button>
-  </div>
-  <div class="tab-pane" id="pay">
-    {% include "paymentstub.html" %}
-  </div>
-  <!----------- thanks pane ------------------>
-  <div class="tab-pane" id="thanks">
-    <h1>Thanks!</h1>
-  </div>
-</div>
-{% endblock %}
-{% block scripts %}
-  <script src="{{ STATIC_URL }}js/payment.js">
-  </script>
-  <script type="text/javascript">
-    $('#info-button').click(function() {
-      $("#message").html("Processing...")
-      $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-          function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie != '') {
-              var cookies = document.cookie.split(';');
-              for (var i = 0; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                  break;
-                }
-              }
-            }
-            return cookieValue;
-          }
-          if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-            // Only send the token to relative URLs i.e. locally.
-            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-          }
-        }
-      });
-
-      var formData = $('#info-form').serialize();
-      $.ajax({
-        url: '/info_submit/',
-        type: 'POST',
-        data: formData,
-        dataType: 'json',
-        error: function(xhr, status, exception) {
-          console.log(xhr);
-          console.log(status);
-          console.log(exception);
-          alert('Something went wrong. We have been notified and are looking into it.');
-        },
-        success: function(data, status, xhr) {
-          $("#message").html("");
-          if (data['form_valid'] == true) {
-            toTab('safety');
-          } else if (data['form_valid'] == false) {
-            $('#info-form').html(data['new_form']);
-            console.log('replaced shit');
-          }
-        },
-      });
-    });
-
-    function toTab(id) {
-      $('#secondnav .active').removeClass('active');
-      $('.tab-content .active').removeClass('active');
-      $('#tab-'+id).removeClass('disabled');
-      $('#tab-'+id + ' a').attr("href", "#"+id);
-      $('#'+id).addClass('active');
-      $('a[href="#'+id+'"]').parent().addClass('active');
-    };
-
-    $('button#info-form').click(function(){
-      toTab('safety');
-    });
-
-    $('button#safety-form').click(function(){
-      toTab('waiver');
-    });
-
-  </script>
 {% endblock %}

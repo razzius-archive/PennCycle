@@ -1,38 +1,39 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  {{block.super}} Home
+{{block.super}} Home
 {% endblock %}
 
 {% block content %}
-  <div class="row-fluid">
-    <div class="span6">
-      <h1 class="textCentered">{{ psa_count }}<small>/13</small> bikes are available right now.</h1>
-      <h4 class="textcentered">During the summer, bikes are available at <a href="/locations">Penn Student Agencies</a>. Check bikes out for 1 day at a time with our basic plan or <a href="/signup">sign up</a> for an unlimited plan to keep bikes out for as long as you'd like.</h4>
-    </div>
-    <div class="span6" style="padding: 20px;">
-      <h1>Summer Session 2: $25</h1>
-      <h4>Unlimited rides until the end of Summer Session 2 for only $25.</h4>
-      <form method="GET" action="/lookup/">
-        <input type="text" name="penncard" maxlength="8" placeholder="Enter your PennCard">
-        <button class="btn btn-primary">
-          Get Started &raquo;
-        </button>
-        <button class="btn">
-          <a href="plans">View all plans</a>
-        </button>
-      </form>
-    </div>
+<div class="row-fluid well span8 offset2">
+  <div class="span6">
+    <h1 class="textCentered">{{ psa_count }}<small>/13</small> bikes are available right now.</h1>
+    <h4 class="textcentered">During the summer, bikes are available at <a href="/locations">Penn Student Agencies</a>. Check bikes out for 1 day at a time with our basic plan or <a href="/signup">sign up</a> for an unlimited plan to keep bikes out for as long as you'd like.</h4>
+  </div>
+  <div class="span6" style="padding: 20px;">
+    <h1>Summer Session 2: $25</h1>
+    <h4>Unlimited rides until the end of Summer Session 2 for only $25.</h4>
+    <form method="GET" action="/lookup/">
+      <input type="text" name="penncard" maxlength="8" placeholder="Enter your PennCard">
+      <button class="btn btn-primary">
+        Get Started &raquo;
+      </button>
+      <button class="btn">
+        <a href="plans">View all plans</a>
+      </button>
+    </form>
   </div>
   <hr>
-  <h2><ol>
-    <li><a href="/plans">Check out our plans.</a></li>
-    <li><a href="/signup/">Sign up or view account by entering your penncard.</a></li>
-    <li>Come to one of our <a href="/locations">locations</a>. Show us your PennCard.</li>
-    <li>Take your PennCycle for a ride!</li>
-    <li>Return by <a href="/locations">closing time</a> (or keep it overnight for $5).
-    </li>
-  </ol></h2>
+  <h2>
+    <ol>
+      <li><a href="/plans">Check out our plans.</a></li>
+      <li><a href="/signup/">Sign up or view account by entering your penncard.</a></li>
+      <li>Come to one of our <a href="/locations">locations</a>. Show us your PennCard.</li>
+      <li>Take your PennCycle for a ride!</li>
+      <li>Return by <a href="/locations">closing time</a> (or keep it overnight for $5).
+      </li>
+    </ol>
+  </h2>
   <hr>
   <div class="fb-like offset1" data-href="http://www.facebook.com/pages/PennCycle/345622718793885" data-send="false" data-width="500" data-show-faces="true"></div>
   <hr>
@@ -45,7 +46,5 @@
   <p>Not the Penn Students we know.</p>
   <p>PennCycle is affordable, reliable, and super easy &#8212; not to mention fun, sustainable, and healthy. Just like transportation should be.</p>
   <p>Happy Cycling!</p>
-{% endblock %}
-
-{% block scripts %}
+</div>
 {% endblock %}

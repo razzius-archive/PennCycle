@@ -15,7 +15,7 @@ urlpatterns = patterns(
 
     # Normal pages
     (r'^$', Index.as_view()),
-    (r'^signup/$', signup),
+    (r'^signup/$', Signup.as_view()),
     (r'^signin/$', login, {"template_name": "signin.html"}),
     (r'^faq/$', Faq.as_view()),
     (r'^safety/$', Safety.as_view()),
@@ -27,8 +27,6 @@ urlpatterns = patterns(
     (r'^pay/(?P<payment_type>\w+)/(?P<penncard>\d{8})/(?P<plan>\d+)/$', pay),
 
     # Backend-related
-    (r'^info_submit/$', info_submit),
-    (r'^login/$', login),
     (r'^verify_payment/$', verify_payment),
     (r'^verify_waiver/$', verify_waiver),
     (r'^verify_pin/$', verify_pin),
