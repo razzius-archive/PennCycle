@@ -8,13 +8,14 @@
 
 {% block content %}
 <div class="span8 offset2 well">
-  <center>
-    <h2>Sign Up &amp; Get Riding!</h2>
-    <h3> Already a member?
-      <a href="/signin/" class="btn btn-primary">Sign in &#187;</a>
-    </h3>
-      {% crispy form %}
-    </div>
-  </center>
+	<center>
+		<h2>Sign Up &amp; Get Riding!</h2>
+		<h3> Already a member?
+			<a href="/signin/" class="btn btn-primary">Sign in &#187;</a>
+		<img src="{{ STATIC_URL }}img/penncard_example.png" class="pull-right" width="200px">
+		</h3>
+			{% crispy form %}
+		</div>
+	</center>
 </div>
 {% endblock %}

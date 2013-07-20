@@ -47,7 +47,6 @@ body{
   position: relative;
   margin: 0 auto 0 auto;
 }
-
 .opaque {
   background-color: @fadedwhite;
 }
@@ -81,18 +80,18 @@ body{
 .nav > li > a:hover {
 	background-color: @white;
 }
-h1, h2, h3, h4, h5, h6 {
+/*h1, h2, h3, h4, h5, h6 {
 	font-weight: 200;
 }
 h1, h2 li {
 	line-height: @baseLineHeight * 2;
-}
+}*/
 h2 li {
 	font-size: 24px;
 }
 @media (min-width: 767px) {
 	.navbar {
-		width: 680px;
+		width: 700px;
 		.navbar-text {
 			a:hover {
 				// background-color: white;
@@ -116,6 +115,18 @@ h2 li {
 .asteriskField {
     display: none;
 }
-.radio {
-    /*float: left;*/
+.checklist {
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0 auto;
+}
+.checklist h3 {
+    border-bottom: 1px dotted black;
+}
+.checklist h2 {
+    border-bottom: 2px solid black;
+}
+.checklist .pull-right {
+    margin-top: 10px;
 }

@@ -14,7 +14,7 @@
     <!-- Le styles -->
 
     <link href="{{ STATIC_URL }}css/penncycle.css" rel="stylesheet">
-
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
   	{% block css %}
 	  {% endblock css %}
 
@@ -45,14 +45,19 @@
     <img class="bg-image hidden-phone" src="{{ STATIC_URL }}img/philly.jpg">
     <div class="container opaque">
       <center>
-        <a href="/"><img class="centered" src="{{ STATIC_URL }}img/PennCycle-Logo-3-web-570.png"></a>
+        <a href="/"><img class="centered" src="{{ STATIC_URL }}img/PennCycle-Logo-3-web-570.png" width="400px"></a>
         <div class="navbar">
           <div class="navbar-inner">
             <ul class="nav1 nav">
               <li><a href="/">Home</a></li>
               <li><a href="/plans/">Plans</a></li>
-              <li><a href="/signup/">Sign Up</a></li>
-              <li><a href="/signin/">Sign In</a></li>
+              {% if request.session.penncard %}
+                <li><a href="/welcome/">My Account</a></li>
+                <li><a href="/logout/">Log Out</a></li>
+              {% else %}
+                <li><a href="/signup/">Sign Up</a></li>
+                <li><a href="/signin/">Sign In</a></li>
+              {% endif %}
               <li><a href="/locations/">Locations</a></li>
               <li><a href="/safety/">Safety</a></li>
               <li><a href="/faq/">FAQ</a></li>
@@ -68,13 +73,10 @@
          </div>
        {% endif %}
       </center>
-
       <div class="row-fluid">
         {% block content %}
         {% endblock content %}
-        <div class="span2 flat">&nbsp;</div>
       </div>
-      <hr>
       <div class="row-fluid">
         <div class="fb-like span6 offset2" data-href="http://www.facebook.com/pages/PennCycle/345622718793885" data-send="true" data-width="450" data-show-faces="true"></div>
         <div class="span3 flat offset1">

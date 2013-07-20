@@ -127,7 +127,7 @@ class Student(models.Model):
     email = models.EmailField()
     phone = PhoneNumberField(unique=True)
     penncard = models.CharField(max_length=8, validators=[RegexValidator('\d{8}')], unique=True)
-    last_two = models.CharField(max_length=2, validators=[RegexValidator('\d{2}')], blank=True, null=True)
+    last_two = models.CharField(max_length=2, validators=[RegexValidator('\d{2}')], default="00")
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     grad_year = models.CharField(max_length=50, choices=GRAD_YEAR_CHOICES)
     join_date = models.DateField(default=datetime.date.today())
@@ -136,7 +136,7 @@ class Student(models.Model):
     living_location = models.CharField(max_length=100, choices=LIVING_LOCATIONS)
     waiver_signed = models.BooleanField(default=False)
     staff = models.NullBooleanField(default=False)
-    plan = models.ManyToManyField('Plan', blank=True, null=True)
+    plan = models.ManyToManyField('Plan', null=True)
     pin = models.CharField(max_length=4, default=generate_pin)
 
     @property

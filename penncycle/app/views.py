@@ -14,7 +14,7 @@ from django import forms
 
 from braces.views import LoginRequiredMixin
 
-from crispy_forms.layout import Layout, Fieldset, Submit, Div
+from crispy_forms.layout import Layout, Fieldset, Submit, Div, Field
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import InlineRadios, FormActions
 
@@ -29,21 +29,29 @@ class SignupForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 Div(
-                    'penncard',
+                    Field(
+                        'penncard',
+                        placeholder="8 digits",
+                    ),
                     'name',
                     'phone',
                     'email', css_class="span5 offset1"
                 ), Div(
-                    'last_two',
+                    Field(
+                        'last_two',
+                        placeholder="Usually 00"
+                    ),
                     'grad_year',
                     'living_location',
                     InlineRadios('gender'), css_class="span6"
-                ), css_class = "row-fluid"
+                ), css_class="row-fluid"
             )
         )
         self.helper.form_action = '/signup/'
         self.helper.add_input(Submit('submit', "Submit"))
         self.helper.form_method = 'post'
+        self.fields['last_two'].label = "Last two digits of PennCard"
+        self.fields['penncard'].label = "PennCard Number"
 
     class Meta:
         model = Student
@@ -69,10 +77,10 @@ def lookup(request):
     try:
         student = Student.objects.get(penncard=penncard)
         messages.info(request, "Enter your PIN to add plans.")
-        return HttpResponseRedirect('/signin?penncard={}'.format(penncard))
+        return HttpResponseRedirect('/signin/?penncard={}'.format(penncard))
     except Student.DoesNotExist:
         messages.info(request, "Fill out the form below to sign up!")
-        return HttpResponseRedirect("/signup?penncard={}".format(penncard))
+        return HttpResponseRedirect("/signup/?penncard={}".format(penncard))
 
 def verify_pin(request):
     data = request.POST
@@ -101,8 +109,6 @@ def verify_pin(request):
 
 
 def welcome(request):
-    print(request.session)
-    set_trace()
     penncard = request.session.get('penncard')
     try:
         student = Student.objects.get(penncard=penncard)
@@ -128,7 +134,7 @@ class Index(TemplateView):
 
 
 class Faq(TemplateView):
-    template_name ='faq.html'
+    template_name = 'faq.html'
 
 
 class Safety(TemplateView):
@@ -186,21 +192,26 @@ class Signup(CreateView):
     def form_valid(self, form):
         student = form.save()
         messages.info(self.request,
-            "Welcome to PennCycle!, {}".format(form.name)
+            """Welcome to PennCycle, {}!
+            Please review the following safety information.
+            Your PIN is {}. You'll need it to log in and to
+            access our <a href='http://mobile.penncycle.org'>
+            mobile app</a>. You can change it on your
+            <a href="/welcome/">dashboard</a>.
+            """.format(student.name, student.pin)
         )
-        print(form)
-        return HttpResponseRedirect('/welcome')
+        self.request.session['penncard'] = student.penncard
+        return HttpResponseRedirect('/safety/')
 
-    def form_invalid(self, form):
-        print("INVALID?")
-        set_trace()
+
+class Safety(TemplateView):
+    template_name = "safety.html"
+
 
 @require_POST
 @csrf_exempt
 def verify_payment(request):
-    print "in verify_payment"
     email_razzi(request.POST)
-    # gets the student with penncard specified in POST data
     payment = Payment.objects.get(id=request.POST.get('merchantDefinedData1'))
     # source = request.META.get('HTTP_REFERER')
     email_razzi(request.META)
@@ -260,7 +271,6 @@ def verify_waiver(request):
     student = Student.objects.get(penncard=pennid)
     student.waiver_signed = True
     student.save()
-    print 'waiver signed'
     return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")
 
 
@@ -331,18 +341,18 @@ class Stats(LoginRequiredMixin, TemplateView):
     template_name = "stats.html"
 
 
-def selectpayment(request):
+def select_payment(request):
     plans = Plan.objects.filter(end_date__gte=datetime.date.today(), cost__gt=0)
-    day_plan = Plan.objects.filter(end_date=datetime.date.today(), name__contains='Day Plan')
-    if len(day_plan) < 1:
-        day_plan = Plan(
-            name='Day Plan %s' % str(datetime.date.today()),
-            cost=5,
-            start_date=datetime.date.today(),
-            end_date=datetime.date.today(),
-            description='A great way to try out PennCycle. Or, use this to check out a bike for a friend or family member! Add more day plans to your account to check out more bikes. Day plans can only be purchased day-of.',
-        )
-        day_plan.save()
+    # day_plan = Plan.objects.filter(end_date=datetime.date.today(), name__contains='Day Plan')
+    # if len(day_plan) < 1:
+    #     day_plan = Plan(
+    #         name='Day Plan %s' % str(datetime.date.today()),
+    #         cost=5,
+    #         start_date=datetime.date.today(),
+    #         end_date=datetime.date.today(),
+    #         description='A great way to try out PennCycle. Or, use this to check out a bike for a friend or family member! Add more day plans to your account to check out more bikes. Day plans can only be purchased day-of.',
+    #     )
+    #     day_plan.save()
     context = {
         'plans': plans,
     }

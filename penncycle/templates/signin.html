@@ -1,51 +1,53 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{block.super}} Sign In
+{{block.super}} Sign In
 {% endblock %}
 
 {% block content %}
-<h3>Please log in.</h3>
-<p>Don't have a PIN? <a href="#" id="send_pin">Click here</a> to have it sent to your phone.</p>
-<form method="post" action="/verify_pin/">
-{% csrf_token %}
-    <div class="row-fluid">
-        <div class="span3">
-            <b>Penncard:</b>
+<div class="span8 offset2">
+    <h3>Please log in.</h3>
+    <p>Don't know your PIN? Enter your penncard and <a href="#" id="send_pin">click here</a> to have it sent to your phone.</p>
+    <form method="post" action="/verify_pin/">
+        {% csrf_token %}
+        <div class="row-fluid">
+            <div class="span3">
+                <b>Penncard:</b>
+            </div>
+            <div class="span9">
+                <input type="text" name="penncard" id="penncard" maxlength="8" value="{{ penncard }}">
+                <span id="instructions" style="display: none">Enter your 8-digit Penncard</span>
+            </div>
         </div>
-        <div class="span9">
-            <input type="text" name="penncard" id="penncard" maxlength="8" value="{{ penncard }}">
-            <div id="instructions" style="display: none">Enter your 8-digit Penncard</div>
+        <div class="row-fluid">
+            <div class="span3">
+                <b>PIN:</b>
+            </div>
+            <div class="span9">
+                <input type="password" name="pin" maxlength="4">
+            </div>
+            <input type="submit" value="Log In">
         </div>
-    </div>
-    <div class="row-fluid">
-        <div class="span3">
-            <b>PIN:</b>
-        </div>
-        <div class="span9">
-            <input type="password" name="pin" maxlength="4">
-        </div>
-        <input type="submit" value="Log In">
-    </div>
-</form>
+    </form>
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script type="text/javascript">
-$(function() {
-    $("#send_pin").click(function() {
-        var penncard = $("#penncard").val();
-        if (penncard.length == 8) {
-            window.location="/send_pin?penncard=" + penncard;
-        } else {
-            $("#instructions").show();
-        }
-    });
+    $(function() {
+        $("#send_pin").click(function() {
+            var penncard = $("#penncard").val();
+            if (penncard.length == 8) {
+                window.location="/send_pin?penncard=" + penncard;
+            } else {
+                $("#instructions").show();
+            }
+        });
     // oh god fix
     function getURLParameter(name) {
         return decodeURI(
             (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
-        );
+            );
     }
     var placeholder = getURLParameter("penncard");
     if (placeholder != "null") {

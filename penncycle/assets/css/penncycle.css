@@ -6434,7 +6434,7 @@ h2 li {
 }
 @media (min-width: 767px) {
   .navbar {
-    width: 680px;
+    width: 700px;
   }
 }
 .messages .info {
@@ -6450,7 +6450,18 @@ h2 li {
 .asteriskField {
   display: none;
 }
-.radio {
-  /*float: left;*/
-
+.checklist {
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0 auto;
+}
+.checklist h3 {
+  border-bottom: 1px dotted black;
+}
+.checklist h2 {
+  border-bottom: 2px solid black;
+}
+.checklist .pull-right {
+  margin-top: 10px;
 }

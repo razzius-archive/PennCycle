@@ -1,58 +1,111 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  {{block.super}} Welcome back, {{ student.name }}
+{{block.super}} Welcome back, {{ student.name }}
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+.pricing-table>div {
+}
+.circle {
+    width: 125px;
+    height: 125px;
+    border: 2px solid #fff;
+    border-radius: 100%;
+    background-color: #bbb;
+    transition: all .2s;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 20px;
+}
+.circle:hover {
+    background-color: #ddd;
+}
+.price {
+    display: block;
+    text-align: center;
+}
+.plan-name {
+    font-weight: bold;
+    display: block;
+    text-align: center;
+}
+
+</style>
 {% endblock %}
 
 {% block content %}
-    <div class="well">
-    	<h3>Welcome back, {{ student.name }}!</h3>
-    	{% if student.current_payments %}
-    		<h4>Your current plans are:</h4>
-    		{% for payment in student.current_payments %}
-    			<p>{{payment.plan.name}}: Expires {{payment.plan.end_date}}. <br></p>
-    		{% endfor %}
-    	{% else %}
-    		<h4>You currently don't have any plans.</h4>
-            <a href="/selectpayment/" class="btn btn-primary">Sign up for a plan &raquo;</a>
-    	{% endif %}
-        {% if student.waiver_signed %}
-            <p>Waiver signed: <i class="icon-ok-circle icon-large"></i></p>
-    	{% else %}
-    		<h3>You must sign the following waiver before you are eligible to ride.</h3>
-    		<div class='waiver-wrapper'>
-    	       {% include "waiver.html" %}
-    		</div>
+<div class="well span11">
+    <div class="row-fluid">
+        <div class="span7">
+            <div class="pricing-table">
+                <div class="circle" id="day_plan">
+                    <span class="plan-name">Day Plan</span>
+                    <span class="price">$3</span>
+                </div>
+                <div class="circle" id="month_plan">
+                    <span class="plan-name">Basic Plan</span>
+                    <span class="price">$9/month</span>
+                </div>
+                <div class="circle" id="day_plan">
+                    <span class="plan-name">Unlimited Plan</span>
+                    <span class="price">$29/month</span>
+                </div>
+            </div>
+
+            {% if not student.waiver_signed %}
+            <h3>You must sign the following waiver before you are eligible to ride.</h3>
+            <div class='waiver-wrapper'>
+                {% include "waiver.html" %}
+            </div>
             <br>
-    		<button id="accept" class="btn btn-primary">I Accept this Waiver &#187;</button>
+            <button id="accept" class="btn btn-primary">I Accept this Waiver &#187;</button>
             <span id="waiver-result"></span>
             <br>
             <label>Clicking this button counts as your digital signature and is legally binding</label>
-    	{% endif %}
-        {% if student.can_ride %}
-            <h4>You are currently eligible to ride! Visit our <a href="/locations/">locations</a> page to find the nearest bikes.</h4>
-        {% endif %}
+            {% endif %}
+
+        </div>
+        <div class="checklist span5">
+
+            <h2>Signup Checklist</h2>
+            <h3>Signed up: <i class="icon-ok-circle pull-right"></i></h3>
+            <h3>
+                Waiver signed:
+                {% if student.waiver_signed %}
+                <i class="icon-ok-circle pull-right"></i>
+                {% else %}
+                <i class="icon-circle-blank pull-right"></i>
+                {% endif %}
+            </h3>
+            <h3>Bought plan: </h3>
+
+        </div>
     </div>
+    <div class="row-fluid text-center">Have any questions? Email <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a>
+    </div>
+</div>
 {% endblock %}
 
-{% block scripts %}
-<script src="{{ STATIC_URL }}js/django_ajax.js" type="text/javascript"></script>
-<script>
-    $("#accept").click(function() {
-        $.ajax({
-            type: "POST",
-            url: "/verify_waiver",
-            data: {
-                pennid: "{{ student.penncard }}",
-            },
-            dataType: 'json',
-            error: function(xhr, status, exception) {
-                $("#waiver-result").html("There was a problem with our server. Try refreshing the page.");
-            },
-            success: function(xhr, status, exception) {
-                $("#waiver-result").html("Successfully submitted waiver.");
-            }
+    {% block scripts %}
+    <script src="{{ STATIC_URL }}js/django_ajax.js" type="text/javascript"></script>
+    <script>
+        $("#accept").click(function() {
+            $.ajax({
+                type: "POST",
+                url: "/verify_waiver",
+                data: {
+                    pennid: "{{ student.penncard }}",
+                },
+                dataType: 'json',
+                error: function(xhr, status, exception) {
+                    $("#waiver-result").html("There was a problem with our server. Try refreshing the page.");
+                },
+                success: function(xhr, status, exception) {
+                    $("#waiver-result").html("Successfully submitted waiver.");
+                }
+            });
         });
-    });
-</script>
-{% endblock %}
+    </script>
+    {% endblock %}
