@@ -5,10 +5,12 @@
 {% endblock %}
 
 {% block content %}
+<div class="span8 offset2 well">
   {% include 'safety_info.html' %}
   {% if messages %}
   <div class="btn btn-primary" href="/welcome/">
     My Dashboard
   </div>
   {% endif %}
+  </div>
 {% endblock %}

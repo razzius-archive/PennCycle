@@ -1,7 +1,6 @@
 import re
 import datetime
 
-from django.core.mail import send_mail
 from app.models import Student, Bike, Ride, Station
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -14,8 +13,6 @@ import util
 
 def send_pin(request):
     penncard = request.GET.get("penncard")
-    print(request.GET)
-    print(penncard)
     try:
         student = Student.objects.get(penncard=penncard)
     except Student.DoesNotExist:

@@ -1,18 +1,14 @@
-import datetime
-
-# from django.contrib.auth.decorators import login_required
-# from django.shortcuts import render_to_response
-# from django.template import RequestContext
 from django.views.generic import TemplateView
 from django.http import HttpResponse
-from django.core.mail import send_mail
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
 from braces.views import LoginRequiredMixin
 
-from app.models import Bike, Ride, Station, Student
+from app.models import Bike, Student
 
+from util.util import email_razzi
+from util.lend import make_ride, checkin_ride
 
 class Dashboard(LoginRequiredMixin, TemplateView):
     template_name = "staff/index.html"
@@ -31,7 +27,7 @@ class Dashboard(LoginRequiredMixin, TemplateView):
         if user.is_superuser:
             bikes_for_checkout = available_bikes
         else:
-            bikes_for_checkout = available_bikes.fiter(location=station)
+            bikes_for_checkout = available_bikes.filter(location=station)
 
         for bike in bikes_for_checkout:
             ride = bike.rides.latest("checkout_time")
@@ -79,11 +75,7 @@ def checkout(request):
     try:
         student = request.POST.get("student")
         bike = request.POST.get("bike")
-        student = Student.objects.get(name=student)
-        bike = Bike.objects.get(name=bike)
-        ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
-        student.payments.filter(status="available")[0].status = "out"
-        ride.save()
+        make_ride(student, bike)
         return HttpResponse("success")
     except Exception as error:
         email_razzi("Admin crashed. Locals: {}. Error: {}".format(locals(), error))
@@ -95,14 +87,10 @@ def checkout(request):
 def checkin(request):
     try:
         location = request.user.groups.exclude(name='Associate')[0].name
-        station = Station.objects.get(name=location)
         student_id = request.POST.get("student_id")
         student = Student.objects.get(id=student_id)
         ride = student.ride_set.latest("checkout_time")
-        ride.checkin_time = datetime.datetime.now()
-        ride.checkin_station = station
-        ride.bike.status = "available"
-        ride.save()
+        checkin_ride(ride, location)
         return HttpResponse("success")
     except Exception as error:
         email_razzi("Admin crashed. Locals: {}".format(locals()))
@@ -113,7 +101,3 @@ def checkin(request):
 def end_session(request):
     logout(request)
     return redirect("/")
-
-
-def email_razzi(message):
-    send_mail('an important email from the PennCycle app', str(message), 'messenger@penncycle.org', ['razzi53@gmail.com'], fail_silently=True)

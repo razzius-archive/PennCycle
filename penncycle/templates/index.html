@@ -4,47 +4,105 @@
 {{block.super}} Home
 {% endblock %}
 
+{% block css %}
+<style type="text/css">
+  .circle {
+    width: 125px;
+    height: 125px;
+    border: 2px solid #fff;
+    border-radius: 100%;
+    background-color: #ddd;
+    transition: all .2s;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 20px;
+  }
+  .basic {
+    background-color: hsla(200, 100%, 50%, .2);
+  }
+  .spacer {
+    display: table-cell;
+    width: 45px;
+  }
+  .price {
+    display: block;
+    text-align: center;
+  }
+  .plan-name {
+    font-weight: bold;
+    display: block;
+    text-align: center;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="row-fluid well span8 offset2">
-  <div class="span6">
-    <h1 class="textCentered">{{ psa_count }}<small>/13</small> bikes are available right now.</h1>
-    <h4 class="textcentered">During the summer, bikes are available at <a href="/locations">Penn Student Agencies</a>. Check bikes out for 1 day at a time with our basic plan or <a href="/signup">sign up</a> for an unlimited plan to keep bikes out for as long as you'd like.</h4>
-  </div>
-  <div class="span6" style="padding: 20px;">
-    <h1>Summer Session 2: $25</h1>
-    <h4>Unlimited rides until the end of Summer Session 2 for only $25.</h4>
-    <form method="GET" action="/lookup/">
-      <input type="text" name="penncard" maxlength="8" placeholder="Enter your PennCard">
-      <button class="btn btn-primary">
-        Get Started &raquo;
-      </button>
-      <button class="btn">
-        <a href="plans">View all plans</a>
-      </button>
-    </form>
+  <div class="row-fluid">
+    <div class="span6">
+      <h1 class="textCentered">{{ psa_count }}<small>/13</small> bikes are available right now.</h1>
+      <h4 class="textcentered">During the summer, bikes are available at <a href="/locations">Penn Student Agencies</a>. Check bikes out for 1 day at a time with our basic plan or <a href="/signup">sign up</a> for an unlimited plan to keep bikes out for as long as you'd like.</h4>
+    </div>
+    <div class="span6" style="padding: 20px;">
+      <h1>Basic Plan: $9</h1>
+      <h4>Unlimited 24-hour rides for only $9.</h4>
+      <form method="GET" action="/lookup/">
+        <input type="text" name="penncard" maxlength="8" placeholder="Enter your PennCard">
+        <div class="btn btn-primary">
+          Get Started &raquo;
+        </div>
+        <div class="btn">
+          <a href="plans">View all plans</a>
+        </div>
+      </form>
+    </div>
   </div>
   <hr>
-  <h2>
-    <ol>
-      <li><a href="/plans">Check out our plans.</a></li>
-      <li><a href="/signup/">Sign up or view account by entering your penncard.</a></li>
-      <li>Come to one of our <a href="/locations">locations</a>. Show us your PennCard.</li>
-      <li>Take your PennCycle for a ride!</li>
-      <li>Return by <a href="/locations">closing time</a> (or keep it overnight for $5).
-      </li>
-    </ol>
-  </h2>
+  <h3 class="text-center">Our Plans</h3>
+  <div class="row-fluid">
+    <div class="span3 offset1">
+      <div class="circle" id="day_plan">
+        <span class="plan-name">Day Plan</span>
+        <span class="price">$4</span>
+      </div>
+      <br>
+      <div>
+        <div>Good for one 24-hour checkout.</div>
+      </div>
+    </div>
+    <div class="span3 offset1">
+      <div class="circle basic" id="month_plan">
+        <span class="plan-name">Basic Plan</span>
+        <span class="price">$9/month</span>
+      </div>
+      <br>
+      <div>Unlimited 24-hour checkouts. $4 for each day the bike is checked in late.</div>
+    </div>
+    <div class="span3 offset1">
+      <div class="circle" id="unlimited_plan">
+        <span class="plan-name">Unlimited Plan</span>
+        <span class="price">$29/month</span>
+      </div>
+      <br>
+      <div>
+        <div>Keep any bike out for as long as you'd like.</div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <p class="text-center">Helmets and locks are included with all plans. <a class="btn btn-primary offset1" href="/signup/">Sign Up &raquo;</a></p>
   <hr>
-  <div class="fb-like offset1" data-href="http://www.facebook.com/pages/PennCycle/345622718793885" data-send="false" data-width="500" data-show-faces="true"></div>
+  <ol class="offset3">
+    <li><a href="/signup/">Sign up</a> or <a href="/signin">sign in</a> and buy a plan.</li>
+    <li>Come to one of our <a href="/locations">locations</a>. Show us your PennCard.</li>
+    <li>Take your PennCycle for a ride!</li>
+    <li>Return by <a href="/locations">closing time</a> (or keep it overnight for $5).
+    </li>
+  </ol>
   <hr>
   <center>
     <img src='{{ STATIC_URL }}img/katie-sitting-reading.jpg' class="thumbnail">
   </center>
-
-  <p>Philly is one of the best parts about being at Penn, but getting around can be an incredible pain. Biking is the easiest option, but owning a bike? Not so much.</p>
-  <p>Who wants to spend their time oiling a chain, fixing a brake, or storing a bike for the summer and winter? Who wants to pay upwards of $500 for a bike when textbooks and trips to Blarney are taking their toll?</p>
-  <p>Not the Penn Students we know.</p>
-  <p>PennCycle is affordable, reliable, and super easy &#8212; not to mention fun, sustainable, and healthy. Just like transportation should be.</p>
-  <p>Happy Cycling!</p>
+  <p class="text-center">Happy Cycling!</p>
 </div>
 {% endblock %}

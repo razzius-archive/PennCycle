@@ -20,7 +20,7 @@
   clear: both;
 }
 .hide-text {
-  font: 0/0 a;
+  font: NaN a;
   color: transparent;
   text-shadow: none;
   background-color: transparent;
@@ -6363,7 +6363,7 @@ img.profile {
   line-height: 80%;
 }
 body {
-  font-weight: 300;
+  font-weight: 200;
 }
 .well {
   background-color: rgba(238, 238, 238, 0.85);
@@ -6373,8 +6373,8 @@ body {
 }
 .bg-image {
   position: fixed;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   min-height: 50%;
   min-width: 50%;
   width: 100%;
@@ -6383,14 +6383,10 @@ body {
 .centered {
   display: block;
   position: relative;
-  margin: 0 auto 0 auto;
+  margin: 0 auto;
 }
 .opaque {
   background-color: rgba(238, 238, 238, 0.85);
-}
-.paddedheader {
-  padding-left: 20px;
-  padding-top: 20px;
 }
 .waiver-wrapper {
   height: 300px;
@@ -6407,15 +6403,8 @@ body {
 .navbar .nav li a {
   font-weight: bold;
 }
-.navbar .nav > li > a:hover {
-  font-weight: bold;
-}
-.navbar .nav .active > a,
 .navbar .nav .active > a:hover {
-  color: #9d261d;
-}
-.nav > li > a:hover {
-  background-color: #ffffff;
+  color: red;
 }
 h1,
 h2,
@@ -6425,16 +6414,12 @@ h5,
 h6 {
   font-weight: 200;
 }
-h1,
-h2 li {
-  line-height: 40px;
-}
 h2 li {
   font-size: 24px;
 }
 @media (min-width: 767px) {
   .navbar {
-    width: 700px;
+    width: 650px;
   }
 }
 .messages .info {

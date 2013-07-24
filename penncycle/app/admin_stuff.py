@@ -34,11 +34,11 @@ class PaymentAdmin(admin.ModelAdmin):
     list_per_page = 500
     list_display = (
         'student', 'plan', 'amount', 'payment_type',
-        'satisfied', 'date', 'status'
+        'satisfied', 'status'
     )
     search_fields = ('student__name', 'plan__name',)
     list_filter = ('plan', 'payment_type', 'satisfied')
-    date_hierarchy = 'date'
+    date_hierarchy = 'purchase_date'
 
 
 class BikeAdmin(admin.ModelAdmin):

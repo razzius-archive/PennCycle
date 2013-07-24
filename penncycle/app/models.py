@@ -6,10 +6,9 @@ from django.core.mail import send_mail
 from django_localflavor_us.models import PhoneNumberField
 from django.db import models
 from django.core.validators import RegexValidator
+from django.db.models import Q
 
 from south.modelsinspector import add_introspection_rules
-
-import hour_util
 
 # Necessary because South hasn't been updated since localflavors was broken up.
 add_introspection_rules([], ['django_localflavor_us\.models\.PhoneNumberField'])
@@ -69,37 +68,29 @@ PAYMENT_CHOICES = (
     ('bursar', 'bursar'),
     ('credit', 'credit'),
     ('group', 'group'),
-    ('stouffer', 'stouffer'),
     ('free', 'free'),
     ('other', 'other'),
-    ('fisher', 'fisher')
 )
 
 
 class Plan(models.Model):
     name = models.CharField(max_length=100)
     cost = models.IntegerField()
-    start_date = models.DateField()
-    end_date = models.DateField()
-    description = models.TextField(max_length=150, default="Details coming soon!")
-    banner = models.CharField(max_length=50, default="")
+    description = models.TextField(max_length=150, null=True)
 
     def __unicode__(self):
         return self.name + ': $' + str(self.cost)
 
-
 class Payment(models.Model):
     class Meta:
-        get_latest_by = 'date'
+        get_latest_by = 'purchase_date'
 
     amount = models.DecimalField(decimal_places=2, max_digits=6)
-    plan = models.ForeignKey(
-        Plan, limit_choices_to={
-            'end_date__gte': datetime.date.today(),
-        }
-    )
+    plan = models.ForeignKey(Plan)
     student = models.ForeignKey('Student', related_name="payments")
-    date = models.DateField(auto_now_add=True)
+    purchase_date = models.DateField(auto_now_add=True)
+    payment_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
     satisfied = models.BooleanField(default=False)
     payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, null=True)
     status = models.CharField(max_length=100, default='available')
@@ -136,7 +127,6 @@ class Student(models.Model):
     living_location = models.CharField(max_length=100, choices=LIVING_LOCATIONS)
     waiver_signed = models.BooleanField(default=False)
     staff = models.NullBooleanField(default=False)
-    plan = models.ManyToManyField('Plan', null=True)
     pin = models.CharField(max_length=4, default=generate_pin)
 
     @property
@@ -145,20 +135,24 @@ class Student(models.Model):
 
     @property
     def paid_now(self):
-        return len(self.current_payments) > 0
+        return bool(self.current_payments)
 
     @property
     def current_payments(self):
         today = datetime.date.today()
-        return self.payments.filter(
-            satisfied=True,
-            plan__start_date__lte=today,
-            plan__end_date__gte=today,
+        payments = self.payments.filter(
+            Q(
+                satisfied=True,
+                end_date__gte=today,
+            ) | Q(
+                end_date__isnull=True
+            )
         )
+        return payments
 
     @property
     def can_ride(self):
-        return self.current_payments.filter(status='available') and self.waiver_signed
+        return bool(self.waiver_signed and self.current_payments.filter(status='available'))
 
     def __unicode__(self):
         return u'%s %s' % (self.name, self.penncard)
@@ -181,10 +175,6 @@ class Station(models.Model):
     def is_open(self):
         hour = datetime.datetime.now().hour
         return hour > 10 and hour < 18
-
-    @property
-    def comma_name(self):
-        return ", ".join(self.hours.split("\n"))
 
 
 class Bike(models.Model):
@@ -226,8 +216,8 @@ class Ride(models.Model):
             'payments__status': 'available',
             'waiver_signed': True,
             'payments__satisfied': True,
-            'payments__plan__end_date__gte': datetime.date.today(),
-            'payments__plan__start_date__lte': datetime.date.today(),
+            'payments__end_date__gte': datetime.date.today(),
+            'payments__start_date__lte': datetime.date.today(),
         },
     )
     bike = models.ForeignKey('Bike', limit_choices_to={'status': 'available'}, related_name='rides')
@@ -252,20 +242,6 @@ class Ride(models.Model):
         else:
             return 'in'
 
-    def save(self):
-        print 'in Ride save method'
-        super(Ride, self).save()
-        if self.checkin_time is None:
-            self.bike.status = 'out'
-            payment = self.rider.payments.latest()
-            payment.status = 'out'
-        else:
-            self.bike.status = 'available'
-            payment = self.rider.payments.latest()
-            payment.status = 'available'
-        self.bike.save()
-        payment.save()
-
     def __unicode__(self):
         return u'%s on %s' % (self.rider, self.checkout_time)
 
@@ -280,12 +256,12 @@ class Comment(models.Model):
     def save(self):
         super(Comment, self).save()
         message = '''
-            Comment: \n %s \n \n
-            Time: \n %s \n \n
-            Student: \n %s \n \n
-            Ride: \n %s \n \n
-            Marked as problem? \n %s \n \n
-        ''' % (self.comment, self.time, self.student, self.ride, self.is_problem)
+            Comment: {}\n
+            Time: {}\n
+            Student: {}\n
+            Ride: {}\n
+            Marked as problem: {}\n
+        '''.format(self.comment, self.time, self.student, self.ride, self.is_problem)
         send_mail('PennCycle: Comment Submitted', message, 'messenger@penncycle.org', ['messenger@penncycle.org'])
 
     def __unicode__(self):

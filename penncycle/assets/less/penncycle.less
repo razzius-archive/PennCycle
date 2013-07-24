@@ -8,125 +8,104 @@
 @font-face { font-family: Gotham; font-style: normal; font-weight:bolder; src: url('../Gotham/GothamHTF-Black.otf');  }
 @font-face { font-family: Gotham; font-style: normal; font-weight:bold; src: url('../Gotham/GothamHTF-Bold.otf');  }
 
-// in variables:
 @blueDarkest: #212e65;
 @baseFontFamily: Gotham, Helvetica, Arial, sans-serif;
 @navbarLinkColor: @blueDarkest;
 @navbarLinkColorHover: @red;
 
 img.profile {
-  float: left;
-  overflow: hidden;
-  margin: 10px 5px 0px 0px;
-  width: 90px;
-  height: 90px;
+	float: left;
+	overflow: hidden;
+	margin: 10px 5px 0px 0px;
+	width: 90px;
+	height: 90px;
 }
 .school {
 	line-height: 80%;
 }
 body{
-  font-weight: 300;
+	font-weight: 200;
 }
 .well {
-  background-color: @fadedwhite;
+	background-color: @fadedwhite;
 }
 .foreground {
-    background-color: fade(@grayLighter, 95%);
+		background-color: fade(@grayLighter, 95%);
 }
 .bg-image {
-    position:fixed;
-	top:0px;
-	left:0px;
+	position:fixed;
+	top:0;
+	left:0;
 	min-height:50%;
 	min-width:50%;
 	width:100%;
 	z-index:-1000;
 }
 .centered {
-  display: block;
-  position: relative;
-  margin: 0 auto 0 auto;
+	display: block;
+	position: relative;
+	margin: 0 auto;
 }
 .opaque {
-  background-color: @fadedwhite;
-}
-.paddedheader {
-  padding-left: 20px;
-  padding-top: 20px;
+	background-color: @fadedwhite;
 }
 .waiver-wrapper {
 	height: 300px;
 	overflow: scroll;
 	padding:10px;
-    background-color: white;
+	background-color: white;
 }
 .container {
 	padding: 0 25px;
 }
 .navbar-inner .container, {
-  background-color: @white;
+	background-color: @white;
 }
 .navbar .nav li a {
 	font-weight: bold;
 }
-.navbar .nav > li > a:hover {
-  // background-color: @white;
-  font-weight: bold;
-}
-.navbar .nav .active > a,
 .navbar .nav .active > a:hover {
-	color: @red;
+	color: red;
 }
-.nav > li > a:hover {
-	background-color: @white;
-}
-/*h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {
 	font-weight: 200;
 }
-h1, h2 li {
-	line-height: @baseLineHeight * 2;
-}*/
 h2 li {
 	font-size: 24px;
 }
 @media (min-width: 767px) {
 	.navbar {
-		width: 700px;
-		.navbar-text {
-			a:hover {
-				// background-color: white;
-			}
-		}
+		width: 650px;
 	}
 }
 
 .messages .info {
-    width: 70%;
-    background-color: white;
-    border-radius: 5px;
-    padding: 10px;
+	width: 70%;
+	background-color: white;
+	border-radius: 5px;
+	padding: 10px;
 }
 
 .btn a:hover {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 /*Rendering signup form*/
 .asteriskField {
-    display: none;
+	display: none;
 }
 .checklist {
-    background-color: white;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 0 auto;
+	background-color: white;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 0 auto;
 }
 .checklist h3 {
-    border-bottom: 1px dotted black;
+	border-bottom: 1px dotted black;
 }
 .checklist h2 {
-    border-bottom: 2px solid black;
+	border-bottom: 2px solid black;
 }
 .checklist .pull-right {
-    margin-top: 10px;
+	margin-top: 10px;
 }

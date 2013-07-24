@@ -5,6 +5,7 @@ from django.contrib.auth.views import login, logout
 admin.autodiscover()
 
 from app.views import *
+from app.dump import dump
 from mobile.views import sms, debug, send_pin
 
 urlpatterns = patterns(
@@ -12,7 +13,8 @@ urlpatterns = patterns(
     url(r'^manage/', include(admin.site.urls)),
     url(r'^admin/', include('staff.urls')),
     url(r'^login/$', login),
-    url(r'^logout/$', logout),
+    url(r'^logout/$', logout, {'next_page': "/"}),
+
     # Normal pages
     (r'^$', Index.as_view()),
     (r'^signup/$', Signup.as_view()),
@@ -21,28 +23,23 @@ urlpatterns = patterns(
     (r'^safety/$', Safety.as_view()),
     (r'^team/$', Team.as_view()),
     (r'^locations/$', Locations.as_view()),
-    (r'^plans/$', Plans.as_view()),
     (r'^welcome/$', welcome),
     (r'^safety/$', Safety),
-    (r'^thankyou/(?P<penncard>\d{1,8})/$', thankyou),
-    (r'^pay/(?P<payment_type>\w+)/(?P<penncard>\d{8})/(?P<plan>\d+)/$', pay),
-    (r'^select_payment/$', select_payment),
 
     # Backend-related
     (r'^verify_payment/$', verify_payment),
     (r'^verify_waiver/$', verify_waiver),
     (r'^verify_pin/$', verify_pin),
-    (r'^addpayment/$', addpayment),
     (r'^lookup/$', lookup),
+    (r'^bursar/$', bursar),
+    (r'^credit/$', credit),
+    (r'^dump/$', dump),
 
     # Mobile
     (r'^combo/$', combo),
-    (r'sms/$', sms),
-    (r'debug/$', debug),
-    (r'send_pin/$', send_pin),
-
-    # PhoneGap
-    (r'^api/', include('api.urls')),
+    (r'^sms/$', sms),
+    (r'^debug/$', debug),
+    (r'^send_pin/$', send_pin),
 
     # Stats
     (r'^stats/$', Stats.as_view()),

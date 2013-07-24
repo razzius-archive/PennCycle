@@ -6,106 +6,287 @@
 
 {% block css %}
 <style type="text/css">
-.pricing-table>div {
-}
-.circle {
-    width: 125px;
-    height: 125px;
-    border: 2px solid #fff;
-    border-radius: 100%;
-    background-color: #bbb;
-    transition: all .2s;
-    display: table-cell;
-    vertical-align: middle;
-    font-size: 20px;
-}
-.circle:hover {
-    background-color: #ddd;
-}
-.price {
-    display: block;
-    text-align: center;
-}
-.plan-name {
-    font-weight: bold;
-    display: block;
-    text-align: center;
-}
+	.circle {
+		width: 125px;
+		height: 125px;
+		border: 2px solid #fff;
+		border-radius: 100%;
+		background-color: #ddd;
+		transition: all .2s;
+		display: table-cell;
+		vertical-align: middle;
+		font-size: 20px;
+		cursor: pointer !important;
+	}
+	.spacer {
+		display: table-cell;
+		width: 45px;
+	}
+	.circle:hover {
+		background-color: hsla(200, 100%, 50%, .2);
+	}
+	.purchased {
+		background-color: hsla(120, 100%, 50%, .4);
+	}
+	.selected {
+		background-color: hsla(200, 100%, 50%, .4);
+	}
+	.selected:hover {
+		background-color: hsla(200, 100%, 50%, .5);
+	}
+	.price {
+		display: block;
+	}
+	.plan-name {
+		font-weight: bold;
+		display: block;
+	}
 
+	form input {
+		margin-left: 30px !important;
+		margin-right: 4px !important;
+		margin-bottom: 4px !important;
+	}
+	i.success {
+		color: green;
+	}
+	small {
+		font-size: 10px;
+	}
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="well span11">
-    <div class="row-fluid">
-        <div class="span7">
-            <div class="pricing-table">
-                <div class="circle" id="day_plan">
-                    <span class="plan-name">Day Plan</span>
-                    <span class="price">$3</span>
-                </div>
-                <div class="circle" id="month_plan">
-                    <span class="plan-name">Basic Plan</span>
-                    <span class="price">$9/month</span>
-                </div>
-                <div class="circle" id="day_plan">
-                    <span class="plan-name">Unlimited Plan</span>
-                    <span class="price">$29/month</span>
-                </div>
-            </div>
-
-            {% if not student.waiver_signed %}
-            <h3>You must sign the following waiver before you are eligible to ride.</h3>
-            <div class='waiver-wrapper'>
-                {% include "waiver.html" %}
-            </div>
-            <br>
-            <button id="accept" class="btn btn-primary">I Accept this Waiver &#187;</button>
-            <span id="waiver-result"></span>
-            <br>
-            <label>Clicking this button counts as your digital signature and is legally binding</label>
-            {% endif %}
-
-        </div>
-        <div class="checklist span5">
-
-            <h2>Signup Checklist</h2>
-            <h3>Signed up: <i class="icon-ok-circle pull-right"></i></h3>
-            <h3>
-                Waiver signed:
-                {% if student.waiver_signed %}
-                <i class="icon-ok-circle pull-right"></i>
-                {% else %}
-                <i class="icon-circle-blank pull-right"></i>
-                {% endif %}
-            </h3>
-            <h3>Bought plan: </h3>
-
-        </div>
-    </div>
-    <div class="row-fluid text-center">Have any questions? Email <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a>
-    </div>
+	<div class="row-fluid">
+		<div class="span7">
+			<h2 class="text-center">Choose A Plan</h2>
+			<div class="row-fluid">
+				<div class="span4">
+					<div class="circle text-center
+					{% if day %}
+					purchased
+					{% endif %}
+					" id="day_plan">
+					<span class="plan-name">Day</span>
+					<span class="price">$4</span>
+				</div>
+				<br>
+				<div>Good for one 24-hour checkout.</div>
+			</div>
+			<div class="span4">
+				<div class="circle text-center
+				{% if basic %}
+				purchased
+				{% endif %}
+				" id="basic_plan">
+				<span class="plan-name">Basic</span>
+				<span class="price">$9/month</span>
+			</div>
+			<br>
+			<div>Unlimited 24-hour checkouts. $3 for each day the bike is checked in late.</div>
+		</div>
+		<div class="span4">
+			<div class="circle text-center
+			{% if unlimited %}
+			purchased
+			{% endif %}
+			" id="unlimited_plan">
+			<span class="plan-name">Unlimited</span>
+			<span class="price">$29/month</span>
+		</div>
+		<br>
+		<div>
+			<div>Keep any bike out for as long as you like.</div>
+		</div>
+	</div>
 </div>
+<br>
+<p class="text-center">Helmet and lock rentals are included with all plans.<p>
+	<hr>
+	<form id="payment_methods" class="row-fluid text-center">
+		Pay By:
+		<input type="radio" name="payment" value="bursar" checked>Bursar
+		<input type="radio" name="payment" value="credit">Credit
+		<input type="radio" name="payment" value="cash">Cash
+	</form>
+	<hr>
+	<div class="descriptions">
+		<p id="bursar_description">Bursar is a payment option provided by Student Financial Services. Bursar charges will be added to your next Penn bill, but you can start biking immediately.</p>
+		<p id="credit_description" class="hidden">Credit card purchases are handled on an external website. Please allow a few hours for your payment to be processed.</p>
+		<p id="cash_description" class="hidden">To pay by cash, come to <a href="https://www.facebook.com/pages/Penn-Student-Agencies/112169602192296?id=112169602192296&sk=page_map" target="blank">Penn Student Agencies</a> and pay at the front counter.<br><br>
+		</p>
+	</div>
+	<div class="row-fluid text-center">
+		<div class="span4 offset1">
+			<p class="text-right"><span id="plan_name"></span> Plan: $<span id="subtotal">---</span></p>
+			<p class="text-right">Tax: $<span id="tax">---</span></p>
+			<h4 class="text-right">Total: $<span id="total">---</span></h4>
+		</div>
+		<div class="span5 offset2">
+			<div class="btn btn-primary disabled" id="purchase_button">
+				Choose a plan
+			</div>
+			<br><br>
+			<p id="renew" style="display:none">
+				<input type="checkbox"> Automatically Renew
+			</p>
+		</div>
+	</div>
+	{% if not student.waiver_signed %}
+	<h4>You must sign the following waiver before you are eligible to ride.</h4>
+	<div class='waiver-wrapper'>
+		{% include "waiver.html" %}
+	</div>
+	<br>
+	<button id="accept" class="btn btn-primary">I Accept this Waiver &#187;</button>
+	<span id="waiver-result"></span>
+	<br>
+	<label>Clicking this button counts as your digital signature and is legally binding</label>
+	{% endif %}
+</div>
+<div class="span5">
+	<div class="checklist">
+		<h2 class="text-center">Signup Checklist</h2>
+		<h3>Signed up: <i class="icon-ok-circle pull-right"></i></h3>
+		<h3>
+			Waiver signed:
+			{% if student.waiver_signed %}
+			<i class="icon-ok-circle pull-right"></i>
+			{% else %}
+			<i class="icon-circle-blank pull-right"></i>
+			{% endif %}
+		</h3>
+		<h3>
+			Bought plan:
+			{% if student.paid_now %}
+			<i class="icon-ok-circle pull-right"></i>
+			{% else %}
+			<i class="icon-circle-blank pull-right"></i>
+			{% endif %}
+		</h3>
+	</div>
+	<br>
+	<div class="text-center">
+		<img src="{{ STATIC_URL}}img/bern.png" class="text-center">
+	</div>
+	<p> You must have a helmet to ride PennCycle. If you need one, you can borrow or buy a helmet from <a href="https://www.facebook.com/pages/Penn-Student-Agencies/112169602192296?id=112169602192296&sk=page_map" target="blank">Penn Student Agencies</a>.</p>
+</div>
+<div class="row-fluid text-center">Have any questions? Email <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a>
+</div>
+<form name="vpul_form" id="vpul_form" method="post" action="https://secure.www.upenn.edu/vpul/psa/bike/index.php" style="display:none;">
+  <input id="payment_id" name="ordernumber" value='12345678'>
+  <input id="amount_id" name="amount" value="9">
+</form>
 {% endblock %}
 
-    {% block scripts %}
-    <script src="{{ STATIC_URL }}js/django_ajax.js" type="text/javascript"></script>
-    <script>
-        $("#accept").click(function() {
-            $.ajax({
-                type: "POST",
-                url: "/verify_waiver",
-                data: {
-                    pennid: "{{ student.penncard }}",
-                },
-                dataType: 'json',
-                error: function(xhr, status, exception) {
-                    $("#waiver-result").html("There was a problem with our server. Try refreshing the page.");
-                },
-                success: function(xhr, status, exception) {
-                    $("#waiver-result").html("Successfully submitted waiver.");
-                }
-            });
-        });
-    </script>
-    {% endblock %}
+{% block scripts %}
+<script src="{{ STATIC_URL }}js/django_ajax.js" type="text/javascript"></script>
+<script>
+	$("#accept").click(function() {
+		$.ajax({
+			type: "POST",
+			url: "/verify_waiver/",
+			data: {
+				pennid: "{{ student.penncard }}",
+			},
+			dataType: 'json',
+			error: function(xhr, status, exception) {
+				$("#waiver-result").html("There was a problem with our server. Try refreshing the page.");
+			},
+			success: function(xhr, status, exception) {
+				$("#waiver-result").html("Successfully submitted waiver.");
+				location.reload();
+			}
+		});
+	});
+	function toggle_renew() {
+		if ($("input[name=payment]:checked").val() == "bursar") {
+			if ($("#plan_name").html() != "Day") {
+				$("#renew").show();
+			} else {
+				$("#renew").hide();
+			}
+		} else {
+			$("#renew").hide();
+		}
+	}
+	$(".circle").click(function() {
+		$(this).addClass("selected");
+		$(".circle").not(this).removeClass("selected");
+		$("#purchase_button").removeClass("disabled");
+		switch (this.id) {
+			case "day_plan":
+			$("#subtotal").html("4");
+			$("#tax").html("0.32");
+			$("#total").html("4.32");
+			$("#purchase_button").html("Purchase Day Plan");
+			$("#plan_name").html("Day");
+			break;
+			case "basic_plan":
+			$("#subtotal").html("9");
+			$("#tax").html("0.72");
+			$("#total").html("9.72");
+			$("#purchase_button").html("Purchase Basic Plan");
+			$("#plan_name").html("Basic");
+			break;
+			case "unlimited_plan":
+			$("#subtotal").html("29");
+			$("#tax").html("2.32");
+			$("#total").html("31.32");
+			$("#purchase_button").html("Purchase Unlimited Plan");
+			$("#plan_name").html("Unlimited");
+			break;
+		}
+		toggle_renew();
+	});
+	$("input[type='radio']").click(function() {
+		var desc = $(this).val();
+		var target = $("#" + desc + "_description");
+		$(".descriptions p").not(target).addClass("hidden");
+		target.removeClass("hidden");
+		toggle_renew();
+	});
+
+	$("#purchase_button").click(function() {
+		if ($(this).hasClass("disabled")) {
+			return;
+		}
+		method = $("input[name=payment]:checked").val();
+		var data = {
+			penncard: {{ student.penncard }},
+			renew: $("#renew input").val(),
+			plan: $(".selected")[0].id
+		}
+		if (method == "credit") {
+			var subtotal = $("#subtotal").html()
+			$("#amount_id").val(subtotal);
+			$.ajax({
+				type: "POST",
+				url: "/credit/",
+				data: data,
+				success: function(payment_id) {
+					$("#payment_id").val(payment_id);
+					$("#vpul_form").submit();
+				},
+				error: function (error) {
+					alert(error);
+				}
+			});
+		} else {
+			$.ajax({
+				type: "POST",
+				url: "/" + method + "/",
+				data: data,
+				success: function() {
+					location.reload();
+				},
+				error: function (error) {
+					alert(error);
+				},
+				async: false
+			});
+		}
+	});
+</script>
+{% endblock %}

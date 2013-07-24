@@ -1,5 +1,6 @@
 import xlwt
 import datetime
+import pytz
 
 from django.http import HttpResponse, HttpResponseForbidden
 from django.db.models.loading import get_models, get_app
@@ -24,9 +25,9 @@ def dump(request):
 
     for model in models:
         name = model.__name__
-        print name
+        print(name)
         if name == 'Plan':
-            break
+            continue
         ws = wb.add_sheet(slugify(name))
         xl_export(model, ws, datestyle, plainstyle)
 
@@ -51,11 +52,13 @@ def xl_export(model, ws, datestyle, plainstyle):
                 print type(val)
                 fieldtype = fields[colx].get_internal_type()
                 if fieldtype in ['IntegerField', 'FloatField', 'AutoField']:
-                    print "It's an number!"
+                    print "It's a number!"
                     val = float(val)
                 if fieldtype in ['ForeignKey', 'ManyToMany', 'OneToOne', 'ImageField', 'FileField']:
                     val = str(val)
                 if fieldtype == 'DateTimeField':
+                    if val:
+                        val = val.replace(tzinfo=None)
                     thisstyle = datestyle
                 else:
                     thisstyle = plainstyle
