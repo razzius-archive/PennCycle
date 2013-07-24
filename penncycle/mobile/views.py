@@ -8,8 +8,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 import twilio.twiml
 from django_twilio.decorators import twilio_view
 
-from util.mobile_util import send_pin_to_phone
-from util.util import email_razzi
+from ..util.util import email_razzi
+from ..util.mobile_util import send_pin_to_phone
 
 def send_pin(request):
     penncard = request.GET.get("penncard")

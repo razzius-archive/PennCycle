@@ -53,6 +53,11 @@
 	small {
 		font-size: 10px;
 	}
+	.payments {
+		background-color: white;
+		border-radius: 5px;
+		padding: 5px;
+	}
 </style>
 {% endblock %}
 
@@ -61,9 +66,14 @@
 	<div class="row-fluid">
 		<div class="span7">
 			{% if student.payments %}
-			{% for payment in student.payments.all %}
-			<p>{{payment}} is ready to use</p>
-			{% endfor %}
+				<div class="payments">
+					{% for payment in student.payments.all %}
+						<span class="text-success">{{ payment.plan.name }} is ready to use.</span>
+						{% if payment.renew %}
+							<p class="text-success">It will renew on {{ payment.end_date }}.</p>
+						{% endif %}
+					{% endfor %}
+				</div>
 			{% endif %}
 			<h2 class="text-center">Choose A Plan</h2>
 			<div class="row-fluid">
@@ -73,92 +83,89 @@
 					purchased
 					{% endif %}
 					" id="day_plan">
-						<span class="plan-name">Day</span>
-						<span class="price">$4</span>
-					</div>
+					<span class="plan-name">Day</span>
+					<span class="price">$4</span>
 				</div>
 				<br>
 				<div>Good for one 24-hour checkout.</div>
-				<div class="span4">
-					<div class="circle text-center
-						{% if basic %}
-						purchased
-						{% endif %}
-						" id="basic_plan">
-						<span class="plan-name">Basic</span>
-						<span class="price">$9/month</span>
-					</div>
-				</div>
-				<br>
-				<div>Unlimited 24-hour checkouts. $3 for each day the bike is checked in late.</div>
-				<div class="span4">
-					<div class="circle text-center
-					{% if unlimited %}
-					purchased
-					{% endif %}
-					" id="unlimited_plan">
-						<span class="plan-name">Unlimited</span>
-						<span class="price">$29/month</span>
-					</div>
-				</div>
 			</div>
+			<div class="span4">
+				<div class="circle text-center
+				{% if basic %}
+				purchased
+				{% endif %}
+				" id="basic_plan">
+				<span class="plan-name">Basic</span>
+				<span class="price">$9/month</span>
+			</div>
+			<br>
+			<div>Unlimited 24-hour checkouts. $3 for each day the bike is checked in late.</div>
+		</div>
+		<div class="span4">
+			<div class="circle text-center
+			{% if unlimited %}
+			purchased
+			{% endif %}
+			" id="unlimited_plan">
+			<span class="plan-name">Unlimited</span>
+			<span class="price">$29/month</span>
 		</div>
 		<br>
 		<div>
 			<div>Keep any bike out for as long as you like.</div>
 		</div>
+	</div>
 </div>
 <br>
-<h4 class="text-center">Helmet and lock rentals are included with all plans.</h4>
-<p>When you buy a plan, its time won't start to run out until you first use it.</p>
-<hr>
-<form id="payment_methods" class="row-fluid text-center">
-	Pay By:
-	<input type="radio" name="payment" value="bursar" checked>Bursar
-	<input type="radio" name="payment" value="credit">Credit
-	<input type="radio" name="payment" value="cash">Cash
-</form>
-<hr>
-<div class="descriptions">
-	<p id="bursar_description">Bursar is a payment option provided by Student Financial Services. Bursar charges will be added to your next Penn bill, but you can start biking immediately.</p>
-	<p id="credit_description" class="hidden">Credit card purchases are handled on an external website. Please allow a few hours for your payment to be processed.</p>
-	<p id="cash_description" class="hidden">To pay by cash, come to <a href="https://www.facebook.com/pages/Penn-Student-Agencies/112169602192296?id=112169602192296&sk=page_map" target="blank">Penn Student Agencies</a> and pay at the front counter.<br><br>
-	</p>
-</div>
-<div class="row-fluid text-center">
-	<div class="span4 offset1">
-		<p class="text-right"><span id="plan_name"></span> Plan: $<span id="subtotal">---</span></p>
-		<p class="text-right">Tax: $<span id="tax">---</span></p>
-		<h4 class="text-right">Total: $<span id="total">---</span></h4>
-	</div>
-	<div class="span5 offset2">
-		<div class="btn btn-primary disabled" id="purchase_button">
-			Choose a plan
-		</div>
-		<br><br>
-		<p id="renew" style="display:none">
-			<input type="checkbox"> Automatically Renew
+<p class="text-center">Helmet and lock rentals are included with all plans.<p>
+	<hr>
+	<form id="payment_methods" class="row-fluid text-center">
+		Pay By:
+		<input type="radio" name="payment" value="bursar" checked>Bursar
+		<input type="radio" name="payment" value="credit">Credit
+		<input type="radio" name="payment" value="cash">Cash
+	</form>
+	<hr>
+	<div class="descriptions">
+		<p id="bursar_description">Bursar is a payment option provided by Student Financial Services. Bursar charges will be added to your next Penn bill, but you can start biking immediately.</p>
+		<p id="credit_description" class="hidden">Credit card purchases are handled on an external website. Please allow a few hours for your payment to be processed.</p>
+		<p id="cash_description" class="hidden">To pay by cash, come to <a href="https://www.facebook.com/pages/Penn-Student-Agencies/112169602192296?id=112169602192296&sk=page_map" target="blank">Penn Student Agencies</a> and pay at the front counter.<br><br>
 		</p>
 	</div>
-</div>
-{% if not student.waiver_signed %}
-<h4>You must sign the following waiver before you are eligible to ride.</h4>
-<div class='waiver-wrapper'>
-	{% include "waiver.html" %}
-</div>
-<br>
-<button id="accept" class="btn btn-primary">I Accept this Waiver &#187;</button>
-<span id="waiver-result"></span>
-<br>
-<label>Clicking this button counts as your digital signature and is legally binding</label>
-{% endif %}
+	<div class="row-fluid text-center">
+		<div class="span4 offset1">
+			<p class="text-right"><span id="plan_name"></span> Plan: $<span id="subtotal">---</span></p>
+			<p class="text-right">Tax: $<span id="tax">---</span></p>
+			<h4 class="text-right">Total: $<span id="total">---</span></h4>
+		</div>
+		<div class="span5 offset2">
+			<div class="btn btn-primary disabled" id="purchase_button">
+				Choose a plan
+			</div>
+			<br><br>
+			<p id="renew" style="display:none">
+				<input type="checkbox"> Automatically Renew
+			</p>
+		</div>
+	</div>
+	{% if not student.waiver_signed %}
+	<h4>You must sign the following waiver before you are eligible to ride.</h4>
+	<div class='waiver-wrapper'>
+		{% include "waiver.html" %}
+	</div>
+	<br>
+	<button id="accept" class="btn btn-primary">I Accept this Waiver &#187;</button>
+	<span id="waiver-result"></span>
+	<br>
+	<label>Clicking this button counts as your digital signature and is legally binding</label>
+	{% endif %}
 </div>
 <div class="span5">
 	<div class="checklist">
 		<h2 class="text-center">Signup Checklist</h2>
-		<h3>Registered: <i class="icon-ok-circle pull-right"></i></h3>
+		<h3>Signed up: <i class="icon-ok-circle pull-right"></i></h3>
 		<h3>
-			Waiver accepted:
+			Waiver signed:
 			{% if student.waiver_signed %}
 			<i class="icon-ok-circle pull-right"></i>
 			{% else %}
@@ -183,8 +190,8 @@
 <div class="row-fluid text-center">Have any questions? Email <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a>
 </div>
 <form name="vpul_form" id="vpul_form" method="post" action="https://secure.www.upenn.edu/vpul/psa/bike/index.php" style="display:none;">
-	<input id="payment_id" name="ordernumber" value='12345678'>
-	<input id="amount_id" name="amount" value="9">
+  <input id="payment_id" name="ordernumber" value='12345678'>
+  <input id="amount_id" name="amount" value="9">
 </form>
 {% endblock %}
 

@@ -213,12 +213,17 @@ def bursar(request):
     plan = plan_element_id.replace("_", " ").title()
     plan = Plan.objects.get(name=plan)
     renew = data.get("renew")
+    if renew == "on":
+        renew = True
+    else:
+        renew = False
     payment = Payment(
         amount=plan.cost,
         plan=plan,
         student=student,
         satisfied=True,
         payment_type="bursar",
+        renew=renew
     )
     payment.save()
     message = '''
