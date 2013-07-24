@@ -94,6 +94,7 @@ class Payment(models.Model):
     satisfied = models.BooleanField(default=False)
     payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, null=True)
     status = models.CharField(max_length=100, default='available')
+    renew = models.BooleanField(default=False)
 
     def __unicode__(self):
         return str(self.student) + ' for ' + str(self.plan)

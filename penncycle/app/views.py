@@ -217,7 +217,6 @@ def bursar(request):
         amount=plan.cost,
         plan=plan,
         student=student,
-        purchase_date=datetime.datetime.today(),
         satisfied=True,
         payment_type="bursar",
     )
@@ -253,7 +252,6 @@ def credit(request):
         amount=plan.cost,
         plan=plan,
         student=student,
-        purchase_date=datetime.datetime.today(),
         satisfied=False,
         payment_type="credit",
     )

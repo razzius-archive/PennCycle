@@ -4,7 +4,6 @@ South==0.7.6
 Unipath==1.0
 anyjson==0.3.3
 argparse==1.2.1
--e git://github.com/earle/django-bootstrap.git@24d3182fb71172f3020783beb5f34e82ebd11c45#egg=bootstrap-dev
 boto==2.9.2
 distribute==0.6.38
 dj-database-url==0.2.1
