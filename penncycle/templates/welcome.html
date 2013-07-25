@@ -62,15 +62,23 @@
 {% endblock %}
 
 {% block content %}
-<div class="well span11">
+<div class="well span12">
 	<div class="row-fluid">
 		<div class="span7">
-			{% if student.payments %}
+			{% if student.current_payments %}
 				<div class="payments">
-					{% for payment in student.payments.all %}
-						<span class="text-success">{{ payment.plan.name }} is ready to use.</span>
-						{% if payment.renew %}
-							<p class="text-success">It will renew on {{ payment.end_date }}.</p>
+					{% for payment in student.current_payments %}
+						{% if payment.satisfied %}
+							<span class="text-success">{{ payment.plan.name }} is ready to use.</span>
+							{% if payment.renew %}
+								<span title="Not what you want? Email messenger@penncycle.org and we'll sort it out."class="text-success">It will renew
+								{% if payment.end_date %} on {{ payment.end_date }}.
+								{% else %}
+								30 days after you first use it.
+								{% endif %}</span>
+							{% endif %}
+						{% else %}
+							<span class="text-warning">{{ payment.plan.name }} is awaiting payment.</span>
 						{% endif %}
 					{% endfor %}
 				</div>
@@ -143,8 +151,8 @@
 				Choose a plan
 			</div>
 			<br><br>
-			<p id="renew" style="display:none">
-				<input type="checkbox"> Automatically Renew
+			<p id="renew-select" style="display:none">
+				<input type="checkbox" id="renew"> Automatically Renew
 			</p>
 		</div>
 	</div>
@@ -218,12 +226,12 @@
 	function toggle_renew() {
 		if ($("input[name=payment]:checked").val() == "bursar") {
 			if ($("#plan_name").html() != "Day") {
-				$("#renew").show();
+				$("#renew-select").show();
 			} else {
-				$("#renew").hide();
+				$("#renew-select").hide();
 			}
 		} else {
-			$("#renew").hide();
+			$("#renew-select").hide();
 		}
 	}
 	$(".circle").click(function() {
@@ -270,7 +278,7 @@
 		method = $("input[name=payment]:checked").val();
 		var data = {
 			penncard: {{ student.penncard }},
-			renew: $("#renew input").val(),
+			renew: $("#renew").is(':checked'),
 			plan: $(".selected")[0].id
 		}
 		if (method == "credit") {

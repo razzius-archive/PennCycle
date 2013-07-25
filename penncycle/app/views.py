@@ -213,7 +213,7 @@ def bursar(request):
     plan = plan_element_id.replace("_", " ").title()
     plan = Plan.objects.get(name=plan)
     renew = data.get("renew")
-    if renew == "on":
+    if renew == "true":
         renew = True
     else:
         renew = False
