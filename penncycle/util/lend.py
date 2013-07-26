@@ -10,7 +10,6 @@ def make_ride(student, bike):
     payment = student.payments.filter(status="available")[0]
     payment.status = "out"
     if not payment.end_date:
-        print("no end date")
         if payment.plan.name == "Day Plan":
             delta = datetime.timedelta(days=1)
         else:

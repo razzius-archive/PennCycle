@@ -69,7 +69,11 @@
 				<div class="payments">
 					{% for payment in student.current_payments %}
 						{% if payment.satisfied %}
-							<span class="text-success">{{ payment.plan.name }} is ready to use.</span>
+							{% if payment.end_date %}
+								<span>{{ payment.plan.name }} is active and expires on {{ payment.end_date }}.
+							{% else %}
+								<span class="text-success">{{ payment.plan.name }} is ready to use.</span>
+							{% endif %}
 							{% if payment.renew %}
 								<span title="Not what you want? Email messenger@penncycle.org and we'll sort it out."class="text-success">It will renew
 								{% if payment.end_date %} on {{ payment.end_date }}.
@@ -92,7 +96,7 @@
 					{% endif %}
 					" id="day_plan">
 					<span class="plan-name">Day</span>
-					<span class="price">$4</span>
+					<span class="price">$3</span>
 				</div>
 				<br>
 				<div>Good for one 24-hour checkout.</div>
@@ -107,7 +111,7 @@
 				<span class="price">$9/month</span>
 			</div>
 			<br>
-			<div>Unlimited 24-hour checkouts. $3 for each day the bike is checked in late.</div>
+			<div>Unlimited 24-hour checkouts. $5 for each day the bike is checked in late.</div>
 		</div>
 		<div class="span4">
 			<div class="circle text-center
@@ -240,9 +244,9 @@
 		$("#purchase_button").removeClass("disabled");
 		switch (this.id) {
 			case "day_plan":
-			$("#subtotal").html("4");
-			$("#tax").html("0.32");
-			$("#total").html("4.32");
+			$("#subtotal").html("3");
+			$("#tax").html("0.24");
+			$("#total").html("3.24");
 			$("#purchase_button").html("Purchase Day Plan");
 			$("#plan_name").html("Day");
 			break;
@@ -305,7 +309,7 @@
 					location.reload();
 				},
 				error: function (error) {
-					alert(error);
+					alert("Unable to connect. Check your internet connection.");
 				},
 				async: false
 			});

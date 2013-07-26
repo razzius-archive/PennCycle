@@ -141,9 +141,8 @@ class Student(models.Model):
     @property
     def current_payments(self):
         today = datetime.date.today()
-        payments = self.payments.filter(
+        payments = self.payments.filter(satisfied=True).filter(
             Q(
-                satisfied=True,
                 end_date__gte=today,
             ) | Q(
                 end_date__isnull=True
@@ -217,8 +216,6 @@ class Ride(models.Model):
             'payments__status': 'available',
             'waiver_signed': True,
             'payments__satisfied': True,
-            'payments__end_date__gte': datetime.date.today(),
-            'payments__start_date__lte': datetime.date.today(),
         },
     )
     bike = models.ForeignKey('Bike', limit_choices_to={'status': 'available'}, related_name='rides')
@@ -230,7 +227,7 @@ class Ride(models.Model):
     @property
     def ride_duration_days(self):
         if self.checkin_time is None:
-            end = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+            end = datetime.datetime.now(pytz.utc)
         else:
             end = self.checkin_time
         duration = end - self.checkout_time
