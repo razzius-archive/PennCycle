@@ -25,6 +25,7 @@ urlpatterns = patterns(
     (r'^locations/$', Locations.as_view()),
     (r'^welcome/$', welcome),
     (r'^safety/$', Safety),
+    (r'^about/$', Index.as_view()),
 
     # Backend-related
     (r'^verify_payment/$', verify_payment),
