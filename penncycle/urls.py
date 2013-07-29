@@ -34,6 +34,7 @@ urlpatterns = patterns(
     (r'^lookup/$', lookup),
     (r'^bursar/$', bursar),
     (r'^credit/$', credit),
+    (r'^cash/$', cash),
     (r'^dump/$', dump),
 
     # Mobile

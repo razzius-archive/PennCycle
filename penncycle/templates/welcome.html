@@ -67,7 +67,7 @@
 		<div class="span7">
 			{% if student.current_payments %}
 				<div class="payments">
-					{% for payment in student.current_payments %}
+					{% for payment in student.payments.all %}
 						{% if payment.satisfied %}
 							{% if payment.end_date %}
 								<span>{{ payment.plan.name }} is active and expires on {{ payment.end_date }}.
@@ -151,9 +151,9 @@
 			<h4 class="text-right">Total: $<span id="total">---</span></h4>
 		</div>
 		<div class="span5 offset2">
-			<div class="btn btn-primary disabled" id="purchase_button">
+			<button class="btn btn-primary disabled" id="purchase_button">
 				Choose a plan
-			</div>
+			</button>
 			<br><br>
 			<p id="renew-select" style="display:none">
 				<input type="checkbox" id="renew"> Automatically Renew
@@ -197,14 +197,15 @@
 	<div class="text-center">
 		<img src="{{ STATIC_URL}}img/bern.png" class="text-center">
 	</div>
-	<p> You must have a helmet to ride PennCycle. If you need one, you can borrow or buy a helmet from <a href="https://www.facebook.com/pages/Penn-Student-Agencies/112169602192296?id=112169602192296&sk=page_map" target="blank">Penn Student Agencies</a>.</p>
+	<p> You must have a helmet to ride PennCycle. If you need one, you can borrow or buy a helmet from <a href="https://www.facebook.com/pages/Penn-Student-Agencies/112169602192296?id=112169602192296&sk=page_map" target="blank">Penn Student Agencies</a>. Read more about safety <a href="/safety">here</a>.</p>
 </div>
 <div class="row-fluid text-center">Have any questions? Email <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a>
 </div>
-<form name="vpul_form" id="vpul_form" method="post" action="https://secure.www.upenn.edu/vpul/psa/bike/index.php" style="display:none;">
+<form name="vpul_form" id="vpul_form" method="post" target="vpul_iframe" action="https://secure.www.upenn.edu/vpul/psa/bike/index.php" style="display:none;">
   <input id="payment_id" name="ordernumber" value='12345678'>
   <input id="amount_id" name="amount" value="9">
 </form>
+<iframe id="vpul_iframe" name="vpul_iframe" width="100%" height="0px" frameborder="0"></iframe>
 {% endblock %}
 
 {% block scripts %}
@@ -286,8 +287,8 @@
 			plan: $(".selected")[0].id
 		}
 		if (method == "credit") {
-			var subtotal = $("#subtotal").html()
-			$("#amount_id").val(subtotal);
+			var total = $("#total").html()
+			$("#amount_id").val(total);
 			$.ajax({
 				type: "POST",
 				url: "/credit/",
@@ -295,6 +296,7 @@
 				success: function(payment_id) {
 					$("#payment_id").val(payment_id);
 					$("#vpul_form").submit();
+					$("#vpul_iframe").height(500);
 				},
 				error: function (error) {
 					alert(error);

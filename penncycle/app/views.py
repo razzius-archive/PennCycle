@@ -267,7 +267,7 @@ def credit(request):
 @require_POST
 def cash(request):
     data = request.POST
-    student = Student.objects.get(penncard=data.get(penncard))
+    student = Student.objects.get(penncard=data.get("penncard"))
     plan_element_id = data.get("plan")
     plan = plan_element_id.replace("_", " ").title()
     plan = Plan.objects.get(name=plan)
@@ -280,7 +280,7 @@ def cash(request):
         payment_type="cash",
     )
     payment.save()
-    messages.info("Your payment has been processed. Please come to Penn"
+    messages.info(request, "Your payment has been processed. Please come to Penn"
         "Student Agencies and pay at the front desk.")
     return HttpResponse("success")
 
