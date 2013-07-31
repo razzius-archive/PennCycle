@@ -6,7 +6,7 @@ admin.autodiscover()
 
 from app.views import *
 from app.dump import dump
-from mobile.views import sms, debug, send_pin
+from mobile.views import sms, send_pin
 
 urlpatterns = patterns(
     '',
@@ -36,11 +36,13 @@ urlpatterns = patterns(
     (r'^credit/$', credit),
     (r'^cash/$', cash),
     (r'^dump/$', dump),
+    (r'^combo/$', combo),
+
+    # Twilio
+    (r'^sms/$', sms),
 
     # Mobile
-    (r'^combo/$', combo),
-    (r'^sms/$', sms),
-    (r'^debug/$', debug),
+    url(r'mobile/', include('mobile.urls')),
     (r'^send_pin/$', send_pin),
 
     # Stats

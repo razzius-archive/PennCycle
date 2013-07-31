@@ -1,15 +1,16 @@
 import re
 import datetime
 
-from app.models import Student, Bike, Ride, Station
 from django.contrib import messages
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 
 import twilio.twiml
 from django_twilio.decorators import twilio_view
 
-from ..util.util import email_razzi
-from ..util.mobile_util import send_pin_to_phone
+from app.models import Student, Bike, Ride, Station
+from penncycle.util.util import email_razzi
+from penncycle.util.mobile_util import send_pin_to_phone
+
 
 def send_pin(request):
     penncard = request.GET.get("penncard")
@@ -121,12 +122,3 @@ def sms(request):
             email_razzi(body)
     response.sms(message)
     return response
-
-
-@twilio_view
-def debug(request):
-    try:
-        email_razzi(request.GET)
-    except:
-        email_razzi("Problem with debug.")
-    return HttpResponse("Ok")

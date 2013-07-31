@@ -10,64 +10,12 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import TemplateView, CreateView
-from django import forms
 
 from braces.views import LoginRequiredMixin
 
-from crispy_forms.layout import Layout, Submit, Div, Field
-from crispy_forms.helper import FormHelper
-from crispy_forms.bootstrap import InlineRadios
-
-from models import *
+from .models import Student, Station, Bike, Payment, Plan, Info
 from util.util import email_razzi
-
-class SignupForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(SignupForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.layout = Layout(
-            Div(
-                Div(
-                    Field(
-                        'penncard',
-                        placeholder="8 digits",
-                    ),
-                    'name',
-                    'phone',
-                    'email', css_class="span5 offset1"
-                ), Div(
-                    Field(
-                        'last_two',
-                        placeholder="Usually 00"
-                    ),
-                    'grad_year',
-                    'living_location',
-                    InlineRadios('gender'), css_class="span6"
-                ), css_class="row-fluid"
-            )
-        )
-        self.helper.form_action = '/signup/'
-        self.helper.add_input(Submit('submit', "Submit"))
-        self.helper.form_method = 'post'
-        self.fields['last_two'].label = "Last two digits of PennCard"
-        self.fields['penncard'].label = "PennCard Number"
-
-    class Meta:
-        model = Student
-        fields = [
-            'penncard',
-            'name',
-            'phone',
-            'email',
-            'last_two',
-            'grad_year',
-            'living_location',
-            'gender',
-        ]
-
-    gender = forms.TypedChoiceField(
-        choices=(("M", "Male"), ("F", "Female")),
-    )
+from .forms import SignupForm
 
 
 def lookup(request):
@@ -78,6 +26,7 @@ def lookup(request):
     else:
         messages.info(request, "Fill out the form below to sign up!")
         return HttpResponseRedirect("/signup/?penncard={}".format(penncard))
+
 
 def verify_pin(request):
     data = request.POST
@@ -182,8 +131,10 @@ def verify_payment(request):
     amount = str(request.POST.get('orderAmount', 0))
     cost_with_tax = float(payment.plan.cost)*1.08
     if float(amount) != cost_with_tax:
-        errmessage = "student didn't pay the right amount! Payment: {} \n Amount: {} Cost+tax: {}".format(payment.id, amount, costwtax)
-        email_razzi(errmessage)
+        email_razzi(
+            "student didn't pay the right amount! Payment: {} "
+            "Amount: {} Cost+tax: {}".format(payment.id, amount, cost_with_tax)
+        )
         return HttpResponse('success')
     else:
         reasonCode = request.POST.get('reasonCode')
