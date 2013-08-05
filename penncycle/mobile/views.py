@@ -9,7 +9,7 @@ from django_twilio.decorators import twilio_view
 
 from app.models import Student, Bike, Ride, Station
 from penncycle.util.util import email_razzi
-from penncycle.util.mobile_util import send_pin_to_phone
+from penncycle.util.mobile_util import send_pin_to_student
 
 
 def send_pin(request):
@@ -23,7 +23,7 @@ def send_pin(request):
             "Sign up for PennCycle using the form below.".format(penncard)
         )
         return HttpResponseRedirect("/signup?penncard={}".format(penncard))
-    send_pin_to_phone(student.phone)
+    send_pin_to_student(student)
     messages.info(request, "Pin sent to {}.".format(student.phone))
     return HttpResponseRedirect("/signin?penncard={}".format(penncard))
 

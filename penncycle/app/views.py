@@ -14,7 +14,7 @@ from django.views.generic import TemplateView, CreateView
 from braces.views import LoginRequiredMixin
 
 from .models import Student, Station, Bike, Payment, Plan, Info
-from util.util import email_razzi
+from util.util import email_razzi, welcome_email
 from .forms import SignupForm
 
 
@@ -87,8 +87,8 @@ class Safety(TemplateView):
     template_name = 'safety.html'
 
 
-class Team(TemplateView):
-    template_name = 'team.html'
+class About(TemplateView):
+    template_name = 'about.html'
 
 
 class Locations(TemplateView):
@@ -117,6 +117,7 @@ class Signup(CreateView):
             "Your pin is {}. "
             "You will need it to log on in the future.".format(student.pin)
         )
+        welcome_email(student)
         self.request.session['penncard'] = student.penncard
         return HttpResponseRedirect('/welcome/')
 

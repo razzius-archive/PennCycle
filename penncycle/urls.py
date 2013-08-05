@@ -12,16 +12,17 @@ urlpatterns = patterns(
     '',
     url(r'^manage/', include(admin.site.urls)),
     url(r'^admin/', include('staff.urls')),
-    url(r'^login/$', login),
+    url(r'^admin-login/$', login),
     url(r'^logout/$', logout),
 
     # Normal pages
     (r'^$', Index.as_view()),
     (r'^signup/$', Signup.as_view()),
     (r'^signin/$', login, {"template_name": "signin.html"}),
+    (r'^login/$', login, {"template_name": "signin.html"}),
     (r'^faq/$', Faq.as_view()),
     (r'^safety/$', Safety.as_view()),
-    (r'^team/$', Team.as_view()),
+    (r'^about/$', About.as_view()),
     (r'^locations/$', Locations.as_view()),
     (r'^welcome/$', welcome),
     (r'^safety/$', Safety),
@@ -42,7 +43,7 @@ urlpatterns = patterns(
     (r'^sms/$', sms),
 
     # Mobile
-    url(r'mobile/', include('mobile.urls')),
+    url(r'^mobile/', include('mobile.urls')),
     (r'^send_pin/$', send_pin),
 
     # Stats

@@ -148,7 +148,7 @@ SERVER_EMAIL = 'messenger@penncycle.org'
 
 SEND_BROKEN_LINK_EMAILS = True
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/admin-login/'
 LOGOUT_URL = '/'
 
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
