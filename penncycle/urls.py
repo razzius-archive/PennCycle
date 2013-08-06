@@ -13,7 +13,7 @@ urlpatterns = patterns(
     url(r'^manage/', include(admin.site.urls)),
     url(r'^admin/', include('staff.urls')),
     url(r'^admin-login/$', login),
-    url(r'^logout/$', logout),
+    url(r'^logout/$', logout, {'next_page': '/'}),
 
     # Normal pages
     (r'^$', Index.as_view()),
