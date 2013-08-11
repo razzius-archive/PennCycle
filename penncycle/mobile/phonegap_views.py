@@ -3,6 +3,8 @@ import json
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from crispy_forms.util import render_crispy_form
+
 from app.models import Student
 from penncycle.util.util import email_razzi, welcome_email, send_pin_to_student
 from .forms import SignupForm
@@ -17,7 +19,10 @@ def check_for_student(request):
         reply = {"registered": True, 'student': student.name}
     except Student.DoesNotExist:
         signup_form = SignupForm(initial={"penncard": penncard})
-        reply = {"registered": False, "signup_form": signup_form.as_p()}
+        reply = {
+            "registered": False,
+            "signup_form": render_crispy_form(signup_form)
+        }
     return HttpResponse(json.dumps(reply), content_type="application/json")
 
 
