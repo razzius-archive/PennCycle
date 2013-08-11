@@ -19,7 +19,7 @@ def check_for_student(request):
         reply = {"registered": True, 'student': student.name}
         return HttpResponse(json.dumps(reply), content_type="application/json")
     except Student.DoesNotExist:
-        reply = {"registered": False, 'penncard': penncard}
+        reply = {"registered": False, 'penncard': penncard, "form": ""}
         return HttpResponse(json.dumps(reply), content_type="application/json")
 
 
