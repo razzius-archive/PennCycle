@@ -3,7 +3,7 @@ import json
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from crispy_forms.util import render_crispy_form
+from crispy_forms.utils import render_crispy_form
 
 from app.models import Student
 from penncycle.util.util import email_razzi, welcome_email, send_pin_to_student
