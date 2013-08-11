@@ -17,10 +17,10 @@ def check_for_student(request):
     try:
         student = Student.objects.get(penncard=penncard)
         reply = {'student': student.name}
-        return json.dumps(reply, content_type="application/json")
+        return HttpResponse(json.dumps(reply, content_type="application/json"))
     except Student.DoesNotExist:
         reply = {'penncard': penncard}
-        return json.dumps(reply, content_type="application/json")
+        return HttpResponse(json.dumps(reply, content_type="application/json"))
 
 
 @csrf_exempt
