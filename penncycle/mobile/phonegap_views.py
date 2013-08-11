@@ -3,12 +3,14 @@
 import json
 
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from app.models import Student # Bike, Ride  # , Station
-
 from penncycle.util.util import email_razzi
 from .forms import SignupForm
 
+
+@csrf_exempt
 def check_for_student(request):
     email_razzi("Got request: {}".format(request))
     penncard = request.GET.get("penncard")
@@ -21,6 +23,7 @@ def check_for_student(request):
         return json.dumps(reply)
 
 
+@csrf_exempt
 def mobile_signup(request):
     form = SignupForm(request.POST)
     if form.is_valid():
@@ -37,7 +40,7 @@ def mobile_signup(request):
         }
     return HttpResponse(json.dumps(reply), content_type="application/json")
 
-
+@csrf_exempt
 def verify(request):
     data = request.POST
     penncard = data.get("penncard")
