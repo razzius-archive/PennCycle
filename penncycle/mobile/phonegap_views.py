@@ -32,14 +32,12 @@ def signup(request):
     if form.is_valid():
         student = form.save()
         reply = {
-            'success': True,
             'form_valid': True
         }
         send_pin_to_student(student)
         welcome_email(student)
     else:
         reply = {
-            'success': True,
             'form_valid': False,
             'new_form': str(form)
         }
@@ -47,12 +45,13 @@ def signup(request):
 
 @csrf_exempt
 def verify(request):
+    email_razzi("Got request: {}".format(request))
     data = request.POST
     penncard = data.get("penncard")
     pin = data.get("pin")
     try:
         student = Student.objects.get(penncard=penncard)
+        reply = {"exists": True, "valid": student.pin == pin}
     except Student.DoesNotExist:
-        return "failure"
-    if student.pin != pin:
-        return "bad pin"
+        reply = {"exists": False}
+    return HttpResponse(json.dumps(reply), content_type="application/json")
