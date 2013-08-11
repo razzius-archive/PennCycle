@@ -7,9 +7,8 @@ import twilio.twiml
 from django_twilio.decorators import twilio_view
 
 from app.models import Student, Bike, Station
-from penncycle.util.util import email_razzi
+from penncycle.util.util import email_razzi, send_pin_to_student
 from penncycle.util.lend import make_ride, checkin_ride
-from penncycle.util.mobile_util import send_pin_to_student
 
 
 def send_pin(request):
