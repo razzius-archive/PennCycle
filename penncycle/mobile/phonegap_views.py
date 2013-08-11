@@ -16,10 +16,10 @@ def check_for_student(request):
     penncard = request.POST.get("penncard")
     try:
         student = Student.objects.get(penncard=penncard)
-        reply = {'student': student.name}
+        reply = {"registered": True, 'student': student.name}
         return HttpResponse(json.dumps(reply), content_type="application/json")
     except Student.DoesNotExist:
-        reply = {'penncard': penncard}
+        reply = {"registered": False, 'penncard': penncard}
         return HttpResponse(json.dumps(reply), content_type="application/json")
 
 
