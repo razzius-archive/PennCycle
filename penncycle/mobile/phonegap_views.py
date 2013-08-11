@@ -1,6 +1,7 @@
 # import re
 # import datetime
 import json
+import logging
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -14,6 +15,7 @@ from .forms import SignupForm
 def check_for_student(request):
     email_razzi("Got request: {}".format(request))
     penncard = request.POST.get("penncard")
+    logging.info(penncard)
     try:
         student = Student.objects.get(penncard=penncard)
         reply = {"registered": True, 'student': student.name}
