@@ -13,14 +13,14 @@ from .forms import SignupForm
 @csrf_exempt
 def check_for_student(request):
     email_razzi("Got request: {}".format(request))
-    penncard = request.GET.get("penncard")
+    penncard = request.POST.get("penncard")
     try:
         student = Student.objects.get(penncard=penncard)
         reply = {'student': student.name}
-        return json.dumps(reply)
+        return json.dumps(reply, content_type="application/json")
     except Student.DoesNotExist:
         reply = {'penncard': penncard}
-        return json.dumps(reply)
+        return json.dumps(reply, content_type="application/json")
 
 
 @csrf_exempt
