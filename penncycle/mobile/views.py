@@ -1,5 +1,4 @@
 import re
-import datetime
 
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -7,8 +6,9 @@ from django.http import HttpResponseRedirect
 import twilio.twiml
 from django_twilio.decorators import twilio_view
 
-from app.models import Student, Bike, Ride, Station
+from app.models import Student, Bike, Station
 from penncycle.util.util import email_razzi
+from penncyccle.util.lend import make_ride, checkin_ride
 from penncycle.util.mobile_util import send_pin_to_student
 
 
@@ -55,7 +55,7 @@ def sms(request):
                 message += "You can't check bikes out until you check bike {} back in. ".format(bike)
             if not student.waiver_signed:
                 email_razzi("Waiver not signed by {}".format(student))
-                message += "You need to fill out a waiver. Go to app.penncycle.org/waiver to do so."
+                message += "You need to fill out a waiver. Go to penncycle.org/login to do so."
             response.sms(message)
             return response
         try:
@@ -67,11 +67,9 @@ def sms(request):
         try:
             bikes = Bike.objects.filter(status="available").filter(bike_name__startswith=bike_number)
             for b in bikes:
-                if b.bike_name.split()[0] == bike_number:
+                if b.bike_name.startswith(bike_number):
                     bike = b
-            ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
-            student.payments.filter(status="available")[0].status = "out"
-            ride.save()
+            make_ride(student, bike)
             message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bike_number, bike.combo)
         except:
             message = "The bike you have requested was unavailable or not found. Text 'Checkout (number)', where number is 1 or 2 digits."
@@ -95,13 +93,9 @@ def sms(request):
             message = "Station not found. Options: PSA, Rodin, Ware, Fisher, Stouffer, Houston, Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
             response.sms(message)
             return response
-        ride = student.ride_set.latest("checkout_time")
-        ride.checkin_time = datetime.datetime.now()
-        ride.checkin_station = location
-        ride.bike.status = "available"
-        ride.save()
+        checkin_ride(student, location)
         message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shortly. Thanks!".format(location)
-        email_razzi("{} successfully returned! Ride was {}".format(ride, ride.bike))
+        email_razzi("{} successfully returned bike to {}".format(student, location))
     elif any(command in body for command in ["station", "stations", "location", "locations"]):
         message = "Stations: PSA, Rodin, Ware, Fisher, Stouffer, Houston, and Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
     else:
