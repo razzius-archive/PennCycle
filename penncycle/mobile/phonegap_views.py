@@ -16,11 +16,11 @@ def check_for_student(request):
     penncard = request.POST.get("penncard")
     try:
         student = Student.objects.get(penncard=penncard)
-        reply = {"registered": True, 'student': student.name}
+        reply = {"success": True, 'student': student.name}
     except Student.DoesNotExist:
         signup_form = SignupForm(initial={"penncard": penncard})
         reply = {
-            "registered": False,
+            "success": False,
             "signup_form": render_crispy_form(signup_form)
         }
     return HttpResponse(json.dumps(reply), content_type="application/json")
@@ -32,7 +32,8 @@ def signup(request):
     if form.is_valid():
         student = form.save()
         reply = {
-            'form_valid': True
+            'form_valid': True,
+            'pin': student.pin
         }
         send_pin_to_student(student)
         welcome_email(student)
