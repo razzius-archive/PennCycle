@@ -28,7 +28,6 @@ def check_for_student(request):
 @csrf_exempt
 def signup(request):
     form = SignupForm(request.POST)
-    __import__("pdb").set_trace()
     if form.is_valid():
         student = form.save()
         reply = {
