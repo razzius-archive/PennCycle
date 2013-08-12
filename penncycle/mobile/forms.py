@@ -29,6 +29,7 @@ class SignupForm(forms.ModelForm):
         )
         self.fields['last_two'].label = "Last two digits of PennCard (usually 00)"
         self.fields['penncard'].label = "PennCard Number"
+        self.helper.form_id = "signup_form"
 
     class Meta:
         model = Student
