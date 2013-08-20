@@ -216,7 +216,7 @@
 			type: "POST",
 			url: "/verify_waiver/",
 			data: {
-				pennid: "{{ student.penncard }}",
+				penncard: "{{ student.penncard }}",
 			},
 			dataType: 'json',
 			error: function(xhr, status, exception) {
