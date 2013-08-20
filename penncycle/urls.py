@@ -51,6 +51,9 @@ urlpatterns = patterns(
     (r'^stats/$', Stats.as_view()),
     url(r'^stats/api/', include('stats.urls')),
 
+    # misc
+    url(r'favicon.ico', 'django.views.static.serve', {'document_root': '/static/img/favicon.ico'),
+
     # only on local
     (r'static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
     (r'^robots\.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: ", mimetype="text/plain"))
