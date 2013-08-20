@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 admin.autodiscover()
 
 from app.views import *
@@ -52,7 +52,7 @@ urlpatterns = patterns(
     url(r'^stats/api/', include('stats.urls')),
 
     # misc
-    url(r'favicon.ico', 'django.views.static.serve', {'document_root': '/static/img/favicon.ico'),
+    url(r'favicon.ico/$', lambda x: HttpResponseRedirect(settings.STATIC_URL + "/img/favicon.ico")),
 
     # only on local
     (r'static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
