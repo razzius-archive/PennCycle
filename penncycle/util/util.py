@@ -38,17 +38,17 @@ Happy Cycling!
 The PennCycle Team
     """.format(student.pin)
     html_content = """
-Thanks for joining PennCycle.
+<p>Thanks for joining PennCycle.</p>
 
-Your PennCycle PIN is {}. You can use it to <a href="http://www.penncycle.org/login">log in</a> at penncycle.org. Once you log in, you can add plans, sign the required waiver, and change your PIN.
+<p>Your PennCycle PIN is {}. You can use it to <a href="http://www.penncycle.org/login">log in</a> at penncycle.org. Once you log in, you can add plans, sign the required waiver, and change your PIN.</p>
 
-Helmets are required for riding and can be rented for free or purchased at <a href='http://www.penncycle.org/about#qc'>Quaker Corner</a>.
+<p>Helmets are required for riding and can be rented for free or purchased at <a href='http://www.penncycle.org/about#qc'>Quaker Corner</a>.</p>
 
-Have a question, concern, or suggestion? Email us at messenger@penncycle.org.
+<p>Have a question, concern, or suggestion? Email us at messenger@penncycle.org.</p>
 
-Happy Cycling!
+<p>Happy Cycling!</p>
 
-The PennCycle Team
+<p>The PennCycle Team</p>
     """.format(student.pin)
     # Bikes can be checked out using the free phone app. Don't have a smartphone? Text 'Help' to 215-688-5468 for instructions on how to check out bikes through texting.
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])

@@ -132,7 +132,7 @@ class Student(models.Model):
 
     @property
     def twilio_phone(self):
-        return "+1" + self.phone
+        return "+1" + self.phone.replace("-", "")
 
     @property
     def paid_now(self):
@@ -157,6 +157,18 @@ class Student(models.Model):
     def __unicode__(self):
         return u'%s %s' % (self.name, self.penncard)
 
+    @property
+    def current_ride(self):
+        rides = Ride.objects.filter(rider=self)
+        try:
+            ride = rides.get(checkin_time__isnull=True)
+            return ride
+        except Ride.DoesNotExist:
+            return None
+
+    @property
+    def ride_history(self):
+        return Ride.objects.filter(rider=self, checkin_time__isnull=False)
 
 class Station(models.Model):
     name = models.CharField(max_length=100)
@@ -209,6 +221,12 @@ class Bike(models.Model):
     def __unicode__(self):
         return '#%s. Location: %s' % (self.name, self.location.name)
 
+    def serialize(self):
+        return {
+            "name": self.name,
+            "status": self.status,
+            "location": self.location.name
+        }
 
 class Ride(models.Model):
     rider = models.ForeignKey(
@@ -242,6 +260,15 @@ class Ride(models.Model):
 
     def __unicode__(self):
         return u'%s on %s' % (self.rider, self.checkout_time)
+
+    def serialize(self):
+        return {
+           "bike": self.bike.serialize(),
+           "checkout_time": str(self.checkout_time),
+           "checkin_time": str(self.checkin_time),
+           "checkout_station": self.checkout_station.name,
+           "checkin_station": self.checkin_station.name if self.checkin_station else None
+        }
 
 
 class Comment(models.Model):

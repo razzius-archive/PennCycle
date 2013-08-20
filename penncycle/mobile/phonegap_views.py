@@ -2,10 +2,10 @@ import json
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from django.template.loader import render_to_string
 from crispy_forms.utils import render_crispy_form
 
-from app.models import Student
+from app.models import Student, Bike
 from penncycle.util.util import welcome_email, send_pin_to_student
 from .forms import SignupForm
 
@@ -15,11 +15,11 @@ def check_for_student(request):
     penncard = request.POST.get("penncard")
     try:
         student = Student.objects.get(penncard=penncard)
-        reply = {"success": True, 'student': student.name}
+        reply = {"registered": True, 'student': student.name}
     except Student.DoesNotExist:
         signup_form = SignupForm(initial={"penncard": penncard})
         reply = {
-            "success": False,
+            "registered": False,
             "signup_form": render_crispy_form(signup_form)
         }
     return HttpResponse(json.dumps(reply), content_type="application/json")
@@ -32,7 +32,8 @@ def signup(request):
         student = form.save()
         reply = {
             'success': True,
-            'pin': student.pin
+            'pin': student.pin,
+            'waiver': render_to_string('waiver.html')
         }
         send_pin_to_student(student)
         welcome_email(student)
@@ -50,7 +51,34 @@ def verify(request):
     pin = data.get("pin")
     try:
         student = Student.objects.get(penncard=penncard)
-        reply = {"exists": True, "valid": student.pin == pin}
+        if student.pin == pin:
+            reply = {
+                "exists": True,
+                "valid": True,
+                "student_data": {
+                    "name": student.name,
+                    "can_ride": student.can_ride,
+                    "current_ride": student.current_ride.serialize() if student.current_ride else None,
+                    "ride_history": [
+                        r.serialize() for r in student.ride_history
+                    ]
+                },
+                "bike_data": {
+                    "bikes": [
+                        bike.serialize() for bike in Bike.objects.filter(status="available")
+                    ]
+                }
+            }
+        else:
+            reply = {"exists": True, "valid": False}
     except Student.DoesNotExist:
         reply = {"exists": False}
     return HttpResponse(json.dumps(reply), content_type="application/json")
+
+
+@csrf_exempt
+def send_pin(request):
+    data = request.POST
+    student = Student.objects.get(penncard=data["penncard"])
+    send_pin_to_student(student)
+    return HttpResponse(json.dumps({"success": True, "phone": student.phone}), content_type="application/json")

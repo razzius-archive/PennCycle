@@ -148,10 +148,11 @@ def verify_payment(request):
         return HttpResponse('success')
 
 
+@csrf_exempt
 @require_POST
 def verify_waiver(request):
-    pennid = request.POST.get('pennid')
-    student = Student.objects.get(penncard=pennid)
+    penncard = request.POST.get('penncard')
+    student = Student.objects.get(penncard=penncard)
     student.waiver_signed = True
     student.save()
     return HttpResponse(json.dumps({'message': 'success'}), content_type="application/json")
