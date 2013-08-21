@@ -87,7 +87,8 @@ def sms(request):
             message = "Station not found. Options: PSA, Rodin, Ware, Fisher, Stouffer, Houston, Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
             response.sms(message)
             return response
-        checkin_ride(student, location)
+        ride = student.ride_set.latest("checkout_time")
+        checkin_ride(ride, location)
         message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shortly. Thanks!".format(location)
         email_razzi("{} successfully returned bike to {}".format(student, location))
     elif any(command in body for command in ["station", "stations", "location", "locations"]):
