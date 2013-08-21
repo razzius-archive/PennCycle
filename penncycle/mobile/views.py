@@ -35,13 +35,8 @@ def sms(request):
     lookup = number[0:3]+"-"+number[3:6]+"-"+number[6:]
     try:
         student = Student.objects.get(phone=lookup)
-    except:
-        duplicates = Student.objects.filter(phone=lookup)
-        if len(duplicates) > 1:
-            message = ("Multiple students have your number. Email messenger@penncycle.org whether you're " + "{} or " * (len(duplicates)-1) + "{}.").format(*duplicates)
-            email_razzi("Duplicates! {}".format(duplicates))
-        else:
-            message = "Welcome to PennCycle! Visit app.penncycle.org to get started. Sign up for any plan to start checking bikes out by texting."
+    except Student.DoesNotExist:
+        message = "Welcome to PennCycle! Visit app.penncycle.org to get started. Sign up for any plan to start checking bikes out by texting."
         response.sms(message)
         return response
     body = request.POST.get("Body", "").lower()
@@ -70,14 +65,14 @@ def sms(request):
                     bike = b
             make_ride(student, bike)
             message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bike_number, bike.combo)
-        except:
+        except Exception as error:
             message = "The bike you have requested was unavailable or not found. Text 'Checkout (number)', where number is 1 or 2 digits."
             count = 0
             bikes = Bike.objects.filter(status="available").filter(name__startswith=bike_number)
             for b in bikes:
                 if b.name.split()[0] == bike_number:
                     count += 1
-            email_razzi("Problem with bike {} and student {}. Message was {}. Found {} / {}".format(bike_number, student, body, count, len(bikes)))
+            email_razzi("Problem with bike {} and student {}. Message was {}. Found {} / {}. Error: {}".format(bike_number, student, body, count, len(bikes)), error)
     elif any(command in body for command in ["checkin", "return", "check in", "check-in"]):
         location = None
         stations = [station.name.lower() for station in Station.objects.all()]

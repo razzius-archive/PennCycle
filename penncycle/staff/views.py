@@ -74,7 +74,9 @@ def login_required_ajax(function=None, redirect_field_name=None):
 def checkout(request):
     try:
         student = request.POST.get("student")
+        student = Student.objects.get(name=student)
         bike = request.POST.get("bike")
+        bike = Bike.objects.get(name=bike)
         make_ride(student, bike)
         return HttpResponse("success")
     except Exception as error:
@@ -93,7 +95,7 @@ def checkin(request):
         checkin_ride(ride, location)
         return HttpResponse("success")
     except Exception as error:
-        email_razzi("Admin crashed. Locals: {}".format(locals()))
+        email_razzi("Admin crashed. Locals: {}. Error: {}".format(locals(), error))
         print("Admin: {}".format(locals()))
         return HttpResponse("failure")
 

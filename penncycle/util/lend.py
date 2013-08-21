@@ -1,11 +1,9 @@
 import datetime
 import pytz
 
-from app.models import Student, Bike, Ride, Station
+from app.models import Ride, Station
 
 def make_ride(student, bike):
-    student = Student.objects.get(name=student)
-    bike = Bike.objects.get(name=bike)
     ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
     payment = student.payments.filter(status="available")[0]
     payment.status = "out"
