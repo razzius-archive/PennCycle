@@ -72,7 +72,7 @@ def sms(request):
             for b in bikes:
                 if b.name.split()[0] == bike_number:
                     count += 1
-            email_razzi("Problem with bike {} and student {}. Message was {}. Found {} / {}. Error: {}".format(bike_number, student, body, count, len(bikes)), error)
+            email_razzi("Problem checking out bike. {}".format(locals()))
     elif any(command in body for command in ["checkin", "return", "check in", "check-in"]):
         location = None
         stations = [station.name.lower() for station in Station.objects.all()]
@@ -102,7 +102,7 @@ def sms(request):
                 bike = currentRides[0].bike.name
                 message = "Hi {}! You still have {} out. Until you check it in, you cannot check out bikes. Text 'locations' for checkin stations.".format(student.name, bike)
             elif not student.waiver_signed:
-                email_razzi("Waiver not signed by {}".format(student))
+                email_razzi("Waiver not signed by {} on sms.".format(student))
                 message = "You need to fill out a waiver. Go to app.penncycle.org/waiver to do so."
             else:
                 email_razzi("{} doesn't have any payments, it would seem. Contact him at {}".format(student.name, student.email))
