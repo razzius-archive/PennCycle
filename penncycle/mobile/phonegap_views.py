@@ -63,11 +63,15 @@ def verify(request):
                         r.serialize() for r in student.ride_history
                     ]
                 },
-                "bike_data": {
-                    "bikes": [
-                        bike.serialize() for bike in Bike.objects.filter(status="available")
-                    ]
-                }
+                "bike_data": [
+                    {
+                        "name": bike.name,
+                        "status": bike.status,
+                        "location": bike.location.name,
+                        "latitude": bike.location.latitude,
+                        "longitude": bike.location.longitude
+                    } for bike in Bike.objects.all()
+                ]
             }
         else:
             reply = {"exists": True, "valid": False}
