@@ -52,7 +52,7 @@ urlpatterns = patterns(
     url(r'^stats/api/', include('stats.urls')),
 
     # misc
-    url(r'favicon.ico/$', lambda x: HttpResponseRedirect(settings.STATIC_URL + "/img/favicon.ico")),
+    url(r'favicon.ico/$', lambda x: HttpResponseRedirect(settings.STATIC_URL + "img/favicon.ico")),
 
     # only on local
     (r'static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
