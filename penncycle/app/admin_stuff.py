@@ -211,7 +211,7 @@ class RidesAdmin(admin.ModelAdmin):
                 # msg.send(fail_silently=True)
 #         send_mail('How was your ride today?', '''
 # Hey %s, \n
-# How was your ride today? 
+# How was your ride today?
 # (Where'd you ride today, how was the bike, were there any problems, etc.) \n
 # We'd love to hear how your ride was,
 # Alex & the PennCycle Team
@@ -224,5 +224,5 @@ class RidesAdmin(admin.ModelAdmin):
         else:
             message_bit = '%s bikes were' % rides_updated
         self.message_user(request, '%s successfully checked in' % message_bit)
-        
+
     check_in.short_description = "Check in the selected rides"

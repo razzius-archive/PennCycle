@@ -6,7 +6,8 @@ from django.template.loader import render_to_string
 from crispy_forms.utils import render_crispy_form
 
 from app.models import Student, Bike, Station
-from penncycle.util.util import welcome_email, send_pin_to_student
+from penncycle.util.util import welcome_email, send_pin_to_student, email_razzi
+from penncycle.util.lend import make_ride, checkin_ride
 from .forms import SignupForm
 
 
@@ -86,7 +87,8 @@ def bike_data(request):
             "status": bike.status,
             "location": bike.location.name,
             "latitude": bike.location.latitude,
-            "longitude": bike.location.longitude
+            "longitude": bike.location.longitude,
+            "manufacturer": bike.manufacturer.name
         } for bike in Bike.objects.all()
     ]
     return HttpResponse(json.dumps(data), content_type="application/json")
@@ -100,3 +102,33 @@ def station_data(request):
         } for station in Station.objects.all()
     ]
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+@csrf_exempt
+def feedback(request):
+    data = request.POST
+    feedback = data.get("feedback")
+    email_razzi("Got feedback: {}".format(feedback))
+    return HttpResponse("success")
+
+@csrf_exempt
+def checkout(request):
+    # should check with pin or use csrf.
+    data = request.POST
+    bike_number = data.bike_number
+    bike = Bike.objects.filter()
+    penncard = data.penncard
+    student = Student.objects.get(penncard=penncard)
+    try:
+        bikes = Bike.objects.filter(status="available").filter(name__startswith=bike_number)
+        for b in bikes:
+            if b.name.split()[0] == bike_number:
+                bike = b
+        make_ride(student, bike)
+        return HttpResponse(bike.pin)
+    except Exception as error:
+        email_razzi("Failed to checkout bike: {}".format(locals()))
+        return HttpResponse("fail")
+
+@csrf_exempt
+def checkin(request):
+    pass

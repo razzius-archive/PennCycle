@@ -1,11 +1,12 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, CreateView
 from django.http import HttpResponse
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from django import forms
 
 from braces.views import LoginRequiredMixin
 
-from app.models import Bike, Student
+from app.models import Bike, Student, Payment
 
 from util.util import email_razzi
 from util.lend import make_ride, checkin_ride
@@ -103,3 +104,39 @@ def checkin(request):
 def end_session(request):
     logout(request)
     return redirect("/")
+
+class PaymentsList(ListView):
+    model = Payment
+    template_name = "staff/payment_list.html"
+
+@login_required_ajax
+def satisfy_payment(request):
+    try:
+        payment_id = request.POST.get("payment_id")
+        payment = Payment.objects.get(id=payment_id)
+        payment.satisfied = True
+        payment.save()
+        return HttpResponse("success")
+    except Exception as error:
+        email_razzi("failed to satisfy payment. {}".format(locals()))
+        return HttpResponse("error")
+
+class PaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = [
+            "amount",
+            "plan",
+            "student",
+            "payment_date",
+            "end_date",
+            "satisfied",
+            "payment_type",
+            "status",
+            "renew"
+        ]
+
+class CreatePayment(CreateView):
+    model = Payment
+    template_name = "staff/create_payment.html"
+    form_class = PaymentForm
