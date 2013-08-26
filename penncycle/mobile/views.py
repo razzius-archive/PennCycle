@@ -61,25 +61,19 @@ def sms(request):
             email_razzi("Looks like somebody had the wrong bike number. Message: {}".format(body))
             return response
         try:
-            bikes = Bike.objects.filter(status="available").filter(name__startswith=bike_number)
-            for b in bikes:
-                if b.name.startswith(bike_number):
-                    bike = b
+            bike = Bike.objects.filter(status="available").get(name=bike_number)
             make_ride(student, bike)
             message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bike_number, bike.combo)
         except Exception as error:
             message = "The bike you have requested was unavailable or not found. Text 'Checkout (number)', where number is 1 or 2 digits."
-            count = 0
-            bikes = Bike.objects.filter(status="available").filter(name__starswith=bike_number)
-            for b in bikes:
-                if b.name.split()[0] == bike_number:
-                    count += 1
+            bike = Bike.objects.filter(status="available").get(name=bike_number)
             email_razzi("Problem checking out bike. {}".format(locals()))
     elif any(command in body for command in ["checkin", "return", "check in", "check-in"]):
         location = None
         stations = [station.name.lower() for station in Station.objects.all()]
         for station in stations:
             if station in body:
+                email_razzi(locals())
                 if station == "psa":
                     location = Station.objects.get(name="PSA")
                 else:
