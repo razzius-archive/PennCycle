@@ -15,7 +15,7 @@ def send_pin_to_student(student):
             from_="+12156885468"
         )
     except Exception as error:
-        email_razzi("Pin send failed: {}".format(error))
+        email_razzi("Pin send failed: {}, {}".format(student, error))
 
 def email_razzi(message):
     send_mail(

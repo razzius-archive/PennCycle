@@ -3,6 +3,8 @@ import pytz
 
 from app.models import Ride
 
+from penncycle.util.util import email_razzi
+
 def make_ride(student, bike):
     ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
     payment = student.payments.filter(status="available")[0]
@@ -19,6 +21,7 @@ def make_ride(student, bike):
     ride.save()
 
 def checkin_ride(ride, station):
+    email_razzi(ride, station)
     ride.checkin_time = datetime.datetime.now(pytz.utc)
     ride.checkin_station = station
     ride.bike.status = "available"
