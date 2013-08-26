@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.generic import TemplateView
 admin.autodiscover()
 
 from app.views import *
@@ -21,13 +22,14 @@ urlpatterns = patterns(
     (r'^signup/$', Signup.as_view()),
     (r'^signin/$', login, {"template_name": "signin.html"}),
     (r'^login/$', login, {"template_name": "signin.html"}),
-    (r'^faq/$', Faq.as_view()),
-    (r'^safety/$', Safety.as_view()),
-    (r'^about/$', About.as_view()),
+    (r'^faq/$', TemplateView.as_view(template_name="faq.html")),
+    (r'^safety/$', TemplateView.as_view(template_name="safety.html")),
+    (r'^about/$', TemplateView.as_view(template_name="about.html")),
     (r'^locations/$', Locations.as_view()),
     (r'^welcome/$', welcome),
-    (r'^safety/$', Safety),
+    (r'^safety/$', TemplateView.as_view(template_name="safety.html")),
     (r'^about/$', Index.as_view()),
+    (r'^thanks.*$', TemplateView.as_view(template_name="thanks.html")),
 
     # Backend-related
     (r'^verify_payment/$', verify_payment),
@@ -39,6 +41,8 @@ urlpatterns = patterns(
     (r'^cash/$', cash),
     (r'^dump/$', dump),
     (r'^combo/$', combo),
+    (r'^modify_payment/$', modify_payment),
+
 
     # Twilio
     (r'^sms/$', sms),

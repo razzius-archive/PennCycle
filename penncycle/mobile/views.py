@@ -43,13 +43,15 @@ def sms(request):
     if any(command in body for command in ["rent", "checkout", "check out", "check-out"]):
         if not student.can_ride:
             message = "Hi {}! ".format(student.name)
-            currentRides = student.ride_set.filter(checkin_time=None)
-            if len(currentRides) > 0:
-                bike = currentRides[0].bike.name
+            current_rides = student.ride_set.filter(checkin_time=None)
+            if len(current_rides) > 0:
+                bike = current_rides[0].bike.name
                 message += "You can't check bikes out until you check bike {} back in. ".format(bike)
             if not student.waiver_signed:
                 email_razzi("Waiver not signed by {}".format(student))
                 message += "You need to fill out a waiver. Go to penncycle.org/login to do so."
+            if not student.current_payments:
+                message = "Hi {}! You don't currently have any PennCycle plans. Log on to penncycle.org to add one.".format(student.name)
             response.sms(message)
             return response
         try:
@@ -68,11 +70,11 @@ def sms(request):
         except Exception as error:
             message = "The bike you have requested was unavailable or not found. Text 'Checkout (number)', where number is 1 or 2 digits."
             count = 0
-            bikes = Bike.objects.filter(status="available").filter(name__startswith=bike_number)
+            bikes = Bike.objects.filter(status="available").filter(name__starswith=bike_number)
             for b in bikes:
                 if b.name.split()[0] == bike_number:
                     count += 1
-            email_razzi("Problem with bike {} and student {}. Message was {}. Found {} / {}. Error: {}".format(bike_number, student, body, count, len(bikes)), error)
+            email_razzi("Problem checking out bike. {}".format(locals()))
     elif any(command in body for command in ["checkin", "return", "check in", "check-in"]):
         location = None
         stations = [station.name.lower() for station in Station.objects.all()]
@@ -97,12 +99,12 @@ def sms(request):
         if student.can_ride:
             message = "Hi, {}! Checkout a bike: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations. You're eligible to checkout bikes.".format(student.name)
         else:
-            currentRides = student.ride_set.filter(checkin_time=None)
-            if len(currentRides) > 0:
-                bike = currentRides[0].bike.name
+            current_rides = student.ride_set.filter(checkin_time=None)
+            if len(current_rides) > 0:
+                bike = current_rides[0].bike.name
                 message = "Hi {}! You still have {} out. Until you check it in, you cannot check out bikes. Text 'locations' for checkin stations.".format(student.name, bike)
             elif not student.waiver_signed:
-                email_razzi("Waiver not signed by {}".format(student))
+                email_razzi("Waiver not signed by {} on sms.".format(student))
                 message = "You need to fill out a waiver. Go to app.penncycle.org/waiver to do so."
             else:
                 email_razzi("{} doesn't have any payments, it would seem. Contact him at {}".format(student.name, student.email))

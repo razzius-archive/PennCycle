@@ -1,5 +1,6 @@
 import datetime
 import json
+import pytz
 
 from django.core.mail import send_mail
 from django.shortcuts import render_to_response
@@ -71,24 +72,17 @@ class Index(TemplateView):
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
-        psa = Station.objects.get(name="PSA")
-        count = Bike.objects.filter(location=psa).filter(status="available").count()
         context = {
-            'psa_count': count
+            "bikes": [
+            {
+                "name": bike.name,
+                "status": bike.status,
+                "location": bike.location.name,
+                "latitude": bike.location.latitude,
+                "longitude": bike.location.longitude
+            } for bike in Bike.objects.all()]
         }
         return context
-
-
-class Faq(TemplateView):
-    template_name = 'faq.html'
-
-
-class Safety(TemplateView):
-    template_name = 'safety.html'
-
-
-class About(TemplateView):
-    template_name = 'about.html'
 
 
 class Locations(TemplateView):
@@ -176,7 +170,8 @@ def bursar(request):
         student=student,
         satisfied=True,
         payment_type="bursar",
-        renew=renew
+        renew=renew,
+        payment_date=datetime.datetime.now(pytz.utc)
     )
     payment.save()
     message = '''
@@ -184,11 +179,12 @@ def bursar(request):
         Penncard and last two digits: {} and {}\n
         Plan: {}\n
         Renew: {}\n
+        Living location: {}\n
 
         Bursar them, and if there is a problem, notify Razzi.
 
         Thanks!
-    '''.format(student.name, student.penncard, student.last_two, plan, renew)
+    '''.format(student.name, student.penncard, student.last_two, plan, renew, student.living_location)
     send_mail(
         'Student Registered with Bursar',
         message,
@@ -237,6 +233,7 @@ def cash(request):
         "Student Agencies and pay at the front desk.")
     return HttpResponse("success")
 
+
 class Stats(LoginRequiredMixin, TemplateView):
     template_name = "stats.html"
 
@@ -257,3 +254,18 @@ def combo(request):
     }
     context_instance = RequestContext(request, context)
     return render_to_response("combo.html", context_instance)
+
+@require_POST
+def modify_payment(request):
+    data = request.POST
+    payment = Payment.objects.get(id=data.get("id"))
+    if data.get("action") == "delete":
+        payment.delete()
+        return HttpResponse("success")
+    elif data.get("action") == "renew":
+        payment.renew = True
+    else:
+        payment.renew = False
+    payment.save()
+    email_razzi("Processed {}".format(data))
+    return HttpResponse("success")
