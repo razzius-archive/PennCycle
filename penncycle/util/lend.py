@@ -1,7 +1,7 @@
 import datetime
 import pytz
 
-from app.models import Ride, Station
+from app.models import Ride
 
 def make_ride(student, bike):
     ride = Ride(rider=student, bike=bike, checkout_station=bike.location)
@@ -18,8 +18,7 @@ def make_ride(student, bike):
     bike.save()
     ride.save()
 
-def checkin_ride(ride, location):
-    station = Station.objects.get(name=location)
+def checkin_ride(ride, station):
     ride.checkin_time = datetime.datetime.now(pytz.utc)
     ride.checkin_station = station
     ride.bike.status = "available"

@@ -91,11 +91,11 @@ def checkout(request):
 @login_required_ajax
 def checkin(request):
     try:
-        location = request.user.groups.exclude(name='Associate')[0].name
+        station = request.user.groups.exclude(name='Associate')[0].name
         student_id = request.POST.get("student_id")
         student = Student.objects.get(id=student_id)
         ride = student.ride_set.latest("checkout_time")
-        checkin_ride(ride, location)
+        checkin_ride(ride, station)
         return HttpResponse("success")
     except Exception as error:
         email_razzi("Admin crashed. Locals: {}. Error: {}".format(locals(), error))

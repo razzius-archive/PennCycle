@@ -73,7 +73,6 @@ def sms(request):
         stations = [station.name.lower() for station in Station.objects.all()]
         for station in stations:
             if station in body:
-                email_razzi(locals())
                 if station == "psa":
                     location = Station.objects.get(name="PSA")
                 else:
