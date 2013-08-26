@@ -97,7 +97,7 @@
         var student = $("a.chzn-single span").text()
         $.ajax({
             type: "POST",
-            url: "checkout",
+            url: "checkout/",
             data: {"student": student, "bike": bike}
         }).done(function(result) {
             if(result==="success") {
@@ -113,7 +113,7 @@
         var student_id = $(this).attr("id");
         $.ajax({
             type: "POST",
-            url: "checkin",
+            url: "checkin/",
             data: {"student_id": student_id}
         }).done(function(result) {
             if(result==="success") {
