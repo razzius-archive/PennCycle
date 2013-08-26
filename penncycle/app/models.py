@@ -90,7 +90,7 @@ class Payment(models.Model):
     student = models.ForeignKey('Student', related_name="payments")
     purchase_date = models.DateField(auto_now_add=True)
     payment_date = models.DateField(null=True)
-    end_date = models.DateField(null=True)
+    end_date = models.DateField(null=True, blank=True)
     satisfied = models.BooleanField(default=False)
     payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, null=True)
     status = models.CharField(max_length=100, default='available')

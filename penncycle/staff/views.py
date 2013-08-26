@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django import forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 
 from braces.views import LoginRequiredMixin
 
@@ -122,6 +124,11 @@ def satisfy_payment(request):
         return HttpResponse("error")
 
 class PaymentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PaymentForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', "Submit"))
+
     class Meta:
         model = Payment
         fields = [
@@ -135,6 +142,8 @@ class PaymentForm(forms.ModelForm):
             "status",
             "renew"
         ]
+
+
 
 class CreatePayment(CreateView):
     model = Payment
