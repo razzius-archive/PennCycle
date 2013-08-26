@@ -1,5 +1,5 @@
 from django.conf.urls import patterns
-from phonegap_views import check_for_student, signup, verify, send_pin
+from phonegap_views import check_for_student, signup, verify, send_pin, bike_data
 
 urlpatterns = patterns(
     '',
@@ -7,4 +7,6 @@ urlpatterns = patterns(
     (r'signup/$', signup),
     (r'verify/$', verify),
     (r'send_pin/$', send_pin),
+
+    (r'bike_data/$', bike_data),
 )
