@@ -11,7 +11,7 @@
 			var one = Math.floor(Math.random()*10);
 			var two = Math.floor(Math.random()*10);
 			var three = Math.floor(Math.random()*10);
-			var four = Math.floor(Math.random()*10);		
+			var four = Math.floor(Math.random()*10);
 			return one.toString() + two.toString() + three.toString() + four.toString()
 		}
 		function randomize(){
@@ -35,7 +35,7 @@
 	</div>
 	{% for bike in bikes reversed %}
 		<div class="row-fluid">
-			<div class="bike span2">{{bike.bike_name}}</div>
+			<div class="bike span2">{{bike.name}}</div>
 			<div class="combo span2">{{bike.combo}}</div>
 			<div class="span4">
 				<form action="/combo/" method="post">
