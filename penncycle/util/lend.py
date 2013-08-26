@@ -21,7 +21,7 @@ def make_ride(student, bike):
     ride.save()
 
 def checkin_ride(ride, station):
-    email_razzi(ride, station)
+    email_razzi("{} at {}".format(ride, station))
     ride.checkin_time = datetime.datetime.now(pytz.utc)
     ride.checkin_station = station
     ride.bike.status = "available"
