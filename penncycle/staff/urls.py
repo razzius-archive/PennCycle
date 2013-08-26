@@ -12,5 +12,5 @@ urlpatterns = patterns(
     (r'checkin/$', checkin),
     (r'payments/$', PaymentsList.as_view()),
     (r'satisfy_payment/$', satisfy_payment),
-    (r'create_payment/$', CreatePayment.as_view())
+    (r'create_payment/$', CreatePayment.as_view(success_url="/admin/create_payment")),
 )
