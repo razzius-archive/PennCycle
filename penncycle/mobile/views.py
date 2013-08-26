@@ -84,7 +84,7 @@ def sms(request):
                     location = Station.objects.get(name=station.capitalize())
         if not location:
             email_razzi("Station didn't match for checkin. Message was {}".format(body))
-            message = "Station not found. Options: PSA, Rodin, Ware, Fisher, Stouffer, Houston, Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
+            message = "Station not found. Options: PSA, Rodin, Ware, Fisher, Stouffer, Houston, Hill. PSA=Penn Student Agencies. To check in, text 'Checkin PSA' or another station."
             response.sms(message)
             return response
         ride = student.ride_set.latest("checkout_time")

@@ -63,15 +63,7 @@ def verify(request):
                         r.serialize() for r in student.ride_history
                     ]
                 },
-                "bike_data": [
-                    {
-                        "name": bike.name,
-                        "status": bike.status,
-                        "location": bike.location.name,
-                        "latitude": bike.location.latitude,
-                        "longitude": bike.location.longitude
-                    } for bike in Bike.objects.all()
-                ]
+
             }
         else:
             reply = {"exists": True, "valid": False}
@@ -86,3 +78,15 @@ def send_pin(request):
     student = Student.objects.get(penncard=data["penncard"])
     send_pin_to_student(student)
     return HttpResponse(json.dumps({"success": True, "phone": student.phone}), content_type="application/json")
+
+def bike_data(request):
+    data = [
+        {
+            "name": bike.name,
+            "status": bike.status,
+            "location": bike.location.name,
+            "latitude": bike.location.latitude,
+            "longitude": bike.location.longitude
+        } for bike in Bike.objects.all()
+    ]
+    return HttpResponse(json.dumps(data), content_type="application/json")
