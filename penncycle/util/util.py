@@ -8,8 +8,10 @@ def send_pin_to_student(student):
         pin = student.pin
         twilio_client.sms.messages.create(
             to=student.twilio_phone,
-            body="Your PIN for PennCycle is {}."
-            " Log in the website at penncycle.org/signin.".format(pin),
+            body="Your PennCycle PIN is {}. "
+            "Login at penncycle.org/signin. "
+            "Once you buy a plan, check out bikes by texting "
+            "this number. Text 'help' for instructions.".format(pin),
             from_="+12156885468"
         )
     except Exception as error:
