@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from crispy_forms.utils import render_crispy_form
 
-from app.models import Student, Bike
+from app.models import Student, Bike, Station
 from penncycle.util.util import welcome_email, send_pin_to_student
 from .forms import SignupForm
 
@@ -88,5 +88,15 @@ def bike_data(request):
             "latitude": bike.location.latitude,
             "longitude": bike.location.longitude
         } for bike in Bike.objects.all()
+    ]
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+def station_data(request):
+    data = [
+        {
+            "name": station.name,
+            "latitude": station.latitude,
+            "longitude": station.longitude
+        } for station in Station.objects.all()
     ]
     return HttpResponse(json.dumps(data), content_type="application/json")
