@@ -11,6 +11,10 @@ from penncycle.util.lend import make_ride, checkin_ride
 from .forms import SignupForm
 
 
+def http_json(data):
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
+
 @csrf_exempt
 def check_for_student(request):
     penncard = request.POST.get("penncard")
@@ -23,7 +27,7 @@ def check_for_student(request):
             "registered": False,
             "signup_form": render_crispy_form(signup_form)
         }
-    return HttpResponse(json.dumps(reply), content_type="application/json")
+    return http_json(reply)
 
 
 @csrf_exempt
@@ -43,7 +47,7 @@ def signup(request):
             'success': False,
             'signup_form': render_crispy_form(form)
         }
-    return HttpResponse(json.dumps(reply), content_type="application/json")
+    return http_json(reply)
 
 @csrf_exempt
 def verify(request):
@@ -53,24 +57,12 @@ def verify(request):
     try:
         student = Student.objects.get(penncard=penncard)
         if student.pin == pin:
-            reply = {
-                "exists": True,
-                "valid": True,
-                "student_data": {
-                    "name": student.name,
-                    "can_ride": student.can_ride,
-                    "current_ride": student.current_ride.serialize() if student.current_ride else None,
-                    "ride_history": [
-                        r.serialize() for r in student.ride_history
-                    ]
-                },
-
-            }
+            reply = {"exists": True, "valid": True}
         else:
             reply = {"exists": True, "valid": False}
     except Student.DoesNotExist:
         reply = {"exists": False}
-    return HttpResponse(json.dumps(reply), content_type="application/json")
+    return http_json(reply)
 
 
 @csrf_exempt
@@ -78,7 +70,7 @@ def send_pin(request):
     data = request.POST
     student = Student.objects.get(penncard=data["penncard"])
     send_pin_to_student(student)
-    return HttpResponse(json.dumps({"success": True, "phone": student.phone}), content_type="application/json")
+    return http_json({"success": True, "phone": student.phone})
 
 def bike_data(request):
     data = [
@@ -103,6 +95,23 @@ def station_data(request):
     ]
     return HttpResponse(json.dumps(data), content_type="application/json")
 
+def student_data(request):
+    penncard = request.GET.get("penncard")
+    try:
+        student = Student.objects.get(penncard=penncard)
+    except:
+        return HttpResponse({"success": False})
+    data = {
+        "success": True,
+        "name": student.name,
+        "can_ride": student.can_ride,
+        "current_ride": student.current_ride.serialize() if student.current_ride else None,
+        "ride_history": [
+            r.serialize() for r in student.ride_history
+        ]
+    }
+    return http_json(data)
+
 @csrf_exempt
 def feedback(request):
     data = request.POST
@@ -114,16 +123,16 @@ def feedback(request):
 def checkout(request):
     # should check with pin or use csrf.
     data = request.POST
-    bike_number = data.bike_number
-    bike = Bike.objects.get(name=bike_number)
-    penncard = data.penncard
-    student = Student.objects.get(penncard=penncard)
+    bike = data.get("bike")
+    penncard = data.get("penncard")
     try:
+        bike = Bike.objects.get(name=bike)
+        student = Student.objects.get(penncard=penncard)
         make_ride(student, bike)
-        return HttpResponse(bike.pin)
+        return http_json({"success": True, "combo": bike.combo})
     except Exception as error:
         email_razzi("Failed to checkout bike: {}".format(locals()))
-        return HttpResponse("fail")
+        return http_json({"success": False})
 
 @csrf_exempt
 def checkin(request):

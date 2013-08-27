@@ -4,37 +4,26 @@
   {{block.super}} Locations
 {% endblock %}
 
-{% block content %}
-<div id="map_canvas" style="width:auto; height:430px"></div>
-<br>
-{% for station in stations %}
-<div class = "well">
-	<div class="textCentered">
-		<h3>
-			{{ station.full_name }}
-			{% if station.name == "PSA" %}
-				{% if station.is_open %}
-					- <span class="glow"> Currently open!</span>
-				{% else %}
-					hours- Closed
-				{% endif %}
-			{% else %}
-				- Closed for the summer
-			{% endif %}
-		</h3>
+{% load partition %}
 
-		<h4>{{ station.address }}</h4>
-		<h4>{{ station.hours|linebreaks }}</h4>
-		<p>{{ station.notes }}</p>
-	</div>
-</div>
+{% block content %}
+<div id="map_canvas" style="width:auto; height:440px"></div>
+<br>
+{% for row in stations|columns:"2"%}
+  	<div class="row-fluid">
+    	{% for station in row %}
+	    	<div class="well span6">
+	    		{{ station.full_name }}
+				<img src="{{ STATIC_URL }}img/stations/{{ station.name }}.png">
+				<p>{{ station.notes }}</p>
+		    </div>
+	    {% endfor %}
 {% endfor %}
 {% endblock %}
 
 {% block css %}
 <style type="text/css">
 .labels {
-	font-weight: 900;
 	font-size: 10px;
 	line-height: 10px;
 	background-color: white;
@@ -66,40 +55,13 @@
 			    var marker = new MarkerWithLabel({
 			    	position: new google.maps.LatLng({{station.latitude}},{{station.longitude}}),
 			    	labelAnchor: new google.maps.Point(25, 0),
-			    	title: "{{ station.comma_name|linebreaks|striptags }}",
+			    	title: "{{ station.name }}",
 	                map: map,
-	                {% if station.name == "PSA" and station.is_open %}
-		                labelContent:"{{station.name}} OPEN",
-	                {% else %}
-		                labelContent:"{{station.name}} Closed",
-	                {% endif %}
-					{% if station.name == "PSA" and station.is_open %}
-		                labelClass:"labels glow",
-	                {% else %}
+	                labelContent:"{{station.name}}",
 	                labelClass:"labels",
-	                {% endif %}
-	                icon: "{{ STATIC_URL }}img/marker.png"
+	                icon: "{{ STATIC_URL }}img/station_icon.png"
 			    });
 			{% endfor %}
-		 //    {% for station in stations %}
-			//     var marker = new MarkerWithLabel({
-			//     	position: new google.maps.LatLng({{station.latitude}},{{station.longitude}}),
-			//     	labelAnchor: new google.maps.Point(25, 0),
-			//     	title: "{{ station.comma_name|linebreaks|striptags }}",
-	  //               map: map,
-	  //               {% if station.is_open %}
-	  //               labelContent:"{{station.name}} OPEN",
-	  //               {% else %}
-	  //               labelContent:"{{station.name}} Closed",
-	  //               {% endif %}
-			// 		{% if station.is_open %}
-	  //               labelClass:"labels glow",
-	  //               {% else %}
-	  //               labelClass:"labels",
-	  //               {% endif %}
-	  //               icon: "{{ STATIC_URL }}img/marker.png"
-			//     });
-			// {% endfor %}
 		}
 	</script>
 {% endblock %}
