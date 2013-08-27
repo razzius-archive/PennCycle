@@ -207,17 +207,6 @@ class Bike(models.Model):
         rides = self.rides.filter(checkout_time__gt=self.combo_update)
         return list(set([ride.rider for ride in rides]))
 
-    @property
-    def set_location(self):
-        last_ride = self.rides.filter(checkin_station__isnull=False).order_by('-checkin_time')
-        try:
-            last_ride = last_ride[0]
-            location = last_ride.checkin_station
-        except:
-            location = Station.objects.get(name__contains="PSA")
-        self.location = location
-        self.save()
-
     def __unicode__(self):
         return '#%s. Location: %s' % (self.name, self.location.name)
 

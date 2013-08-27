@@ -115,14 +115,10 @@ def checkout(request):
     # should check with pin or use csrf.
     data = request.POST
     bike_number = data.bike_number
-    bike = Bike.objects.filter()
+    bike = Bike.objects.get(name=bike_number)
     penncard = data.penncard
     student = Student.objects.get(penncard=penncard)
     try:
-        bikes = Bike.objects.filter(status="available").filter(name__startswith=bike_number)
-        for b in bikes:
-            if b.name.split()[0] == bike_number:
-                bike = b
         make_ride(student, bike)
         return HttpResponse(bike.pin)
     except Exception as error:
