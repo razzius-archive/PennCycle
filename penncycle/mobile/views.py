@@ -66,7 +66,6 @@ def sms(request):
             message = "You have successfully checked out bike {}. The combination is {}. To return the bike, reply 'checkin PSA' (or any other station). Text 'Stations' for a list.".format(bike_number, bike.combo)
         except Exception as error:
             message = "The bike you have requested was unavailable or not found. Text 'Checkout (number)', where number is 1 or 2 digits."
-            bike = Bike.objects.filter(status="available").get(name=bike_number)
             email_razzi("Problem checking out bike. {}".format(locals()))
     elif any(command in body for command in ["checkin", "return", "check in", "check-in"]):
         location = None
