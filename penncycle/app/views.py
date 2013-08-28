@@ -90,7 +90,7 @@ class Locations(TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
-            'stations': Station.objects.order_by("id").filter(name__ne="PSA")
+            'stations': Station.objects.order_by("id").exclude(name="PSA")
         }
 
 
