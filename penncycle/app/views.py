@@ -89,10 +89,9 @@ class Locations(TemplateView):
     template_name = 'locations.html'
 
     def get_context_data(self, **kwargs):
-        context = {
-            'stations': Station.objects.order_by("id")
+        return {
+            'stations': Station.objects.order_by("id").filter(name__ne="PSA")
         }
-        return context
 
 
 class Signup(CreateView):
