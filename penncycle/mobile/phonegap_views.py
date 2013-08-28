@@ -91,7 +91,7 @@ def station_data(request):
             "name": station.name,
             "latitude": station.latitude,
             "longitude": station.longitude
-        } for station in Station.objects.all()
+        } for station in Station.objects.exclude(name="PSA")
     ]
     return HttpResponse(json.dumps(data), content_type="application/json")
 
