@@ -32,61 +32,79 @@
     display: block;
     text-align: center;
   }
+  .marker {
+    font-size: 10px;
+    line-height: 10px;
+    background-color: white;
+    text-align: center;
+    border-radius: 2px;
+  }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="row-fluid well">
+  <div id="map" style="width:auto; height:380px"></div>
+  <br>
   <div class="row-fluid">
-    <div class="span6">
-      <h1 class="text-center">PennCycle goes mobile!</h1>
-      <p>Text "Check Out &lt;number&gt;" to 215-688-5468</p>
+    <div class="span3">
       <img src="{{ STATIC_URL }}img/screenshot.png">
     </div>
-    <div class="span6" style="padding: 20px;">
-      <h1>Basic Plan: $9</h1>
-      <h4>Unlimited 24-hour rides.</h4>
-      <form method="GET" action="/lookup/">
-        <input type="text" name="penncard" maxlength="8" placeholder="Enter your PennCard">
-        <input class="btn btn-primary" type="submit" value="Get Started &raquo;">
-        <div class="btn">
-          <a href="/signin/">Sign In</a>
+    <div class="span9">
+      <div class="row-fluid">
+        <div class="span6">
+          <h1 class="text-center">PennCycle goes mobile!</h1>
+          <p>Text "Check Out &lt;number&gt;" to 215-688-5468 once you've <a href="/signup/">signed up</a> to check out a bike.</p>
         </div>
-      </form>
+        <div class="span6 well" style="padding: 20px;">
+          <h1>Basic Plan: $9</h1>
+          <h4>Unlimited 24-hour rides.</h4>
+          <form method="GET" action="/lookup/">
+            <input type="text" name="penncard" maxlength="8" placeholder="Enter your PennCard">
+            <input class="btn btn-primary" type="submit" value="Get Started &raquo;">
+            <div class="btn">
+              <a href="/signin/">Sign In</a>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row-fluid">
+        <h3 class="text-center">Our Plans</h3>
+        <div class="row-fluid">
+          <div class="span3 offset1">
+            <div class="circle" id="day_plan">
+              <span class="plan-name">Day Plan</span>
+              <span class="price">$3</span>
+            </div>
+            <br>
+            <div>
+              <div>Good for one 24-hour checkout.</div>
+            </div>
+          </div>
+          <div class="span3 offset1">
+            <div class="circle basic" id="month_plan">
+              <span class="plan-name">Basic Plan</span>
+              <span class="price">$9/month</span>
+            </div>
+            <br>
+            <div>Unlimited 24-hour checkouts. $5 for each day the bike is checked in late.</div>
+          </div>
+          <div class="span3 offset1">
+            <div class="circle" id="unlimited_plan">
+              <span class="plan-name">Unlimited Plan</span>
+              <span class="price">$29/month</span>
+            </div>
+            <br>
+            <div>
+              <div>Keep any bike out for as long as you'd like.</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <hr>
-  <h3 class="text-center">Our Plans</h3>
-  <div class="row-fluid">
-    <div class="span3 offset1">
-      <div class="circle" id="day_plan">
-        <span class="plan-name">Day Plan</span>
-        <span class="price">$3</span>
-      </div>
-      <br>
-      <div>
-        <div>Good for one 24-hour checkout.</div>
-      </div>
-    </div>
-    <div class="span3 offset1">
-      <div class="circle basic" id="month_plan">
-        <span class="plan-name">Basic Plan</span>
-        <span class="price">$9/month</span>
-      </div>
-      <br>
-      <div>Unlimited 24-hour checkouts. $5 for each day the bike is checked in late.</div>
-    </div>
-    <div class="span3 offset1">
-      <div class="circle" id="unlimited_plan">
-        <span class="plan-name">Unlimited Plan</span>
-        <span class="price">$29/month</span>
-      </div>
-      <br>
-      <div>
-        <div>Keep any bike out for as long as you'd like.</div>
-      </div>
-    </div>
-  </div>
+
   <br>
   <p class="text-center">Helmets and locks are included with all plans. <a class="btn btn-primary offset1" href="/signup/">Sign Up &raquo;</a></p>
   <hr>
@@ -103,4 +121,10 @@
   </center>
   <p class="text-center">Happy Cycling!</p>
 </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBKBg19QWvNQ2U5Skk9nJrG9c43rtJuf-A&amp;sensor=false"></script>
+  <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/markerwithlabel/1.0.1/src/markerwithlabel.js"></script>
+  <script src="{{ STATIC_URL }}js/map.js"></script>
 {% endblock %}

@@ -7,7 +7,7 @@
 {% load partition %}
 
 {% block content %}
-<div id="map_canvas" style="width:auto; height:440px"></div>
+<div id="map" style="width:auto; height:440px"></div>
 <br>
 {% for row in stations|columns:"2"%}
   	<div class="row-fluid">
@@ -23,13 +23,12 @@
 
 {% block css %}
 <style type="text/css">
-.labels {
-	font-size: 10px;
-	line-height: 10px;
+.marker {
+	font-size: 12px;
+	line-height: 12px;
 	background-color: white;
 	text-align: center;
 	border-radius: 2px;
-	width: 42px;
 }
 </style>
 {% endblock %}
@@ -37,31 +36,5 @@
 {% block scripts %}
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBKBg19QWvNQ2U5Skk9nJrG9c43rtJuf-A&amp;sensor=false"></script>
 	<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/markerwithlabel/1.0.1/src/markerwithlabel.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			map();
-		});
-		function map() {
-	    	var mapOptions = {
-		            center: new google.maps.LatLng(39.951600,-75.197794),
-		            zoom: 17,
-		            mapTypeId: google.maps.MapTypeId.ROADMAP,
-		            disableDefaultUI: true,
-	                zoomControl: true,
-	                scrollwheel: false,
-		    	};
-		    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-			    {% for station in stations %}
-			    var marker = new MarkerWithLabel({
-			    	position: new google.maps.LatLng({{station.latitude}},{{station.longitude}}),
-			    	labelAnchor: new google.maps.Point(25, 0),
-			    	title: "{{ station.name }}",
-	                map: map,
-	                labelContent:"{{station.name}}",
-	                labelClass:"labels",
-	                icon: "{{ STATIC_URL }}img/station_icon.png"
-			    });
-			{% endfor %}
-		}
-	</script>
+	<script src="{{ STATIC_URL }}js/map.js"></script>
 {% endblock %}
