@@ -25,7 +25,7 @@ $(document).ready(function() {
         var marker = new MarkerWithLabel({
           position: pos,
           map: map,
-          icon: "/static/img/bike_icon.png",
+          icon: "https://s3.amazonaws.com/penncycle/img/bike_icon.png",
           labelContent: bike.name,
           labelClass: "marker"
         });
@@ -41,7 +41,7 @@ $(document).ready(function() {
       var marker = new MarkerWithLabel({
         position: pos,
         map: map,
-        icon: "/static/img/station_icon.png",
+        icon: "https://s3.amazonaws.com/penncycle/img/station_icon.png",
         labelContent: station.name,
         labelClass: "marker"
       });
