@@ -72,13 +72,10 @@ def sms(request):
         stations = [station.name.lower() for station in Station.objects.all()]
         for station in stations:
             if station in body:
-                if station == "psa":
-                    location = Station.objects.get(name="PSA")
-                else:
-                    location = Station.objects.get(name=station.capitalize())
+                location = Station.objects.get(name=station.title())
         if not location:
             email_razzi("Station didn't match for checkin. Message was {}".format(body))
-            message = "Station not found. Options: PSA, Rodin, Ware, Fisher, Stouffer, Houston, Hill. PSA=Penn Student Agencies. To check in, text 'Checkin PSA' or another station."
+            message = "Station not found. Options: Rodin, Ware, Huntsman, Fisher, College Hall, Hill. To check in, text 'Checkin Hill' or another station."
             response.sms(message)
             return response
         ride = student.ride_set.latest("checkout_time")
@@ -86,7 +83,7 @@ def sms(request):
         message = "You have successfully returned your bike at {}. Make sure it is locked, and we will confirm the bike's checkin location shortly. Thanks!".format(location)
         email_razzi("{} successfully returned bike to {}".format(student, location))
     elif any(command in body for command in ["station", "stations", "location", "locations"]):
-        message = "Stations: PSA, Rodin, Ware, Fisher, Stouffer, Houston, and Hill (PSA=Penn Student Agencies). To return a bike text 'Checkin PSA' or another station."
+        message = "Stations: Rodin, Ware, Fisher, Huntsman, College Hall, and Hill. To return a bike text 'Checkin Hill' or another station."
     else:
         if student.can_ride:
             message = "Hi, {}! Checkout a bike: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations. You're eligible to checkout bikes.".format(student.name)
