@@ -121,13 +121,28 @@ def feedback(request):
 
 @csrf_exempt
 def checkout(request):
-    # should check with pin or use csrf.
     data = request.POST
     bike = data.get("bike")
     penncard = data.get("penncard")
+    pin = data.get("pin")
+    student = Student.objects.get(penncard=penncard)
+    try:
+        assert student.pin == pin
+    except Exception as error:
+        email_razzi("pin mismatch! {}".format(locals()))
+    if not student.can_ride:
+        message = ""
+        current_rides = student.ride_set.filter(checkin_time=None)
+        if len(current_rides) > 0:
+            bike = current_rides[0].bike.name
+            message += "You can't check bikes out until you check bike {} in. ".format(bike)
+        if not student.waiver_signed:
+            message += "You need to fill out a waiver. Click the 'account' button at the bottom and accept the waiver there."
+        if not student.current_payments:
+            message = "You don't currently have any PennCycle plans. Log on to penncycle.org to add one."
+        return http_json({"success": False, "message": message})
     try:
         bike = Bike.objects.get(name=bike)
-        student = Student.objects.get(penncard=penncard)
         make_ride(student, bike)
         return http_json({"success": True, "combo": bike.combo})
     except Exception as error:
@@ -136,4 +151,13 @@ def checkout(request):
 
 @csrf_exempt
 def checkin(request):
-    pass
+    try:
+        location = request.POST.get("station")
+        station = Station.objects.get(name=location)
+        penncard = request.POST.get("penncard")
+        student = Student.objects.get(penncard=penncard)
+        checkin_ride(student, location)
+        return http_json({"success": True})
+    except Exception as error:
+        email_razzi("phonegap checkin failed. {}".format(locals()))
+        return http_json({"success": False})

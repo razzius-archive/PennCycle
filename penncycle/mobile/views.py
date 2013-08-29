@@ -36,7 +36,7 @@ def sms(request):
     try:
         student = Student.objects.get(phone=lookup)
     except Student.DoesNotExist:
-        message = "Welcome to PennCycle! Visit app.penncycle.org to get started. Sign up for any plan to start checking bikes out by texting."
+        message = "Welcome to PennCycle! Visit penncycle.org to get started. Sign up for any plan to start checking bikes out bikes using your phone."
         response.sms(message)
         return response
     body = request.POST.get("Body", "").lower()
@@ -48,10 +48,9 @@ def sms(request):
                 bike = current_rides[0].bike.name
                 message += "You can't check bikes out until you check bike {} back in. ".format(bike)
             if not student.waiver_signed:
-                email_razzi("Waiver not signed by {}".format(student))
                 message += "You need to fill out a waiver. Go to penncycle.org/login to do so."
             if not student.current_payments:
-                message = "Hi {}! You don't currently have any PennCycle plans. Log on to penncycle.org to add one.".format(student.name)
+                message = "You don't currently have any PennCycle plans. Log on to penncycle.org/signin to add one."
             response.sms(message)
             return response
         try:
@@ -91,13 +90,13 @@ def sms(request):
             current_rides = student.ride_set.filter(checkin_time=None)
             if len(current_rides) > 0:
                 bike = current_rides[0].bike.name
-                message = "Hi {}! You still have {} out. Until you check it in, you cannot check out bikes. Text 'locations' for checkin stations.".format(student.name, bike)
+                message = "You still have {} out. Until you check it in, you cannot check out bikes. Text 'locations' for checkin stations.".format(bike)
             elif not student.waiver_signed:
                 email_razzi("Waiver not signed by {} on sms.".format(student))
-                message = "You need to fill out a waiver. Go to app.penncycle.org/waiver to do so."
+                message = "You need to fill out a waiver. Log on to app.penncycle.org/signin to do so."
             else:
                 email_razzi("{} doesn't have any payments, it would seem. Contact him at {}".format(student.name, student.email))
-                message = "You are currently unable to check out bikes. Go to penncycle.org and enter your penncard to check your status."
+                message = "You are currently unable to check out bikes. Go to penncycle.org/signin and enter your penncard to check your status."
         if not any(command in body for command in ["help", "info", "information", "?"]):
             email_razzi(body)
     response.sms(message)

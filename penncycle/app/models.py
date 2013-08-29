@@ -288,3 +288,12 @@ class Info(models.Model):
 
     def __unicode__(self):
         return self.message + " on " + self.date.isoformat()
+
+class Helmet(models.Model):
+    number = models.CharField(max_length=3, unique=True)
+    student = models.ForeignKey(Student, blank=True, null=True)
+    checkout_date = models.DateField(blank=True, null=True)
+    checkin_date = models.DateField(blank=True, null=True)
+
+    def __unicode__(self):
+        return "Helmet {}".format(self.number)
