@@ -143,7 +143,7 @@ def sms(request):
         student = Student.objects.get(phone=lookup)
     except Student.DoesNotExist:
         message = "Welcome to PennCycle! Visit penncycle.org to get started. Sign up for any plan to start checking bikes out bikes using your phone."
-        reply(message)
+        return reply(message)
     body = request.POST.get("Body", "").lower()
     response = handle_sms(student, body)
     return reply(response)
