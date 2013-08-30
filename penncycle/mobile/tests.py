@@ -6,7 +6,9 @@ from penncycle.app.models import(
 )
 from penncycle.util.lend import make_ride
 
-from views import handle_checkout, handle_checkin, handle_stations, handle_help
+from views import(
+    handle_checkout, handle_checkin, handle_stations, handle_help, handle_bikes
+)
 
 class TwilioTest(TestCase):
     def setUp(self):
@@ -67,6 +69,15 @@ class TwilioTest(TestCase):
             location=station
         )
         bike.save()
+        busy_bike = Bike(
+            name="2",
+            manufacturer=manufacturer,
+            purchase_date=timezone.now(),
+            combo_update=timezone.now(),
+            location=station,
+            status="out for repairs"
+        )
+        busy_bike.save()
         self.student = student
         self.bike = bike
 
@@ -96,6 +107,14 @@ class TwilioTest(TestCase):
         self.assertTrue(expected in response)
         self.assertLess(len(response), 160)
 
+    def test_checkout_fail_status(self):
+        body = "checkout 2"
+        expected = "not in service"
+        response = handle_checkout(self.student, body)
+        print(response)
+        self.assertTrue(expected in response)
+        self.assertLess(len(response), 160)
+
     def test_checkin_success(self):
         bike = Bike.objects.get(name="1")
         make_ride(self.student, bike)
@@ -118,17 +137,23 @@ class TwilioTest(TestCase):
         self.assertTrue(expected in response)
         self.assertLess(len(response), 160)
 
+    def test_bikes(self):
+        expected = "1 @ Rodin"
+        response = handle_bikes()
+        print(response)
+        self.assertTrue(expected in response)
+        self.assertLess(len(response), 160)
+
     def test_stations(self):
-        body = "locations"
         expected = "Rodin"
-        response = handle_stations(body)
+        response = handle_stations()
         print(response)
         self.assertTrue(expected in response)
         self.assertLess(len(response), 160)
 
     def test_help(self):
         body = "help"
-        expected = "Checkout a bike: 'Checkout (number)"
+        expected = "Checkout: 'Checkout (number)"
         response = handle_help(self.student, body)
         print(response)
         self.assertTrue(expected in response)

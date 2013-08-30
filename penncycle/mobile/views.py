@@ -39,14 +39,17 @@ def handle_checkout(student, body):
         current_rides = student.ride_set.filter(checkin_time=None)
         if not student.waiver_signed:
             message = "You need to accept our waiver. Go to penncycle.org/signin to do so."
-        if not student.current_payments:
+        elif not student.current_payments:
             message = (
                 "You don't currently have any PennCycle plans. "
                 "Log on to penncycle.org/signin to add one."
             )
-        if len(current_rides) > 0:
+        elif len(current_rides) > 0:
             bike = current_rides[0].bike.name
             message = "You can't check bikes out until you check bike {} back in. ".format(bike)
+        else:
+            message = "You are currently unable to ride. Log in to your penncycle account at penncycle.org/signin to fix this."
+            email_razzi("Strange cannot ride case. {}".format(locals()))
         return message
     try:
         bike_number = re.search("\d+", body).group()
@@ -60,14 +63,15 @@ def handle_checkout(student, body):
     if bike.status == "available":
         make_ride(student, bike)
         message = "You have successfully checked out bike {}. The combination is {}. To return it, reply 'Checkin Hill' or any other station. Text 'Stations' for a list.".format(bike_number, bike.combo)
-        return message
     elif bike.status == "out":
         checkout_time = bike.rides.latest().checkout_time
-        time_string = checkout_time.strftime("%H-%M on %D")
-        message = "Bike {} is still in use. It was checked out at {}.".format(bike.name, time_string)
-        return message
+        time_string = checkout_time.strftime("%H:%M on %D")
+        message = "Bike {} is still in use. It was checked out at {}. Text 'bikes' for a list of available bikes.".format(bike.name, time_string)
+    else:
+        message = "Bike {} is not in service. Please try another bike, or text 'bikes' for a list of available bikes.".format(bike.name)
+    return message
 
-def handle_stations(body):
+def handle_stations():
     message = (
         "Stations: Rodin, Ware, Fisher, Huntsman, College Hall, "
         "and Hill. To return a bike text 'Checkin Hill' or another station."
@@ -91,7 +95,7 @@ def handle_checkin(student, body):
 
 def handle_help(student, body):
     if student.can_ride:
-        message = "Checkout a bike: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations. You're eligible to checkout bikes."
+        message = "Checkout: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations and 'bikes' to view bikes. You're eligible to check out bikes."
         return message
     else:
         current_rides = student.ride_set.filter(checkin_time=None)
@@ -108,13 +112,21 @@ def handle_help(student, body):
             email_razzi("Body didn't match command. {}".format(locals()))
         return message
 
+def handle_bikes():
+    bikes = Bike.objects.filter(status="available")
+    bike_info = ["{} @ {}.".format(bike.name, bike.location) for bike in bikes]
+    summary = " ".join(bike_info)
+    return summary
+
 def handle_sms(student, body):
     if any(command in body for command in ["rent", "checkout", "check out", "check-out"]):
         return handle_checkout(student, body)
     elif any(command in body for command in ["checkin", "return", "check in", "check-in"]):
         return handle_checkin(student, body)
     elif any(command in body for command in ["station", "stations", "location", "locations"]):
-        return handle_stations(body)
+        return handle_stations()
+    elif any(command in body for command in ["bikes", "available"]):
+        return handle_bikes()
     else:
         return handle_help(student, body)
 
