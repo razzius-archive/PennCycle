@@ -92,7 +92,7 @@ class Payment(models.Model):
     payment_date = models.DateField(null=True)
     end_date = models.DateField(null=True, blank=True)
     satisfied = models.BooleanField(default=False)
-    payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, null=True)
+    payment_type = models.CharField(max_length=100, choices=PAYMENT_CHOICES, blank=True)
     status = models.CharField(max_length=100, default='available')
     renew = models.BooleanField(default=False)
 
@@ -123,7 +123,7 @@ class Student(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     grad_year = models.CharField(max_length=50, choices=GRAD_YEAR_CHOICES)
     join_date = models.DateField(default=datetime.date.today())
-    school = models.CharField(max_length=100, choices=SCHOOL_CHOICES, null=True)
+    school = models.CharField(max_length=100, choices=SCHOOL_CHOICES, blank=True)
     major = models.CharField(max_length=50, blank=True)
     living_location = models.CharField(max_length=100, choices=LIVING_LOCATIONS)
     waiver_signed = models.BooleanField(default=False)
@@ -175,9 +175,9 @@ class Station(models.Model):
     latitude = models.FloatField(default=39.9529399)
     longitude = models.FloatField(default=-75.1905607)
     address = models.CharField(max_length=300, blank=True)
-    notes = models.TextField(max_length=100, blank=True)
-    hours = models.TextField(max_length=100, blank=True)
-    picture = models.ImageField(upload_to='img/stations', blank=True)
+    notes = models.TextField(max_length=100, blank=True, null=True)
+    hours = models.TextField(max_length=100, blank=True, null=True)
+    picture = models.ImageField(upload_to='img/stations', blank=True, null=True)
     full_name = models.CharField(max_length=100, default="")
 
     def __unicode__(self):
@@ -218,6 +218,9 @@ class Bike(models.Model):
         }
 
 class Ride(models.Model):
+    class Meta:
+        get_latest_by = "checkout_time"
+
     rider = models.ForeignKey(
         Student, limit_choices_to={
             'payments__status': 'available',
