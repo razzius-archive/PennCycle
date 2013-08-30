@@ -133,7 +133,7 @@ class TwilioTest(TestCase):
         body = "checkin PSA"
         expected = "Station not found"
         response = handle_checkin(self.student, body)
-        print(response)
+        print(expected, response)
         self.assertTrue(expected in response)
         self.assertLess(len(response), 160)
 

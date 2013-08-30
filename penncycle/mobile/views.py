@@ -81,9 +81,13 @@ def handle_stations():
 def handle_checkin(student, body):
     location = None
     stations = [station.name.lower() for station in Station.objects.exclude(name="PSA")]
+    full_names = [station.full_name.lower() for station in Station.objects.exclude(name="PSA")]
     for station in stations:
         if station in body:
             location = Station.objects.get(name=station.title())
+    for station in full_names:
+        if station and station in body: # Empty strings should not match
+            location = Station.objects.get(full_name=station.title())
     if not location:
         email_razzi("Station didn't match for checkin. Message was {}".format(body))
         message = "Station not found. Options: Rodin, Ware, Huntsman, Fisher, College Hall, Hill. To check in, text 'Checkin Hill' or another station."
