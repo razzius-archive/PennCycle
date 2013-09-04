@@ -291,7 +291,7 @@
 	$("#accept").click(function() {
 		$.post(
 			"/verify_waiver/",
-			{}, // The penncard is in the session... sketchy though
+			{}, // The penncard is in the session
 			function(data) {
 			if (data.success) {
 				$("#waiver-result").html("Successfully submitted waiver.");
