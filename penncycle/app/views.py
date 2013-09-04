@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, UpdateView
 
 from braces.views import LoginRequiredMixin
 
@@ -271,3 +271,11 @@ def modify_payment(request):
     payment.save()
     email_razzi("Processed {}".format(data))
     return HttpResponse("success")
+
+class StudentUpdate(UpdateView):
+    model = Student
+    form = SignupForm
+    template_name = "update_student.html"
+
+    def get_object(self, queryset=None):
+        return Student.objects.get(penncard=self.request.session.get("penncard"))
