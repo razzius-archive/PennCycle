@@ -32,7 +32,7 @@ class Command(NoArgsCommand):
             checkout_time__lte=eighteen_hours_ago
         )
         for ride in active_rides:
-            if "unlimited" not in ride.rider.payments.get(status="out").plan.name:
+            if "Unlimited" not in ride.rider.payments.get(status="out").plan.name:
                 warn(ride)
                 email_razzi("Warned! {}".format(locals()))
 
