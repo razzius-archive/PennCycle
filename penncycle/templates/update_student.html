@@ -9,16 +9,10 @@
 {% block content %}
 <div class="well">
 	<div class="row-fluid">
-		<div class="span6">
-			<h2>Sign Up &amp; Get Riding!</h2>
-			<h3>Already a member?
-				<a href="/signin/" class="btn btn-primary">Sign in &#187;</a>
-			</h3>
-		</div>
-		<div class="span4">
-			<img src="{{ STATIC_URL }}img/penncard_example.png">
-		</div>
+		<h2>Update your information using the form below.</h2>
+		<p>You can manage your plans from your <a href="/welcome/">account page</a>. Any account-related questions should be sent to <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a>.</p>
 	</div>
 	{% crispy form %}
+	<a href="/welcome"/><h4>Return to my account</h4></a>
 </div>
 {% endblock %}

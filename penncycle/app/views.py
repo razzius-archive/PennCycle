@@ -16,7 +16,7 @@ from braces.views import LoginRequiredMixin
 
 from .models import Student, Station, Bike, Payment, Plan, Info
 from util.util import email_razzi, welcome_email
-from .forms import SignupForm
+from .forms import SignupForm, UpdateForm
 
 
 def lookup(request):
@@ -274,8 +274,13 @@ def modify_payment(request):
 
 class StudentUpdate(UpdateView):
     model = Student
-    form = SignupForm
+    form_class = UpdateForm
     template_name = "update_student.html"
+    success_url = "/update/"
 
     def get_object(self, queryset=None):
         return Student.objects.get(penncard=self.request.session.get("penncard"))
+
+    def form_valid(self, form):
+        messages.info(self.request, "Successfully updated info.")
+        return super(StudentUpdate, self).form_valid(form)
