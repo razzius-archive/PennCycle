@@ -54,3 +54,38 @@ class SignupForm(forms.ModelForm):
     gender = forms.TypedChoiceField(
         choices=(("M", "Male"), ("F", "Female")),
     )
+
+class UpdateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UpdateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    'name',
+                    'phone',
+                    'pin',
+                    'email', css_class="span5 offset1"
+                ), Div(
+                    'last_two',
+                    'grad_year',
+                    'living_location',
+                ), css_class="row-fluid"
+            )
+        )
+        self.helper.form_action = '/update/'
+        self.helper.add_input(Submit('update', "Update"))
+        self.helper.form_method = 'post'
+        self.fields['last_two'].label = "Last two digits of PennCard"
+
+    class Meta:
+        model = Student
+        fields = [
+            'name',
+            'phone',
+            'email',
+            'last_two',
+            'grad_year',
+            'living_location',
+            'pin'
+        ]

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+{{block.super}} Sign Up
+{% endblock %}
+
+{% block content %}
+<div class="well">
+	<div class="row-fluid">
+		<h2>Update your information using the form below.</h2>
+		<p>You can manage your plans from your <a href="/welcome/">account page</a>. Any account-related questions should be sent to <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a>.</p>
+	</div>
+	{% crispy form %}
+	<a href="/welcome"/><h4>Return to my account</h4></a>
+</div>
+{% endblock %}
