@@ -79,6 +79,14 @@ def handle_stations():
     return message
 
 def handle_checkin(student, body):
+    # Make sure they actually have a bike out
+    if not student.ride_set.filter(checkin_time=None):
+        ride = student.ride_set.latest("checkin_time")
+        checkin_time = ride.checkin_time
+        time_of_day = "{}:{}".format(checkin_time.hour, checkin_time.minute)
+        email_razzi("No ride to check in. {}".format(locals()))
+        return "You don't have any rides to check in. Your last ride was checked in at {} at {}.".format(time_of_day, ride.checkin_station)
+    # Get their location and check the bike in
     location = None
     stations = Station.objects.all()
     for station in stations:
@@ -116,6 +124,8 @@ def handle_bikes():
     bikes = Bike.objects.filter(status="available")
     bike_info = ["{} @ {}.".format(bike.name, bike.location) for bike in bikes]
     summary = " ".join(bike_info)
+    if not summary:
+        summary = "All of our bikes are currently out. Try again soon!"
     return summary
 
 def handle_sms(student, body):
