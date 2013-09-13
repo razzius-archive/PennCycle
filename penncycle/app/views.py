@@ -242,20 +242,23 @@ class Stats(LoginRequiredMixin, TemplateView):
 
 @login_required
 def combo(request):
+    bikes = Bike.objects.all()
+    bikes = reversed(sorted(bikes, key=lambda x: int(x.name)))
+    context = {'bikes': bikes}
     if request.method == "POST":
-        data = request.POST
-        bike = data.get("bike")
+        combo = request.POST.get("combo")
+        if not combo:
+            messages.info(request, "Enter a combo. Nothing changed.")
+            return render_to_response("combo.html", RequestContext(request, context))
+        bike = request.POST.get("bike")
         bike = Bike.objects.get(id=bike)
-        log = Info(message="Bike {} had combo {} and is now {}".format(bike, bike.combo, data.get("combo")))
+        bike.combo = combo
+        log = Info(message="Bike {} had combo {} and is now {}".format(bike, bike.combo, combo))
         log.save()
-        bike.combo = data.get("combo")
         bike.combo_update = datetime.datetime.today()
         bike.save()
-    context = {
-        'bikes': Bike.objects.all()
-    }
-    context_instance = RequestContext(request, context)
-    return render_to_response("combo.html", context_instance)
+        messages.info(request, "Changed combo to {}".format(bike.combo))
+    return render_to_response("combo.html", RequestContext(request, context))
 
 @require_POST
 def modify_payment(request):

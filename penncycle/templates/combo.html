@@ -1,51 +1,69 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  {{block.super}} Combo management
+{{block.super}} Combo management
 {% endblock %}
 
 {% block content %}
-	<div id="random" style="font-size:20px">Click me or press r to randomize</div>
-	<script type="text/javascript">
-		function randomCombo(){
-			var one = Math.floor(Math.random()*10);
-			var two = Math.floor(Math.random()*10);
-			var three = Math.floor(Math.random()*10);
-			var four = Math.floor(Math.random()*10);
-			return one.toString() + two.toString() + three.toString() + four.toString()
-		}
-		function randomize(){
-			fields = document.getElementsByClassName("combo");
-			for (var i = 0; i < fields.length; i++) {
-				fields[i].value = randomCombo();
-			}
-		}
-		document.getElementById("random").addEventListener('click', randomize);
-		window.onkeydown = function(e){
-			if (e.keyCode == 82) {
-				randomize();
-			}
-		}
-	</script>
-	<div class="row-fluid">
-		<div class="bike span2">Bike Name</div>
-		<div class="combo span2">Combo</div>
-		<div class="span4"></div>
-		<div class="location span4">Location</div>
-	</div>
+<div id="random" style="font-size:20px">Click me or press r to randomize</div>
+
+<table class="table">
+	<thead>
+		<tr>
+			<td>Bike Name</td>
+			<td>Combo</td>
+			<td>Update</td>
+			<td>Location</td>
+			<td>Checkout time</td>
+			<td>Checkin time</td>
+			<td>Plan of rider</td>
+		</tr>
+	</thead>
 	{% for bike in bikes reversed %}
-		<div class="row-fluid">
-			<div class="bike span2">{{bike.name}}</div>
-			<div class="combo span2">{{bike.combo}}</div>
-			<div class="span4">
-				<form action="/combo/" method="post">
-					{% csrf_token %}
-					New combo: <input class="combo" type="text" name="combo" maxlength="4">
-					<input type="text" name="bike" style="display:none" value="{{bike.id}}">
-					<input type="submit">
-				</form>
-			</div>
-			<div class="location span4">{{bike.location}}</div>
-		</div>
+	<tr class="table">
+		<td class="bike">{{bike.name}}</td>
+		<td class="combo">{{bike.combo}}</td>
+		<td>
+			<form action="/combo/" method="post">
+				{% csrf_token %}
+				New combo: <input class="combo input-mini" type="text" name="combo" maxlength="4">
+				<input type="number" name="bike" style="display:none" value="{{bike.id}}">
+				<input class="btn" type="submit">
+			</form>
+		</td>
+		<td class="location">{{bike.location}}</td>
+		<td>{{bike.rides.latest.checkout_time}}</td>
+		<td>{{bike.rides.latest.checkin_time}}</td>
+		<td>{{bike.rides.latest.rider.payments.latest.plan.name}}</td>
+	</tr>
+
 	{% endfor %}
+</table>
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+	function randomCombo(){
+		var one = Math.floor(Math.random()*10);
+		var two = Math.floor(Math.random()*10);
+		var three = Math.floor(Math.random()*10);
+		var four = Math.floor(Math.random()*10);
+		return one.toString() + two.toString() + three.toString() + four.toString()
+	}
+	function randomize(){
+		fields = document.getElementsByClassName("combo");
+		for (var i = 0; i < fields.length; i++) {
+			fields[i].value = randomCombo();
+		}
+	}
+	$("#random").click(function() {
+		randomize();
+	});
+	window.onkeydown = function(e){
+		if (e.keyCode == 82) {
+			randomize();
+		}
+	}
+</script>
 {% endblock %}
