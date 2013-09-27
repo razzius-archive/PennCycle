@@ -1,5 +1,4 @@
-from django.core.mail import send_mail
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django_twilio.client import twilio_client
 
 
@@ -96,5 +95,65 @@ or by coming to <a href='http://www.penncycle.org/about#qc'>Quaker Corner</a> (W
 """.format(student.name, payment.end_date.strftime("%B %d"))
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
     msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+
+def payment_email(student):
+    subject = "Thanks For Purchasing a PennCycle Membership"
+    from_email = "messenger@penncycle.org"
+    to_email = student.email
+    text_content = """
+Dear {},
+
+Thank you for signing up for a PennCycle plan! Once your payment is processed, you will be eligible to check out PennCycles from any of our locations on campus.
+
+In order to check out bikes, text 'help' to 215-688-5468 for instructions. The basic commands are 'check out (bike)' and 'check in (location)'.
+
+While using PennCycle, keep the following in mind:
+
+1. Before riding do an ABC Check (Air in Tires, Brakes, Chain)
+
+2. If you experience any problems while riding or finding a bike, email messenger@penncycle.org.
+
+3. Remember to physically locate the bike you want to check out before texting. This is very important and ensures that you will not be liable for damage/loss of a bike whose location you were unaware of.
+
+4. If your tires feel flat you can pump them up at the bike racks to the next to Pottruck, by the Chemistry Building, and at Quaker Corner, or email us at messenger@penncycle.org and we'll pump them up for you!
+
+5. Always lock up your bike properly! See the attached picture of a properly locked bike. Ensure the lock goes through the rack, the front wheel and a sturdy part of the frame. If you can't include the front wheel, be sure to include the frame. PennCycle will charge a $5 fee for an improperly locked bike. Never lock your bike to a garbage can, or bench.
+
+We hope that you enjoy your PennCycle experience! 
+
+Happy Cycling!
+
+Bobby and the PennCycle Team
+""".format(student.name)
+    html_content = """
+<p>Dear {},</p>
+
+<p>Thank you for signing up for a PennCycle plan! Once your payment is processed, you will be eligible to check out PennCycles from any of our locations on campus.</p>
+
+<p>In order to check out bikes, text 'help' to 215-688-5468 for instructions. The basic commands are 'check out (bike)' and 'check in (location)'.</p>
+
+<p>While using PennCycle, keep the following in mind:</p>
+<ol>
+    <li>Before riding do an ABC Check (Air in Tires, Brakes, Chain)</li>
+
+    <li>If you experience any problems while riding or finding a bike, email messenger@penncycle.org.</li>
+
+    <li><b>Remember to physically locate the bike you want to check out before texting.</b> This is very important and ensures that you will not be liable for damage/loss of a bike whose location you were unaware of.</li>
+
+    <li>If your tires feel flat you can pump them up at the bike racks to the next to Pottruck, by the Chemistry Building, and at Quaker Corner, or email us at messenger@penncycle.org and we'll pump them up for you!</li>
+
+    <li><b>Always lock up your bike properly!</b> See the attached picture of a properly locked bike. Ensure the lock goes through the rack, the front wheel and a sturdy part of the frame. If you can't include the front wheel, be sure to include the frame. PennCycle will charge a $5 fee for an improperly locked bike. Never lock your bike to a garbage can, or bench.</li>
+</ol>
+
+<p>We hope that you enjoy your PennCycle experience!</p>
+
+<p>Happy Cycling!</p>
+
+<p>The PennCycle Team</p>""".format(student.name)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+    msg.attach_alternative(html_content, "text/html")
+    msg.attach_file("penncycle/assets/img/locked_bike.png")
     msg.send()
 

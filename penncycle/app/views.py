@@ -15,7 +15,7 @@ from django.views.generic import TemplateView, CreateView, UpdateView
 from braces.views import LoginRequiredMixin
 
 from .models import Student, Station, Bike, Payment, Plan, Info
-from util.util import email_razzi, welcome_email
+from util.util import email_razzi, welcome_email, payment_email
 from .forms import SignupForm, UpdateForm
 
 
@@ -212,6 +212,7 @@ def credit(request):
         payment_type="credit",
     )
     payment.save()
+    payment_email(student, payment)
     return HttpResponse(payment.id)
 
 
