@@ -194,6 +194,7 @@ def bursar(request):
         ['messenger@penncycle.org']
     )
     messages.info(request, "You have successfully paid by Bursar!")
+    payment_email(student)
     return HttpResponse("success")
 
 
@@ -212,7 +213,7 @@ def credit(request):
         payment_type="credit",
     )
     payment.save()
-    payment_email(student, payment)
+    payment_email(student)
     return HttpResponse(payment.id)
 
 
@@ -234,6 +235,7 @@ def cash(request):
     payment.save()
     messages.info(request, "Your payment has been processed. Please come to Penn"
         "Student Agencies and pay at the front desk.")
+    payment_email(student)
     return HttpResponse("success")
 
 
