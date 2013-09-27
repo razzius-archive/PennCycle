@@ -34,5 +34,3 @@ class Command(NoArgsCommand):
         for ride in active_rides:
             if "Unlimited" not in ride.rider.payments.get(status="out").plan.name:
                 warn(ride)
-                email_razzi("Warned! {}".format(locals()))
-

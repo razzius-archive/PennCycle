@@ -59,3 +59,42 @@ The PennCycle Team
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
     msg.attach_alternative(html_content, "text/html")
     msg.send()
+
+def renewal_email(student, payment):
+    subject = "Your PennCycle plan will expire soon"
+    from_email = "messenger@penncycle.org"
+    to_email = student.email
+    text_content = """
+Dear {},
+
+Your monthly PennCycle membership will expire on {}!
+
+It's easy to renew your subscription to PennCycle. Just log in to your account on the PennCycle website and add a Basic or Unlimited plan,
+or click the renew button on a current plan to have it automatically renew by bursar. You can pay for a new plan with bursar or credit online
+or by coming to Quaker Corner (Williams Hall Room 117) and paying with cash.
+
+We hope you have enjoyed PennCycle. Please let us know if you have any questions or if we can help you out in any way. 
+
+Thanks! Keep on pedaling!
+
+Bobby and the PennCycle Team
+""".format(student.name, payment.end_date.strftime("%B %d"))
+    html_content = """
+<p>Dear {},</p>
+
+<p>Your monthly PennCycle membership will expire on {}!</p>
+
+<p>It's easy to renew your subscription to PennCycle. Just <a href="http://www.penncycle.org/login">log in</a> to your account on the PennCycle website and add a Basic or Unlimited plan,
+or click the renew button on a current plan to have it automatically renew by bursar. You can pay for a new plan with bursar or credit online
+or by coming to <a href='http://www.penncycle.org/about#qc'>Quaker Corner</a> (Williams Hall Room 117) and paying with cash.</p>
+
+<p>We hope you have enjoyed PennCycle. Please let us know if you have any questions or if we can help you out in any way. </p>
+
+<p>Thanks! Keep on pedaling!</p>
+
+<p>Bobby and the PennCycle Team</p>
+""".format(student.name, payment.end_date.strftime("%B %d"))
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
