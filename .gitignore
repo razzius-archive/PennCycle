@@ -4,3 +4,4 @@
 *.dump
 static
 manage_local.py
+.DS_Store
