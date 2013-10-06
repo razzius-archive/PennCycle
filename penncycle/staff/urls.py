@@ -1,12 +1,13 @@
 from django.conf.urls import patterns
 
 from views import (
-    Dashboard, checkout, checkin
+    Index, BikeDashboard, checkout, checkin
 )
 
 urlpatterns = patterns(
     '',
-    (r'^$', Dashboard.as_view()),
+    (r'^$', Index.as_view()),
+    # url(r'^checkouts/$', BikeDashboard.as_view(), name="bike dashboard"),
     (r'checkout/$', checkout),
     (r'checkin/$', checkin),
 )

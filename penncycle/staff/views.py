@@ -10,11 +10,18 @@ from app.models import Bike, Student
 from util.util import email_razzi
 from util.lend import make_ride, checkin_ride
 
-class Dashboard(LoginRequiredMixin, TemplateView):
+class Index(LoginRequiredMixin, TemplateView):
     template_name = "staff/index.html"
 
     def get_context_data(self):
-        context = super(Dashboard, self).get_context_data()
+        context = super(Index, self).get_context_data()
+        context['bikes'] = Bike.objects.all()
+
+class BikeDashboard(LoginRequiredMixin, TemplateView):
+    template_name = "staff/bike_dashboard.html"
+
+    def get_context_data(self):
+        context = super(BikeDashboard, self).get_context_data()
         user = self.request.user
         try:
             station = user.groups.exclude(name='Associate')[0]
