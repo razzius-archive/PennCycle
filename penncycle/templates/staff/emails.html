@@ -1,0 +1,40 @@
+{% extends 'base_admin.html' %}
+
+{% load partition %}
+
+{% block content %}
+<div class="row-fluid">
+    <h2>Unlimited emails with an end date within the last 4 months</h2>
+    <ul>    <!-- unlimited -->
+        {% for email in unlimited_emails %}
+        <li>
+            {{ email }}
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Basic emails with an end date in the last 4 months</h2>
+    <ul>
+        {% for email in basic_emails %}
+        <li>
+            {{ email }}
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Students with bikes out</h2>
+    <ul>
+        {% for email in bikes_out_emails %}
+        <li>
+            {{ email }}
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>People who haven't bought a plan but have signed up in the last 4 months</h2>
+    <ul>
+        {% for email in no_plan_emails %}
+        <li>
+            {{ email }}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

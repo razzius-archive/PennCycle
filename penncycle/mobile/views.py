@@ -7,7 +7,7 @@ import twilio.twiml
 from django_twilio.decorators import twilio_view
 
 from app.models import Student, Bike, Station
-from penncycle.util.util import email_razzi, send_pin_to_student
+from penncycle.util.util import email_razzi, send_pin_to_student, email_managers
 from penncycle.util.lend import make_ride, checkin_ride
 
 
@@ -58,7 +58,7 @@ def handle_checkout(student, body):
     try:
         bike = Bike.objects.get(name=bike_number)
     except Bike.DoesNotExist:
-        message = "Bike not found. Text 'Checkout (number), where number is 1 or 2 digits."
+        message = "Bike not found. Text 'Checkout (number)', where number is 1 or 2 digits. Text 'Report (issue)' to report an issue."
         return message
     if bike.status == "available":
         make_ride(student, bike)
@@ -103,19 +103,19 @@ def handle_checkin(student, body):
 
 def handle_help(student, body):
     if student.can_ride:
-        message = "Checkout: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations and 'bikes' to view bikes. You're eligible to check out bikes."
+        message = "Checkout: Checkout (number). Checkin: Checkin (location). Text Stations or Bikes for station/bike info. Report (issue) reports an issue. You can check out bikes"
         return message
     else:
         current_rides = student.ride_set.filter(checkin_time=None)
         if len(current_rides) > 0:
             bike = current_rides[0].bike.name
-            message = "You still have {} out. Until you check it in, you cannot check out bikes. Text 'locations' for checkin stations.".format(bike)
+            message = "You have bike {} out. Until you return it, you can't check out bikes. Text 'locations' for checkin stations and 'report' to report an issue.".format(bike)
         elif not student.waiver_signed:
             email_razzi("Waiver not signed by {} on sms.".format(student))
             message = "You need to fill out a waiver. Log on to www.penncycle.org/signin to do so."
         else:
             email_razzi("{} doesn't have any payments, it would seem. Contact him at {}".format(student.name, student.email))
-            message = "You are currently unable to check out bikes. Go to penncycle.org/signin and enter your penncard to check your status."
+            message = "You are unable to check out bikes. Go to penncycle.org/signin and enter your penncard to check your status. You must purchase a plan before you can ride."
         if not any(command in body for command in ["help", "info", "information", "?"]):
             email_razzi("Body didn't match command. {}".format(locals()))
         return message
@@ -128,6 +128,23 @@ def handle_bikes():
         summary = "All of our bikes are currently out. Try again soon!"
     return summary
 
+def handle_report(student, body):
+    # check if they have a bike out
+    ride = student.current_ride
+    if ride:
+        bike = ride.bike
+    else:
+        try:
+            bike_number = re.search("\d+", body).group()
+            bike = Bike.objects.get(name=bike_number)
+        except:
+            bike = None
+    if bike:
+        bike.status = body
+        bike.save()
+    email_managers(student, body, bike)
+    return "Thank you. We will take care of the issue as soon as we can. In the meantime, text 'bikes' for available bikes. Email messenger@penncycle.org with questions."
+
 def handle_sms(student, body):
     if any(command in body for command in ["rent", "checkout", "check out", "check-out"]):
         return handle_checkout(student, body)
@@ -137,6 +154,8 @@ def handle_sms(student, body):
         return handle_stations()
     elif any(command in body for command in ["bikes", "available"]):
         return handle_bikes()
+    elif any(command in body for command in ["report"]):
+        return handle_report(student, body)
     else:
         return handle_help(student, body)
 

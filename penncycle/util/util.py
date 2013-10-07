@@ -18,9 +18,22 @@ def send_pin_to_student(student):
 
 def email_razzi(message):
     send_mail(
-        'an important email from the PennCycle app',
-        str(message),
+        'PennCycle: {}'.format(message),
+        message,
         'messenger@penncycle.org', ['razzi53@gmail.com'],
+        fail_silently=True
+    )
+
+def email_managers(student, message, bike):
+    body = "{} reported {}. No bikes were changed. ".format(student, message)
+    if bike:
+        body += "{} had its status changed to {}.".format(bike, message)
+    else:
+        body += "No bikes were changed."
+    send_mail(
+        "{} reported issue: {}".format(student, message),
+        body,
+        'messenger@penncycle.org', ['messenger@penncycle.org'],
         fail_silently=True
     )
 
@@ -72,7 +85,7 @@ It's easy to renew your subscription to PennCycle. Just log in to your account o
 or click the renew button on a current plan to have it automatically renew by bursar. You can pay for a new plan with bursar or credit online
 or by coming to Quaker Corner (Williams Hall Room 117) and paying with cash.
 
-We hope you have enjoyed PennCycle. Please let us know if you have any questions or if we can help you out in any way. 
+We hope you have enjoyed PennCycle. Please let us know if you have any questions or if we can help you out in any way.
 
 Thanks! Keep on pedaling!
 
@@ -121,7 +134,7 @@ While using PennCycle, keep the following in mind:
 
 5. Always lock up your bike properly! See the attached picture of a properly locked bike. Ensure the lock goes through the rack, the front wheel and a sturdy part of the frame. If you can't include the front wheel, be sure to include the frame. PennCycle will charge a $5 fee for an improperly locked bike. Never lock your bike to a garbage can, or bench.
 
-We hope that you enjoy your PennCycle experience! 
+We hope that you enjoy your PennCycle experience!
 
 Happy Cycling!
 
