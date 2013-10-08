@@ -197,7 +197,7 @@ def paid(request):
     ]
     columns_order = ('paid', 'count')
     order_by = columns_order[1]
-    data = Counter([s.paid for s in students]).items()
+    data = Counter([s.paid_now for s in students]).items()
     #data = sorted(data, key=operator.itemgetter(0), reverse=True)
     print data
     data_table = gviz_api.DataTable(description)
