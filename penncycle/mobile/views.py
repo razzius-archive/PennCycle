@@ -129,6 +129,7 @@ def handle_bikes():
     return summary
 
 def handle_report(student, body):
+    email_body = "{} reported {}. ".format(student, body)
     # check if they have a bike out
     ride = student.current_ride
     if ride:
@@ -142,7 +143,11 @@ def handle_report(student, body):
     if bike:
         bike.status = body
         bike.save()
-    email_managers(student, body, bike)
+        email_body += "{} had its status changed to {}.".format(bike, body)
+    else:
+        email_body += "No bikes were changed."
+    email_subject = "{} reported issue: {}".format(student, body)
+    email_managers(email_body, email_subject)
     return "Thank you. We will take care of the issue as soon as we can. In the meantime, text 'bikes' for available bikes. Email messenger@penncycle.org with questions."
 
 def handle_sms(student, body):
