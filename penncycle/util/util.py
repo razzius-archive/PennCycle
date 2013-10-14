@@ -157,7 +157,7 @@ Bobby and the PennCycle Team
 
 <p>We hope that you enjoy your PennCycle experience!</p>
 
-<p>Happy Cycling!</p>
+<p>Happy cycling!</p>
 
 <p>The PennCycle Team</p>""".format(student.name)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
@@ -165,3 +165,27 @@ Bobby and the PennCycle Team
     msg.attach_file("penncycle/assets/img/locked_bike.png")
     msg.send()
 
+
+def renewed_email(payment, old_end_date):
+    context = {
+        "name": payment.student.name,
+        "plan": payment.plan.name,
+        "expire_date": payment.end_date,
+        "old_end_date": old_end_date
+    }
+    content = """
+Dear {name},
+
+We hope you have been enjoying PennCycle! Your {plan}, which was set to expire on {old_end_date}, has been renewed by bursar and will end on {expire_date}.
+
+If you have any questions, or if you believe this message was in error, please email messenger@penncycle.org and we will sort it out.
+
+Happy cycling!
+
+The PennCycle Team
+""".format(**context)
+    send_mail(
+        "Your PennCycle Plan has been Renewed",
+        content,
+        "messenger@penncycle.org", [payment.student.email]
+    )

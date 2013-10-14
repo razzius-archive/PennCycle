@@ -60,7 +60,6 @@ def welcome(request):
     try:
         student = Student.objects.get(penncard=penncard)
     except Student.DoesNotExist:
-        email_razzi("Strangely, a student dne on welcome. {}".format(penncard))
         return HttpResponseRedirect("/signin/")
     context = {
         "student": student
@@ -118,7 +117,6 @@ class Signup(CreateView):
 @require_POST
 @csrf_exempt
 def verify_payment(request):
-    email_razzi(request.POST)
     payment = Payment.objects.get(id=request.POST.get('merchantDefinedData1'))
     # source = request.META.get('HTTP_REFERER')
     # source_needed = 'https://orderpage.ic3.com/hop/orderform.jsp'
@@ -275,7 +273,6 @@ def modify_payment(request):
     else:
         payment.renew = False
     payment.save()
-    email_razzi("Processed {}".format(data))
     return HttpResponse("success")
 
 class StudentUpdate(UpdateView):
