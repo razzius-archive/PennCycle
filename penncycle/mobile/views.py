@@ -81,11 +81,14 @@ def handle_stations():
 def handle_checkin(student, body):
     # Make sure they actually have a bike out
     if not student.ride_set.filter(checkin_time=None):
-        ride = student.ride_set.latest("checkin_time")
-        checkin_time = ride.checkin_time
-        time_of_day = "{}:{}".format(checkin_time.hour, checkin_time.minute)
-        email_razzi("No ride to check in. {}".format(locals()))
-        return "You don't have any rides to check in. Your last ride was checked in at {} at {}.".format(time_of_day, ride.checkin_station)
+        try:
+            ride = student.ride_set.latest("checkin_time")
+        except:
+            return "You have never checked out a bike. Check out a bike using the 'checkout (number)'. Once you have done that, use this command to return it."
+            checkin_time = ride.checkin_time
+            time_of_day = "{}:{}".format(checkin_time.hour, checkin_time.minute)
+            return "You don't have any rides to check in. Your last ride was checked in at {} at {}.".format(time_of_day, ride.checkin_station)
+
     # Get their location and check the bike in
     location = None
     stations = Station.objects.all()
