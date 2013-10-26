@@ -18,26 +18,19 @@ def send_pin_to_student(student):
 
 def email_razzi(message):
     send_mail(
-        'an important email from the PennCycle app',
-        str(message),
+        'PennCycle: {}'.format(message),
+        message,
         'messenger@penncycle.org', ['razzi53@gmail.com'],
         fail_silently=True
     )
 
-def email_managers(student, message, bike):
-    body =  "{} reported {}. No bikes were changed.".format(student, message) 
-
-    if bike:
-        body = "{} had its status changed to {}.".format(bike, message)
-    else:
-        body = "No bikes were changed"
-    
+def email_managers(subject, body):
     send_mail(
-        "{} reported issue: {}".format(student, message),
-        str(body)
+        subject,
+        body,
         'messenger@penncycle.org', ['messenger@penncycle.org'],
         fail_silently=True
-        )
+    )
 
 def welcome_email(student):
     subject = "Welcome to PennCycle"
@@ -87,7 +80,7 @@ It's easy to renew your subscription to PennCycle. Just log in to your account o
 or click the renew button on a current plan to have it automatically renew by bursar. You can pay for a new plan with bursar or credit online
 or by coming to Quaker Corner (Williams Hall Room 117) and paying with cash.
 
-We hope you have enjoyed PennCycle. Please let us know if you have any questions or if we can help you out in any way. 
+We hope you have enjoyed PennCycle. Please let us know if you have any questions or if we can help you out in any way.
 
 Thanks! Keep on pedaling!
 
@@ -136,7 +129,7 @@ While using PennCycle, keep the following in mind:
 
 5. Always lock up your bike properly! See the attached picture of a properly locked bike. Ensure the lock goes through the rack, the front wheel and a sturdy part of the frame. If you can't include the front wheel, be sure to include the frame. PennCycle will charge a $5 fee for an improperly locked bike. Never lock your bike to a garbage can, or bench.
 
-We hope that you enjoy your PennCycle experience! 
+We hope that you enjoy your PennCycle experience!
 
 Happy Cycling!
 
@@ -164,7 +157,7 @@ Bobby and the PennCycle Team
 
 <p>We hope that you enjoy your PennCycle experience!</p>
 
-<p>Happy Cycling!</p>
+<p>Happy cycling!</p>
 
 <p>The PennCycle Team</p>""".format(student.name)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
@@ -172,3 +165,27 @@ Bobby and the PennCycle Team
     msg.attach_file("penncycle/assets/img/locked_bike.png")
     msg.send()
 
+
+def renewed_email(payment, old_end_date):
+    context = {
+        "name": payment.student.name,
+        "plan": payment.plan.name,
+        "expire_date": payment.end_date,
+        "old_end_date": old_end_date
+    }
+    content = """
+Dear {name},
+
+We hope you have been enjoying PennCycle! Your {plan}, which was set to expire on {old_end_date}, has been renewed by bursar and will end on {expire_date}.
+
+If you have any questions, or if you believe this message was in error, please email messenger@penncycle.org and we will sort it out.
+
+Happy cycling!
+
+The PennCycle Team
+""".format(**context)
+    send_mail(
+        "Your PennCycle Plan has been Renewed",
+        content,
+        "messenger@penncycle.org", [payment.student.email]
+    )

@@ -1,5 +1,6 @@
 import datetime
 import pytz
+from penncycle.util.util import email_razzi
 
 from app.models import Ride
 
@@ -23,7 +24,11 @@ def checkin_ride(ride, station):
     ride.checkin_station = station
     ride.bike.status = "available"
     ride.bike.location = station
-    payment = ride.rider.payments.latest()
+    try:
+        payment = ride.rider.payments.filter(status="out").latest()
+    except Exception:
+        payment = ride.rider.payments.latest()
+        email_razzi("Rider didn't have any payments out")
     payment.status = "available"
     payment.save()
     ride.bike.save()

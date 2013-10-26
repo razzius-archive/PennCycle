@@ -59,7 +59,7 @@ def handle_checkout(student, body):
     try:
         bike = Bike.objects.get(name=bike_number)
     except Bike.DoesNotExist:
-        message = "Bike not found. Text 'Checkout (number), where number is 1 or 2 digits."
+        message = "Bike not found. Text 'Checkout (number)', where number is 1 or 2 digits. Text 'Report (issue)' to report an issue."
         return message
     if bike.status == "available":
         make_ride(student, bike)
@@ -82,11 +82,14 @@ def handle_stations():
 def handle_checkin(student, body):
     # Make sure they actually have a bike out
     if not student.ride_set.filter(checkin_time=None):
-        ride = student.ride_set.latest("checkin_time")
-        checkin_time = ride.checkin_time
-        time_of_day = "{}:{}".format(checkin_time.hour, checkin_time.minute)
-        email_razzi("No ride to check in. {}".format(locals()))
-        return "You don't have any rides to check in. Your last ride was checked in at {} at {}.".format(time_of_day, ride.checkin_station)
+        try:
+            ride = student.ride_set.latest("checkin_time")
+        except:
+            return "You have never checked out a bike. Check out a bike using the 'checkout (number)'. Once you have done that, use this command to return it."
+            checkin_time = ride.checkin_time
+            time_of_day = "{}:{}".format(checkin_time.hour, checkin_time.minute)
+            return "You don't have any rides to check in. Your last ride was checked in at {} at {}.".format(time_of_day, ride.checkin_station)
+
     # Get their location and check the bike in
     location = None
     stations = Station.objects.all()
@@ -104,19 +107,19 @@ def handle_checkin(student, body):
 
 def handle_help(student, body):
     if student.can_ride:
-        message = "Checkout: 'Checkout (number)'. Checkin: 'Checkin (location)'. Text 'stations' to view stations and 'bikes' to view bikes. You're eligible to check out bikes."
+        message = "Checkout: Checkout (number). Checkin: Checkin (location). Text Stations or Bikes for station/bike info. Report (issue) reports an issue. You can check out bikes"
         return message
     else:
         current_rides = student.ride_set.filter(checkin_time=None)
         if len(current_rides) > 0:
             bike = current_rides[0].bike.name
-            message = "You still have {} out. Until you check it in, you cannot check out bikes. Text 'locations' for checkin stations.".format(bike)
+            message = "You have bike {} out. Until you return it, you can't check out bikes. Text 'locations' for checkin stations and 'report' to report an issue.".format(bike)
         elif not student.waiver_signed:
             email_razzi("Waiver not signed by {} on sms.".format(student))
             message = "You need to fill out a waiver. Log on to www.penncycle.org/signin to do so."
         else:
             email_razzi("{} doesn't have any payments, it would seem. Contact him at {}".format(student.name, student.email))
-            message = "You are currently unable to check out bikes. Go to penncycle.org/signin and enter your penncard to check your status."
+            message = "You are unable to check out bikes. Go to penncycle.org/signin and enter your penncard to check your status. You must purchase a plan before you can ride."
         if not any(command in body for command in ["help", "info", "information", "?"]):
             email_razzi("Body didn't match command. {}".format(locals()))
         return message
@@ -130,22 +133,27 @@ def handle_bikes():
     return summary
 
 def handle_report(student, body):
-    #check if they have a bike out
+
+    email_body = "{} reported {}. ".format(student, body)
+    # check if they have a bike out
     ride = student.current_ride
     if ride:
-        bike = bike.ride
+        bike = ride.bike
     else:
         try:
-            bike_number = re.search("\d+", body).group() 
+            bike_number = re.search("\d+", body).group()
             bike = Bike.objects.get(name=bike_number)
         except:
             bike = None
-
     if bike:
         bike.status = body
         bike.save()
-    email_managers(student, body, bike)
-    return "Thank you for your report. We will take care of it as soon as we can. In the meantime, text 'bikes' for a list of available bikes."        
+        email_body += "{} had its status changed to {}.".format(bike, body)
+    else:
+        email_body += "No bikes were changed."
+    email_subject = "{} reported issue: {}".format(student, body)
+    email_managers(email_body, email_subject)
+    return "Thank you. We will take care of the issue as soon as we can. In the meantime, text 'bikes' for available bikes. Email messenger@penncycle.org with questions."
 
 def handle_sms(student, body):
     if any(command in body for command in ["rent", "checkout", "check out", "check-out"]):
@@ -156,7 +164,11 @@ def handle_sms(student, body):
         return handle_stations()
     elif any(command in body for command in ["bikes", "available"]):
         return handle_bikes()
+<<<<<<< HEAD
     elif any(command in body for command in ["report"])
+=======
+    elif any(command in body for command in ["report"]):
+>>>>>>> ee2a49729776118251f7dfb73fbc39671cd7ac5c
         return handle_report(student, body)
     else:
         return handle_help(student, body)
