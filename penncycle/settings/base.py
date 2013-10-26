@@ -4,6 +4,7 @@ from unipath import Path
 
 ADMINS = (
     ('Razzi Abuissa', 'razzi53@gmail.com'),
+    ('Marcus Pan', 'marcuspanje@gmail.com'),
 )
 
 MANAGERS = ADMINS
