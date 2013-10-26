@@ -24,6 +24,21 @@ def email_razzi(message):
         fail_silently=True
     )
 
+def email_managers(student, message, bike):
+    body =  "{} reported {}. No bikes were changed.".format(student, message) 
+
+    if bike:
+        body = "{} had its status changed to {}.".format(bike, message)
+    else:
+        body = "No bikes were changed"
+    
+    send_mail(
+        "{} reported issue: {}".format(student, message),
+        str(body)
+        'messenger@penncycle.org', ['messenger@penncycle.org'],
+        fail_silently=True
+        )
+
 def welcome_email(student):
     subject = "Welcome to PennCycle"
     from_email = "messenger@penncycle.org"

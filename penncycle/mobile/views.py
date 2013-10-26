@@ -1,3 +1,4 @@
+
 import re
 
 from django.contrib import messages
@@ -7,7 +8,7 @@ import twilio.twiml
 from django_twilio.decorators import twilio_view
 
 from app.models import Student, Bike, Station
-from penncycle.util.util import email_razzi, send_pin_to_student
+from penncycle.util.util import email_razzi, send_pin_to_student, email_managers
 from penncycle.util.lend import make_ride, checkin_ride
 
 
@@ -128,6 +129,24 @@ def handle_bikes():
         summary = "All of our bikes are currently out. Try again soon!"
     return summary
 
+def handle_report(student, body):
+    #check if they have a bike out
+    ride = student.current_ride
+    if ride:
+        bike = bike.ride
+    else:
+        try:
+            bike_number = re.search("\d+", body).group() 
+            bike = Bike.objects.get(name=bike_number)
+        except:
+            bike = None
+
+    if bike:
+        bike.status = body
+        bike.save()
+    email_managers(student, body, bike)
+    return "Thank you for your report. We will take care of it as soon as we can. In the meantime, text 'bikes' for a list of available bikes."        
+
 def handle_sms(student, body):
     if any(command in body for command in ["rent", "checkout", "check out", "check-out"]):
         return handle_checkout(student, body)
@@ -137,9 +156,11 @@ def handle_sms(student, body):
         return handle_stations()
     elif any(command in body for command in ["bikes", "available"]):
         return handle_bikes()
+    elif any(command in body for command in ["report"])
+        return handle_report(student, body)
     else:
         return handle_help(student, body)
-
+    
 @twilio_view
 def sms(request):
     fromNumber = request.POST.get("From")
