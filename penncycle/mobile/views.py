@@ -164,11 +164,7 @@ def handle_sms(student, body):
         return handle_stations()
     elif any(command in body for command in ["bikes", "available"]):
         return handle_bikes()
-<<<<<<< HEAD
-    elif any(command in body for command in ["report"])
-=======
     elif any(command in body for command in ["report"]):
->>>>>>> ee2a49729776118251f7dfb73fbc39671cd7ac5c
         return handle_report(student, body)
     else:
         return handle_help(student, body)
