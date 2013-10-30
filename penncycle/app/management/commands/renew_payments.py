@@ -9,6 +9,7 @@ class Command(NoArgsCommand):
 		today = timezone.now().date()
 		one_month_from_now = today + timezone.timedelta(days=30)
 		payments = Payment.objects.filter(end_date=today, renew=True)
+		email_razzi("Checking for students. Found payments: {}".format(payments))
 		for payment in payments:
 			old_end_date = payment.end_date
 			payment.end_date = one_month_from_now
