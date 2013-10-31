@@ -1,3 +1,4 @@
+
 import re
 
 from django.contrib import messages
@@ -132,6 +133,7 @@ def handle_bikes():
     return summary
 
 def handle_report(student, body):
+
     email_body = "{} reported {}. ".format(student, body)
     # check if they have a bike out
     ride = student.current_ride
@@ -166,7 +168,7 @@ def handle_sms(student, body):
         return handle_report(student, body)
     else:
         return handle_help(student, body)
-
+    
 @twilio_view
 def sms(request):
     fromNumber = request.POST.get("From")
