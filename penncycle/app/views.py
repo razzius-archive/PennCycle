@@ -105,9 +105,22 @@ class Signup(CreateView):
 
     def form_valid(self, form):
         student = form.save()
+
+        location = student.living_location
+        
+        extra_info = ""
+        test = "fisherware"
+        if location == "Ware" or location == "Fisher":
+            extra_info = " ".join(
+                ["Since you are a resident of",
+                 location + ",",
+                 "you are subscribed to the basic plan for free", 
+                 "until the end of the school year."])
+
         messages.info(self.request,
-            "Your pin is {}. "
-            "You will need it to log on in the future.".format(student.pin)
+            ("Your pin is {}. "
+            "You will need it to log on in the future.\n").format(student.pin)
+            + extra_info
         )
         welcome_email(student)
         self.request.session['penncard'] = student.penncard
