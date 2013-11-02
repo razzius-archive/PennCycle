@@ -105,17 +105,15 @@ class Signup(CreateView):
 
     def form_valid(self, form):
         student = form.save()
-
-        location = student.living_location
         
         extra_info = ""
-        test = "fisherware"
+
+        location = student.living_location
+
         if location == "Ware" or location == "Fisher":
-            extra_info = " ".join(
-                ["Since you are a resident of",
-                 location + ",",
-                 "you are subscribed to the basic plan for free", 
-                 "until the end of the school year."])
+            extra_info = ("Since you are a resident of {}, "
+                "you are subscribed to the basic plan for free " 
+                "until the end of the school year.").format(location)
 
         messages.info(self.request,
             ("Your pin is {}. "
