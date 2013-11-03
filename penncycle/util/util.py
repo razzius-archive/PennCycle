@@ -36,6 +36,10 @@ def welcome_email(student):
     subject = "Welcome to PennCycle"
     from_email = "messenger@penncycle.org"
     to_email = student.email
+    promotion = None
+    if student.living_location in ["Fisher", "Ware"]:
+        promotion = ("As a resident of {}, you have automatically gotten "
+        "a free basic plan expiring at the end of the year.".format(student.living_location))
     text_content = """
 Thanks for joining PennCycle.
 
@@ -45,10 +49,12 @@ Helmets are required for riding and can be rented or purchased at Quaker Corner.
 
 Have a question, concern, or suggestion? Email us at messenger@penncycle.org.
 
+{promotion}
+
 Happy Cycling!
 
 The PennCycle Team
-    """.format(student.pin)
+    """.format(student.pin, promotion=promotion)
     html_content = """
 <p>Thanks for joining PennCycle.</p>
 
@@ -58,10 +64,12 @@ The PennCycle Team
 
 <p>Have a question, concern, or suggestion? Email us at messenger@penncycle.org.</p>
 
+<p>{promotion}</p>
+
 <p>Happy Cycling!</p>
 
 <p>The PennCycle Team</p>
-    """.format(student.pin)
+    """.format(student.pin, promotion=promotion)
     # Bikes can be checked out using the free phone app. Don't have a smartphone? Text 'Help' to 215-688-5468 for instructions on how to check out bikes through texting.
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
     msg.attach_alternative(html_content, "text/html")
