@@ -87,7 +87,7 @@ class TwilioTest(TestCase):
         response = handle_checkout(self.student, body)
         print(response)
         self.assertTrue(expected in response)
-        self.assertLess(len(response), 160)
+        self.assertLess(len(response), 161)
 
     def test_checkout_fail_choice(self):
         body = "checkout garbage"
@@ -95,7 +95,7 @@ class TwilioTest(TestCase):
         response = handle_checkout(self.student, body)
         print(response)
         self.assertTrue(expected in response)
-        self.assertLess(len(response), 160)
+        self.assertLess(len(response), 161)
 
     def test_checkout_fail_busy(self):
         other_student = Student.objects.get(name="Other Student")
@@ -105,7 +105,7 @@ class TwilioTest(TestCase):
         response = handle_checkout(self.student, body)
         print(response)
         self.assertTrue(expected in response)
-        self.assertLess(len(response), 160)
+        self.assertLess(len(response), 161)
 
     def test_checkout_fail_status(self):
         body = "checkout 2"
@@ -113,7 +113,7 @@ class TwilioTest(TestCase):
         response = handle_checkout(self.student, body)
         print(response)
         self.assertTrue(expected in response)
-        self.assertLess(len(response), 160)
+        self.assertLess(len(response), 161)
 
     def test_checkin_success(self):
         bike = Bike.objects.get(name="1")
@@ -124,7 +124,7 @@ class TwilioTest(TestCase):
         response = handle_checkin(self.student, body)
         print(response)
         self.assertTrue(expected in response)
-        self.assertLess(len(response), 160)
+        self.assertLess(len(response), 161)
 
     def test_checkin_fail_choice(self):
         bike = Bike.objects.get(name="1")
@@ -135,26 +135,26 @@ class TwilioTest(TestCase):
         response = handle_checkin(self.student, body)
         print(expected, response)
         self.assertTrue(expected in response)
-        self.assertLess(len(response), 160)
+        self.assertLess(len(response), 161)
 
     def test_bikes(self):
         expected = "1 @ Rodin"
         response = handle_bikes()
         print(response)
         self.assertTrue(expected in response)
-        self.assertLess(len(response), 160)
+        self.assertLess(len(response), 161)
 
     def test_stations(self):
         expected = "Rodin"
         response = handle_stations()
         print(response)
         self.assertTrue(expected in response)
-        self.assertLess(len(response), 160)
+        self.assertLess(len(response), 161)
 
     def test_help(self):
         body = "help"
-        expected = "Checkout: 'Checkout (number)"
+        expected = "Checkout: Checkout (number)"
         response = handle_help(self.student, body)
         print(response)
         self.assertTrue(expected in response)
-        self.assertLess(len(response), 160)
+        self.assertLess(len(response), 161)
