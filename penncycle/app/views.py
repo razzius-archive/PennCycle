@@ -1,4 +1,3 @@
-import datetime
 import json
 import pytz
 
@@ -11,6 +10,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import TemplateView, CreateView, UpdateView
+from django.utils import timezone
 
 from braces.views import LoginRequiredMixin
 
@@ -105,10 +105,31 @@ class Signup(CreateView):
 
     def form_valid(self, form):
         student = form.save()
+
+        location = student.living_location
+
+        if location in ["Ware", "Fisher"]:
+            basic_plan = Plan.objects.get(name="Basic Plan") 
+            free_payment = Payment(
+                student=student,
+                amount=0,
+                plan=basic_plan,
+                payment_date=timezone.datetime.now(),
+                end_date=timezone.datetime(year=2014, month=5, day=2),
+                satisfied=True,
+                payment_type="free",
+            )
+            free_payment.save()
+            extra_info = ("Since you are a resident of {}, "
+                "you automatically get a free basic plan which lasts "
+                "until the end of the school year.").format(location)
+            messages.info(self.request, extra_info)
+
         messages.info(self.request,
             "Your pin is {}. "
-            "You will need it to log on in the future.".format(student.pin)
-        )
+            "You will need it to log on in the future.".format(student.pin))
+
+
         welcome_email(student)
         self.request.session['penncard'] = student.penncard
         return HttpResponseRedirect('/welcome/')
@@ -134,7 +155,7 @@ def verify_payment(request):
         if (int(reasonCode) in good_reasons):
             payment.satisfied = True
             payment.payment_type = 'credit'
-            payment.payment_date = datetime.datetime.today()
+            payment.payment_date = timezone.datetime.today()
             payment.save()
         return HttpResponse('success')
 
@@ -171,7 +192,7 @@ def bursar(request):
         satisfied=True,
         payment_type="bursar",
         renew=renew,
-        payment_date=datetime.datetime.now(pytz.utc)
+        payment_date=timezone.datetime.now()
     )
     payment.save()
     message = '''
@@ -226,7 +247,7 @@ def cash(request):
         amount=plan.cost,
         plan=plan,
         student=student,
-        purchase_date=datetime.datetime.today(),
+        purchase_date=timezone.datetime.today(),
         satisfied=False,
         payment_type="cash",
     )
@@ -256,7 +277,7 @@ def combo(request):
         bike.combo = combo
         log = Info(message="Bike {} had combo {} and is now {}".format(bike, bike.combo, combo))
         log.save()
-        bike.combo_update = datetime.datetime.today()
+        bike.combo_update = timezone.datetime.today()
         bike.save()
         messages.info(request, "Changed combo to {}".format(bike.combo))
     return render_to_response("combo.html", RequestContext(request, context))
