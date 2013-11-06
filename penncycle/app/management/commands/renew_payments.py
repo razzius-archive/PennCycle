@@ -9,11 +9,20 @@ class Command(NoArgsCommand):
 		today = timezone.now().date()
 		one_month_from_now = today + timezone.timedelta(days=30)
 		payments = Payment.objects.filter(end_date=today, renew=True)
-		email_razzi("Checking for students. Found payments: {}".format(payments))
+		message = "The following have had their plans renewed, but have not been charged: \n"
 		for payment in payments:
 			old_end_date = payment.end_date
 			payment.end_date = one_month_from_now
 			payment.save()
-			email_managers("Charge {student} {cost} by bursar for a renewal".format(student=payment.student, cost=payment.plan.cost), "The plan has been renewed, but they have not been charged as of yet.")
 			renewed_email(payment, old_end_date)
-			email_razzi("renewed {} and emailed them and management".format(payment))
+			message += "{student} with last two {last_two}: {plan}\n".format(
+				student=payment.student, last_two=payment.student.last_two,
+				plan=payment.plan
+			)
+		if payments:
+			 email_managers(
+				"{} renewals: {} total".format(today, len(payments)),
+				message
+			)
+		email_razzi("successfully handled {}. Check outbox".format(payments))
+
