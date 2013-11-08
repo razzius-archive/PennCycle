@@ -24,5 +24,4 @@ class Command(NoArgsCommand):
 				"{} renewals: {} total".format(today, len(payments)),
 				message
 			)
-		email_razzi("successfully handled {}. Check outbox".format(payments))
 
