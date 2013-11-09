@@ -1,5 +1,4 @@
 import json
-import pytz
 
 from django.core.mail import send_mail
 from django.shortcuts import render_to_response
@@ -109,7 +108,7 @@ class Signup(CreateView):
         location = student.living_location
 
         if location in ["Ware", "Fisher"]:
-            basic_plan = Plan.objects.get(name="Basic Plan") 
+            basic_plan = Plan.objects.get(name="Basic Plan")
             free_payment = Payment(
                 student=student,
                 amount=0,
