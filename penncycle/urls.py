@@ -29,6 +29,7 @@ urlpatterns = patterns(
     (r'^welcome/$', welcome),
     (r'^update/$', StudentUpdate.as_view()),
     (r'^safety/$', TemplateView.as_view(template_name="safety.html")),
+    (r'^safety-overview/$', TemplateView.as_view(template_name="safety_overview.html")),
     (r'^thank.*$', TemplateView.as_view(template_name="thanks.html")),
 
     # Backend-related

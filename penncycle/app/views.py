@@ -131,7 +131,7 @@ class Signup(CreateView):
 
         welcome_email(student)
         self.request.session['penncard'] = student.penncard
-        return HttpResponseRedirect('/welcome/')
+        return HttpResponseRedirect('/safety-overview/')
 
 
 @require_POST
