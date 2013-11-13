@@ -23,7 +23,7 @@ class StudentAdmin(admin.ModelAdmin):
     list_per_page = 500
     list_display = (
         'name', 'grad_year', 'penncard',
-        'gender', 'school', 'waiver_signed', 'paid_now',
+        'gender', 'living_location', 'waiver_signed', 'paid_now',
     )
     search_fields = ('name', 'penncard',)
     list_filter = ('school', 'gender', 'grad_year')
