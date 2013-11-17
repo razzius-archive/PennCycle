@@ -17,6 +17,7 @@
 			<td>Checkout time</td>
 			<td>Checkin time</td>
 			<td>Plan of rider</td>
+			<td>Phone of rider</td>
 		</tr>
 	</thead>
 	{% for bike in bikes reversed %}
@@ -35,6 +36,7 @@
 		<td>{{bike.rides.latest.checkout_time}}</td>
 		<td>{{bike.rides.latest.checkin_time}}</td>
 		<td>{{bike.rides.latest.rider.payments.latest.plan.name}}</td>
+		<td>{{bike.rides.latest.rider.phone}}</td>
 	</tr>
 
 	{% endfor %}

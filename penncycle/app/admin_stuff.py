@@ -49,7 +49,7 @@ class BikeAdmin(admin.ModelAdmin):
 
 class RidesAdmin(admin.ModelAdmin):
     list_display = (
-        'rider', 'bike', 'checkout_time', 'checkin_time',
+        'rider', 'rider_phone', 'bike', 'checkout_time', 'checkin_time',
         'ride_duration_days', 'status', 'checkin_station',
     )
     readonly_fields = ('ride_duration_days',)

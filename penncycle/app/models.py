@@ -262,6 +262,9 @@ class Ride(models.Model):
            "checkin_station": self.checkin_station.name if self.checkin_station else None
         }
 
+    def rider_phone(self):
+        return self.rider.phone
+
 
 class Comment(models.Model):
     comment = models.TextField()
