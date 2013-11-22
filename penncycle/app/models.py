@@ -217,6 +217,11 @@ class Bike(models.Model):
             "location": self.location.name
         }
 
+    def save(self):
+        log = Info(message="Bike {} has combo {}".format(self, self.combo))
+        log.save()
+        return super(Bike, self).save()
+
 class Ride(models.Model):
     class Meta:
         get_latest_by = "checkout_time"

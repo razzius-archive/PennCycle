@@ -36,7 +36,7 @@ def welcome_email(student):
     subject = "Welcome to PennCycle"
     from_email = "messenger@penncycle.org"
     to_email = student.email
-    promotion = None
+    promotion = ""
     if student.living_location in ["Fisher", "Ware"]:
         promotion = ("As a resident of {}, you have automatically gotten "
         "a free basic plan expiring at the end of the year.".format(student.living_location))
