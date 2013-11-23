@@ -1,7 +1,7 @@
 from django.conf.urls import patterns
 from phonegap_views import (
     check_for_student, signup, verify, send_pin, bike_data,
-    station_data, feedback, checkout, checkin, student_data
+    station_data, report, checkout, checkin, student_data
 )
 
 urlpatterns = patterns(
@@ -13,7 +13,7 @@ urlpatterns = patterns(
 
     (r'bike_data/$', bike_data),
     (r'station_data/$', station_data),
-    (r'feedback/$', feedback),
+    (r'report/$', report),
     (r'checkout/$', checkout),
     (r'checkin/$', checkin),
     (r'student_data/$', student_data)

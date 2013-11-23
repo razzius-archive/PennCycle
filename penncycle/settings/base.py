@@ -1,4 +1,5 @@
 import os
+import sys
 
 from unipath import Path
 
@@ -126,6 +127,10 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler'
         }
     },
     'loggers': {
@@ -134,6 +139,9 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'mobile.phonegap_views': {
+            'handlers': ['console'],
+        }
     }
 }
 

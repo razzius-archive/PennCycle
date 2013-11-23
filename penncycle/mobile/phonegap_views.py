@@ -1,6 +1,11 @@
 import json
+import logging
 
-from django.http import HttpResponse
+logger = logging.getLogger(__name__)
+
+from django.http import (
+    HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
+)
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from crispy_forms.utils import render_crispy_form
@@ -14,11 +19,16 @@ from .forms import SignupForm
 def http_json(data):
     return HttpResponse(json.dumps(data), content_type="application/json")
 
+def json_failure(message):
+    info = {"error": message}
+    body = json.dumps(info)
+    return HttpResponseBadRequest(body,
+        content_type="application/json")
 
 @csrf_exempt
 def check_for_student(request):
-    penncard = request.POST.get("penncard")
     try:
+        penncard = request.POST.get("penncard")
         student = Student.objects.get(penncard=penncard)
         reply = {"registered": True, 'student': student.name}
     except Student.DoesNotExist:
@@ -50,27 +60,29 @@ def signup(request):
     return http_json(reply)
 
 @csrf_exempt
-def verify(request):
+def verify(request) :
     data = request.POST
     penncard = data.get("penncard")
     pin = data.get("pin")
     try:
         student = Student.objects.get(penncard=penncard)
-        if student.pin == pin:
-            reply = {"exists": True, "valid": True}
-        else:
-            reply = {"exists": True, "valid": False}
     except Student.DoesNotExist:
-        reply = {"exists": False}
-    return http_json(reply)
+        return json_failure("Student does not exist.")
+    if student.pin == pin:
+        return HttpResponse()
+    else:
+        return json_failure("Invalid PIN.")
 
 
 @csrf_exempt
 def send_pin(request):
     data = request.POST
-    student = Student.objects.get(penncard=data["penncard"])
-    send_pin_to_student(student)
-    return http_json({"success": True, "phone": student.phone})
+    try:
+        student = Student.objects.get(penncard=data["penncard"])
+        send_pin_to_student(student)
+        return http_json({"success": True, "phone": student.phone})
+    except Student.DoesNotExist:
+        return json_failure("No student with that PennCard is registered.")
 
 def bike_data(request):
     data = [
@@ -83,7 +95,7 @@ def bike_data(request):
             "manufacturer": bike.manufacturer.name
         } for bike in Bike.objects.all()
     ]
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return http_json(data)
 
 def station_data(request):
     data = [
@@ -93,16 +105,15 @@ def station_data(request):
             "longitude": station.longitude
         } for station in Station.objects.exclude(name="PSA")
     ]
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return http_json(data)
 
 def student_data(request):
     penncard = request.GET.get("penncard")
     try:
         student = Student.objects.get(penncard=penncard)
-    except:
-        return HttpResponse({"success": False})
+    except Student.DoesNotExist:
+        return json_failure("No student with that PennCard has registered.")
     data = {
-        "success": True,
         "name": student.name,
         "can_ride": student.can_ride,
         "current_ride": student.current_ride.serialize() if student.current_ride else None,
@@ -113,11 +124,12 @@ def student_data(request):
     return http_json(data)
 
 @csrf_exempt
-def feedback(request):
+def report(request):
     data = request.POST
-    feedback = data.get("feedback")
-    email_razzi("Got feedback: {}".format(feedback))
-    return HttpResponse("success")
+    penncard = data.get("penncard")
+    feedback = data.get("message")
+    email_razzi("Got feedback: {} from {}".format(feedback, penncard))
+    return HttpResponse()
 
 @csrf_exempt
 def checkout(request):
@@ -125,11 +137,13 @@ def checkout(request):
     bike = data.get("bike")
     penncard = data.get("penncard")
     pin = data.get("pin")
-    student = Student.objects.get(penncard=penncard)
     try:
-        assert student.pin == pin
-    except Exception as error:
+        student = Student.objects.get(penncard=penncard)
+    except Student.DoesNotExist:
+        return json_failure("Student does not exist.")
+    if student.pin != pin:
         email_razzi("pin mismatch! {}".format(locals()))
+        return HttpResponseForbidden()
     if not student.can_ride:
         message = ""
         current_rides = student.ride_set.filter(checkin_time=None)
@@ -137,27 +151,40 @@ def checkout(request):
             bike = current_rides[0].bike.name
             message += "You can't check bikes out until you check bike {} in. ".format(bike)
         if not student.waiver_signed:
-            message += "You need to fill out a waiver. Click the 'account' button at the bottom and accept the waiver there."
+            message += "You need to fill out a waiver. Click the 'account' button at the bottom and accept the waiver there. "
         if not student.current_payments:
             message = "You don't currently have any PennCycle plans. Log on to penncycle.org to add one."
-        return http_json({"success": False, "message": message})
+        return json_failure(message)
     try:
         bike = Bike.objects.get(name=bike)
+    except Exception:
+        return json_failure(
+            "Bike {} is unavailable."
+            .format(bike)
+        )
+    if bike.status == 'available':
         make_ride(student, bike)
-        return http_json({"success": True, "combo": bike.combo})
-    except Exception as error:
-        email_razzi("Failed to checkout bike: {}".format(locals()))
-        return http_json({"success": False})
+    else:
+        return json_failure(
+            "Bike {} is unavailable with status '{}'."
+            .format(bike.name, bike.status)
+        )
+    return http_json({"combo": bike.combo})
 
 @csrf_exempt
 def checkin(request):
     try:
-        location = request.POST.get("station")
-        station = Station.objects.get(name=location)
+        location = request.POST.get("station", "")
+        station = Station.objects.get(name=location.title())
+    except:
+        logger.warn('Station missing: {}'.format(station))
+        return json_failure("Station not found.")
+    try:
         penncard = request.POST.get("penncard")
         student = Student.objects.get(penncard=penncard)
-        checkin_ride(student, location)
-        return http_json({"success": True})
-    except Exception as error:
-        email_razzi("phonegap checkin failed. {}".format(locals()))
-        return http_json({"success": False})
+    except Student.DoesNotExist:
+        logger.warn('Student missing: {}'.format(penncard))
+        return json_failure("No student with that PennCard was found.")
+    ride = student.ride_set.latest()
+    checkin_ride(ride, station)
+    return HttpResponse()

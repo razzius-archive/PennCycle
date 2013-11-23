@@ -18,7 +18,9 @@ def send_pin_to_student(student):
 
 def email_razzi(message):
     send_mail(
-        'PennCycle: {}'.format(message),
+        'PennCycle: {}'.format(
+            message[:30].replace("\n", " ")
+        ),
         message,
         'messenger@penncycle.org', ['razzi53@gmail.com'],
         fail_silently=True

@@ -1,0 +1,1778 @@
+HTTP/1.0 500 INTERNAL SERVER ERROR
+Date: Sat, 23 Nov 2013 08:57:23 GMT
+Server: WSGIServer/0.1 Python/2.7.5
+Content-Type: text/html
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="robots" content="NONE,NOARCHIVE">
+  <title>UnboundLocalError at /mobile/checkin/</title>
+  <style type="text/css">
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font:small sans-serif; }
+    body>div { border-bottom:1px solid #ddd; }
+    h1 { font-weight:normal; }
+    h2 { margin-bottom:.8em; }
+    h2 span { font-size:80%; color:#666; font-weight:normal; }
+    h3 { margin:1em 0 .5em 0; }
+    h4 { margin:0 0 .5em 0; font-weight: normal; }
+    code, pre { font-size: 100%; white-space: pre-wrap; }
+    table { border:1px solid #ccc; border-collapse: collapse; width:100%; background:white; }
+    tbody td, tbody th { vertical-align:top; padding:2px 3px; }
+    thead th { padding:1px 6px 1px 3px; background:#fefefe; text-align:left; font-weight:normal; font-size:11px; border:1px solid #ddd; }
+    tbody th { width:12em; text-align:right; color:#666; padding-right:.5em; }
+    table.vars { margin:5px 0 2px 40px; }
+    table.vars td, table.req td { font-family:monospace; }
+    table td.code { width:100%; }
+    table td.code pre { overflow:hidden; }
+    table.source th { color:#666; }
+    table.source td { font-family:monospace; white-space:pre; border-bottom:1px solid #eee; }
+    ul.traceback { list-style-type:none; color: #222; }
+    ul.traceback li.frame { padding-bottom:1em; color:#666; }
+    ul.traceback li.user { background-color:#e0e0e0; color:#000 }
+    div.context { padding:10px 0; overflow:hidden; }
+    div.context ol { padding-left:30px; margin:0 10px; list-style-position: inside; }
+    div.context ol li { font-family:monospace; white-space:pre; color:#777; cursor:pointer; }
+    div.context ol li pre { display:inline; }
+    div.context ol.context-line li { color:#505050; background-color:#dfdfdf; }
+    div.context ol.context-line li span { position:absolute; right:32px; }
+    .user div.context ol.context-line li { background-color:#bbb; color:#000; }
+    .user div.context ol li { color:#666; }
+    div.commands { margin-left: 40px; }
+    div.commands a { color:#555; text-decoration:none; }
+    .user div.commands a { color: black; }
+    #summary { background: #ffc; }
+    #summary h2 { font-weight: normal; color: #666; }
+    #explanation { background:#eee; }
+    #template, #template-not-exist { background:#f6f6f6; }
+    #template-not-exist ul { margin: 0 0 0 20px; }
+    #unicode-hint { background:#eee; }
+    #traceback { background:#eee; }
+    #requestinfo { background:#f6f6f6; padding-left:120px; }
+    #summary table { border:none; background:transparent; }
+    #requestinfo h2, #requestinfo h3 { position:relative; margin-left:-100px; }
+    #requestinfo h3 { margin-bottom:-1em; }
+    .error { background: #ffc; }
+    .specific { color:#cc3300; font-weight:bold; }
+    h2 span.commands { font-size:.7em;}
+    span.commands a:link {color:#5E5694;}
+    pre.exception_value { font-family: sans-serif; color: #666; font-size: 1.5em; margin: 10px 0 10px 0; }
+  </style>
+  
+  <script type="text/javascript">
+  //<!--
+    function getElementsByClassName(oElm, strTagName, strClassName){
+        // Written by Jonathan Snook, http://www.snook.ca/jon; Add-ons by Robert Nyman, http://www.robertnyman.com
+        var arrElements = (strTagName == "*" && document.all)? document.all :
+        oElm.getElementsByTagName(strTagName);
+        var arrReturnElements = new Array();
+        strClassName = strClassName.replace(/\-/g, "\-");
+        var oRegExp = new RegExp("(^|\s)" + strClassName + "(\s|$)");
+        var oElement;
+        for(var i=0; i<arrElements.length; i++){
+            oElement = arrElements[i];
+            if(oRegExp.test(oElement.className)){
+                arrReturnElements.push(oElement);
+            }
+        }
+        return (arrReturnElements)
+    }
+    function hideAll(elems) {
+      for (var e = 0; e < elems.length; e++) {
+        elems[e].style.display = 'none';
+      }
+    }
+    window.onload = function() {
+      hideAll(getElementsByClassName(document, 'table', 'vars'));
+      hideAll(getElementsByClassName(document, 'ol', 'pre-context'));
+      hideAll(getElementsByClassName(document, 'ol', 'post-context'));
+      hideAll(getElementsByClassName(document, 'div', 'pastebin'));
+    }
+    function toggle() {
+      for (var i = 0; i < arguments.length; i++) {
+        var e = document.getElementById(arguments[i]);
+        if (e) {
+          e.style.display = e.style.display == 'none' ? 'block' : 'none';
+        }
+      }
+      return false;
+    }
+    function varToggle(link, id) {
+      toggle('v' + id);
+      var s = link.getElementsByTagName('span')[0];
+      var uarr = String.fromCharCode(0x25b6);
+      var darr = String.fromCharCode(0x25bc);
+      s.innerHTML = s.innerHTML == uarr ? darr : uarr;
+      return false;
+    }
+    function switchPastebinFriendly(link) {
+      s1 = "Switch to copy-and-paste view";
+      s2 = "Switch back to interactive view";
+      link.innerHTML = link.innerHTML == s1 ? s2 : s1;
+      toggle('browserTraceback', 'pastebinTraceback');
+      return false;
+    }
+    //-->
+  </script>
+  
+</head>
+<body>
+<div id="summary">
+  <h1>UnboundLocalError at /mobile/checkin/</h1>
+  <pre class="exception_value">local variable &#39;station&#39; referenced before assignment</pre>
+  <table class="meta">
+
+    <tr>
+      <th>Request Method:</th>
+      <td>POST</td>
+    </tr>
+    <tr>
+      <th>Request URL:</th>
+      <td>http://localhost:8000/mobile/checkin/</td>
+    </tr>
+
+    <tr>
+      <th>Django Version:</th>
+      <td>1.5.1</td>
+    </tr>
+
+    <tr>
+      <th>Exception Type:</th>
+      <td>UnboundLocalError</td>
+    </tr>
+
+
+    <tr>
+      <th>Exception Value:</th>
+      <td><pre>local variable &#39;station&#39; referenced before assignment</pre></td>
+    </tr>
+
+
+    <tr>
+      <th>Exception Location:</th>
+      <td>/Users/razzi/werque/PennCycle/penncycle/mobile/phonegap_views.py in checkin, line 173</td>
+    </tr>
+
+    <tr>
+      <th>Python Executable:</th>
+      <td>/Users/razzi/venvs/pc/bin/python</td>
+    </tr>
+    <tr>
+      <th>Python Version:</th>
+      <td>2.7.5</td>
+    </tr>
+    <tr>
+      <th>Python Path:</th>
+      <td><pre>[&#39;/Users/razzi/werque/PennCycle/penncycle&#39;,
+ &#39;/Users/razzi/werque/PennCycle&#39;,
+ &#39;/Users/razzi/venvs/pc/lib/python27.zip&#39;,
+ &#39;/Users/razzi/venvs/pc/lib/python2.7&#39;,
+ &#39;/Users/razzi/venvs/pc/lib/python2.7/plat-darwin&#39;,
+ &#39;/Users/razzi/venvs/pc/lib/python2.7/plat-mac&#39;,
+ &#39;/Users/razzi/venvs/pc/lib/python2.7/plat-mac/lib-scriptpackages&#39;,
+ &#39;/Users/razzi/venvs/pc/Extras/lib/python&#39;,
+ &#39;/Users/razzi/venvs/pc/lib/python2.7/lib-tk&#39;,
+ &#39;/Users/razzi/venvs/pc/lib/python2.7/lib-old&#39;,
+ &#39;/Users/razzi/venvs/pc/lib/python2.7/lib-dynload&#39;,
+ &#39;/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7&#39;,
+ &#39;/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin&#39;,
+ &#39;/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-tk&#39;,
+ &#39;/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac&#39;,
+ &#39;/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages&#39;,
+ &#39;/Users/razzi/venvs/pc/lib/python2.7/site-packages&#39;,
+ &#39;/Users/razzi/venvs/pc/lib/python2.7/site-packages/PIL&#39;,
+ &#39;/Users/razzi/venvs/pc/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info&#39;,
+ &#39;/Users/razzi/werque/PennCycle/penncycle&#39;]</pre></td>
+    </tr>
+    <tr>
+      <th>Server time:</th>
+      <td>Sat, 23 Nov 2013 03:57:23 -0500</td>
+    </tr>
+  </table>
+</div>
+
+
+
+
+<div id="traceback">
+  <h2>Traceback <span class="commands"><a href="#" onclick="return switchPastebinFriendly(this);">Switch to copy-and-paste view</a></span></h2>
+  
+  <div id="browserTraceback">
+    <ul class="traceback">
+      
+        <li class="frame django">
+          <code>/Users/razzi/venvs/pc/lib/python2.7/site-packages/django/core/handlers/base.py</code> in <code>get_response</code>
+
+          
+            <div class="context" id="c4506543456">
+              
+                <ol start="108" class="pre-context" id="pre4506543456"><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                    for middleware_method in self._view_middleware:</pre></li><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                        response = middleware_method(request, callback, callback_args, callback_kwargs)</pre></li><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                        if response:</pre></li><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                            break</pre></li><li onclick="toggle('pre4506543456', 'post4506543456')"><pre></pre></li><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                if response is None:</pre></li><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                    try:</pre></li></ol>
+              
+              <ol start="115" class="context-line"><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                        response = callback(request, *callback_args, **callback_kwargs)</pre> <span>...</span></li></ol>
+              
+                <ol start='116' class="post-context" id="post4506543456"><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                    except Exception as e:</pre></li><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                        # If the view raised an exception, run it through exception</pre></li><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                        # middleware, and if the exception middleware returns a</pre></li><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                        # response, use that. Otherwise, reraise the exception.</pre></li><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                        for middleware_method in self._exception_middleware:</pre></li><li onclick="toggle('pre4506543456', 'post4506543456')"><pre>                            response = middleware_method(request, e)</pre></li></ol>
+              
+            </div>
+          
+
+          
+            <div class="commands">
+                
+                    <a href="#" onclick="return varToggle(this, '4506543456')"><span>&#x25b6;</span> Local vars</a>
+                
+            </div>
+            <table class="vars" id="v4506543456">
+              <thead>
+                <tr>
+                  <th>Variable</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                  <tr>
+                    <td>e</td>
+                    <td class="code"><pre>UnboundLocalError(&quot;local variable &#39;station&#39; referenced before assignment&quot;,)</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>callback_args</td>
+                    <td class="code"><pre>()</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>resolver_match</td>
+                    <td class="code"><pre>ResolverMatch(func=&lt;function checkin at 0x10c9aade8&gt;, args=(), kwargs={}, url_name=&#39;mobile.phonegap_views.checkin&#39;, app_name=&#39;None&#39;, namespace=&#39;&#39;)</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>middleware_method</td>
+                    <td class="code"><pre>&lt;bound method CsrfViewMiddleware.process_view of &lt;django.middleware.csrf.CsrfViewMiddleware object at 0x10c0935d0&gt;&gt;</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>self</td>
+                    <td class="code"><pre>&lt;django.core.handlers.wsgi.WSGIHandler object at 0x10ae47a50&gt;</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>request</td>
+                    <td class="code"><pre>&quot;&lt;WSGIRequest\npath:/mobile/checkin/,\nGET:&lt;QueryDict: {}&gt;,\nPOST:&lt;QueryDict: {u&#39;penncard&#39;: [u&#39;44060588&#39;], u&#39;pin&#39;: [u&#39;4241&#39;]}&gt;,\nCOOKIES:{},\nMETA:{&#39;AWS_ACCESS_KEY_ID&#39;: &#39;AKIAJDEG4HKWJQLG5HJQ&#39;,\n &#39;AWS_SECRET_ACCESS_KEY&#39;: &#39;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&#39;,\n &#39;Apple_PubSub_Socket_Render&#39;: &#39;/tmp/launch-kNFJSc/Render&#39;,\n &#39;COLORFGBG&#39;: &#39;15;0&#39;,\n &#39;CONTENT_LENGTH&#39;: &#39;26&#39;,\n &#39;CONTENT_TYPE&#39;: &#39;application/x-www-form-urlencoded&#39;,\n u&#39;CSRF_COOKIE&#39;: u&#39;IMc49ROYmI1ynb59ZpX5DivAPuMB2MDw&#39;,\n &#39;DISPLAY&#39;: &#39;/tmp/launch-8UXNgc/org.macosforge.xquartz:0&#39;,\n &#39;DJANGO_SECRET_KEY&#39;: &#39;*8t8+opq!+9d%%$=$8e8#nz*a8m2$obb#trlo7hrwu#p#s5r!t&#39;,\n &#39;DJANGO_SETTINGS_MODULE&#39;: &#39;settings.local&#39;,\n &#39;GATEWAY_INTERFACE&#39;: &#39;CGI/1.1&#39;,\n &#39;GREP_COLOR&#39;: &#39;1;32&#39;,\n &#39;GREP_OPTIONS&#39;: &#39;--color=auto&#39;,\n &#39;HOME&#39;: &#39;/Users/razzi&#39;,\n &#39;HTTP_ACCEPT&#39;: &#39;*/*&#39;,\n &#39;HTTP_HOST&#39;: &#39;localhost:8000&#39;,\n &#39;HTTP_USER_AGENT&#39;: &#39;curl/7.30.0&#39;,\n &#39;ITERM_PROFILE&#39;: &#39;Default&#39;,\n &#39;ITERM_SESSION_ID&#39;: &#39;w0t1p0&#39;,\n &#39;LANG&#39;: &#39;en_US.UTF-8&#39;,\n &#39;LC_CTYPE&#39;: &#39;en_US.UTF-8&#39;,\n &#39;LESS&#39;: &#39;-R&#39;,\n &#39;LOGNAME&#39;: &#39;razzi&#39;,\n &#39;LSCOLORS&#39;: &#39;exfxcxdxbxbxbxbxbxbxbx&#39;,\n &#39;LS_COLORS&#39;: &#39;di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=31;40:cd=31;40:su=31;40:sg=31;40:tw=31;40:ow=31;40:&#39;,\n &#39;OLDPWD&#39;: &#39;/Users/razzi/werque/PennCycle&#39;,\n &#39;PAGER&#39;: &#39;less&#39;,\n &#39;PATH&#39;: &#39;/Users/razzi/venvs/pc/bin:/usr/local/bin:/Users/razzi/.pyenv/shims:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/texbin:/bin:/usr/sbin:/sbin:/usr/bin&#39;,\n &#39;PATH_INFO&#39;: u&#39;/mobile/checkin/&#39;,\n &#39;PC&#39;: &#39;/Users/razzi/werque/PennCycle&#39;,\n &#39;PENNCYCLE_PASSWORD&#39;: &#39;Penncycle11!&#39;,\n &#39;PS1&#39;: &#39;(pc)%{$fg[$NCOLOR]%}%c \\xe2\\x9e\\xa4 %{$reset_color%}&#39;,\n &#39;PWD&#39;: &#39;/Users/razzi/werque/PennCycle&#39;,\n &#39;QUERY_STRING&#39;: &#39;&#39;,\n &#39;REMOTE_ADDR&#39;: &#39;127.0.0.1&#39;,\n &#39;REMOTE_HOST&#39;: &#39;&#39;,\n &#39;REQUEST_METHOD&#39;: &#39;POST&#39;,\n &#39;RUN_MAIN&#39;: &#39;true&#39;,\n &#39;SCRIPT_NAME&#39;: u&#39;&#39;,\n &#39;SECURITYSESSIONID&#39;: &#39;186a4&#39;,\n &#39;SERVER_NAME&#39;: &#39;1.0.0.127.in-addr.arpa&#39;,\n &#39;SERVER_PORT&#39;: &#39;8000&#39;,\n &#39;SERVER_PROTOCOL&#39;: &#39;HTTP/1.1&#39;,\n &#39;SERVER_SOFTWARE&#39;: &#39;WSGIServer/0.1 Python/2.7.5&#39;,\n &#39;SHELL&#39;: &#39;/bin/zsh&#39;,\n &#39;SHLVL&#39;: &#39;1&#39;,\n &#39;SSH_AUTH_SOCK&#39;: &#39;/tmp/launch-IygO8b/Listeners&#39;,\n &#39;TERM&#39;: &#39;xterm&#39;,\n &#39;TERM_PROGRAM&#39;: &#39;iTerm.app&#39;,\n &#39;TMPDIR&#39;: &#39;/var/folders/7v/b0z6dsqj1fx8k5rf8x121l580000gn/T/&#39;,\n &#39;TWILIO_ACCOUNT_SID&#39;: &#39;AC397b1e64960149fa8d709147eca05561&#39;,\n &#39;TWILIO_AUTH_TOKEN&#39;: &#39;3422952fa7cbce7ef480422feeb3daeb&#39;,\n &#39;TZ&#39;: &#39;America/New_York&#39;,\n &#39;UPDATE_ZSH_DAYS&#39;: &#39;33&#39;,\n &#39;USER&#39;: &#39;razzi&#39;,\n &#39;VERSIONER_PYTHON_PREFER_32_BIT&#39;: &#39;no&#39;,\n &#39;VERSIONER_PYTHON_VERSION&#39;: &#39;2.7&#39;,\n &#39;VIRTUALENVWRAPPER_HOOK_DIR&#39;: &#39;/Users/razzi/venvs&#39;,\n &#39;VIRTUALENVWRAPPER_PROJECT_FILENAME&#39;: &#39;.project&#39;,\n &#39;VIRTUAL_ENV&#39;: &#39;/Users/razzi/venvs/pc&#39;,\n &#39;WORKON_HOME&#39;: &#39;/Users/razzi/venvs&#39;,\n &#39;_&#39;: &#39;/Users/razzi/venvs/pc/bin/python&#39;,\n &#39;__CF_USER_TEXT_ENCODING&#39;: &#39;0x1F5:0:0&#39;,\n &#39;__CHECKFIX1436934&#39;: &#39;1&#39;,\n &#39;wsgi.errors&#39;: &lt;open file &#39;&lt;stderr&gt;&#39;, mode &#39;w&#39; at 0x10ad981e0&gt;,\n &#39;wsgi.file_wrapper&#39;: &lt;class wsgiref.util.FileWrapper at 0x10b63d120&gt;,\n &#39;wsgi.input&#39;: &lt;socket._fileobject object at 0x10c091450&gt;,\n &#39;wsgi.multiprocess&#39;: False,\n &#39;wsgi.multithread&#39;: True,\n &#39;wsgi.run_once&#39;: False,\n &#39;wsgi.url_scheme&#39;: &#39;http&#39;,\n &#39;wsgi.version&#39;: (1, 0)}&gt;&quot;</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>callback</td>
+                    <td class="code"><pre>&lt;function checkin at 0x10c9aade8&gt;</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>resolver</td>
+                    <td class="code"><pre>&lt;RegexURLResolver &#39;penncycle.urls&#39; (None:None) ^/&gt;</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>callback_kwargs</td>
+                    <td class="code"><pre>{}</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>response</td>
+                    <td class="code"><pre>None</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>urlconf</td>
+                    <td class="code"><pre>&#39;penncycle.urls&#39;</pre></td>
+                  </tr>
+                
+              </tbody>
+            </table>
+          
+        </li>
+      
+        <li class="frame django">
+          <code>/Users/razzi/venvs/pc/lib/python2.7/site-packages/django/views/decorators/csrf.py</code> in <code>wrapped_view</code>
+
+          
+            <div class="context" id="c4506543528">
+              
+                <ol start="70" class="pre-context" id="pre4506543528"><li onclick="toggle('pre4506543528', 'post4506543528')"><pre>    &quot;&quot;&quot;</pre></li><li onclick="toggle('pre4506543528', 'post4506543528')"><pre>    Marks a view function as being exempt from the CSRF view protection.</pre></li><li onclick="toggle('pre4506543528', 'post4506543528')"><pre>    &quot;&quot;&quot;</pre></li><li onclick="toggle('pre4506543528', 'post4506543528')"><pre>    # We could just do view_func.csrf_exempt = True, but decorators</pre></li><li onclick="toggle('pre4506543528', 'post4506543528')"><pre>    # are nicer if they don&#39;t have side-effects, so we return a new</pre></li><li onclick="toggle('pre4506543528', 'post4506543528')"><pre>    # function.</pre></li><li onclick="toggle('pre4506543528', 'post4506543528')"><pre>    def wrapped_view(*args, **kwargs):</pre></li></ol>
+              
+              <ol start="77" class="context-line"><li onclick="toggle('pre4506543528', 'post4506543528')"><pre>        return view_func(*args, **kwargs)</pre> <span>...</span></li></ol>
+              
+                <ol start='78' class="post-context" id="post4506543528"><li onclick="toggle('pre4506543528', 'post4506543528')"><pre>    wrapped_view.csrf_exempt = True</pre></li><li onclick="toggle('pre4506543528', 'post4506543528')"><pre>    return wraps(view_func, assigned=available_attrs(view_func))(wrapped_view)</pre></li></ol>
+              
+            </div>
+          
+
+          
+            <div class="commands">
+                
+                    <a href="#" onclick="return varToggle(this, '4506543528')"><span>&#x25b6;</span> Local vars</a>
+                
+            </div>
+            <table class="vars" id="v4506543528">
+              <thead>
+                <tr>
+                  <th>Variable</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                  <tr>
+                    <td>args</td>
+                    <td class="code"><pre>(&lt;WSGIRequest
+path:/mobile/checkin/,
+GET:&lt;QueryDict: {}&gt;,
+POST:&lt;QueryDict: {u&#39;penncard&#39;: [u&#39;44060588&#39;], u&#39;pin&#39;: [u&#39;4241&#39;]}&gt;,
+COOKIES:{},
+META:{&#39;AWS_ACCESS_KEY_ID&#39;: &#39;AKIAJDEG4HKWJQLG5HJQ&#39;,
+ &#39;AWS_SECRET_ACCESS_KEY&#39;: &#39;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&#39;,
+ &#39;Apple_PubSub_Socket_Render&#39;: &#39;/tmp/launch-kNFJSc/Render&#39;,
+ &#39;COLORFGBG&#39;: &#39;15;0&#39;,
+ &#39;CONTENT_LENGTH&#39;: &#39;26&#39;,
+ &#39;CONTENT_TYPE&#39;: &#39;application/x-www-form-urlencoded&#39;,
+ u&#39;CSRF_COOKIE&#39;: u&#39;IMc49ROYmI1ynb59ZpX5DivAPuMB2MDw&#39;,
+ &#39;DISPLAY&#39;: &#39;/tmp/launch-8UXNgc/org.macosforge.xquartz:0&#39;,
+ &#39;DJANGO_SECRET_KEY&#39;: &#39;*8t8+opq!+9d%%$=$8e8#nz*a8m2$obb#trlo7hrwu#p#s5r!t&#39;,
+ &#39;DJANGO_SETTINGS_MODULE&#39;: &#39;settings.local&#39;,
+ &#39;GATEWAY_INTERFACE&#39;: &#39;CGI/1.1&#39;,
+ &#39;GREP_COLOR&#39;: &#39;1;32&#39;,
+ &#39;GREP_OPTIONS&#39;: &#39;--color=auto&#39;,
+ &#39;HOME&#39;: &#39;/Users/razzi&#39;,
+ &#39;HTTP_ACCEPT&#39;: &#39;*/*&#39;,
+ &#39;HTTP_HOST&#39;: &#39;localhost:8000&#39;,
+ &#39;HTTP_USER_AGENT&#39;: &#39;curl/7.30.0&#39;,
+ &#39;ITERM_PROFILE&#39;: &#39;Default&#39;,
+ &#39;ITERM_SESSION_ID&#39;: &#39;w0t1p0&#39;,
+ &#39;LANG&#39;: &#39;en_US.UTF-8&#39;,
+ &#39;LC_CTYPE&#39;: &#39;en_US.UTF-8&#39;,
+ &#39;LESS&#39;: &#39;-R&#39;,
+ &#39;LOGNAME&#39;: &#39;razzi&#39;,
+ &#39;LSCOLORS&#39;: &#39;exfxcxdxbxbxbxbxbxbxbx&#39;,
+ &#39;LS_COLORS&#39;: &#39;di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=31;40:cd=31;40:su=31;40:sg=31;40:tw=31;40:ow=31;40:&#39;,
+ &#39;OLDPWD&#39;: &#39;/Users/razzi/werque/PennCycle&#39;,
+ &#39;PAGER&#39;: &#39;less&#39;,
+ &#39;PATH&#39;: &#39;/Users/razzi/venvs/pc/bin:/usr/local/bin:/Users/razzi/.pyenv/shims:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/texbin:/bin:/usr/sbin:/sbin:/usr/bin&#39;,
+ &#39;PATH_INFO&#39;: u&#39;/mobile/checkin/&#39;,
+ &#39;PC&#39;: &#39;/Users/razzi/werque/PennCycle&#39;,
+ &#39;PENNCYCLE_PASSWORD&#39;: &#39;Penncycle11!&#39;,
+ &#39;PS1&#39;: &#39;(pc)%{$fg[$NCOLOR]%}%c \xe2\x9e\xa4 %{$reset_color%}&#39;,
+ &#39;PWD&#39;: &#39;/Users/razzi/werque/PennCycle&#39;,
+ &#39;QUERY_STRING&#39;: &#39;&#39;,
+ &#39;REMOTE_ADDR&#39;: &#39;127.0.0.1&#39;,
+ &#39;REMOTE_HOST&#39;: &#39;&#39;,
+ &#39;REQUEST_METHOD&#39;: &#39;POST&#39;,
+ &#39;RUN_MAIN&#39;: &#39;true&#39;,
+ &#39;SCRIPT_NAME&#39;: u&#39;&#39;,
+ &#39;SECURITYSESSIONID&#39;: &#39;186a4&#39;,
+ &#39;SERVER_NAME&#39;: &#39;1.0.0.127.in-addr.arpa&#39;,
+ &#39;SERVER_PORT&#39;: &#39;8000&#39;,
+ &#39;SERVER_PROTOCOL&#39;: &#39;HTTP/1.1&#39;,
+ &#39;SERVER_SOFTWARE&#39;: &#39;WSGIServer/0.1 Python/2.7.5&#39;,
+ &#39;SHELL&#39;: &#39;/bin/zsh&#39;,
+ &#39;SHLVL&#39;: &#39;1&#39;,
+ &#39;SSH_AUTH_SOCK&#39;: &#39;/tmp/launch-IygO8b/Listeners&#39;,
+ &#39;TERM&#39;: &#39;xterm&#39;,
+ &#39;TERM_PROGRAM&#39;: &#39;iTerm.app&#39;,
+ &#39;TMPDIR&#39;: &#39;/var/folders/7v/b0z6dsqj1fx8k5rf8x121l580000gn/T/&#39;,
+ &#39;TWILIO_ACCOUNT_SID&#39;: &#39;AC397b1e64960149fa8d709147eca05561&#39;,
+ &#39;TWILIO_AUTH_TOKEN&#39;: &#39;3422952fa7cbce7ef480422feeb3daeb&#39;,
+ &#39;TZ&#39;: &#39;America/New_York&#39;,
+ &#39;UPDATE_ZSH_DAYS&#39;: &#39;33&#39;,
+ &#39;USER&#39;: &#39;razzi&#39;,
+ &#39;VERSIONER_PYTHON_PREFER_32_BIT&#39;: &#39;no&#39;,
+ &#39;VERSIONER_PYTHON_VERSION&#39;: &#39;2.7&#39;,
+ &#39;VIRTUALENVWRAPPER_HOOK_DIR&#39;: &#39;/Users/razzi/venvs&#39;,
+ &#39;VIRTUALENVWRAPPER_PROJECT_FILENAME&#39;: &#39;.project&#39;,
+ &#39;VIRTUAL_ENV&#39;: &#39;/Users/razzi/venvs/pc&#39;,
+ &#39;WORKON_HOME&#39;: &#39;/Users/razzi/venvs&#39;,
+ &#39;_&#39;: &#39;/Users/razzi/venvs/pc/bin/python&#39;,
+ &#39;__CF_USER_TEXT_ENCODING&#39;: &#39;0x1F5:0:0&#39;,
+ &#39;__CHECKFIX1436934&#39;: &#39;1&#39;,
+ &#39;wsgi.errors&#39;: &lt;open file &#39;&lt;stderr&gt;&#39;, mode &#39;w&#39; at 0x10ad981e0&gt;,
+ &#39;wsgi.file_wrapper&#39;: &lt;class wsgiref.util.FileWrapper at 0x10b63d120&gt;,
+ &#39;wsgi.input&#39;: &lt;socket._fileobject object at 0x10c091450&gt;,
+ &#39;wsgi.multiprocess&#39;: False,
+ &#39;wsgi.multithread&#39;: True,
+ &#39;wsgi.run_once&#39;: False,
+ &#39;wsgi.url_scheme&#39;: &#39;http&#39;,
+ &#39;wsgi.version&#39;: (1, 0)}&gt;,)</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>view_func</td>
+                    <td class="code"><pre>&lt;function checkin at 0x10c9aad70&gt;</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>kwargs</td>
+                    <td class="code"><pre>{}</pre></td>
+                  </tr>
+                
+              </tbody>
+            </table>
+          
+        </li>
+      
+        <li class="frame user">
+          <code>/Users/razzi/werque/PennCycle/penncycle/mobile/phonegap_views.py</code> in <code>checkin</code>
+
+          
+            <div class="context" id="c4506543600">
+              
+                <ol start="166" class="pre-context" id="pre4506543600"><li onclick="toggle('pre4506543600', 'post4506543600')"><pre></pre></li><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>@csrf_exempt</pre></li><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>def checkin(request):</pre></li><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>    try:</pre></li><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>        location = request.POST.get(&quot;station&quot;, &quot;&quot;)</pre></li><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>        station = Station.objects.get(name=location.title())</pre></li><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>    except:</pre></li></ol>
+              
+              <ol start="173" class="context-line"><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>        logger.warn(&#39;Station missing: {}&#39;.format(station))</pre> <span>...</span></li></ol>
+              
+                <ol start='174' class="post-context" id="post4506543600"><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>        return json_failure(&quot;Station not found.&quot;)</pre></li><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>    try:</pre></li><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>        penncard = request.POST.get(&quot;penncard&quot;)</pre></li><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>        student = Student.objects.get(penncard=penncard)</pre></li><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>    except Student.DoesNotExist:</pre></li><li onclick="toggle('pre4506543600', 'post4506543600')"><pre>        logger.warn(&#39;Student missing: {}&#39;.format(penncard))</pre></li></ol>
+              
+            </div>
+          
+
+          
+            <div class="commands">
+                
+                    <a href="#" onclick="return varToggle(this, '4506543600')"><span>&#x25b6;</span> Local vars</a>
+                
+            </div>
+            <table class="vars" id="v4506543600">
+              <thead>
+                <tr>
+                  <th>Variable</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                  <tr>
+                    <td>request</td>
+                    <td class="code"><pre>&quot;&lt;WSGIRequest\npath:/mobile/checkin/,\nGET:&lt;QueryDict: {}&gt;,\nPOST:&lt;QueryDict: {u&#39;penncard&#39;: [u&#39;44060588&#39;], u&#39;pin&#39;: [u&#39;4241&#39;]}&gt;,\nCOOKIES:{},\nMETA:{&#39;AWS_ACCESS_KEY_ID&#39;: &#39;AKIAJDEG4HKWJQLG5HJQ&#39;,\n &#39;AWS_SECRET_ACCESS_KEY&#39;: &#39;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&#39;,\n &#39;Apple_PubSub_Socket_Render&#39;: &#39;/tmp/launch-kNFJSc/Render&#39;,\n &#39;COLORFGBG&#39;: &#39;15;0&#39;,\n &#39;CONTENT_LENGTH&#39;: &#39;26&#39;,\n &#39;CONTENT_TYPE&#39;: &#39;application/x-www-form-urlencoded&#39;,\n u&#39;CSRF_COOKIE&#39;: u&#39;IMc49ROYmI1ynb59ZpX5DivAPuMB2MDw&#39;,\n &#39;DISPLAY&#39;: &#39;/tmp/launch-8UXNgc/org.macosforge.xquartz:0&#39;,\n &#39;DJANGO_SECRET_KEY&#39;: &#39;*8t8+opq!+9d%%$=$8e8#nz*a8m2$obb#trlo7hrwu#p#s5r!t&#39;,\n &#39;DJANGO_SETTINGS_MODULE&#39;: &#39;settings.local&#39;,\n &#39;GATEWAY_INTERFACE&#39;: &#39;CGI/1.1&#39;,\n &#39;GREP_COLOR&#39;: &#39;1;32&#39;,\n &#39;GREP_OPTIONS&#39;: &#39;--color=auto&#39;,\n &#39;HOME&#39;: &#39;/Users/razzi&#39;,\n &#39;HTTP_ACCEPT&#39;: &#39;*/*&#39;,\n &#39;HTTP_HOST&#39;: &#39;localhost:8000&#39;,\n &#39;HTTP_USER_AGENT&#39;: &#39;curl/7.30.0&#39;,\n &#39;ITERM_PROFILE&#39;: &#39;Default&#39;,\n &#39;ITERM_SESSION_ID&#39;: &#39;w0t1p0&#39;,\n &#39;LANG&#39;: &#39;en_US.UTF-8&#39;,\n &#39;LC_CTYPE&#39;: &#39;en_US.UTF-8&#39;,\n &#39;LESS&#39;: &#39;-R&#39;,\n &#39;LOGNAME&#39;: &#39;razzi&#39;,\n &#39;LSCOLORS&#39;: &#39;exfxcxdxbxbxbxbxbxbxbx&#39;,\n &#39;LS_COLORS&#39;: &#39;di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=31;40:cd=31;40:su=31;40:sg=31;40:tw=31;40:ow=31;40:&#39;,\n &#39;OLDPWD&#39;: &#39;/Users/razzi/werque/PennCycle&#39;,\n &#39;PAGER&#39;: &#39;less&#39;,\n &#39;PATH&#39;: &#39;/Users/razzi/venvs/pc/bin:/usr/local/bin:/Users/razzi/.pyenv/shims:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/texbin:/bin:/usr/sbin:/sbin:/usr/bin&#39;,\n &#39;PATH_INFO&#39;: u&#39;/mobile/checkin/&#39;,\n &#39;PC&#39;: &#39;/Users/razzi/werque/PennCycle&#39;,\n &#39;PENNCYCLE_PASSWORD&#39;: &#39;Penncycle11!&#39;,\n &#39;PS1&#39;: &#39;(pc)%{$fg[$NCOLOR]%}%c \\xe2\\x9e\\xa4 %{$reset_color%}&#39;,\n &#39;PWD&#39;: &#39;/Users/razzi/werque/PennCycle&#39;,\n &#39;QUERY_STRING&#39;: &#39;&#39;,\n &#39;REMOTE_ADDR&#39;: &#39;127.0.0.1&#39;,\n &#39;REMOTE_HOST&#39;: &#39;&#39;,\n &#39;REQUEST_METHOD&#39;: &#39;POST&#39;,\n &#39;RUN_MAIN&#39;: &#39;true&#39;,\n &#39;SCRIPT_NAME&#39;: u&#39;&#39;,\n &#39;SECURITYSESSIONID&#39;: &#39;186a4&#39;,\n &#39;SERVER_NAME&#39;: &#39;1.0.0.127.in-addr.arpa&#39;,\n &#39;SERVER_PORT&#39;: &#39;8000&#39;,\n &#39;SERVER_PROTOCOL&#39;: &#39;HTTP/1.1&#39;,\n &#39;SERVER_SOFTWARE&#39;: &#39;WSGIServer/0.1 Python/2.7.5&#39;,\n &#39;SHELL&#39;: &#39;/bin/zsh&#39;,\n &#39;SHLVL&#39;: &#39;1&#39;,\n &#39;SSH_AUTH_SOCK&#39;: &#39;/tmp/launch-IygO8b/Listeners&#39;,\n &#39;TERM&#39;: &#39;xterm&#39;,\n &#39;TERM_PROGRAM&#39;: &#39;iTerm.app&#39;,\n &#39;TMPDIR&#39;: &#39;/var/folders/7v/b0z6dsqj1fx8k5rf8x121l580000gn/T/&#39;,\n &#39;TWILIO_ACCOUNT_SID&#39;: &#39;AC397b1e64960149fa8d709147eca05561&#39;,\n &#39;TWILIO_AUTH_TOKEN&#39;: &#39;3422952fa7cbce7ef480422feeb3daeb&#39;,\n &#39;TZ&#39;: &#39;America/New_York&#39;,\n &#39;UPDATE_ZSH_DAYS&#39;: &#39;33&#39;,\n &#39;USER&#39;: &#39;razzi&#39;,\n &#39;VERSIONER_PYTHON_PREFER_32_BIT&#39;: &#39;no&#39;,\n &#39;VERSIONER_PYTHON_VERSION&#39;: &#39;2.7&#39;,\n &#39;VIRTUALENVWRAPPER_HOOK_DIR&#39;: &#39;/Users/razzi/venvs&#39;,\n &#39;VIRTUALENVWRAPPER_PROJECT_FILENAME&#39;: &#39;.project&#39;,\n &#39;VIRTUAL_ENV&#39;: &#39;/Users/razzi/venvs/pc&#39;,\n &#39;WORKON_HOME&#39;: &#39;/Users/razzi/venvs&#39;,\n &#39;_&#39;: &#39;/Users/razzi/venvs/pc/bin/python&#39;,\n &#39;__CF_USER_TEXT_ENCODING&#39;: &#39;0x1F5:0:0&#39;,\n &#39;__CHECKFIX1436934&#39;: &#39;1&#39;,\n &#39;wsgi.errors&#39;: &lt;open file &#39;&lt;stderr&gt;&#39;, mode &#39;w&#39; at 0x10ad981e0&gt;,\n &#39;wsgi.file_wrapper&#39;: &lt;class wsgiref.util.FileWrapper at 0x10b63d120&gt;,\n &#39;wsgi.input&#39;: &lt;socket._fileobject object at 0x10c091450&gt;,\n &#39;wsgi.multiprocess&#39;: False,\n &#39;wsgi.multithread&#39;: True,\n &#39;wsgi.run_once&#39;: False,\n &#39;wsgi.url_scheme&#39;: &#39;http&#39;,\n &#39;wsgi.version&#39;: (1, 0)}&gt;&quot;</pre></td>
+                  </tr>
+                
+                  <tr>
+                    <td>location</td>
+                    <td class="code"><pre>&#39;&#39;</pre></td>
+                  </tr>
+                
+              </tbody>
+            </table>
+          
+        </li>
+      
+    </ul>
+  </div>
+  
+  <form action="http://dpaste.com/" name="pasteform" id="pasteform" method="post">
+
+  <div id="pastebinTraceback" class="pastebin">
+    <input type="hidden" name="language" value="PythonConsole">
+    <input type="hidden" name="title" value="UnboundLocalError at /mobile/checkin/">
+    <input type="hidden" name="source" value="Django Dpaste Agent">
+    <input type="hidden" name="poster" value="Django">
+    <textarea name="content" id="traceback_area" cols="140" rows="25">
+Environment:
+
+
+Request Method: POST
+Request URL: http://localhost:8000/mobile/checkin/
+
+Django Version: 1.5.1
+Python Version: 2.7.5
+Installed Applications:
+(&#39;app&#39;,
+ &#39;boto&#39;,
+ &#39;django.contrib.auth&#39;,
+ &#39;django.contrib.contenttypes&#39;,
+ &#39;django.contrib.sessions&#39;,
+ &#39;django.contrib.sites&#39;,
+ &#39;django.contrib.messages&#39;,
+ &#39;django.contrib.staticfiles&#39;,
+ &#39;django.contrib.admin&#39;,
+ &#39;mobile&#39;,
+ &#39;gunicorn&#39;,
+ &#39;south&#39;,
+ &#39;staff&#39;,
+ &#39;stats&#39;,
+ &#39;storages&#39;,
+ &#39;django_twilio&#39;,
+ &#39;django_extensions&#39;,
+ &#39;crispy_forms&#39;)
+Installed Middleware:
+(&#39;django.middleware.common.CommonMiddleware&#39;,
+ &#39;django.contrib.sessions.middleware.SessionMiddleware&#39;,
+ &#39;django.middleware.csrf.CsrfViewMiddleware&#39;,
+ &#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;,
+ &#39;django.contrib.messages.middleware.MessageMiddleware&#39;)
+
+
+Traceback:
+File "/Users/razzi/venvs/pc/lib/python2.7/site-packages/django/core/handlers/base.py" in get_response
+  115.                         response = callback(request, *callback_args, **callback_kwargs)
+File "/Users/razzi/venvs/pc/lib/python2.7/site-packages/django/views/decorators/csrf.py" in wrapped_view
+  77.         return view_func(*args, **kwargs)
+File "/Users/razzi/werque/PennCycle/penncycle/mobile/phonegap_views.py" in checkin
+  173.         logger.warn(&#39;Station missing: {}&#39;.format(station))
+
+Exception Type: UnboundLocalError at /mobile/checkin/
+Exception Value: local variable &#39;station&#39; referenced before assignment
+</textarea>
+  <br><br>
+  <input type="submit" value="Share this traceback on a public Web site">
+  </div>
+</form>
+</div>
+
+
+
+<div id="requestinfo">
+  <h2>Request information</h2>
+
+
+  <h3 id="get-info">GET</h3>
+  
+    <p>No GET data</p>
+  
+
+  <h3 id="post-info">POST</h3>
+  
+    <table class="req">
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+          <tr>
+            <td>penncard</td>
+            <td class="code"><pre>u&#39;44060588&#39;</pre></td>
+          </tr>
+        
+          <tr>
+            <td>pin</td>
+            <td class="code"><pre>u&#39;4241&#39;</pre></td>
+          </tr>
+        
+      </tbody>
+    </table>
+  
+  <h3 id="files-info">FILES</h3>
+  
+    <p>No FILES data</p>
+  
+
+
+  <h3 id="cookie-info">COOKIES</h3>
+  
+    <p>No cookie data</p>
+  
+
+  <h3 id="meta-info">META</h3>
+  <table class="req">
+    <thead>
+      <tr>
+        <th>Variable</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+          <td>wsgi.multiprocess</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>RUN_MAIN</td>
+          <td class="code"><pre>&#39;true&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LESS</td>
+          <td class="code"><pre>&#39;-R&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>VERSIONER_PYTHON_PREFER_32_BIT</td>
+          <td class="code"><pre>&#39;no&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SERVER_SOFTWARE</td>
+          <td class="code"><pre>&#39;WSGIServer/0.1 Python/2.7.5&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LC_CTYPE</td>
+          <td class="code"><pre>&#39;en_US.UTF-8&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SCRIPT_NAME</td>
+          <td class="code"><pre>u&#39;&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>UPDATE_ZSH_DAYS</td>
+          <td class="code"><pre>&#39;33&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>REQUEST_METHOD</td>
+          <td class="code"><pre>&#39;POST&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LOGNAME</td>
+          <td class="code"><pre>&#39;razzi&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>USER</td>
+          <td class="code"><pre>&#39;razzi&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>HOME</td>
+          <td class="code"><pre>&#39;/Users/razzi&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>QUERY_STRING</td>
+          <td class="code"><pre>&#39;&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>PATH</td>
+          <td class="code"><pre>&#39;/Users/razzi/venvs/pc/bin:/usr/local/bin:/Users/razzi/.pyenv/shims:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/texbin:/bin:/usr/sbin:/sbin:/usr/bin&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>PS1</td>
+          <td class="code"><pre>&#39;(pc)%{$fg[$NCOLOR]%}%c \xe2\x9e\xa4 %{$reset_color%}&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DISPLAY</td>
+          <td class="code"><pre>&#39;/tmp/launch-8UXNgc/org.macosforge.xquartz:0&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TERM_PROGRAM</td>
+          <td class="code"><pre>&#39;iTerm.app&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LANG</td>
+          <td class="code"><pre>&#39;en_US.UTF-8&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TERM</td>
+          <td class="code"><pre>&#39;xterm&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SHELL</td>
+          <td class="code"><pre>&#39;/bin/zsh&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>COLORFGBG</td>
+          <td class="code"><pre>&#39;15;0&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>REMOTE_HOST</td>
+          <td class="code"><pre>&#39;&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SERVER_NAME</td>
+          <td class="code"><pre>&#39;1.0.0.127.in-addr.arpa&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>VERSIONER_PYTHON_VERSION</td>
+          <td class="code"><pre>&#39;2.7&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SHLVL</td>
+          <td class="code"><pre>&#39;1&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>CSRF_COOKIE</td>
+          <td class="code"><pre>u&#39;IMc49ROYmI1ynb59ZpX5DivAPuMB2MDw&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TWILIO_ACCOUNT_SID</td>
+          <td class="code"><pre>&#39;AC397b1e64960149fa8d709147eca05561&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SECURITYSESSIONID</td>
+          <td class="code"><pre>&#39;186a4&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>wsgi.url_scheme</td>
+          <td class="code"><pre>&#39;http&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>PC</td>
+          <td class="code"><pre>&#39;/Users/razzi/werque/PennCycle&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>ITERM_SESSION_ID</td>
+          <td class="code"><pre>&#39;w0t1p0&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>_</td>
+          <td class="code"><pre>&#39;/Users/razzi/venvs/pc/bin/python&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SERVER_PORT</td>
+          <td class="code"><pre>&#39;8000&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>CONTENT_LENGTH</td>
+          <td class="code"><pre>&#39;26&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>PENNCYCLE_PASSWORD</td>
+          <td class="code"><pre>&#39;Penncycle11!&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>GREP_COLOR</td>
+          <td class="code"><pre>&#39;1;32&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DJANGO_SECRET_KEY</td>
+          <td class="code"><pre>&#39;*8t8+opq!+9d%%$=$8e8#nz*a8m2$obb#trlo7hrwu#p#s5r!t&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>WORKON_HOME</td>
+          <td class="code"><pre>&#39;/Users/razzi/venvs&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>CONTENT_TYPE</td>
+          <td class="code"><pre>&#39;application/x-www-form-urlencoded&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>wsgi.file_wrapper</td>
+          <td class="code"><pre>&#39;&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SSH_AUTH_SOCK</td>
+          <td class="code"><pre>&#39;/tmp/launch-IygO8b/Listeners&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>VIRTUAL_ENV</td>
+          <td class="code"><pre>&#39;/Users/razzi/venvs/pc&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TWILIO_AUTH_TOKEN</td>
+          <td class="code"><pre>&#39;3422952fa7cbce7ef480422feeb3daeb&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>wsgi.input</td>
+          <td class="code"><pre>&lt;socket._fileobject object at 0x10c091450&gt;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>Apple_PubSub_Socket_Render</td>
+          <td class="code"><pre>&#39;/tmp/launch-kNFJSc/Render&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>HTTP_HOST</td>
+          <td class="code"><pre>&#39;localhost:8000&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>wsgi.multithread</td>
+          <td class="code"><pre>True</pre></td>
+        </tr>
+      
+        <tr>
+          <td>ITERM_PROFILE</td>
+          <td class="code"><pre>&#39;Default&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TZ</td>
+          <td class="code"><pre>&#39;America/New_York&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>AWS_ACCESS_KEY_ID</td>
+          <td class="code"><pre>&#39;AKIAJDEG4HKWJQLG5HJQ&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TMPDIR</td>
+          <td class="code"><pre>&#39;/var/folders/7v/b0z6dsqj1fx8k5rf8x121l580000gn/T/&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>HTTP_ACCEPT</td>
+          <td class="code"><pre>&#39;*/*&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>VIRTUALENVWRAPPER_PROJECT_FILENAME</td>
+          <td class="code"><pre>&#39;.project&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LSCOLORS</td>
+          <td class="code"><pre>&#39;exfxcxdxbxbxbxbxbxbxbx&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>wsgi.version</td>
+          <td class="code"><pre>(1, 0)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>VIRTUALENVWRAPPER_HOOK_DIR</td>
+          <td class="code"><pre>&#39;/Users/razzi/venvs&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>GATEWAY_INTERFACE</td>
+          <td class="code"><pre>&#39;CGI/1.1&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>wsgi.run_once</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>PAGER</td>
+          <td class="code"><pre>&#39;less&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>OLDPWD</td>
+          <td class="code"><pre>&#39;/Users/razzi/werque/PennCycle&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>REMOTE_ADDR</td>
+          <td class="code"><pre>&#39;127.0.0.1&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>HTTP_USER_AGENT</td>
+          <td class="code"><pre>&#39;curl/7.30.0&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>__CF_USER_TEXT_ENCODING</td>
+          <td class="code"><pre>&#39;0x1F5:0:0&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>PWD</td>
+          <td class="code"><pre>&#39;/Users/razzi/werque/PennCycle&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SERVER_PROTOCOL</td>
+          <td class="code"><pre>&#39;HTTP/1.1&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DJANGO_SETTINGS_MODULE</td>
+          <td class="code"><pre>&#39;settings.local&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>AWS_SECRET_ACCESS_KEY</td>
+          <td class="code"><pre>&#39;tdEoWQUgyZUM5Vgblarfv2pd/BY3xovgTYKWjdid&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>GREP_OPTIONS</td>
+          <td class="code"><pre>&#39;--color=auto&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LS_COLORS</td>
+          <td class="code"><pre>&#39;di=34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=31;40:cd=31;40:su=31;40:sg=31;40:tw=31;40:ow=31;40:&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>__CHECKFIX1436934</td>
+          <td class="code"><pre>&#39;1&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>wsgi.errors</td>
+          <td class="code"><pre>&lt;open file &#39;&lt;stderr&gt;&#39;, mode &#39;w&#39; at 0x10ad981e0&gt;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>PATH_INFO</td>
+          <td class="code"><pre>u&#39;/mobile/checkin/&#39;</pre></td>
+        </tr>
+      
+    </tbody>
+  </table>
+
+
+  <h3 id="settings-info">Settings</h3>
+  <h4>Using settings module <code>settings.local</code></h4>
+  <table class="req">
+    <thead>
+      <tr>
+        <th>Setting</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+          <td>USE_L10N</td>
+          <td class="code"><pre>True</pre></td>
+        </tr>
+      
+        <tr>
+          <td>USE_THOUSAND_SEPARATOR</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>CSRF_COOKIE_SECURE</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LANGUAGE_CODE</td>
+          <td class="code"><pre>&#39;en-us&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>ROOT_URLCONF</td>
+          <td class="code"><pre>&#39;penncycle.urls&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>MANAGERS</td>
+          <td class="code"><pre>((&#39;Razzi Abuissa&#39;, &#39;razzi53@gmail.com&#39;),
+ (&#39;Marcus Pan&#39;, &#39;marcuspanje@gmail.com&#39;),
+ (&#39;Peter Bryan&#39;, &#39;peterbbryan@gmail.com&#39;))</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DEFAULT_CHARSET</td>
+          <td class="code"><pre>&#39;utf-8&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>STATIC_ROOT</td>
+          <td class="code"><pre>Path(u&#39;/Users/razzi/werque/PennCycle/penncycle/static&#39;)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>ALLOWED_HOSTS</td>
+          <td class="code"><pre>[&#39;.penncycle.org&#39;, &#39;.herokuapp.com&#39;]</pre></td>
+        </tr>
+      
+        <tr>
+          <td>MESSAGE_STORAGE</td>
+          <td class="code"><pre>&#39;django.contrib.messages.storage.fallback.FallbackStorage&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>EMAIL_SUBJECT_PREFIX</td>
+          <td class="code"><pre>&#39;[Django] &#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>FILE_UPLOAD_PERMISSIONS</td>
+          <td class="code"><pre>None</pre></td>
+        </tr>
+      
+        <tr>
+          <td>STATICFILES_FINDERS</td>
+          <td class="code"><pre>(&#39;django.contrib.staticfiles.finders.FileSystemFinder&#39;,
+ &#39;django.contrib.staticfiles.finders.AppDirectoriesFinder&#39;)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SESSION_CACHE_ALIAS</td>
+          <td class="code"><pre>&#39;default&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SESSION_COOKIE_DOMAIN</td>
+          <td class="code"><pre>None</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SESSION_COOKIE_NAME</td>
+          <td class="code"><pre>&#39;sessionid&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>AWS_STORAGE_BUCKET_NAME</td>
+          <td class="code"><pre>&#39;penncycle&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>ADMIN_FOR</td>
+          <td class="code"><pre>()</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TIME_INPUT_FORMATS</td>
+          <td class="code"><pre>(&#39;%H:%M:%S&#39;, &#39;%H:%M&#39;)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DATABASES</td>
+          <td class="code"><pre>{&#39;default&#39;: {&#39;ENGINE&#39;: &#39;django.db.backends.postgresql_psycopg2&#39;,
+             &#39;HOST&#39;: &#39;localhost&#39;,
+             &#39;NAME&#39;: &#39;pcpg&#39;,
+             &#39;OPTIONS&#39;: {},
+             &#39;PASSWORD&#39;: u&#39;********************&#39;,
+             &#39;PORT&#39;: &#39;5432&#39;,
+             &#39;TEST_CHARSET&#39;: None,
+             &#39;TEST_COLLATION&#39;: None,
+             &#39;TEST_MIRROR&#39;: None,
+             &#39;TEST_NAME&#39;: None,
+             &#39;TIME_ZONE&#39;: &#39;UTC&#39;,
+             &#39;USER&#39;: &#39;&#39;}}</pre></td>
+        </tr>
+      
+        <tr>
+          <td>AWS_PRELOAD_METADATA</td>
+          <td class="code"><pre>True</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SERVER_EMAIL</td>
+          <td class="code"><pre>&#39;messenger@penncycle.org&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>FILE_UPLOAD_HANDLERS</td>
+          <td class="code"><pre>(&#39;django.core.files.uploadhandler.MemoryFileUploadHandler&#39;,
+ &#39;django.core.files.uploadhandler.TemporaryFileUploadHandler&#39;)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DEFAULT_CONTENT_TYPE</td>
+          <td class="code"><pre>&#39;text/html&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>APPEND_SLASH</td>
+          <td class="code"><pre>True</pre></td>
+        </tr>
+      
+        <tr>
+          <td>FIRST_DAY_OF_WEEK</td>
+          <td class="code"><pre>0</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DATABASE_ROUTERS</td>
+          <td class="code"><pre>[]</pre></td>
+        </tr>
+      
+        <tr>
+          <td>YEAR_MONTH_FORMAT</td>
+          <td class="code"><pre>&#39;F Y&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>STATICFILES_STORAGE</td>
+          <td class="code"><pre>&#39;storages.backends.s3boto.S3BotoStorage&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>CACHES</td>
+          <td class="code"><pre>{&#39;default&#39;: {&#39;BACKEND&#39;: &#39;django.core.cache.backends.locmem.LocMemCache&#39;}}</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SESSION_COOKIE_PATH</td>
+          <td class="code"><pre>&#39;/&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>MIDDLEWARE_CLASSES</td>
+          <td class="code"><pre>(&#39;django.middleware.common.CommonMiddleware&#39;,
+ &#39;django.contrib.sessions.middleware.SessionMiddleware&#39;,
+ &#39;django.middleware.csrf.CsrfViewMiddleware&#39;,
+ &#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;,
+ &#39;django.contrib.messages.middleware.MessageMiddleware&#39;)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>USE_I18N</td>
+          <td class="code"><pre>True</pre></td>
+        </tr>
+      
+        <tr>
+          <td>THOUSAND_SEPARATOR</td>
+          <td class="code"><pre>&#39;,&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SECRET_KEY</td>
+          <td class="code"><pre>u&#39;********************&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LANGUAGE_COOKIE_NAME</td>
+          <td class="code"><pre>&#39;django_language&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>FILE_UPLOAD_TEMP_DIR</td>
+          <td class="code"><pre>None</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TRANSACTIONS_MANAGED</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LOGGING_CONFIG</td>
+          <td class="code"><pre>&#39;django.utils.log.dictConfig&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SEND_BROKEN_LINK_EMAILS</td>
+          <td class="code"><pre>True</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TEMPLATE_LOADERS</td>
+          <td class="code"><pre>(&#39;django.template.loaders.filesystem.Loader&#39;,
+ &#39;django.template.loaders.app_directories.Loader&#39;)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>WSGI_APPLICATION</td>
+          <td class="code"><pre>&#39;wsgi.application&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TEMPLATE_DEBUG</td>
+          <td class="code"><pre>True</pre></td>
+        </tr>
+      
+        <tr>
+          <td>X_FRAME_OPTIONS</td>
+          <td class="code"><pre>&#39;SAMEORIGIN&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>AUTHENTICATION_BACKENDS</td>
+          <td class="code"><pre>(&#39;django.contrib.auth.backends.ModelBackend&#39;,)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>FORCE_SCRIPT_NAME</td>
+          <td class="code"><pre>None</pre></td>
+        </tr>
+      
+        <tr>
+          <td>USE_X_FORWARDED_HOST</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SIGNING_BACKEND</td>
+          <td class="code"><pre>&#39;django.core.signing.TimestampSigner&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SESSION_COOKIE_SECURE</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>CSRF_COOKIE_DOMAIN</td>
+          <td class="code"><pre>None</pre></td>
+        </tr>
+      
+        <tr>
+          <td>FILE_CHARSET</td>
+          <td class="code"><pre>&#39;utf-8&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DEBUG</td>
+          <td class="code"><pre>True</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SESSION_FILE_PATH</td>
+          <td class="code"><pre>None</pre></td>
+        </tr>
+      
+        <tr>
+          <td>AWS_ACCESS_KEY_ID</td>
+          <td class="code"><pre>u&#39;********************&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DEFAULT_FILE_STORAGE</td>
+          <td class="code"><pre>&#39;django.core.files.storage.FileSystemStorage&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>INSTALLED_APPS</td>
+          <td class="code"><pre>(&#39;app&#39;,
+ &#39;boto&#39;,
+ &#39;django.contrib.auth&#39;,
+ &#39;django.contrib.contenttypes&#39;,
+ &#39;django.contrib.sessions&#39;,
+ &#39;django.contrib.sites&#39;,
+ &#39;django.contrib.messages&#39;,
+ &#39;django.contrib.staticfiles&#39;,
+ &#39;django.contrib.admin&#39;,
+ &#39;mobile&#39;,
+ &#39;gunicorn&#39;,
+ &#39;south&#39;,
+ &#39;staff&#39;,
+ &#39;stats&#39;,
+ &#39;storages&#39;,
+ &#39;django_twilio&#39;,
+ &#39;django_extensions&#39;,
+ &#39;crispy_forms&#39;)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LANGUAGES</td>
+          <td class="code"><pre>((&#39;af&#39;, &#39;Afrikaans&#39;),
+ (&#39;ar&#39;, &#39;Arabic&#39;),
+ (&#39;az&#39;, &#39;Azerbaijani&#39;),
+ (&#39;bg&#39;, &#39;Bulgarian&#39;),
+ (&#39;be&#39;, &#39;Belarusian&#39;),
+ (&#39;bn&#39;, &#39;Bengali&#39;),
+ (&#39;br&#39;, &#39;Breton&#39;),
+ (&#39;bs&#39;, &#39;Bosnian&#39;),
+ (&#39;ca&#39;, &#39;Catalan&#39;),
+ (&#39;cs&#39;, &#39;Czech&#39;),
+ (&#39;cy&#39;, &#39;Welsh&#39;),
+ (&#39;da&#39;, &#39;Danish&#39;),
+ (&#39;de&#39;, &#39;German&#39;),
+ (&#39;el&#39;, &#39;Greek&#39;),
+ (&#39;en&#39;, &#39;English&#39;),
+ (&#39;en-gb&#39;, &#39;British English&#39;),
+ (&#39;eo&#39;, &#39;Esperanto&#39;),
+ (&#39;es&#39;, &#39;Spanish&#39;),
+ (&#39;es-ar&#39;, &#39;Argentinian Spanish&#39;),
+ (&#39;es-mx&#39;, &#39;Mexican Spanish&#39;),
+ (&#39;es-ni&#39;, &#39;Nicaraguan Spanish&#39;),
+ (&#39;es-ve&#39;, &#39;Venezuelan Spanish&#39;),
+ (&#39;et&#39;, &#39;Estonian&#39;),
+ (&#39;eu&#39;, &#39;Basque&#39;),
+ (&#39;fa&#39;, &#39;Persian&#39;),
+ (&#39;fi&#39;, &#39;Finnish&#39;),
+ (&#39;fr&#39;, &#39;French&#39;),
+ (&#39;fy-nl&#39;, &#39;Frisian&#39;),
+ (&#39;ga&#39;, &#39;Irish&#39;),
+ (&#39;gl&#39;, &#39;Galician&#39;),
+ (&#39;he&#39;, &#39;Hebrew&#39;),
+ (&#39;hi&#39;, &#39;Hindi&#39;),
+ (&#39;hr&#39;, &#39;Croatian&#39;),
+ (&#39;hu&#39;, &#39;Hungarian&#39;),
+ (&#39;ia&#39;, &#39;Interlingua&#39;),
+ (&#39;id&#39;, &#39;Indonesian&#39;),
+ (&#39;is&#39;, &#39;Icelandic&#39;),
+ (&#39;it&#39;, &#39;Italian&#39;),
+ (&#39;ja&#39;, &#39;Japanese&#39;),
+ (&#39;ka&#39;, &#39;Georgian&#39;),
+ (&#39;kk&#39;, &#39;Kazakh&#39;),
+ (&#39;km&#39;, &#39;Khmer&#39;),
+ (&#39;kn&#39;, &#39;Kannada&#39;),
+ (&#39;ko&#39;, &#39;Korean&#39;),
+ (&#39;lb&#39;, &#39;Luxembourgish&#39;),
+ (&#39;lt&#39;, &#39;Lithuanian&#39;),
+ (&#39;lv&#39;, &#39;Latvian&#39;),
+ (&#39;mk&#39;, &#39;Macedonian&#39;),
+ (&#39;ml&#39;, &#39;Malayalam&#39;),
+ (&#39;mn&#39;, &#39;Mongolian&#39;),
+ (&#39;nb&#39;, &#39;Norwegian Bokmal&#39;),
+ (&#39;ne&#39;, &#39;Nepali&#39;),
+ (&#39;nl&#39;, &#39;Dutch&#39;),
+ (&#39;nn&#39;, &#39;Norwegian Nynorsk&#39;),
+ (&#39;pa&#39;, &#39;Punjabi&#39;),
+ (&#39;pl&#39;, &#39;Polish&#39;),
+ (&#39;pt&#39;, &#39;Portuguese&#39;),
+ (&#39;pt-br&#39;, &#39;Brazilian Portuguese&#39;),
+ (&#39;ro&#39;, &#39;Romanian&#39;),
+ (&#39;ru&#39;, &#39;Russian&#39;),
+ (&#39;sk&#39;, &#39;Slovak&#39;),
+ (&#39;sl&#39;, &#39;Slovenian&#39;),
+ (&#39;sq&#39;, &#39;Albanian&#39;),
+ (&#39;sr&#39;, &#39;Serbian&#39;),
+ (&#39;sr-latn&#39;, &#39;Serbian Latin&#39;),
+ (&#39;sv&#39;, &#39;Swedish&#39;),
+ (&#39;sw&#39;, &#39;Swahili&#39;),
+ (&#39;ta&#39;, &#39;Tamil&#39;),
+ (&#39;te&#39;, &#39;Telugu&#39;),
+ (&#39;th&#39;, &#39;Thai&#39;),
+ (&#39;tr&#39;, &#39;Turkish&#39;),
+ (&#39;tt&#39;, &#39;Tatar&#39;),
+ (&#39;udm&#39;, &#39;Udmurt&#39;),
+ (&#39;uk&#39;, &#39;Ukrainian&#39;),
+ (&#39;ur&#39;, &#39;Urdu&#39;),
+ (&#39;vi&#39;, &#39;Vietnamese&#39;),
+ (&#39;zh-cn&#39;, &#39;Simplified Chinese&#39;),
+ (&#39;zh-tw&#39;, &#39;Traditional Chinese&#39;))</pre></td>
+        </tr>
+      
+        <tr>
+          <td>COMMENTS_ALLOW_PROFANITIES</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TWILIO_AUTH_TOKEN</td>
+          <td class="code"><pre>u&#39;********************&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>STATICFILES_DIRS</td>
+          <td class="code"><pre>(Path(u&#39;/Users/razzi/werque/PennCycle/penncycle/assets&#39;),)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>PREPEND_WWW</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SECURE_PROXY_SSL_HEADER</td>
+          <td class="code"><pre>None</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SESSION_COOKIE_HTTPONLY</td>
+          <td class="code"><pre>True</pre></td>
+        </tr>
+      
+        <tr>
+          <td>AWS_SECRET_ACCESS_KEY</td>
+          <td class="code"><pre>u&#39;********************&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DEBUG_PROPAGATE_EXCEPTIONS</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>MONTH_DAY_FORMAT</td>
+          <td class="code"><pre>&#39;F j&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LOGIN_URL</td>
+          <td class="code"><pre>&#39;/admin-login/&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SESSION_EXPIRE_AT_BROWSER_CLOSE</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TIME_FORMAT</td>
+          <td class="code"><pre>&#39;P&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>AUTH_USER_MODEL</td>
+          <td class="code"><pre>&#39;auth.User&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DATE_INPUT_FORMATS</td>
+          <td class="code"><pre>(&#39;%Y-%m-%d&#39;,
+ &#39;%m/%d/%Y&#39;,
+ &#39;%m/%d/%y&#39;,
+ &#39;%b %d %Y&#39;,
+ &#39;%b %d, %Y&#39;,
+ &#39;%d %b %Y&#39;,
+ &#39;%d %b, %Y&#39;,
+ &#39;%B %d %Y&#39;,
+ &#39;%B %d, %Y&#39;,
+ &#39;%d %B %Y&#39;,
+ &#39;%d %B, %Y&#39;)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>CSRF_COOKIE_NAME</td>
+          <td class="code"><pre>&#39;csrftoken&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>EMAIL_HOST_PASSWORD</td>
+          <td class="code"><pre>u&#39;********************&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>PASSWORD_RESET_TIMEOUT_DAYS</td>
+          <td class="code"><pre>u&#39;********************&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>CACHE_MIDDLEWARE_ALIAS</td>
+          <td class="code"><pre>&#39;default&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TWILIO_ACCOUNT_SID</td>
+          <td class="code"><pre>&#39;AC397b1e64960149fa8d709147eca05561&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SESSION_SAVE_EVERY_REQUEST</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>NUMBER_GROUPING</td>
+          <td class="code"><pre>0</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TWILIO_DEFAULT_CALLERID</td>
+          <td class="code"><pre>&#39;PennCycle&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SESSION_ENGINE</td>
+          <td class="code"><pre>&#39;django.contrib.sessions.backends.db&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>CSRF_FAILURE_VIEW</td>
+          <td class="code"><pre>&#39;django.views.csrf.csrf_failure&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>CSRF_COOKIE_PATH</td>
+          <td class="code"><pre>&#39;/&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LOGIN_REDIRECT_URL</td>
+          <td class="code"><pre>&#39;/accounts/profile/&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DECIMAL_SEPARATOR</td>
+          <td class="code"><pre>&#39;.&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>IGNORABLE_404_URLS</td>
+          <td class="code"><pre>()</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LOCALE_PATHS</td>
+          <td class="code"><pre>()</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TEMPLATE_STRING_IF_INVALID</td>
+          <td class="code"><pre>&#39;&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LOGOUT_URL</td>
+          <td class="code"><pre>&#39;/&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>EMAIL_USE_TLS</td>
+          <td class="code"><pre>True</pre></td>
+        </tr>
+      
+        <tr>
+          <td>FIXTURE_DIRS</td>
+          <td class="code"><pre>()</pre></td>
+        </tr>
+      
+        <tr>
+          <td>EMAIL_HOST</td>
+          <td class="code"><pre>&#39;smtp.gmail.com&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DATE_FORMAT</td>
+          <td class="code"><pre>&#39;N j, Y&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>MEDIA_ROOT</td>
+          <td class="code"><pre>&#39;&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DEFAULT_EXCEPTION_REPORTER_FILTER</td>
+          <td class="code"><pre>&#39;django.views.debug.SafeExceptionReporterFilter&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>ADMINS</td>
+          <td class="code"><pre>((&#39;Razzi Abuissa&#39;, &#39;razzi53@gmail.com&#39;),
+ (&#39;Marcus Pan&#39;, &#39;marcuspanje@gmail.com&#39;),
+ (&#39;Peter Bryan&#39;, &#39;peterbbryan@gmail.com&#39;))</pre></td>
+        </tr>
+      
+        <tr>
+          <td>FORMAT_MODULE_PATH</td>
+          <td class="code"><pre>None</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DEFAULT_FROM_EMAIL</td>
+          <td class="code"><pre>&#39;webmaster@localhost&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>MEDIA_URL</td>
+          <td class="code"><pre>&#39;&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DATETIME_FORMAT</td>
+          <td class="code"><pre>&#39;N j, Y, P&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TEMPLATE_DIRS</td>
+          <td class="code"><pre>(Path(u&#39;/Users/razzi/werque/PennCycle/penncycle/templates&#39;),
+ Path(u&#39;/Users/razzi/werque/PennCycle/penncycle/templates/staff&#39;),
+ Path(u&#39;/Users/razzi/werque/PennCycle/penncycle/templates/registration&#39;))</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SITE_ID</td>
+          <td class="code"><pre>1</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DISALLOWED_USER_AGENTS</td>
+          <td class="code"><pre>()</pre></td>
+        </tr>
+      
+        <tr>
+          <td>ALLOWED_INCLUDE_ROOTS</td>
+          <td class="code"><pre>()</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LOGGING</td>
+          <td class="code"><pre>{&#39;disable_existing_loggers&#39;: False,
+ &#39;filters&#39;: {&#39;require_debug_false&#39;: {&#39;()&#39;: &#39;django.utils.log.RequireDebugFalse&#39;}},
+ &#39;handlers&#39;: {&#39;console&#39;: {&#39;class&#39;: &#39;logging.StreamHandler&#39;, &#39;level&#39;: &#39;INFO&#39;},
+              &#39;mail_admins&#39;: {&#39;class&#39;: &#39;django.utils.log.AdminEmailHandler&#39;,
+                              &#39;filters&#39;: [&#39;require_debug_false&#39;],
+                              &#39;level&#39;: &#39;ERROR&#39;}},
+ &#39;loggers&#39;: {&#39;django.request&#39;: {&#39;handlers&#39;: [&#39;mail_admins&#39;],
+                                &#39;level&#39;: &#39;ERROR&#39;,
+                                &#39;propagate&#39;: True},
+             &#39;mobile.phonegap_views&#39;: {&#39;handlers&#39;: [&#39;console&#39;]}},
+ &#39;version&#39;: 1}</pre></td>
+        </tr>
+      
+        <tr>
+          <td>PROJECT_DIR</td>
+          <td class="code"><pre>Path(u&#39;/Users/razzi/werque/PennCycle/penncycle&#39;)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TEST_RUNNER</td>
+          <td class="code"><pre>&#39;django.test.simple.DjangoTestSuiteRunner&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SHORT_DATE_FORMAT</td>
+          <td class="code"><pre>&#39;m/d/Y&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>CACHE_MIDDLEWARE_KEY_PREFIX</td>
+          <td class="code"><pre>u&#39;********************&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TIME_ZONE</td>
+          <td class="code"><pre>&#39;America/New_York&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>FILE_UPLOAD_MAX_MEMORY_SIZE</td>
+          <td class="code"><pre>2621440</pre></td>
+        </tr>
+      
+        <tr>
+          <td>EMAIL_BACKEND</td>
+          <td class="code"><pre>&#39;django.core.mail.backends.smtp.EmailBackend&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DEFAULT_TABLESPACE</td>
+          <td class="code"><pre>&#39;&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>TEMPLATE_CONTEXT_PROCESSORS</td>
+          <td class="code"><pre>(&#39;django.contrib.auth.context_processors.auth&#39;,
+ &#39;django.core.context_processors.debug&#39;,
+ &#39;django.core.context_processors.i18n&#39;,
+ &#39;django.core.context_processors.media&#39;,
+ &#39;django.core.context_processors.static&#39;,
+ &#39;django.core.context_processors.tz&#39;,
+ &#39;django.contrib.messages.context_processors.messages&#39;,
+ &#39;django.core.context_processors.request&#39;)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SESSION_COOKIE_AGE</td>
+          <td class="code"><pre>1209600</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SETTINGS_MODULE</td>
+          <td class="code"><pre>&#39;settings.local&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>USE_ETAGS</td>
+          <td class="code"><pre>False</pre></td>
+        </tr>
+      
+        <tr>
+          <td>LANGUAGES_BIDI</td>
+          <td class="code"><pre>(&#39;he&#39;, &#39;ar&#39;, &#39;fa&#39;)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DEFAULT_INDEX_TABLESPACE</td>
+          <td class="code"><pre>&#39;&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>INTERNAL_IPS</td>
+          <td class="code"><pre>()</pre></td>
+        </tr>
+      
+        <tr>
+          <td>STATIC_URL</td>
+          <td class="code"><pre>&#39;/static/&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>EMAIL_PORT</td>
+          <td class="code"><pre>587</pre></td>
+        </tr>
+      
+        <tr>
+          <td>USE_TZ</td>
+          <td class="code"><pre>True</pre></td>
+        </tr>
+      
+        <tr>
+          <td>SHORT_DATETIME_FORMAT</td>
+          <td class="code"><pre>&#39;m/d/Y P&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>PASSWORD_HASHERS</td>
+          <td class="code"><pre>u&#39;********************&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>ABSOLUTE_URL_OVERRIDES</td>
+          <td class="code"><pre>{}</pre></td>
+        </tr>
+      
+        <tr>
+          <td>CACHE_MIDDLEWARE_SECONDS</td>
+          <td class="code"><pre>600</pre></td>
+        </tr>
+      
+        <tr>
+          <td>DATETIME_INPUT_FORMATS</td>
+          <td class="code"><pre>(&#39;%Y-%m-%d %H:%M:%S&#39;,
+ &#39;%Y-%m-%d %H:%M:%S.%f&#39;,
+ &#39;%Y-%m-%d %H:%M&#39;,
+ &#39;%Y-%m-%d&#39;,
+ &#39;%m/%d/%Y %H:%M:%S&#39;,
+ &#39;%m/%d/%Y %H:%M:%S.%f&#39;,
+ &#39;%m/%d/%Y %H:%M&#39;,
+ &#39;%m/%d/%Y&#39;,
+ &#39;%m/%d/%y %H:%M:%S&#39;,
+ &#39;%m/%d/%y %H:%M:%S.%f&#39;,
+ &#39;%m/%d/%y %H:%M&#39;,
+ &#39;%m/%d/%y&#39;)</pre></td>
+        </tr>
+      
+        <tr>
+          <td>EMAIL_HOST_USER</td>
+          <td class="code"><pre>&#39;messenger@penncycle.org&#39;</pre></td>
+        </tr>
+      
+        <tr>
+          <td>PROFANITIES_LIST</td>
+          <td class="code"><pre>u&#39;********************&#39;</pre></td>
+        </tr>
+      
+    </tbody>
+  </table>
+
+</div>
+
+  <div id="explanation">
+    <p>
+      You're seeing this error because you have <code>DEBUG = True</code> in your
+      Django settings file. Change that to <code>False</code>, and Django will
+      display a standard 500 page.
+    </p>
+  </div>
+
+</body>
+</html>
