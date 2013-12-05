@@ -26,7 +26,7 @@ The examples use curl, some with the -i option to display the status code (200 o
 
 The 400 error responses all have an ``error`` that explains the cause. All the application must do is check the status code, and if the code is 400, display the error that the server returns.
 
-Finally, all the URLs end with a trailing slash (penncycle.org/mobile/verify**/**) and will give an error if they are requested without the slash.
+Finally, all the URLs end with a trailing slash (penncycle.org/mobile/verify/) and will give an error if they are requested without the slash.
 
 Here are the endpoints:
 
