@@ -99,6 +99,12 @@ class Payment(models.Model):
     def __unicode__(self):
         return str(self.student) + ' for ' + str(self.plan)
 
+    @property
+    def serialize(self):
+        return {
+            "plan": self.plan.name,
+            "end_date": self.end_date or "Activates after your first ride."
+        }
 
 class Manufacturer(models.Model):
     name = models.CharField(max_length=30)
@@ -169,6 +175,22 @@ class Student(models.Model):
     @property
     def ride_history(self):
         return Ride.objects.filter(rider=self, checkin_time__isnull=False)
+
+    @property
+    def serialize(self):
+        current_ride = self.current_ride
+        if current_ride:
+            current_ride = current_ride.serialize
+        else:
+            current_ride = None
+
+        return {
+            "name": self.name,
+            "can_ride": self.can_ride,
+            "ride_history": [r.serialize for r in self.ride_history],
+            "current_ride": current_ride,
+            "current_payments": [p.serialize for p in self.current_payments]
+        }
 
 class Station(models.Model):
     name = models.CharField(max_length=100)
@@ -258,6 +280,7 @@ class Ride(models.Model):
     def __unicode__(self):
         return u'%s on %s' % (self.rider, self.checkout_time)
 
+    @property
     def serialize(self):
         return {
            "bike": self.bike.serialize(),

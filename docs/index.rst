@@ -83,7 +83,8 @@ Example verify:
 	Server: WSGIServer/0.1 Python/2.7.5
 	Content-Type: text/html; charset=utf-8
 
-
+	{"current_ride": {"checkin_station": null, "bike": {"status": "out", "name": "23", "location": "Rodin"}, "checkout_station": "Rodin", "checkout_time": "2013-11-23 09:38:05.822216+00:00", "checkin_time": "None"}, "ride_history": [{"checkin_station": "PSA", "bike": {"status": "out", "name": "22", "location": "Fisher"},
+	...
 
 	$ curl -i http://penncycle.org/mobile/verify/ \
 		  -d 'penncard=88888888&pin=9999'

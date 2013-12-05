@@ -69,7 +69,7 @@ def verify(request) :
     except Student.DoesNotExist:
         return json_failure("Student does not exist.")
     if student.pin == pin:
-        return HttpResponse()
+        return http_json(student.serialize)
     else:
         return json_failure("Invalid PIN.")
 
