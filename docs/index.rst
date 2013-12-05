@@ -58,7 +58,13 @@ Thus, although the rest of these endpoints require this information, it should b
 
 	There are actually 3 options, of which you'll need at least 2.
 
-	- The first option is that the penncard matches the pin. This will get an empty 200 OK response.
+	- The first option is that the penncard matches the pin. This will return json with the following information:
+
+		- name: Student's name
+		- can_ride: Boolean: whether or not the student can ride
+		- ride_history: A list with that student's ride history (you can ignore this)
+		- current_ride: Ride object of current_ride or null,
+		- current_payments: A list with that student's payments (you can ignore this)
 
 	- The second option is that the penncard is recognized but the PIN is incorrect. This gets a 400 response with an error message "Student does not exist."
 

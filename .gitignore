@@ -5,3 +5,4 @@
 static
 manage_local.py
 .DS_Store
+_build
