@@ -173,14 +173,14 @@ def checkout(request):
 
 @csrf_exempt
 def checkin(request):
+    location = request.POST.get("station")
+    penncard = request.POST.get("penncard")
     try:
-        location = request.POST.get("station", "")
         station = Station.objects.get(name=location.title())
     except:
         logger.warn('Station missing: {}'.format(station))
         return json_failure("Station not found.")
     try:
-        penncard = request.POST.get("penncard")
         student = Student.objects.get(penncard=penncard)
     except Student.DoesNotExist:
         logger.warn('Student missing: {}'.format(penncard))
