@@ -103,7 +103,7 @@ class Payment(models.Model):
     def serialize(self):
         return {
             "plan": self.plan.name,
-            "end_date": self.end_date or "Activates after your first ride."
+            "end_date": str(self.end_date) or "Activates after your first ride."
         }
 
 class Manufacturer(models.Model):
@@ -209,6 +209,10 @@ class Station(models.Model):
     def is_open(self):
         hour = datetime.datetime.now().hour
         return hour > 10 and hour < 18
+
+    @property
+    def bikes(self):
+        return Bike.objects.filter(location=self)
 
 
 class Bike(models.Model):
