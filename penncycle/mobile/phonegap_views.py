@@ -7,6 +7,8 @@ from django.http import (
     HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 )
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
 from django.template.loader import render_to_string
 from crispy_forms.utils import render_crispy_form
 
@@ -124,6 +126,7 @@ def student_data(request):
     return http_json(data)
 
 @csrf_exempt
+@require_POST
 def report(request):
     data = request.POST
     penncard = data.get("penncard")
@@ -132,6 +135,7 @@ def report(request):
     return HttpResponse()
 
 @csrf_exempt
+@require_POST
 def checkout(request):
     data = request.POST
     bike = data.get("bike")
@@ -172,6 +176,7 @@ def checkout(request):
     return http_json({"combo": bike.combo})
 
 @csrf_exempt
+@require_POST
 def checkin(request):
     location = request.POST.get("station")
     penncard = request.POST.get("penncard")
