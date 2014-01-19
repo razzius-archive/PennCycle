@@ -307,3 +307,6 @@ class StudentUpdate(UpdateView):
     def form_valid(self, form):
         messages.info(self.request, "Successfully updated info.")
         return super(StudentUpdate, self).form_valid(form)
+
+class Bikes(TemplateView):
+    template_name = 'bikes.html'

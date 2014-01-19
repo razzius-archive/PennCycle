@@ -125,11 +125,19 @@ def handle_help(student, body):
         return message
 
 def handle_bikes():
-    bikes = Bike.objects.filter(status="available")
-    bike_info = ["{} @ {}.".format(bike.name, bike.location) for bike in bikes]
-    summary = " ".join(bike_info)
+    stations = [s for s in Station.objects.all() if s.bikes]
+    summary = ""
+    for station in stations:
+        data = {
+            "bikes": ", ".join([b.name for b in station.bikes]),
+            "station": station.name
+        }
+        summary += "{bikes} at {station}. ".format(**data)
+
     if not summary:
-        summary = "All of our bikes are currently out. Try again soon!"
+        summary = "All of our bikes are currently out. Check penncycle.org/bikes or try again soon."
+    else:
+        summary = "See penncycle.org/bikes for a full list. " + summary
     return summary
 
 def handle_report(student, body):
@@ -168,7 +176,7 @@ def handle_sms(student, body):
         return handle_report(student, body)
     else:
         return handle_help(student, body)
-    
+
 @twilio_view
 def sms(request):
     fromNumber = request.POST.get("From")

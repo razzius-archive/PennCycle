@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from braces.views import LoginRequiredMixin
 
-from app.models import Bike, Student, Payment
+from app.models import Bike, Student, Payment, Ride
 
 from util.util import email_razzi
 from util.lend import make_ride, checkin_ride
@@ -67,10 +67,15 @@ class BikeDashboard(LoginRequiredMixin, TemplateView):
 
         bikes_for_checkin = [b for b in Bike.objects.all() if b.status == 'out']
         for bike in bikes_for_checkin:
-            ride = bike.rides.latest("checkout_time")
-            bike.rider = ride.rider.name
-            bike.rider_id = ride.rider.pk
-            bike.return_date = ride.checkin_time
+            try:
+                ride = bike.rides.latest("checkout_time")
+                bike.rider = ride.rider.name
+                bike.rider_id = ride.rider.pk
+                bike.return_date = ride.checkin_time
+            except Ride.DoesNotExist:
+                bike.ride = None
+                bike.rider_id = None
+                bike.return_date = None
 
         eligible = [s for s in Student.objects.all() if s.can_ride]
         context['eligible'] = eligible
