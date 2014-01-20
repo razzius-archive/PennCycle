@@ -133,6 +133,10 @@ class Signup(CreateView):
         self.request.session['penncard'] = student.penncard
         return HttpResponseRedirect('/safety-overview/')
 
+    @csrf_exempt
+    def dispatch(self, *args, **kwargs):
+        return super(Signup, self).dispatch(*args, **kwargs)
+
 
 @require_POST
 @csrf_exempt
