@@ -6,7 +6,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 admin.autodiscover()
 
-from app.views import *
+from app.views import (
+    Index, Signup, Locations, Bikes, welcome, StudentUpdate,
+    verify_payment, verify_waiver, verify_pin, lookup,
+    bursar, credit, cash, combo, modify_payment, Stats
+)
 from app.dump import dump
 from mobile.views import sms, send_pin
 
@@ -26,6 +30,7 @@ urlpatterns = patterns(
     (r'^safety/$', TemplateView.as_view(template_name="safety.html")),
     (r'^about/$', TemplateView.as_view(template_name="about.html")),
     (r'^locations/$', Locations.as_view()),
+    (r'^bikes/$', Bikes.as_view()),
     (r'^welcome/$', welcome),
     (r'^update/$', StudentUpdate.as_view()),
     (r'^safety/$', TemplateView.as_view(template_name="safety.html")),

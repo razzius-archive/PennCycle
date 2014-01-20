@@ -310,3 +310,8 @@ class StudentUpdate(UpdateView):
 
 class Bikes(TemplateView):
     template_name = 'bikes.html'
+
+    def get_context_data(self):
+        context = super(Bikes, self).get_context_data()
+        context['bikes'] = Bike.objects.filter(status="available")
+        return context
