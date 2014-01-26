@@ -86,9 +86,10 @@ def handle_checkin(student, body):
             ride = student.ride_set.latest("checkin_time")
         except:
             return "You have never checked out a bike. Check out a bike using the 'checkout (number)'. Once you have done that, use this command to return it."
-            checkin_time = ride.checkin_time
-            time_of_day = "{}:{}".format(checkin_time.hour, checkin_time.minute)
-            return "You don't have any rides to check in. Your last ride was checked in at {} at {}.".format(time_of_day, ride.checkin_station)
+
+        checkin_time = ride.checkin_time
+        time_of_day = "{}:{}".format(checkin_time.hour, checkin_time.minute)
+        return "You don't have any rides to check in. Your last ride was checked in at {} at {}.".format(time_of_day, ride.checkin_station)
 
     # Get their location and check the bike in
     location = None
@@ -132,7 +133,7 @@ def handle_bikes():
             "bikes": ", ".join([b.name for b in station.bikes]),
             "station": station.name
         }
-        summary += "{bikes} at {station}. ".format(**data)
+        summary += "At {station}: {bikes}. ".format(**data)
 
     if not summary:
         summary = "All of our bikes are currently out. Check penncycle.org/bikes or try again soon."
