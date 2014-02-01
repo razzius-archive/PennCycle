@@ -129,8 +129,14 @@ def handle_bikes():
     stations = [s for s in Station.objects.all() if s.bikes]
     summary = ""
     for station in stations:
+        bikename_list = []
+        if len(station.bikes) > 4:
+            bikename_list = [station.bikes[i].name for i in range(4)]
+        else:
+            bikename_list = [b.name for b in station.bikes]
+
         data = {
-            "bikes": ", ".join([b.name for b in station.bikes]),
+            "bikes": ", ".join(bikename_list),
             "station": station.name
         }
         summary += "At {station}: {bikes}. ".format(**data)
