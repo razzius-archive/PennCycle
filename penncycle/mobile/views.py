@@ -129,11 +129,13 @@ def handle_bikes():
     stations = [s for s in Station.objects.all() if s.bikes]
     summary = ""
     for station in stations:
-        bikename_list = []
-        if len(station.bikes) > 4:
-            bikename_list = [station.bikes[i].name for i in range(4)]
+        bikes = station.bikes.order_by('name')
+        if len(bikes) > 4:
+            bikename_list = [bikes[i].name for i in range(4)]
         else:
-            bikename_list = [b.name for b in station.bikes]
+            bikename_list = [b.name for b in bikes]
+
+        bikename_list.sort()
 
         data = {
             "bikes": ", ".join(bikename_list),

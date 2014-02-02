@@ -57,6 +57,12 @@ class TwilioTest(TestCase):
             name="Rodin"
         )
         station.save()
+
+        stationHill = Station(
+            name="Hill"
+        )
+        stationHill.save()
+
         manufacturer = Manufacturer(
             name="Biria"
         )
@@ -77,6 +83,61 @@ class TwilioTest(TestCase):
             location=station,
             status="out for repairs"
         )
+
+        bike3 = Bike(
+            name="3",
+            manufacturer=manufacturer,
+            purchase_date=timezone.now(),
+            combo_update=timezone.now(),
+            location=stationHill
+        )
+        bike3.save()
+
+        bike4 = Bike(
+            name="4",
+            manufacturer=manufacturer,
+            purchase_date=timezone.now(),
+            combo_update=timezone.now(),
+            location=stationHill
+        )
+        bike4.save()
+
+        bike5 = Bike(
+            name="5",
+            manufacturer=manufacturer,
+            purchase_date=timezone.now(),
+            combo_update=timezone.now(),
+            location=stationHill
+        )
+        bike5.save()
+
+        bike6 = Bike(
+            name="6",
+            manufacturer=manufacturer,
+            purchase_date=timezone.now(),
+            combo_update=timezone.now(),
+            location=stationHill
+        )
+        bike6.save()
+
+        bike7 = Bike(
+            name="7",
+            manufacturer=manufacturer,
+            purchase_date=timezone.now(),
+            combo_update=timezone.now(),
+            location=stationHill
+        )
+        bike7.save()
+
+        bike8 = Bike(
+            name="8",
+            manufacturer=manufacturer,
+            purchase_date=timezone.now(),
+            combo_update=timezone.now(),
+            location=stationHill
+        )
+        bike8.save()
+
         busy_bike.save()
         self.student = student
         self.bike = bike
@@ -138,11 +199,25 @@ class TwilioTest(TestCase):
         self.assertLess(len(response), 161)
 
     def test_bikes(self):
-        expected = "1 @ Rodin"
+        expected = "At Rodin: 1, 2."
         response = handle_bikes()
         print(response)
         self.assertTrue(expected in response)
         self.assertLess(len(response), 161)
+
+    def test_bikes_many(self):
+        expected = "At Hill: 3, 4, 5, 6."
+        response = handle_bikes()
+        print(response)
+        self.assertTrue(expected in response)
+        self.assertLess(len(response), 161) 
+        
+    def test_bikes_few(self):
+        expected = "At Rodin: 1, 2."
+        response = handle_bikes()
+        print(response)
+        self.assertTrue(expected in response)
+        self.assertLess(len(response), 161)       
 
     def test_stations(self):
         expected = "Rodin"
