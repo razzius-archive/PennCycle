@@ -58,10 +58,10 @@ class TwilioTest(TestCase):
         )
         station.save()
 
-        stationHill = Station(
+        hill_station = Station(
             name="Hill"
         )
-        stationHill.save()
+        hill_station.save()
 
         manufacturer = Manufacturer(
             name="Biria"
@@ -89,7 +89,7 @@ class TwilioTest(TestCase):
             manufacturer=manufacturer,
             purchase_date=timezone.now(),
             combo_update=timezone.now(),
-            location=stationHill
+            location=hill_station
         )
         bike3.save()
 
@@ -98,7 +98,7 @@ class TwilioTest(TestCase):
             manufacturer=manufacturer,
             purchase_date=timezone.now(),
             combo_update=timezone.now(),
-            location=stationHill
+            location=hill_station
         )
         bike4.save()
 
@@ -107,7 +107,7 @@ class TwilioTest(TestCase):
             manufacturer=manufacturer,
             purchase_date=timezone.now(),
             combo_update=timezone.now(),
-            location=stationHill
+            location=hill_station
         )
         bike5.save()
 
@@ -116,7 +116,7 @@ class TwilioTest(TestCase):
             manufacturer=manufacturer,
             purchase_date=timezone.now(),
             combo_update=timezone.now(),
-            location=stationHill
+            location=hill_station
         )
         bike6.save()
 
@@ -125,7 +125,7 @@ class TwilioTest(TestCase):
             manufacturer=manufacturer,
             purchase_date=timezone.now(),
             combo_update=timezone.now(),
-            location=stationHill
+            location=hill_station
         )
         bike7.save()
 
@@ -134,7 +134,7 @@ class TwilioTest(TestCase):
             manufacturer=manufacturer,
             purchase_date=timezone.now(),
             combo_update=timezone.now(),
-            location=stationHill
+            location=hill_station
         )
         bike8.save()
 
@@ -210,14 +210,14 @@ class TwilioTest(TestCase):
         response = handle_bikes()
         print(response)
         self.assertTrue(expected in response)
-        self.assertLess(len(response), 161) 
-        
+        self.assertLess(len(response), 161)
+
     def test_bikes_few(self):
         expected = "At Rodin: 1, 2."
         response = handle_bikes()
         print(response)
         self.assertTrue(expected in response)
-        self.assertLess(len(response), 161)       
+        self.assertLess(len(response), 161)
 
     def test_stations(self):
         expected = "Rodin"
