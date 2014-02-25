@@ -139,3 +139,30 @@ def checkin(request):
 def end_session(request):
     logout(request)
     return redirect("/")
+
+class Particulars(LoginRequiredMixin, TemplateView):
+    template_name = 'staff/particulars.html'
+
+    def get_context_data(self):
+        students = Student.objects.all()
+        students_able_to_ride = [s for s in students if s.can_ride]
+
+        off_campus_active = [s for s in students_able_to_ride
+            if s.living_location == 'Off Campus']
+
+        off_campus_historical = [s for s in students if s.living_location == 'Off Campus']
+
+        today = timezone.localtime(timezone.now())
+        one_year_ago = today + timezone.timedelta(days=-365)
+        riders_in_the_last_year = [
+            s for s in students if s.ride_set.filter(
+                checkin_time__gte=one_year_ago
+            )
+        ]
+
+        return {
+            'students_able_to_ride': students_able_to_ride,
+            'off_campus_active': off_campus_active,
+            'off_campus_historical': off_campus_historical,
+            'riders_in_the_last_year': riders_in_the_last_year,
+        }
