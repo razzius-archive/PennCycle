@@ -24,8 +24,8 @@ def warn(ride):
 class Command(NoArgsCommand):
     """To be run every 2 hours."""
     def handle_noargs(self, **options):
-        nineteen_hours_ago = timezone.now() + timezone.timedelta(hours=-19)
-        eighteen_hours_ago = timezone.now() + timezone.timedelta(hours=-18)
+        nineteen_hours_ago = timezone.localtime(timezone.now()) + timezone.timedelta(hours=-19)
+        eighteen_hours_ago = timezone.localtime(timezone.now()) + timezone.timedelta(hours=-18)
         active_rides = Ride.objects.filter(
             checkin_time=None,
             checkout_time__gte=nineteen_hours_ago,
