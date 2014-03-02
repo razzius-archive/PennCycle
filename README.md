@@ -4,4 +4,4 @@
 
 If you are interested in using a similar site to manage a bikeshare for your college, email messenger@penncycle.org.
 
-Coming soon: a mobile application! Visit [penncycle-ios](http://github.com/razzius/penncycle-ios).
+Coming soon: a mobile application( haha)! Visit [penncycle-ios](http://github.com/razzius/penncycle-ios).
