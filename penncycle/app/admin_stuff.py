@@ -26,7 +26,7 @@ class StudentAdmin(admin.ModelAdmin):
         'gender', 'living_location', 'waiver_signed', 'paid_now',
     )
     search_fields = ('name', 'penncard',)
-    list_filter = ('school', 'gender', 'grad_year')
+    list_filter = ('school', 'gender', 'grad_year', 'living_location')
     date_hierarchy = 'join_date'
 
 
