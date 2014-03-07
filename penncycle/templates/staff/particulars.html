@@ -1,0 +1,59 @@
+{% extends 'base_admin.html' %}
+
+{% load partition %}
+
+{% block content %}
+<div class="row-fluid">
+    <h1>Summary</h1>
+
+    <h2>Current members</h2>
+    <p>There are {{ students_able_to_ride | length }} of them</p>
+
+    <h2>Off campus active members</h2>
+    <p>There are {{ off_campus_active | length }}</p>
+
+    <h2>Off campus all time</h2>
+    <p>#: {{ off_campus_historical | length }}</p>
+
+    <h2>People that have ridden in the last year</h2>
+    <p>#: {{ riders_in_the_last_year | length }}</p>
+
+
+    <h2>Current members</h2>
+    <p>There are {{ students_able_to_ride | length }} of them</p>
+    <ul>    <!-- unlimited -->
+        {% for s in students_able_to_ride %}
+        <li>
+            {{ s.email }}
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Off campus active members</h2>
+    <p>There are {{ off_campus_active | length }}</p>
+    <ul>
+        {% for s in off_campus_active %}
+        <li>
+            {{ s.email }}
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Off campus all time</h2>
+    <p>#: {{ off_campus_historical | length }}</p>
+    <ul>
+        {% for s in off_campus_historical %}
+        <li>
+            {{ s.email }}
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>People that have ridden in the last year</h2>
+    <p>#: {{ riders_in_the_last_year | length }}</p>
+    <ul>
+        {% for s in riders_in_the_last_year %}
+        <li>
+            {{ s.email }}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
