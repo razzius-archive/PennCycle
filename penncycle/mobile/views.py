@@ -1,4 +1,3 @@
-
 import re
 
 from django.contrib import messages
@@ -10,7 +9,7 @@ from django_twilio.decorators import twilio_view
 from app.models import Student, Bike, Station
 from penncycle.util.util import email_razzi, send_pin_to_student, email_managers
 from penncycle.util.lend import make_ride, checkin_ride
-
+from django.utils import timezone
 
 def send_pin(request):
     penncard = request.GET.get("penncard")
@@ -66,7 +65,7 @@ def handle_checkout(student, body):
         message = "You have successfully checked out bike {}. The combination is {}. To return it, reply 'Checkin Hill' or any other station. Text 'Stations' for a list.".format(bike_number, bike.combo)
     elif bike.status == "out":
         checkout_time = bike.rides.latest().checkout_time
-        time_string = checkout_time.strftime("%H:%M on %D")
+        time_string = timezone.localtime(checkout_time).strftime("%H:%M on %D")
         message = "Bike {} is still in use. It was checked out at {}. Text 'bikes' for a list of available bikes.".format(bike.name, time_string)
     else:
         message = "Bike {} is not in service. Please try another bike, or text 'bikes' for a list of available bikes.".format(bike.name)
@@ -87,8 +86,8 @@ def handle_checkin(student, body):
         except:
             return "You have never checked out a bike. Check out a bike using the 'checkout (number)'. Once you have done that, use this command to return it."
 
-        checkin_time = ride.checkin_time
-        time_of_day = "{}:{}".format(checkin_time.hour, checkin_time.minute)
+        checkin_display_time = timezone.localtime(ride.checkin_time)
+        time_of_day = "{}:{}".format(checkin_display_time.hour, checkin_display_time.minute)
         return "You don't have any rides to check in. Your last ride was checked in at {} at {}.".format(time_of_day, ride.checkin_station)
 
     # Get their location and check the bike in

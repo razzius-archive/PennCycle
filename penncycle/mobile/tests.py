@@ -1,6 +1,7 @@
+import datetime
+import pytz
 from django.test import TestCase
 from django.utils import timezone
-
 from penncycle.app.models import(
     Bike, Student, Plan, Payment, Station, Manufacturer
 )
@@ -161,12 +162,17 @@ class TwilioTest(TestCase):
     def test_checkout_fail_busy(self):
         other_student = Student.objects.get(name="Other Student")
         make_ride(other_student, self.bike)
+        timenow_string = timezone.localtime(datetime.datetime.now(pytz.utc)).strftime("%H:%M on %D")
         body = "checkout 1"
-        expected = "still in use"
+        expected1 = "still in use"
+        expected2 = "checked out at "+timenow_string
         response = handle_checkout(self.student, body)
+        print "PRINT TIME_NOW: " + timenow_string
         print(response)
-        self.assertTrue(expected in response)
+        self.assertTrue(expected1 in response)
+        self.assertTrue(expected2 in response)
         self.assertLess(len(response), 161)
+
 
     def test_checkout_fail_status(self):
         body = "checkout 2"
