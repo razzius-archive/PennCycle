@@ -18,7 +18,7 @@ def make_ride(student, bike):
     payment.save()
     bike.save()
     ride.save()
-
+    return ride
 def checkin_ride(ride, station):
     ride.checkin_time = datetime.datetime.now(pytz.utc)
     ride.checkin_station = station

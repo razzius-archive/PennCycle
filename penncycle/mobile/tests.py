@@ -2,11 +2,12 @@ import datetime
 import pytz
 from django.test import TestCase
 from django.utils import timezone
+from django.utils.timesince import timesince
 from penncycle.app.models import(
     Bike, Student, Plan, Payment, Station, Manufacturer
 )
 from penncycle.util.lend import make_ride
-
+from management.commands.warn import warn_message
 from views import(
     handle_checkout, handle_checkin, handle_stations, handle_help, handle_bikes
 )
@@ -239,3 +240,14 @@ class TwilioTest(TestCase):
         print(response)
         self.assertTrue(expected in response)
         self.assertLess(len(response), 161)
+
+    def test_warn(self):
+        #ride = make_ride(self.student, self.bike)
+        body = warn_message(make_ride(self.student, self.bike))
+        print("BODY: " + body)
+        time_now = timezone.localtime(datetime.datetime.now(pytz.utc)) 
+        checkin_time = time_now + timezone.timedelta(hours=24)
+        expected1 = "out {}".format(timesince(time_now))
+        expected2 = "At {}:{} there'll be a $5 late fee".format(checkin_time.hour, checkin_time.minute)
+        self.assertTrue(expected1 in body)
+        self.assertTrue(expected2 in body)
