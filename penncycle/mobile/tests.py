@@ -4,10 +4,10 @@ from django.test import TestCase
 from django.utils import timezone
 from django.utils.timesince import timesince
 from penncycle.app.models import(
-    Bike, Student, Plan, Payment, Station, Manufacturer
+    Bike, Student, Plan, Payment, Station, Manufacturer, Ride
 )
 from penncycle.util.lend import make_ride
-from management.commands.warn import warn_message
+from management.commands.warn import test_warn
 from views import(
     handle_checkout, handle_checkin, handle_stations, handle_help, handle_bikes
 )
@@ -36,11 +36,24 @@ class TwilioTest(TestCase):
             waiver_signed=True
         )
         other_student.save()
+        student3 = Student(
+            name="Test Student3",
+            email="test@test.com",
+            phone="3195943126",
+            penncard="00000002",
+            gender="M",
+            grad_year="2015",
+            living_location="Ware",
+            waiver_signed=True,
+        )
+        student3.save()
+
         plan = Plan(
             name="Basic Plan",
             cost=0,
         )
         plan.save()
+
         payment = Payment(
             amount="0",
             plan=plan,
@@ -55,10 +68,18 @@ class TwilioTest(TestCase):
             satisfied=True,
         )
         other_payment.save()
+        payment3 = Payment(
+            amount="0",
+            plan=plan,
+            student=student,
+            satisfied=True,
+        )
+        payment3.save()
         station = Station(
             name="Rodin"
         )
         station.save()
+        
 
         hill_station = Station(
             name="Hill"
@@ -140,9 +161,34 @@ class TwilioTest(TestCase):
         )
         bike8.save()
 
+        time_almost_late = timezone.now() + timezone.timedelta(hours=-18, minutes=-30)
+        ride_almost_late = Ride(
+            rider=student3,
+            bike=bike3,
+            checkout_station = bike3.location
+        #    checkout_time=timezone.now() + timezone.timedelta(hours=-18, minutes=-30)
+        )
+        
+        #ride_almost_late.checkout_time = ride_almost_late.checkout_time + timezone.timedelta(hours=-18, minutes=-30)
+        ride_almost_late.save() 
+        
+
+        time_almost_late = timezone.now() + timezone.timedelta(hours=-18, minutes=-30)
+        ride_almost_late = Ride(
+            rider=student3,
+            bike=bike3,
+            checkout_station = bike3.location
+        #    checkout_time=timezone.now() + timezone.timedelta(hours=-18, minutes=-30)
+        )
+        
+        #ride_almost_late.checkout_time = ride_almost_late.checkout_time + timezone.timedelta(hours=-18, minutes=-30)
+        ride_almost_late.save() 
+    
         busy_bike.save()
         self.student = student
         self.bike = bike
+        self.late_ride = ride_almost_late
+        self.student3 = student3
 
     def test_checkout_success(self):
         body = "checkout 1"
@@ -242,12 +288,13 @@ class TwilioTest(TestCase):
         self.assertLess(len(response), 161)
 
     def test_warn(self):
-        #ride = make_ride(self.student, self.bike)
-        body = warn_message(make_ride(self.student, self.bike))
-        print("BODY: " + body)
-        time_now = timezone.localtime(datetime.datetime.now(pytz.utc)) 
-        checkin_time = time_now + timezone.timedelta(hours=24)
-        expected1 = "out {}".format(timesince(time_now))
-        expected2 = "At {}:{} there'll be a $5 late fee".format(checkin_time.hour, checkin_time.minute)
+        rides=Ride.objects.all().filter(rider=self.student3)
+        body = test_warn(rides)
+        display_time_now = timezone.localtime(datetime.datetime.now(pytz.utc)) 
+        display_checkout_time = display_time_now + timezone.timedelta(hours=-18, minutes=-30)
+        display_checkin_time = display_checkout_time + timezone.timedelta(hours=24)
+        expected1 = "out {}".format(timesince(display_checkout_time))
+        expected2 = "At {}:{} there'll be a $5 late fee".format(display_checkin_time.hour, display_checkin_time.minute)
+        print(body)
         self.assertTrue(expected1 in body)
         self.assertTrue(expected2 in body)
